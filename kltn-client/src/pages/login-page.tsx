@@ -1,6 +1,8 @@
 import { Card, Form, Input, Button } from "antd";
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import LoginPageConstants from "~/constants/login-page-constant";
+import path from "~/constants/path";
 import { AuthContext } from "~/contexts/auth.context";
 import UserService from "~/services/user-service";
 
@@ -8,13 +10,22 @@ const LoginPage = (): JSX.Element => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   
-  const { setAuthenticated, setRole, setUser } = useContext(AuthContext);
+  const { isAuthenticated,setAuthenticated, setRole, setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated){
+      navigate(path.home);
+    }
+  }, [isAuthenticated])
 
   const handleLogin = () => {
     let user = UserService.login(username, password);
-    setAuthenticated(true);
-    setUser(user);
-    setRole(user.role);
+    if (user){
+      setAuthenticated(true);
+      setUser(user);
+      setRole(user.role);
+    }
   };
 
   return (

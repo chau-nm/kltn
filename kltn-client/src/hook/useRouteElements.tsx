@@ -20,7 +20,11 @@ type AuthenticatedRouteProps = {
  */
 const RejectedRoute = () => {
   const { isAuthenticated } = useContext(AuthContext);
-  return !isAuthenticated ? <Outlet /> : <Navigate to={path.home} />;
+  return !isAuthenticated ? (
+    <Navigate to={path.login} />
+  ) : (
+    <Navigate to={path.home} />
+  );
 };
 
 /**
@@ -28,7 +32,6 @@ const RejectedRoute = () => {
  */
 const AuthenticatedRoute = ({ roles }: AuthenticatedRouteProps) => {
   const { isAuthenticated, role } = useContext(AuthContext);
-
   if (isAuthenticated && roles.indexOf(role) >= 0) {
     return <Outlet />;
   }
@@ -44,20 +47,20 @@ const useRouteElements = () => {
     {
       path: "",
       element: <RejectedRoute />,
-      children: [
-        {
-          path: path.login,
-          element: (
-            <LoginLayout>
-              <LoginPage />
-            </LoginLayout>
-          ),
-        },
-      ],
+    },
+    {
+      path: path.login,
+      element: (
+        <LoginLayout>
+          <LoginPage />
+        </LoginLayout>
+      ),
     },
     {
       path: "",
-      element: <AuthenticatedRoute roles={Object.values(AuthConstants.AUTH_ROLES)} />,
+      element: (
+        <AuthenticatedRoute roles={Object.values(AuthConstants.AUTH_ROLES)} />
+      ),
       children: [
         {
           path: path.home,
