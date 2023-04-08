@@ -4,6 +4,8 @@ import LoginPage from "~/pages/login-page";
 import { Outlet, Navigate } from "react-router-dom";
 import AuthConstants from "~/constants/auth-constants";
 import HomePage from "~/pages/home-page";
+import AccountsManager from "~/pages/acounts_manager-page";
+import Notification from "~/pages/send-notification-page";
 import MainLayout from "~/layouts/main-layout";
 import LoginLayout from "~/layouts/login-layout";
 import { useContext } from "react";
@@ -19,7 +21,7 @@ type AuthenticatedRouteProps = {
  * @returns
  */
 const RejectedRoute = () => {
-  const { isAuthenticated } = {isAuthenticated: true};
+  const { isAuthenticated } = { isAuthenticated: true };
   return !isAuthenticated ? (
     <Navigate to={path.LOGIN} />
   ) : (
@@ -72,7 +74,7 @@ const useRouteElements = () => {
               <HomePage />
             </MainLayout>
           ),
-        }
+        },
       ],
     },
   ]);

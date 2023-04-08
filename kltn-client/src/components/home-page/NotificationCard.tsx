@@ -14,11 +14,11 @@ const NotificationCard = ({notifications} : NotificationCardProps) : JSX.Element
                 title : "Thông báo",
             }}>
                 {
-                    notifications.map(notify => {
+                    notifications.map((notify, index) => {
                         return (
                             <Notification 
-                            key={notify.notifyId}
-                            notify={notify}/>
+                                key={index}
+                                notify={notify}/>
                         )
                     })
                 }

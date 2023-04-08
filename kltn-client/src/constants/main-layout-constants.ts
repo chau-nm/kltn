@@ -1,4 +1,4 @@
-import { HomeOutlined, UserOutlined } from '@ant-design/icons'
+import { BellOutlined, HomeOutlined, UserOutlined } from '@ant-design/icons'
 import path from './path';
 
 class MainLayouConstants{
@@ -12,6 +12,18 @@ class MainLayouConstants{
             menuName: 'Trang chủ',
             menuPath: path.HOME,
             icon: HomeOutlined
+        },
+        {
+            menuId: 1,
+            menuName: 'Quản lý tài khoản',
+            menuPath: path.ACCOUNTS_MANAGER,
+            icon: UserOutlined
+        },
+        {
+            menuId: 2,
+            menuName: 'Thông báo',
+            menuPath: path.SEND_NOTIFICATION,
+            icon: BellOutlined
         },
     ]
 }
