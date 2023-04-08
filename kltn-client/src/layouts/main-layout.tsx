@@ -7,11 +7,13 @@ const MainLayout = ({ children }: React.PropsWithChildren) => {
   return (
     <MenuContextProvider>
       <Header />
-      <Row className="2xl:w-[1380px] xl:w-full lg:w-full md:w-full sm:w-full m-auto">
+      <Row className="2xl:w-[1380px] xl:w-full lg:w-full md:w-full sm:w-full m-auto h-5/6">
         <Col>
           <VerticalNavigation />
         </Col>
-        <Col>{children}</Col>
+        <Col flex={1} className="h-full">
+          {children}
+        </Col>
       </Row>
     </MenuContextProvider>
   );

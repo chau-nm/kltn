@@ -1,6 +1,7 @@
 const path = {
     home : '/home',
-    login: '/login'
+    login: '/login',
+    ACCOUNTS_MANAGER: '/accounts-manager',
 }
 
 export default path;

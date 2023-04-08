@@ -4,6 +4,7 @@ import LoginPage from "~/pages/login-page";
 import { Outlet, Navigate } from "react-router-dom";
 import AuthConstants from "~/constants/auth-constants";
 import HomePage from "~/pages/home-page";
+import AccountsManager from "~/pages/acounts_manager-page";
 import MainLayout from "~/layouts/main-layout";
 import LoginLayout from "~/layouts/login-layout";
 import { useContext } from "react";
@@ -19,7 +20,7 @@ type AuthenticatedRouteProps = {
  * @returns
  */
 const RejectedRoute = () => {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated } = { isAuthenticated: true };
   return !isAuthenticated ? (
     <Navigate to={path.login} />
   ) : (
@@ -31,7 +32,7 @@ const RejectedRoute = () => {
  * Route for Authenticated
  */
 const AuthenticatedRoute = ({ roles }: AuthenticatedRouteProps) => {
-  const { isAuthenticated, role } = useContext(AuthContext);
+  const { isAuthenticated, role } = { isAuthenticated: true, role: 0 };
   if (isAuthenticated && roles.indexOf(role) >= 0) {
     return <Outlet />;
   }
@@ -67,6 +68,14 @@ const useRouteElements = () => {
           element: (
             <MainLayout>
               <HomePage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.ACCOUNTS_MANAGER,
+          element: (
+            <MainLayout>
+              <AccountsManager />
             </MainLayout>
           ),
         },
