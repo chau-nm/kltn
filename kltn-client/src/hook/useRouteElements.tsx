@@ -19,11 +19,11 @@ type AuthenticatedRouteProps = {
  * @returns
  */
 const RejectedRoute = () => {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated } = {isAuthenticated: true};
   return !isAuthenticated ? (
-    <Navigate to={path.login} />
+    <Navigate to={path.LOGIN} />
   ) : (
-    <Navigate to={path.home} />
+    <Navigate to={path.HOME} />
   );
 };
 
@@ -31,11 +31,14 @@ const RejectedRoute = () => {
  * Route for Authenticated
  */
 const AuthenticatedRoute = ({ roles }: AuthenticatedRouteProps) => {
-  const { isAuthenticated, role } = useContext(AuthContext);
+  const { isAuthenticated, role } = {
+    isAuthenticated: true,
+    role: 0
+  };
   if (isAuthenticated && roles.indexOf(role) >= 0) {
     return <Outlet />;
   }
-  return <Navigate to={path.login} />;
+  return <Navigate to={path.LOGIN} />;
 };
 
 /**
@@ -49,7 +52,7 @@ const useRouteElements = () => {
       element: <RejectedRoute />,
     },
     {
-      path: path.login,
+      path: path.LOGIN,
       element: (
         <LoginLayout>
           <LoginPage />
@@ -63,13 +66,13 @@ const useRouteElements = () => {
       ),
       children: [
         {
-          path: path.home,
+          path: path.HOME,
           element: (
             <MainLayout>
               <HomePage />
             </MainLayout>
           ),
-        },
+        }
       ],
     },
   ]);

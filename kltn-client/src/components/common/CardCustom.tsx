@@ -11,7 +11,7 @@ const CardCustom = ({
 }: CardCustomProps): JSX.Element => {
   return (
     <Card
-      className="mt-2 w-[300px]"
+      className="mt-2 w-full"
       headStyle={{ backgroundColor: "#518df7", fontSize: '1.15rem', fontWeight: 'bold', color: '#ffffff' }}
       {...cardProps}
     >

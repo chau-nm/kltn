@@ -1,4 +1,4 @@
-import { Space, Card } from "antd";
+import { Space } from "antd";
 import NavItem from "./NavItem";
 import CardCustom from "../common/CardCustom";
 import MainLayouConstants from "~/constants/main-layout-constants";
