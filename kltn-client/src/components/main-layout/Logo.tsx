@@ -8,7 +8,7 @@ const Logo = (): JSX.Element => {
   const navigate = useNavigate();
 
   const handleGoToHome = (): void => {
-    navigate(path.home);
+    navigate(path.HOME);
   };
 
   return (

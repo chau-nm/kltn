@@ -3,10 +3,10 @@ import NavItem from "./NavItem";
 import CardCustom from "../common/CardCustom";
 import MainLayouConstants from "~/constants/main-layout-constants";
 import { useContext } from "react";
-import { MenuContext } from "~/contexts/menu.context";
+import { useLocation } from "react-router-dom";
 
 const VerticalNavigation = (): JSX.Element => {
-  const { menuActive } = useContext(MenuContext);
+  const location = useLocation();
 
   return (
     <CardCustom cardProps={{ title: "Menu" }}>
@@ -18,7 +18,7 @@ const VerticalNavigation = (): JSX.Element => {
               icon={<menu.icon />}
               path={menu.menuPath}
               title={menu.menuName}
-              active={menuActive === menu.menuId}
+              active={location.pathname === menu.menuPath}
             />
           );
         })}

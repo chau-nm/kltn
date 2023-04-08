@@ -15,12 +15,15 @@ const NavItem = ({
   active = false,
 }: NavItemProps): JSX.Element => {
   const navigate = useNavigate();
+
   const handleNavigate = (): void => {
     navigate(path);
   };
   return (
     <Row
-      className={`hover:bg-gray-100 w-full p-2 relative select-none cursor-pointer rounded-xl ${active ? 'bg-gray-100' : ''}`}
+      className={`hover:bg-gray-100 w-full p-2 relative select-none cursor-pointer rounded-xl ${
+        active ? "bg-gray-100" : ""
+      }`}
       onClick={handleNavigate}
     >
       <Col className="text-base absolute top-[2px]">{icon}</Col>
