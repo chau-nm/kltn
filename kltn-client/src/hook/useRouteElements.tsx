@@ -35,7 +35,7 @@ const RejectedRoute = () => {
 const AuthenticatedRoute = ({ roles }: AuthenticatedRouteProps) => {
   const { isAuthenticated, role } = {
     isAuthenticated: true,
-    role: 0
+    role: 0,
   };
   if (isAuthenticated && roles.indexOf(role) >= 0) {
     return <Outlet />;
@@ -72,6 +72,22 @@ const useRouteElements = () => {
           element: (
             <MainLayout>
               <HomePage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.ACCOUNTS_MANAGER,
+          element: (
+            <MainLayout>
+              <AccountsManager />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.SEND_NOTIFICATION,
+          element: (
+            <MainLayout>
+              <Notification />
             </MainLayout>
           ),
         },
