@@ -10,6 +10,7 @@ import MainLayout from "~/layouts/main-layout";
 import LoginLayout from "~/layouts/login-layout";
 import { useContext } from "react";
 import { AuthContext } from "~/contexts/auth.context";
+import ReportSchedulePage from "~/pages/report-schedule-page";
 
 type AuthenticatedRouteProps = {
   roles: Array<number | null>;
@@ -88,6 +89,14 @@ const useRouteElements = () => {
           element: (
             <MainLayout>
               <Notification />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.REPORT_SCHEDULE,
+          element: (
+            <MainLayout>
+              <ReportSchedulePage />
             </MainLayout>
           ),
         },
