@@ -10,6 +10,7 @@ import MainLayout from "~/layouts/main-layout";
 import LoginLayout from "~/layouts/login-layout";
 import { useContext } from "react";
 import { AuthContext } from "~/contexts/auth.context";
+import ThesisListPage from "~/pages/thesis-list-page";
 
 type AuthenticatedRouteProps = {
   roles: Array<number | null>;
@@ -88,6 +89,14 @@ const useRouteElements = () => {
           element: (
             <MainLayout>
               <Notification />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.THESIS_LIST_PAGE,
+          element: (
+            <MainLayout>
+              <ThesisListPage />
             </MainLayout>
           ),
         },
