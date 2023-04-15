@@ -1,4 +1,4 @@
-import { BellOutlined, HomeOutlined, ProjectOutlined, ScheduleOutlined, UnorderedListOutlined, UserOutlined } from '@ant-design/icons'
+import { BellOutlined, HomeOutlined, UserOutlined } from '@ant-design/icons'
 import path from './path';
 
 class MainLayouConstants{
@@ -42,6 +42,12 @@ class MainLayouConstants{
             menuName: 'Quản lý khóa luận',
             menuPath: path.THESIS_MANAGEMENT,
             icon: UnorderedListOutlined
+        },
+        {
+            menuId: 6,
+            menuName: 'Danh sách luận văn',
+            menuPath: path.THESIS_LIST_PAGE,
+            icon: BookOutlined
         },
     ]
 }
