@@ -1,4 +1,4 @@
-import { BellOutlined, HomeOutlined, UserOutlined } from '@ant-design/icons'
+import { BellOutlined, BookOutlined, HomeOutlined, ProjectOutlined, ScheduleOutlined, UnorderedListOutlined, UserOutlined } from '@ant-design/icons'
 import path from './path';
 
 class MainLayouConstants{
