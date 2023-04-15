@@ -1,18 +1,29 @@
-import type { UploadProps } from "antd";
 import {
-  Button,
-  Col,
-  DatePicker,
-  Divider,
-  Form,
   Input,
-  Radio,
-  Row,
+  Button,
+  message,
+  Upload,
   Select,
-  message
+  Col,
+  Row,
+  Divider,
+} from "antd";
+import type { UploadProps } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import { Editor } from "react-draft-wysiwyg";
+import "../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { PlusOutlined } from "@ant-design/icons";
+import {
+  Form,
+  Radio,
+  Cascader,
+  DatePicker,
+  InputNumber,
+  TreeSelect,
+  Switch,
+  Checkbox,
 } from "antd";
 import { useState } from "react";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;

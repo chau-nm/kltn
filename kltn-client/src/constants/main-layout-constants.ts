@@ -57,6 +57,12 @@ class MainLayouConstants{
         },
         {
             menuId: 8,
+            menuName: 'From chấm điểm',
+            menuPath: path.MARK,
+            icon: BookOutlined
+        },
+        {
+            menuId: 9,
             menuName: 'Đánh giá đề cương',
             menuPath: path.EVALUE_THESIS_OUTLINE_PAGE,
             icon: BookOutlined
