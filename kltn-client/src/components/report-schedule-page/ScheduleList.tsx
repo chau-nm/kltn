@@ -38,9 +38,7 @@ const columns: ColumnProps<ReportScheduleModel>[] = [
   {
     title: "Trạng thái",
     render: (text, record, index) => {
-      return (
-        <span>{record.status}</span>
-      );
+      return <span>{record.status}</span>;
     },
   },
   {
@@ -66,12 +64,18 @@ const datas: ReportScheduleModel[] = [
     duration: 10000,
     time: new Date(),
     room: "RD300",
-    status: "Đang tiến hành"
+    status: "Đang tiến hành",
   },
 ];
 
 const ScheduleList = (): JSX.Element => {
-  return <Table columns={columns} dataSource={datas} />;
+  return (
+    <Table
+      columns={columns}
+      dataSource={datas}
+      rowKey={(record) => record.id}
+    />
+  );
 };
 
 export default ScheduleList;

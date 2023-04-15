@@ -7,7 +7,8 @@ const path = {
     COUNTER_ARGUMENT: '/counter-argument-form',
     REPORT_SCHEDULE: '/report-schedule',
     REGISTER_THESIS: '/register-thesis',
-    THESIS_MANAGEMENT: '/reports-management'
+    THESIS_MANAGEMENT: '/reports-management',
+    EVALUE_THESIS_OUTLINE_PAGE: '/evalue-thesis-outline-page',
 }
 
 export default path;

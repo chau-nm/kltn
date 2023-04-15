@@ -50,11 +50,17 @@ class MainLayouConstants{
             icon: BookOutlined
         },
         {
-            menuId: 4,
+            menuId: 7,
             menuName: 'From phản biện',
             menuPath: path.COUNTER_ARGUMENT,
             icon: BookOutlined
         },
+        {
+            menuId: 8,
+            menuName: 'Đánh giá đề cương',
+            menuPath: path.EVALUE_THESIS_OUTLINE_PAGE,
+            icon: BookOutlined
+        }
     ]
 }
 

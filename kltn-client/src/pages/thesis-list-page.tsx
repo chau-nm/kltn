@@ -3,6 +3,7 @@ import { UserOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import type { DatePickerProps, RangePickerProps } from "antd/es/date-picker";
+import PageLayout from "~/components/common/PageLayout";
 
 const { Search } = Input;
 const { RangePicker } = DatePicker;
@@ -129,10 +130,11 @@ const ThesisListPage = (): JSX.Element => {
     console.log("onOk: ", value);
   };
   return (
-    <div className="bg-white h-full flex justify-around items-center flex-col p-2 mt-2 ml-2">
-      <div className="w-full h-14 flex justify-around items-center bg-slate-100 mb-7">
-        <div className="w-3/4 flex justify-around items-center">
-          {/* <div>
+    <PageLayout pageTitle="Danh sách luận văn">
+      <div className="bg-white h-full flex justify-around items-center flex-col p-2 mt-2 ml-2">
+        <div className="w-full h-14 flex justify-around items-center bg-slate-100 mb-7">
+          <div className="w-3/4 flex justify-around items-center">
+            {/* <div>
             <Dropdown menu={menuProps}>
               <Button>
                 <Space>
@@ -152,40 +154,41 @@ const ThesisListPage = (): JSX.Element => {
               </Button>
             </Dropdown>
           </div> */}
-          <div className="flex items-center justify-around  w-2/3">
-            <span className="w-2/7">Bộ lọc ngày: </span>
-            <RangePicker
-              showTime={{ format: "HH:mm" }}
-              format="YYYY-MM-DD HH:mm"
-              onChange={onChange}
-              onOk={onOk}
+            <div className="flex items-center justify-around  w-2/3">
+              <span className="w-2/7">Bộ lọc ngày: </span>
+              <RangePicker
+                showTime={{ format: "HH:mm" }}
+                format="YYYY-MM-DD HH:mm"
+                onChange={onChange}
+                onOk={onOk}
+              />
+            </div>
+          </div>
+          <div>
+            <Search
+              placeholder="tìm tiếm theo tên"
+              allowClear
+              onSearch={() => {}}
+              style={{ width: 200 }}
             />
           </div>
         </div>
-        <div>
-          <Search
-            placeholder="tìm tiếm theo tên"
-            allowClear
-            onSearch={() => {}}
-            style={{ width: 200 }}
+
+        <div className="content w-full h-4/5 flex flex-col justify-between">
+          <Table
+            columns={columns}
+            dataSource={data}
+            pagination={{
+              position: ["bottomCenter"],
+              pageSize: 4,
+            }}
           />
         </div>
+        <div className="account-footer w-full h-5 flex justify-end items-center p-5">
+          <Button>Thêm luận văn</Button>
+        </div>
       </div>
-
-      <div className="content w-full h-4/5 flex flex-col justify-between">
-        <Table
-          columns={columns}
-          dataSource={data}
-          pagination={{
-            position: ["bottomCenter"],
-            pageSize: 4,
-          }}
-        />
-      </div>
-      <div className="account-footer w-full h-5 flex justify-end items-center p-5">
-        <Button>Thêm luận văn</Button>
-      </div>
-    </div>
+    </PageLayout>
   );
 };
 

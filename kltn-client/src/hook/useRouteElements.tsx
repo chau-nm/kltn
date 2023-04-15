@@ -1,20 +1,20 @@
-import { useRoutes } from "react-router-dom";
-import path from "~/constants/path";
-import LoginPage from "~/pages/login-page";
-import { Outlet, Navigate } from "react-router-dom";
+import { Navigate, Outlet, useRoutes } from "react-router-dom";
 import AuthConstants from "~/constants/auth-constants";
-import HomePage from "~/pages/home-page";
-import AccountsManager from "~/pages/acounts_manager-page";
-import Notification from "~/pages/send-notification-page";
-import MainLayout from "~/layouts/main-layout";
+import path from "~/constants/path";
+
 import LoginLayout from "~/layouts/login-layout";
-import { useContext } from "react";
-import { AuthContext } from "~/contexts/auth.context";
-import ThesisListPage from "~/pages/thesis-list-page";
-import CounterArgumentFrom from "~/pages/evaluate-page";
+import MainLayout from "~/layouts/main-layout";
+
+import AccountsManagerPage from "~/pages/admin/acounts_manager-page";
+import CounterArgumentFrom from "~/pages/council/evaluate-page";
+import HomePage from "~/pages/home-page";
+import LoginPage from "~/pages/login-page";
+import RegisterThesisPage from "~/pages/student/register-thesis-page";
 import ReportSchedulePage from "~/pages/report-schedule-page";
-import RegisterThesisPage from "~/pages/register-thesis-page";
-import ThesisManagementPage from "~/pages/thesis-management-page";
+import NotificationPage from "~/pages/ministry/send-notification-page";
+import ThesisListPage from "~/pages/thesis-list-page";
+import ThesisManagementPage from "~/pages/ministry/thesis-management-page";
+import EvalueThesisOutlinePage from "~/pages/council/evaluate-thesis-outline-page";
 
 type AuthenticatedRouteProps = {
   roles: Array<number | null>;
@@ -84,7 +84,7 @@ const useRouteElements = () => {
           path: path.ACCOUNTS_MANAGER,
           element: (
             <MainLayout>
-              <AccountsManager />
+              <AccountsManagerPage />
             </MainLayout>
           ),
         },
@@ -92,7 +92,7 @@ const useRouteElements = () => {
           path: path.SEND_NOTIFICATION,
           element: (
             <MainLayout>
-              <Notification />
+              <NotificationPage />
             </MainLayout>
           ),
         },
@@ -133,6 +133,14 @@ const useRouteElements = () => {
           element: (
             <MainLayout>
               <ThesisManagementPage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.EVALUE_THESIS_OUTLINE_PAGE,
+          element: (
+            <MainLayout>
+              <EvalueThesisOutlinePage />
             </MainLayout>
           ),
         },
