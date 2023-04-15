@@ -4,6 +4,8 @@ const path = {
     ACCOUNTS_MANAGER: '/accounts-manager',
     SEND_NOTIFICATION: '/send-notification',
     REPORT_SCHEDULE: '/report-schedule',
+    REGISTER_THESIS: '/register-thesis',
+    THESIS_MANAGEMENT: '/reports-management'
 }
 
 export default path;
