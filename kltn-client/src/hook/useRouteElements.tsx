@@ -15,6 +15,7 @@ import CounterArgumentFrom from "~/pages/evaluate-page";
 import ReportSchedulePage from "~/pages/report-schedule-page";
 import RegisterThesisPage from "~/pages/register-thesis-page";
 import ThesisManagementPage from "~/pages/thesis-management-page";
+import MarkFrom from "~/pages/mark-form-page";
 
 type AuthenticatedRouteProps = {
   roles: Array<number | null>;
@@ -133,6 +134,14 @@ const useRouteElements = () => {
           element: (
             <MainLayout>
               <ThesisManagementPage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.MARK,
+          element: (
+            <MainLayout>
+              <MarkFrom />
             </MainLayout>
           ),
         },

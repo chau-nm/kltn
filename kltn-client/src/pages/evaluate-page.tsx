@@ -3,12 +3,13 @@ import { Input, Button, Select, Col, Row, Divider } from "antd";
 import "../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 import { Form, Radio } from "antd";
+import PageLayout from "~/components/common/PageLayout";
 
 const { TextArea } = Input;
 
 const CounterArgumentFrom = (): JSX.Element => {
   return (
-    <div className="bg-white h-full flex justify-around items-center flex-col p-2 mt-2 ml-2">
+    <PageLayout pageTitle="Form đánh giá">
       <div className="w-full p-5">
         <Form
           labelCol={{ span: 5 }}
@@ -206,7 +207,7 @@ const CounterArgumentFrom = (): JSX.Element => {
       <div className="w-full flex justify-end">
         <Button>Xác nhận đánh giá</Button>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 export default CounterArgumentFrom;
