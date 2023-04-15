@@ -12,6 +12,9 @@ import { useContext } from "react";
 import { AuthContext } from "~/contexts/auth.context";
 import ThesisListPage from "~/pages/thesis-list-page";
 import CounterArgumentFrom from "~/pages/evaluate-page";
+import ReportSchedulePage from "~/pages/report-schedule-page";
+import RegisterThesisPage from "~/pages/register-thesis-page";
+import ThesisManagementPage from "~/pages/thesis-management-page";
 
 type AuthenticatedRouteProps = {
   roles: Array<number | null>;
@@ -106,6 +109,30 @@ const useRouteElements = () => {
           element: (
             <MainLayout>
               <CounterArgumentFrom />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.REPORT_SCHEDULE,
+          element: (
+            <MainLayout>
+              <ReportSchedulePage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.REGISTER_THESIS,
+          element: (
+            <MainLayout>
+              <RegisterThesisPage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.THESIS_MANAGEMENT,
+          element: (
+            <MainLayout>
+              <ThesisManagementPage />
             </MainLayout>
           ),
         },
