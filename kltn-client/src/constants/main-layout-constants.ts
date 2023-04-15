@@ -31,6 +31,12 @@ class MainLayouConstants{
             menuPath: path.THESIS_LIST_PAGE,
             icon: BookOutlined
         },
+        {
+            menuId: 4,
+            menuName: 'From phản biện',
+            menuPath: path.COUNTER_ARGUMENT,
+            icon: BookOutlined
+        },
     ]
 }
 

@@ -11,6 +11,7 @@ import LoginLayout from "~/layouts/login-layout";
 import { useContext } from "react";
 import { AuthContext } from "~/contexts/auth.context";
 import ThesisListPage from "~/pages/thesis-list-page";
+import CounterArgumentFrom from "~/pages/evaluate-page";
 
 type AuthenticatedRouteProps = {
   roles: Array<number | null>;
@@ -97,6 +98,14 @@ const useRouteElements = () => {
           element: (
             <MainLayout>
               <ThesisListPage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.COUNTER_ARGUMENT,
+          element: (
+            <MainLayout>
+              <CounterArgumentFrom />
             </MainLayout>
           ),
         },
