@@ -12,6 +12,7 @@ const path = {
     EVALUE_THESIS_OUTLINE_PAGE: '/evalue-thesis-outline-page',
     NOTIFICATION: '/notification',
     AGGREGATERATING:'/aggregate-rating',
+    ADDREPORT:'/add-report',
     
 }
 

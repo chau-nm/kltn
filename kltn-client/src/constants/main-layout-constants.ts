@@ -79,6 +79,12 @@ class MainLayouConstants{
             menuPath: path.AGGREGATERATING,
             icon: BookOutlined
         },
+        {
+            menuId: 12,
+            menuName: 'Thêm buổi báo cáo',
+            menuPath: path.ADDREPORT,
+            icon: BookOutlined
+        },
     ]
 }
 

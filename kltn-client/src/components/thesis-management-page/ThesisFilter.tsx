@@ -5,6 +5,27 @@ const statusOptions: SelectProps["options"] = [
   {
     label: "Đang đợi xét duyệt",
   },
+  {
+    label: "Đã xét duyệt",
+  },
+  {
+    label: "Đang tiến hành",
+  },
+  {
+    label: "Đang đợi phản biện",
+  },
+  {
+    label: "Đang phản biện",
+  },
+  {
+    label: "Hoàn tất phản biện",
+  },
+  {
+    label: "Đang Bảo vệ",
+  },
+  {
+    label: "Hoàn thành",
+  },
 ];
 
 const semesterOptions: SelectProps["options"] = [

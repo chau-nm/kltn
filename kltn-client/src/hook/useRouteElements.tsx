@@ -18,6 +18,7 @@ import MarkFrom from "~/pages/mark-form-page";
 import EvalueThesisOutlinePage from "~/pages/council/evaluate-thesis-outline-page";
 import NotificationPage from "~/pages/notification-page";
 import AggregateRatingPage from "~/pages/aggregate-rating-page";
+import AddReportPage from "~/pages/add-report-schedule-page";
 
 type AuthenticatedRouteProps = {
   roles: Array<number | null>;
@@ -168,6 +169,14 @@ const useRouteElements = () => {
           element: (
             <MainLayout>
               <AggregateRatingPage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.ADDREPORT,
+          element: (
+            <MainLayout>
+              <AddReportPage />
             </MainLayout>
           ),
         },
