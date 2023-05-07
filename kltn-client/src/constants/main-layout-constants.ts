@@ -66,7 +66,19 @@ class MainLayouConstants{
             menuName: 'Đánh giá đề cương',
             menuPath: path.EVALUE_THESIS_OUTLINE_PAGE,
             icon: BookOutlined
-        }
+        },
+        {
+            menuId: 10,
+            menuName: 'Xem thông báo',
+            menuPath: path.NOTIFICATION,
+            icon: BookOutlined
+        },
+        {
+            menuId: 11,
+            menuName: 'Tổng hợp đánh giá',
+            menuPath: path.AGGREGATERATING,
+            icon: BookOutlined
+        },
     ]
 }
 

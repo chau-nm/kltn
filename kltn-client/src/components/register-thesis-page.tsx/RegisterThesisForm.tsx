@@ -1,41 +1,57 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Row, Upload } from "antd";
+import { Button, Col, Form, Input, Row, Upload } from "antd";
 
 const RegisterThesisForm = (): JSX.Element => {
   return (
     <Form>
       <span className="font-bold text-ms">Thông tin sinh viên 1</span>
-      <Row>
-        <Form.Item label="Mã số sinh viên">
-          <Input className="w-44" />
-        </Form.Item>
-        <Form.Item label="Họ và tên">
-          <Input className="w-44" />
-        </Form.Item>
-        <Form.Item label="Lớp">
-          <Input className="w-44" />
-        </Form.Item>
+      <Row className="flex items-center">
+        <Col span={8}>
+          <Form.Item label="Mã số sinh viên">
+            <Input className="w-44" />
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          <Form.Item label="Họ và tên">
+            <Input className="w-44" />
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          <Form.Item label="Lớp">
+            <Input className="w-44" />
+          </Form.Item>
+        </Col>
       </Row>
       <span className="font-bold text-ms">Thông tin sinh viên 2</span>
-      <Row>
-        <Form.Item label="Mã số sinh viên">
-          <Input className="w-44" />
-        </Form.Item>
-        <Form.Item label="Họ và tên">
-          <Input className="w-44" />
-        </Form.Item>
-        <Form.Item label="Lớp">
-          <Input className="w-44" />
-        </Form.Item>
+      <Row className="flex items-center">
+        <Col span={8}>
+          <Form.Item label="Mã số sinh viên">
+            <Input className="w-44" />
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          <Form.Item label="Họ và tên">
+            <Input className="w-44" />
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          <Form.Item label="Lớp">
+            <Input className="w-44" />
+          </Form.Item>
+        </Col>
       </Row>
       <span className="font-bold text-ms">Giảng viên hướng dẫn</span>
-      <Row>
-        <Form.Item label="Mã giảng viên">
-          <Input className="w-44" />
-        </Form.Item>
-        <Form.Item label="Họ và tên">
-          <Input className="w-44" />
-        </Form.Item>
+      <Row className="flex items-center">
+        <Col span={8}>
+          <Form.Item label="Mã giảng viên" labelCol={{ span: 8 }}>
+            <Input className="w-44" />
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          <Form.Item label="Họ và tên">
+            <Input className="w-44" />
+          </Form.Item>
+        </Col>
       </Row>
       <span className="font-bold text-ms">Tên đề tài</span>
       <Form.Item>

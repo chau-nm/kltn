@@ -1,13 +1,29 @@
-import { Button, Input } from "antd";
-
-import PageLayout from "~/components/common/PageLayout";
-import { Editor } from "react-draft-wysiwyg";
+import { Input, Button, message, Upload, Layout } from "antd";
+import type { UploadProps } from "antd";
+// import FileViewer from "react-file-viewer";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import PageLayout from "~/components/common/PageLayout";
 
-const { TextArea } = Input;
-const EvalueThesisOutlinePage = () => {
+const props: UploadProps = {
+  name: "file",
+  action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+  headers: {
+    authorization: "authorization-text",
+  },
+  onChange(info) {
+    if (info.file.status !== "uploading") {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === "done") {
+      message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+};
+const NotificationPage = (): JSX.Element => {
   return (
-    <PageLayout pageTitle="Đề cương">
+    <PageLayout pageTitle="Thông báo">
       <div className="bg-white h-full flex justify-around items-center flex-col p-2 mt-2 ml-2">
         <div className="w-full">
           <div className="w-full">
@@ -39,9 +55,7 @@ const EvalueThesisOutlinePage = () => {
           </div>
         </div>
         <div className="w-full">
-          <div className="w-full font-bold font text-lg mb-10">
-            File đính kèm
-          </div>
+          <div className="w-full font-bold font text-lg">File đính kèm</div>
           {/* <FileViewer
             fileType={type}
             filePath={file}
@@ -50,22 +64,8 @@ const EvalueThesisOutlinePage = () => {
           /> */}
         </div>
       </div>
-      <div>
-        <div className="w-full font-bold font text-lg mb-3">Đánh giá</div>
-        <div className="w-full border mb-3">
-          <Editor
-            wrapperClassName="wrapper-class"
-            editorClassName="p-2 h-44"
-            toolbarClassName="toolbar-class bg-slate-50"
-            placeholder="Nhập nội dung đánh giá"
-          />
-        </div>
-        <div className="w-full flex justify-end">
-          <Button>Gửi</Button>
-        </div>
-      </div>
     </PageLayout>
   );
 };
 
-export default EvalueThesisOutlinePage;
+export default NotificationPage;

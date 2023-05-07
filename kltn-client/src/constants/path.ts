@@ -10,6 +10,8 @@ const path = {
     REGISTER_THESIS: '/register-thesis',
     THESIS_MANAGEMENT: '/reports-management',
     EVALUE_THESIS_OUTLINE_PAGE: '/evalue-thesis-outline-page',
+    NOTIFICATION: '/notification',
+    AGGREGATERATING:'/aggregate-rating',
     
 }
 

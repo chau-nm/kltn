@@ -11,11 +11,13 @@ import HomePage from "~/pages/home-page";
 import LoginPage from "~/pages/login-page";
 import RegisterThesisPage from "~/pages/student/register-thesis-page";
 import ReportSchedulePage from "~/pages/report-schedule-page";
-import NotificationPage from "~/pages/ministry/send-notification-page";
+import SendNotificationPage from "~/pages/ministry/send-notification-page";
 import ThesisListPage from "~/pages/thesis-list-page";
 import ThesisManagementPage from "~/pages/ministry/thesis-management-page";
 import MarkFrom from "~/pages/mark-form-page";
 import EvalueThesisOutlinePage from "~/pages/council/evaluate-thesis-outline-page";
+import NotificationPage from "~/pages/notification-page";
+import AggregateRatingPage from "~/pages/aggregate-rating-page";
 
 type AuthenticatedRouteProps = {
   roles: Array<number | null>;
@@ -93,7 +95,7 @@ const useRouteElements = () => {
           path: path.SEND_NOTIFICATION,
           element: (
             <MainLayout>
-              <NotificationPage />
+              <SendNotificationPage />
             </MainLayout>
           ),
         },
@@ -134,6 +136,38 @@ const useRouteElements = () => {
           element: (
             <MainLayout>
               <ThesisManagementPage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.MARK,
+          element: (
+            <MainLayout>
+              <MarkFrom />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.EVALUE_THESIS_OUTLINE_PAGE,
+          element: (
+            <MainLayout>
+              <EvalueThesisOutlinePage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.NOTIFICATION,
+          element: (
+            <MainLayout>
+              <NotificationPage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.AGGREGATERATING,
+          element: (
+            <MainLayout>
+              <AggregateRatingPage />
             </MainLayout>
           ),
         },
