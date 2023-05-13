@@ -3,15 +3,22 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="web.nl.kltn.mapper.UserCusMapper">
 
-	<resultMap type="web.nl.kltn.model.generator.User" id="User">
+	<resultMap type="web.nl.kltn.model.UserCus" id="UserCus">
 		<id column="user_id" property="userId" jdbcType="VARCHAR" />
-		<result column="username" property="username"
-			jdbcType="VARCHAR" />
-		<result column="password" property="password"
+		<result column="role_name" property="role"
 			jdbcType="VARCHAR" />
 	</resultMap>
 
-	<select id="findAll" resultMap="User">
-		SELECT * FROM user
+	<select id="login" parameterType="web.nl.kltn.model.LoginCondition" resultMap="UserCus">
+		SELECT 
+			user_id,
+			role_name
+		FROM
+			user u
+		LEFT JOIN role r ON u.role = r.role_id
+		WHERE 
+			u.username = '${username}'
+		AND u.password = '${password}'
 	</select>
+
 </mapper>

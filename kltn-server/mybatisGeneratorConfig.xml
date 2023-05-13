@@ -25,10 +25,7 @@
     <javaClientGenerator type="XMLMAPPER" targetPackage="web.nl.kltn.mapper.generator"  targetProject="kltn-server">
     </javaClientGenerator>
 
-    <table schema="kltn" tableName="user" domainObjectName="User" >
-    </table>
-    
-    <table schema="kltn" tableName="refresh_token" domainObjectName="RefreshToken" >
+    <table schema="kltn" tableName="%" >
     </table>
     
   </context>
