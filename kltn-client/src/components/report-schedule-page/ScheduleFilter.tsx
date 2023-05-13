@@ -1,6 +1,5 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { Button, Col, DatePicker, Form, Input, Row, Select } from "antd";
-import dayjs from "dayjs";
+import { Button, DatePicker, Form, Input, Row, Select } from "antd";
 
 const ScheduleFilter = (): JSX.Element => {
   const dateFormat = "YYYY/MM/DD";

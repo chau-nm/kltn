@@ -1,16 +1,12 @@
-import { Col, Image, Row, Space } from "antd";
 import { useNavigate } from "react-router-dom";
-import NewsModel from "~/models/news-model";
 import logo from "~/assets/images/logo.png";
-import { useRef, useState } from "react";
+import NewsModel from "~/models/news-model";
 
 type NewsSlideProps = {
   news: NewsModel;
 };
 
 const NewsSlide = ({ news }: NewsSlideProps) => {
-  const [wrapVisible, setWrapVisible] = useState<boolean>(false);
-
   const navigate = useNavigate();
 
   const handleClick = () => {

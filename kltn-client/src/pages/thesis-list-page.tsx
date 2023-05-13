@@ -1,8 +1,7 @@
-import { Button, Space, message, Input, DatePicker, Table } from "antd";
-import { UserOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import type { ColumnsType } from "antd/es/table";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, DatePicker, Input, Space, Table } from "antd";
 import type { DatePickerProps, RangePickerProps } from "antd/es/date-picker";
+import type { ColumnsType } from "antd/es/table";
 import PageLayout from "~/components/common/PageLayout";
 
 const { Search } = Input;
@@ -18,12 +17,6 @@ interface DataType {
 }
 
 const columns: ColumnsType<DataType> = [
-  // {
-  //   title: "Image",
-  //   dataIndex: "imageSrc",
-  //   key: "image",
-  //   render: (text) => <Image src={text} width={40}></Image>,
-  // },
   {
     title: "Đề tài",
     dataIndex: "title",

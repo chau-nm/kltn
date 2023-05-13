@@ -1,12 +1,10 @@
-import Slider from "react-slick";
-import NewsModel from "~/models/news-model";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
+import { NewsData } from "~/fakedata";
+import NewsModel from "~/models/news-model";
+import CardCustom from "../common/CardCustom";
 import SlickCustom from "../common/SlickCustoom";
 import NewsSlide from "./NewsSlide";
-import { NewsData } from "~/fakedata";
-import { Card } from "antd";
-import CardCustom from "../common/CardCustom";
 
 type NewsBannerProps = {
   slides: NewsModel[];

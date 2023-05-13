@@ -1,9 +1,8 @@
 import { Space } from "antd";
-import NavItem from "./NavItem";
-import CardCustom from "../common/CardCustom";
-import MainLayouConstants from "~/constants/main-layout-constants";
-import { useContext } from "react";
 import { useLocation } from "react-router-dom";
+import MainLayouConstants from "~/constants/main-layout-constants";
+import CardCustom from "../common/CardCustom";
+import NavItem from "./NavItem";
 
 const VerticalNavigation = (): JSX.Element => {
   const location = useLocation();

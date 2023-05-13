@@ -1,6 +1,5 @@
-import { type } from "os";
-import CardCustom from "../common/CardCustom";
 import NotifyModel from "~/models/notify-model";
+import CardCustom from "../common/CardCustom";
 import Notification from "./Notification";
 
 type NotificationCardProps = {

@@ -1,6 +1,6 @@
-import { Button, Table } from "antd";
-import { ColumnProps, ColumnsType } from "antd/es/table";
-import { EditIconCustom, DeleteIconCustom } from "../common/IconCustom";
+import { Table } from "antd";
+import { ColumnProps } from "antd/es/table";
+import { DeleteIconCustom, EditIconCustom } from "../common/IconCustom";
 
 const columns: ColumnProps<ThesisModel>[] = [
   {

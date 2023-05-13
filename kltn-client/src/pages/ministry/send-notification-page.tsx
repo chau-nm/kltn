@@ -1,6 +1,6 @@
-import { Input, Button, message, Upload, Layout } from "antd";
-import type { UploadProps } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import type { UploadProps } from "antd";
+import { Button, Input, Upload, message } from "antd";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import PageLayout from "~/components/common/PageLayout";

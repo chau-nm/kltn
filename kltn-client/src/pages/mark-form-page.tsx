@@ -1,13 +1,11 @@
-import { Input, Button, Select, Col, Row, Divider } from "antd";
-
-import "../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
-import { Form, Radio } from "antd";
+import { Button, Col, Divider, Input, Row, Select } from "antd";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { Form } from "antd";
 import PageLayout from "~/components/common/PageLayout";
 
 const { TextArea } = Input;
 
-const MarkFrom = (): JSX.Element => {
+const MarkFormPage = (): JSX.Element => {
   return (
     <PageLayout pageTitle="Form chấm điểm">
       <div className="w-full p-5">
@@ -132,4 +130,4 @@ const MarkFrom = (): JSX.Element => {
     </PageLayout>
   );
 };
-export default MarkFrom;
+export default MarkFormPage;

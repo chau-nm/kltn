@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { Navigate, Outlet, useRoutes } from "react-router-dom";
 import AuthConstants from "~/constants/auth-constants";
 import path from "~/constants/path";
@@ -5,17 +6,26 @@ import path from "~/constants/path";
 import LoginLayout from "~/layouts/login-layout";
 import MainLayout from "~/layouts/main-layout";
 
-import AccountsManagerPage from "~/pages/admin/acounts_manager-page";
-import CounterArgumentFrom from "~/pages/council/evaluate-page";
-import HomePage from "~/pages/home-page";
-import LoginPage from "~/pages/login-page";
-import RegisterThesisPage from "~/pages/student/register-thesis-page";
-import ReportSchedulePage from "~/pages/report-schedule-page";
-import NotificationPage from "~/pages/ministry/send-notification-page";
-import ThesisListPage from "~/pages/thesis-list-page";
-import ThesisManagementPage from "~/pages/ministry/thesis-management-page";
-import MarkFrom from "~/pages/mark-form-page";
-import EvalueThesisOutlinePage from "~/pages/council/evaluate-thesis-outline-page";
+const AccountsManagerPage = lazy(
+  () => import("~/pages/admin/acounts_manager-page")
+);
+const CounterArgumentFormPage = lazy(
+  () => import("~/pages/council/counter-argument-form-page")
+);
+const HomePage = lazy(() => import("~/pages/home-page"));
+const LoginPage = lazy(() => import("~/pages/login-page"));
+const MarkFormPage = lazy(() => import("~/pages/mark-form-page"));
+const NotificationPage = lazy(
+  () => import("~/pages/ministry/send-notification-page")
+);
+const ThesisManagementPage = lazy(
+  () => import("~/pages/ministry/thesis-management-page")
+);
+const ReportSchedulePage = lazy(() => import("~/pages/report-schedule-page"));
+const RegisterThesisPage = lazy(
+  () => import("~/pages/student/register-thesis-page")
+);
+const ThesisListPage = lazy(() => import("~/pages/thesis-list-page"));
 
 type AuthenticatedRouteProps = {
   roles: Array<number | null>;
@@ -109,7 +119,7 @@ const useRouteElements = () => {
           path: path.COUNTER_ARGUMENT,
           element: (
             <MainLayout>
-              <CounterArgumentFrom />
+              <CounterArgumentFormPage />
             </MainLayout>
           ),
         },
@@ -134,6 +144,14 @@ const useRouteElements = () => {
           element: (
             <MainLayout>
               <ThesisManagementPage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.MARK,
+          element: (
+            <MainLayout>
+              <MarkFormPage />
             </MainLayout>
           ),
         },

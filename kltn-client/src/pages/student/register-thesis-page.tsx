@@ -1,8 +1,6 @@
-import { Divider, Row, Space } from "antd";
 import Layout from "antd/es/layout/layout";
 import PageHeader from "~/components/common/PageHeader";
 import RegisterThesisForm from "~/components/register-thesis-page.tsx/RegisterThesisForm";
-import ThesisTable from "~/components/thesis-management-page/ThesisTable";
 
 const RegisterThesisPage = () : JSX.Element => {
     return (
