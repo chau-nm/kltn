@@ -3,15 +3,19 @@ import useRouteElements from "./hook/useRouteElements";
 import { AuthContextProvider } from "./contexts/auth.context";
 import { Suspense } from "react";
 import LoadingPage from "./pages/loading-page";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 function App() {
   const routeElements = useRouteElements();
+  const queryClient = new QueryClient();
 
   return (
-    <AuthContextProvider>
-      {routeElements}
-      <ToastContainer />
-    </AuthContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthContextProvider>
+        {routeElements}
+        <ToastContainer />
+      </AuthContextProvider>
+    </QueryClientProvider>
   );
 }
 

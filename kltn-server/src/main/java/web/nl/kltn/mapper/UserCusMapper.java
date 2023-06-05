@@ -13,4 +13,7 @@ public interface UserCusMapper {
 
 	public UserCus login(LoginCondition loginCondition);
 	
+	public UserCus findByUserId(String userId);
+	
+	public UserCus findByUsername(String username);
 }

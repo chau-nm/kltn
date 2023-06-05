@@ -1,7 +1,8 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useContext } from "react";
 import { Navigate, Outlet, useRoutes } from "react-router-dom";
 import AuthConstants from "~/constants/auth-constants";
 import path from "~/constants/path";
+import { AuthContext } from "~/contexts/auth.context";
 
 import LoginLayout from "~/layouts/login-layout";
 import MainLayout from "~/layouts/main-layout";
@@ -28,7 +29,7 @@ const RegisterThesisPage = lazy(
 const ThesisListPage = lazy(() => import("~/pages/thesis-list-page"));
 
 type AuthenticatedRouteProps = {
-  roles: Array<number | null>;
+  roles: Array<string | null>;
 };
 
 /**
@@ -37,7 +38,7 @@ type AuthenticatedRouteProps = {
  * @returns
  */
 const RejectedRoute = () => {
-  const { isAuthenticated } = { isAuthenticated: true };
+  const { isAuthenticated } = useContext(AuthContext);
   return !isAuthenticated ? (
     <Navigate to={path.LOGIN} />
   ) : (
@@ -49,14 +50,12 @@ const RejectedRoute = () => {
  * Route for Authenticated
  */
 const AuthenticatedRoute = ({ roles }: AuthenticatedRouteProps) => {
-  const { isAuthenticated, role } = {
-    isAuthenticated: true,
-    role: 0,
-  };
+  const { isAuthenticated, role } = useContext(AuthContext);
   if (isAuthenticated && roles.indexOf(role) >= 0) {
     return <Outlet />;
+  }else{
+    return <Navigate to={path.LOGIN} />;
   }
-  return <Navigate to={path.LOGIN} />;
 };
 
 /**

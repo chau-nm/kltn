@@ -24,4 +24,14 @@ public class UserServiceImpl implements UserService{
 	public UserCus login(LoginCondition loginCondition) {
 		return userCusMapper.login(loginCondition);
 	}
+
+	@Override
+	public UserCus findByUserId(String userId) {
+		return userCusMapper.findByUserId(userId);
+	}
+
+	@Override
+	public UserCus findByUsername(String username) {
+		return userCusMapper.findByUsername(username);
+	}
 }

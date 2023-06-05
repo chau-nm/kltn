@@ -3,17 +3,17 @@ import { SetStateAction, createContext, useState } from "react";
 interface AuthContextInterface {
   isAuthenticated: boolean;
   setAuthenticated: React.Dispatch<SetStateAction<boolean>>;
-  role: number | null;
-  setRole: React.Dispatch<SetStateAction<number | null>>;
-  user: UserModel | null;
-  setUser: React.Dispatch<SetStateAction<UserModel | null>>;
+  role: string | null;
+  setRole: React.Dispatch<SetStateAction<string | null>>;
+  user: UserCusModel | null;
+  setUser: React.Dispatch<SetStateAction<UserCusModel | null>>;
   reset: () => void;
 }
 
 const initAuthContext: AuthContextInterface = {
   isAuthenticated: false,
   setAuthenticated: () => null,
-  role: -1,
+  role: null,
   setRole: () => null,
   user: null,
   setUser: () => null,
@@ -26,8 +26,8 @@ export const AuthContextProvider = ({
   children,
 }: React.PropsWithChildren): JSX.Element => {
   const [isAuthenticated, setAuthenticated] = useState<boolean>(false);
-  const [role, setRole] = useState<number | null>(-1);
-  const [user, setUser] = useState<UserModel | null>(null);
+  const [role, setRole] = useState<string | null>(null);
+  const [user, setUser] = useState<UserCusModel | null>(null);
 
   const reset = () => {
     setAuthenticated(false);

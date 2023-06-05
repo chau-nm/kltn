@@ -27,6 +27,7 @@ public class JWTTokenUtil {
 	}
 	
     public String getUserIdFromToken(String token) {
+    	if (token == null) return null;
         Claims claims = Jwts.parser()
                 .setSigningKey(secretKey)
                 .parseClaimsJws(token)
