@@ -15,6 +15,7 @@ import org.springframework.web.context.annotation.SessionScope;
 import web.nl.kltn.common.JWTTokenUtil;
 import web.nl.kltn.common.RequestModel;
 import web.nl.kltn.common.ResponseModel;
+import web.nl.kltn.model.AccessTokenRequest;
 import web.nl.kltn.model.LoginCondition;
 import web.nl.kltn.model.RefreshTokenRequest;
 import web.nl.kltn.model.UserCus;
@@ -24,7 +25,6 @@ import web.nl.kltn.service.UserService;
 
 @RestController
 @RequestMapping("/api/user")
-@SessionScope
 public class UserController {
 
 	@Autowired
@@ -66,10 +66,16 @@ public class UserController {
 		return responseModel;
 	}
 
-	@GetMapping("/check")
-	@PreAuthorize("hasAuthority('WEB_MANAGER')")
-	public String checkLogged() {
-		return "logged";
+	@PostMapping("/get-user-with-token")
+	public ResponseModel<UserCus> getUserWithToken(@RequestBody RequestModel<AccessTokenRequest> accessTokenRequest){
+		String accessToken = accessTokenRequest.getData().getAccessToken();
+		ResponseModel<UserCus> responseModel = new ResponseModel<>();
+		String username = jwtTokenUtil.getUserIdFromToken(accessToken);
+		if (username != null) {
+			UserCus userCus = userService.findByUsername(username);
+			responseModel.setData(userCus);
+		}
+		return responseModel;
 	}
 
 	@PostMapping("/refresh-token")

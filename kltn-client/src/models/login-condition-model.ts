@@ -1,4 +1,4 @@
-interface LoginCondition{
+interface LoginConditionModel{
     username: string,
     password: string
 }

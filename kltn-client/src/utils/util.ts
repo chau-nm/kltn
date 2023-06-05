@@ -7,3 +7,7 @@ export const toHoursAndMinutes = (totalSeconds: number) : TimeModel => {
 
     return { h: hours, m: minutes, s: seconds };
 }
+
+export const hasCommonValue = <T>(arr1: T[], arr2: T[]): boolean  =>{
+    return arr1.some((value) => arr2.includes(value));
+}

@@ -4,65 +4,48 @@ import { useNavigate } from "react-router-dom";
 import LoginPageConstants from "~/constants/login-page-constant";
 import path from "~/constants/path";
 import { AuthContext } from "~/contexts/auth.context";
-import {checkLogged, login} from "~/services/user-service";
+import { login} from "~/services/user-service";
 import {useMutation} from 'react-query';
 
 const LoginPage = (): JSX.Element => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const { isAuthenticated, role, setAuthenticated, setRole, setUser } =
-    useContext(AuthContext);
-  const navigate = useNavigate();
+  const { setAuthenticated, setUser } = useContext(AuthContext);
 
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
       const user: UserCusModel | null = data as UserCusModel;
-      // if (user == null) {
-      //   alert('Login failed');
-      // }else{
-      //   handleSaveUserToContext(user);
-      // }
-      checkLoggedMutation.mutate();
+      console.log(user);
+      if (user == null) {
+        alert('Login failed');
+      }else{
+        handleLoginSuccess(user);
+      }
     }
   });
 
-  const checkLoggedMutation = useMutation(checkLogged, {
-    onSuccess: (data) => {
-      const user: UserCusModel | null = data as UserCusModel;
-      // if (user == null) {
-      // }else{
-      //   handleSaveUserToContext(user);
-      // }
-    }
-  })
-
-  useEffect(() => {
-    
-  }, [loginMutation.isSuccess]);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate(path.HOME);
-    }
-  }, [isAuthenticated]);
-
   const handleLogin = async () => {
-    const loginCondition: LoginCondition = {
+    const loginCondition: LoginConditionModel = {
       username: username,
       password: password,
     };
     loginMutation.mutate(loginCondition);
   };
 
-  const handleSaveUserToContext = (user: UserCusModel) => {
-    setUser(user);
-    setRole(user.role);
+  const handleLoginSuccess = (user: UserCusModel) => {
+    let accessToken = user.accessToken;
+    let refeshToken = user.refreshToken;
+
+    sessionStorage.setItem('access_token', accessToken);
+    sessionStorage.setItem('refresh_token', refeshToken);
+
     setAuthenticated(true);
+    setUser(user);    
   };
 
   return (
-    <Spin spinning={loginMutation.isLoading || checkLoggedMutation.isLoading}>
+    <Spin spinning={loginMutation.isLoading}>
       <Card title={LoginPageConstants.TITLE} className="w-[400px]">
         <Form layout="vertical">
           <Form.Item

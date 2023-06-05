@@ -6,6 +6,7 @@ import { AuthContext } from "~/contexts/auth.context";
 
 import LoginLayout from "~/layouts/login-layout";
 import MainLayout from "~/layouts/main-layout";
+import { hasCommonValue } from "~/utils/util";
 
 const AccountsManagerPage = lazy(
   () => import("~/pages/admin/acounts_manager-page")
@@ -50,8 +51,10 @@ const RejectedRoute = () => {
  * Route for Authenticated
  */
 const AuthenticatedRoute = ({ roles }: AuthenticatedRouteProps) => {
-  const { isAuthenticated, role } = useContext(AuthContext);
-  if (isAuthenticated && roles.indexOf(role) >= 0) {
+  const { isAuthenticated, user } = useContext(AuthContext);
+  const userRoles = user?.roles ? user.roles : [];
+  let hasRole = hasCommonValue(roles, userRoles);
+  if (isAuthenticated && hasRole) {
     return <Outlet />;
   }else{
     return <Navigate to={path.LOGIN} />;

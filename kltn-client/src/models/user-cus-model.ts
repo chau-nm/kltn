@@ -1,4 +1,8 @@
 interface UserCusModel{
     userId: string;
-    role: string;
+    username: string;
+    password: string;
+    roles: string[];
+    accessToken: string;
+    refreshToken: string;
 }

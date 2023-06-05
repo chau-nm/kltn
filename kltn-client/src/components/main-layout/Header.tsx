@@ -6,10 +6,10 @@ import { useContext } from "react";
 import { AuthContext } from "~/contexts/auth.context";
 
 const Header = (): JSX.Element => {
-  const { reset } = useContext(AuthContext);
+  const { signOut } = useContext(AuthContext);
 
   const handleLogout = (): void => {
-    reset();
+    signOut();
   };
 
   return (

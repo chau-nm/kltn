@@ -1,23 +1,24 @@
-import { SetStateAction, createContext, useState } from "react";
+import { SetStateAction, createContext, useEffect, useState } from "react";
+import { useMutation, useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
+import path from "~/constants/path";
+import LoadingPage from "~/pages/loading-page";
+import { getUsuerByToken } from "~/services/user-service";
 
 interface AuthContextInterface {
   isAuthenticated: boolean;
   setAuthenticated: React.Dispatch<SetStateAction<boolean>>;
-  role: string | null;
-  setRole: React.Dispatch<SetStateAction<string | null>>;
   user: UserCusModel | null;
   setUser: React.Dispatch<SetStateAction<UserCusModel | null>>;
-  reset: () => void;
+  signOut: () => void;
 }
 
 const initAuthContext: AuthContextInterface = {
   isAuthenticated: false,
   setAuthenticated: () => null,
-  role: null,
-  setRole: () => null,
   user: null,
   setUser: () => null,
-  reset: () => null,
+  signOut: () => null,
 };
 
 export const AuthContext = createContext(initAuthContext);
@@ -26,25 +27,57 @@ export const AuthContextProvider = ({
   children,
 }: React.PropsWithChildren): JSX.Element => {
   const [isAuthenticated, setAuthenticated] = useState<boolean>(false);
-  const [role, setRole] = useState<string | null>(null);
   const [user, setUser] = useState<UserCusModel | null>(null);
 
-  const reset = () => {
-    setAuthenticated(false);
-    setRole(null);
-    setUser(null);
+  const checkLogged = useMutation(getUsuerByToken, {
+    onSuccess: (data) => {
+      const user: UserCusModel | null = data as UserCusModel;
+      if (user){
+        handleLogged(user);
+      }
+    }
+  });
+
+  const handleLogged = (user: UserCusModel) => {
+    setAuthenticated(true);
+    setUser(user);    
   };
+
+  const navigate = useNavigate();
+
+  const signOut = () => {
+    setAuthenticated(false);
+    setUser(null);
+    sessionStorage.clear();
+  };
+
+  useEffect(() => {
+    let accsessToken = sessionStorage.getItem('access_token');
+    if (accsessToken){
+      checkLogged.mutate({
+        accessToken: accsessToken
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(path.HOME);
+    }
+  }, [isAuthenticated]);
+
+  if (checkLogged.isLoading){
+    return <LoadingPage />;
+  }
 
   return (
     <AuthContext.Provider
       value={{
         isAuthenticated,
         setAuthenticated,
-        role,
-        setRole,
         user,
         setUser,
-        reset,
+        signOut,
       }}
     >
       {children}
