@@ -11,7 +11,9 @@ const LoginPage = (): JSX.Element => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const { setAuthenticated, setUser } = useContext(AuthContext);
+  const { isAuthenticated, setAuthenticated, setUser } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
@@ -24,6 +26,12 @@ const LoginPage = (): JSX.Element => {
       }
     }
   });
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(path.HOME);
+    }
+  }, [isAuthenticated]);
 
   const handleLogin = async () => {
     const loginCondition: LoginConditionModel = {

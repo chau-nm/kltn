@@ -1,6 +1,6 @@
 import { SetStateAction, createContext, useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import path from "~/constants/path";
 import LoadingPage from "~/pages/loading-page";
 import { getUsuerByToken } from "~/services/user-service";
@@ -26,24 +26,41 @@ export const AuthContext = createContext(initAuthContext);
 export const AuthContextProvider = ({
   children,
 }: React.PropsWithChildren): JSX.Element => {
-  const [isAuthenticated, setAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<UserCusModel | null>(null);
+  const [isAuthenticated, setAuthenticated] = useState<boolean>(() => {
+    let isAuthSession = sessionStorage.getItem("isAuthenticated");
+    return isAuthSession ? JSON.parse(isAuthSession) : false;
+  });
+  const [user, setUser] = useState<UserCusModel | null>(() => {
+    let userSession = sessionStorage.getItem('user');
+    return userSession ? JSON.parse(userSession) : null;
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem('user', JSON.stringify({
+      ...user,
+      password: 'Protected'
+    }));
+  }, [user])
+
+  useEffect(() => {
+    sessionStorage.setItem("isAuthenticated", JSON.stringify(isAuthenticated));
+  }, [isAuthenticated]);
 
   const checkLogged = useMutation(getUsuerByToken, {
     onSuccess: (data) => {
       const user: UserCusModel | null = data as UserCusModel;
-      if (user){
+      if (user) {
         handleLogged(user);
+      } else {
+        signOut();
       }
-    }
+    },
   });
 
   const handleLogged = (user: UserCusModel) => {
     setAuthenticated(true);
-    setUser(user);    
+    setUser(user);
   };
-
-  const navigate = useNavigate();
 
   const signOut = () => {
     setAuthenticated(false);
@@ -52,21 +69,15 @@ export const AuthContextProvider = ({
   };
 
   useEffect(() => {
-    let accsessToken = sessionStorage.getItem('access_token');
-    if (accsessToken){
+    let accsessToken = sessionStorage.getItem("access_token");
+    if (accsessToken) {
       checkLogged.mutate({
-        accessToken: accsessToken
+        accessToken: accsessToken,
       });
     }
   }, []);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate(path.HOME);
-    }
-  }, [isAuthenticated]);
-
-  if (checkLogged.isLoading){
+  if (checkLogged.isLoading) {
     return <LoadingPage />;
   }
 

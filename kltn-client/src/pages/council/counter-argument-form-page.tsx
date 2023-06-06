@@ -12,7 +12,6 @@ import {
   message
 } from "antd";
 import { useState } from "react";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
