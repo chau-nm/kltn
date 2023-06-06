@@ -1,5 +1,7 @@
-import { Input, Button, message, Upload, Layout } from "antd";
+import { Input, Button, message, Upload, Layout, Card } from "antd";
 import type { UploadProps } from "antd";
+import Meta from "antd/es/card/Meta";
+import { useState } from "react";
 // import FileViewer from "react-file-viewer";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import PageLayout from "~/components/common/PageLayout";
@@ -21,9 +23,11 @@ const props: UploadProps = {
     }
   },
 };
-const NotificationPage = (): JSX.Element => {
+const NotificationPage = (props: any): JSX.Element => {
+  const { showTitle } = props;
+  const [isOpenFile, setIsOpenFile] = useState(false);
   return (
-    <PageLayout pageTitle="Thông báo">
+    <PageLayout pageTitle="Thông báo" showTitle={showTitle}>
       <div className="bg-white h-full flex justify-around items-center flex-col p-2 mt-2 ml-2">
         <div className="w-full">
           <div className="w-full">
@@ -55,13 +59,43 @@ const NotificationPage = (): JSX.Element => {
           </div>
         </div>
         <div className="w-full">
-          <div className="w-full font-bold font text-lg">File đính kèm</div>
-          {/* <FileViewer
-            fileType={type}
-            filePath={file}
-            errorComponent={CustomErrorComponent}
-            onError={this.onError}
-          /> */}
+          <div className="w-full font-bold font text-lg">File đính kèm</div>\
+          {!isOpenFile && (
+            <Card
+              hoverable
+              onClick={() => setIsOpenFile(true)}
+              style={{ width: 240, maxHeight: 300, overflow: "hidden" }}
+              cover={
+                <img
+                  alt="example"
+                  src="https://doceye.vn/wp-content/uploads/2022/08/202004221922198608-e5c3bd235c81327d9ac3d5406e16ada4.jpg"
+                />
+              }
+            >
+              <Meta
+                title="Đề tài Xây dựng hệ thống Khóa 2019"
+                description="xây dựng hệ thống quản lý quá trình thực hiện luận văn tốt nghiệp"
+              />
+            </Card>
+          )}
+          {isOpenFile && (
+            <>
+              <iframe
+                src="https://www.africau.edu/images/default/sample.pdf"
+                width="100%"
+                height="600px"
+              ></iframe>
+              <div className="w-full mt-5 flex justify-end">
+                <Button
+                  type="primary"
+                  className="text-slate-600 border-slate-600"
+                  onClick={() => setIsOpenFile(false)}
+                >
+                  Close file
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </PageLayout>

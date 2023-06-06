@@ -9,7 +9,7 @@ const { TextArea } = Input;
 
 const MarkFrom = (): JSX.Element => {
   return (
-    <PageLayout pageTitle="Form chấm điểm">
+    <PageLayout pageTitle="Form chấm điểm" showTitle>
       <div className="w-full p-5">
         <Form
           labelCol={{ span: 5 }}

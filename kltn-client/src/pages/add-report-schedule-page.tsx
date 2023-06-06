@@ -19,7 +19,7 @@ const { TextArea } = Input;
 const AddReportPage = (): JSX.Element => {
   const dateFormat = "YYYY/MM/DD";
   return (
-    <PageLayout pageTitle="Thêm buổi báo cáo">
+    <PageLayout pageTitle="Thêm buổi báo cáo" showTitle>
       <Row>
         <Form.Item
           label="Chọn đề tài"

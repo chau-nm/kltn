@@ -24,9 +24,9 @@ const props: UploadProps = {
     }
   },
 };
-const NotificationPage = (): JSX.Element => {
+const SendNotificationPage = (): JSX.Element => {
   return (
-    <PageLayout pageTitle="Gửi thông báo">
+    <PageLayout pageTitle="Gửi thông báo" showTitle>
       <div className="bg-white h-full flex justify-around items-center flex-col p-2 mt-2 ml-2">
         <div className="w-full">
           <div className="w-full">
@@ -63,4 +63,4 @@ const NotificationPage = (): JSX.Element => {
   );
 };
 
-export default NotificationPage;
+export default SendNotificationPage;

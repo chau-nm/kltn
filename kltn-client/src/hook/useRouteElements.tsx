@@ -160,7 +160,7 @@ const useRouteElements = () => {
           path: path.NOTIFICATION,
           element: (
             <MainLayout>
-              <NotificationPage />
+              <NotificationPage showTitle />
             </MainLayout>
           ),
         },

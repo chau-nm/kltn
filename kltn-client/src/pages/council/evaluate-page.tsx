@@ -18,6 +18,7 @@ import {
 
 import NotoSansVietnameseFont from "~/font/NotoSans-Light.ttf"; // Adjust the path as per your project structure
 import RobotoBold from "~/font/Roboto-BoldItalic.ttf";
+import PageLayout from "~/components/common/PageLayout";
 // Register the font
 Font.register({
   family: "Noto Sans Vietnamese",
@@ -443,248 +444,254 @@ const CounterArgumentFrom = (): JSX.Element => {
   };
 
   return (
-    <div className="bg-white h-full flex justify-around items-center flex-col p-2 mt-2 ml-2">
-      <div className="w-full p-5">
-        <Form
-          form={form}
-          labelCol={{ span: 5 }}
-          layout="horizontal"
-          colon={false}
-          labelAlign={"left"}
-          labelWrap={true}
-          onFinish={onFinish}
-        >
-          <Form.Item
-            label="Tên đề tài"
-            className="font-bold"
-            name="projectName"
+    <PageLayout pageTitle="Form phản biện" showTitle>
+      <div className="bg-white h-full flex justify-around items-center flex-col p-2 mt-2 ml-2">
+        <div className="w-full p-5">
+          <Form
+            form={form}
+            labelCol={{ span: 5 }}
+            layout="horizontal"
+            colon={false}
+            labelAlign={"left"}
+            labelWrap={true}
+            onFinish={onFinish}
           >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Giảng viên hướng dẫn"
-            className="font-bold"
-            name="supervisor"
-          >
-            <Select showSearch>
-              <Select.Option value="demo">Demo</Select.Option>
-            </Select>
-          </Form.Item>
-          <Divider>Hình thức luận văn</Divider>
-          <div>
-            <Row>
-              <Col span={8}>
-                <Form.Item
-                  label="Số trang"
-                  className="font-bold"
-                  labelCol={{ span: 15 }}
-                  name="numberOfPages"
-                >
-                  <Input type="number" />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item
-                  label="Số chương"
-                  className="font-bold"
-                  labelCol={{ span: 15 }}
-                  labelAlign="right"
-                  name="numberOfChapters"
-                >
-                  <Input type="number" />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item
-                  label="Số bảng"
-                  className="font-bold"
-                  labelCol={{ span: 15 }}
-                  labelAlign="right"
-                  name="numberOfTables"
-                >
-                  <Input type="number" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={8}>
-                <Form.Item
-                  label="Số biểu đồ"
-                  className="font-bold"
-                  labelCol={{ span: 15 }}
-                  name="numberOfCharts"
-                >
-                  <Input type="number" />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item
-                  label="Số bảng vẻ"
-                  className="font-bold"
-                  labelCol={{ span: 15 }}
-                  labelAlign="right"
-                  name="numberOfIllustrations"
-                >
-                  <Input type="number" />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item
-                  label="Số hình ảnh"
-                  className="font-bold"
-                  labelCol={{ span: 15 }}
-                  labelAlign="right"
-                  name="numberOfImages"
-                >
-                  <Input type="number" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={8}>
-                <Form.Item
-                  label="Số tài liệu tham khảo"
-                  className="font-bold"
-                  labelCol={{ span: 15 }}
-                  name="numberOfReferences"
-                >
-                  <Input type="number" />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item
-                  label="Số phần mềm tính toán"
-                  className="font-bold"
-                  labelCol={{ span: 15 }}
-                  labelAlign="right"
-                  name="numberOfSoftware"
-                >
-                  <Input type="number" />
-                </Form.Item>
-              </Col>
-            </Row>
-          </div>
-          <Form.Item label="Bố cục" className="font-bold" name="layout">
-            <Input />
-          </Form.Item>
-          <Form.Item label="Hành văn" className="font-bold" name="writingStyle">
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Thuật ngữ chuyên môn"
-            className="font-bold"
-            name="technicalTerms"
-          >
-            <Input />
-          </Form.Item>
-          <Divider>Nội dung</Divider>
-          <Form.Item
-            label="Những ưu điểm chính của luận văn"
-            className="font-bold"
-            name="advantages"
-          >
-            <TextArea rows={8} />
-          </Form.Item>
-          <Form.Item
-            label="Kết quả, kết luận về đề tài và triển vọng của đề tài"
-            className="font-bold"
-            name="resultsAndConclusion"
-            // name="prospects"
-          >
-            <TextArea rows={8} />
-          </Form.Item>
-          <Form.Item
-            label="Những phần thiếu sót chính của luận văn"
-            className="font-bold"
-            name="shortcomings"
-          >
-            <TextArea rows={8} />
-          </Form.Item>
-          <Form.Item label="Đề nghị" className="font-bold" name="protection">
-            <Radio.Group>
-              <Radio value="Được bảo vệ">Được bảo vệ</Radio>
-              <Radio value="Bổ sung thêm để bảo vệ">
-                Bổ sung thêm để bảo vệ
-              </Radio>
-              <Radio value="Không được bảo vệ">Không được bảo vệ</Radio>
-              <Radio value=" Bảo vệ đợt khác"> Bảo vệ đợt khác</Radio>
-            </Radio.Group>
-          </Form.Item>
-          <Form.Item
-            label="Câu hỏi sinh viên phải trả lời trước hội đồng (Cán bộ phản biện ra ít nhất 02 câu)"
-            className="font-bold"
-          >
-            {renderQuestion()}
-            <Button className="mt-1 mb-4" onClick={handleAddQuestion}>
-              Thêm câu hỏi
-            </Button>
-          </Form.Item>
-          <div className="table-mark h-40 flex  flex-col justify-around">
-            <Form.Item>
-              <Table dataSource={studentsData} pagination={false}>
-                <Table.Column
-                  title="STT"
-                  dataIndex="STT"
-                  key="STT"
-                  // render={(text) => <Text key={text}>{text}</Text>}
-                />
-                <Table.Column
-                  title="MSSV"
-                  dataIndex="MSSV"
-                  key="MSSV"
-                  // render={() => <Input disabled />}
-                />
-                <Table.Column
-                  title={<Text key="fullName">Họ và tên SV</Text>}
-                  dataIndex="fullName"
-                  key="fullName"
-                  // render={() => <Input disabled />}
-                />
-                <Table.Column
-                  title="Điểm"
-                  dataIndex="mark"
-                  key="mark"
-                  render={(text, record, index) => (
-                    <Input
-                      key={index}
-                      value={text}
-                      type="number"
-                      onChange={(e) =>
-                        handleStudentMarkChange(index, Number(e.target.value))
-                      }
-                    />
-                  )}
-                />
-              </Table>
+            <Form.Item
+              label="Tên đề tài"
+              className="font-bold"
+              name="projectName"
+            >
+              <Input />
             </Form.Item>
-          </div>
-          <div style={{ display: "flex" }}>
-            <Form.Item>
-              <Button
-                className="mt-5"
-                style={{ color: "black" }}
-                type="default"
-                // onClick={handleCreatePDF}
-                htmlType="submit"
-              >
-                Xác Nhận
+            <Form.Item
+              label="Giảng viên hướng dẫn"
+              className="font-bold"
+              name="supervisor"
+            >
+              <Select showSearch>
+                <Select.Option value="demo">Demo</Select.Option>
+              </Select>
+            </Form.Item>
+            <Divider>Hình thức luận văn</Divider>
+            <div>
+              <Row>
+                <Col span={8}>
+                  <Form.Item
+                    label="Số trang"
+                    className="font-bold"
+                    labelCol={{ span: 15 }}
+                    name="numberOfPages"
+                  >
+                    <Input type="number" />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    label="Số chương"
+                    className="font-bold"
+                    labelCol={{ span: 15 }}
+                    labelAlign="right"
+                    name="numberOfChapters"
+                  >
+                    <Input type="number" />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    label="Số bảng"
+                    className="font-bold"
+                    labelCol={{ span: 15 }}
+                    labelAlign="right"
+                    name="numberOfTables"
+                  >
+                    <Input type="number" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={8}>
+                  <Form.Item
+                    label="Số biểu đồ"
+                    className="font-bold"
+                    labelCol={{ span: 15 }}
+                    name="numberOfCharts"
+                  >
+                    <Input type="number" />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    label="Số bảng vẻ"
+                    className="font-bold"
+                    labelCol={{ span: 15 }}
+                    labelAlign="right"
+                    name="numberOfIllustrations"
+                  >
+                    <Input type="number" />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    label="Số hình ảnh"
+                    className="font-bold"
+                    labelCol={{ span: 15 }}
+                    labelAlign="right"
+                    name="numberOfImages"
+                  >
+                    <Input type="number" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={8}>
+                  <Form.Item
+                    label="Số tài liệu tham khảo"
+                    className="font-bold"
+                    labelCol={{ span: 15 }}
+                    name="numberOfReferences"
+                  >
+                    <Input type="number" />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    label="Số phần mềm tính toán"
+                    className="font-bold"
+                    labelCol={{ span: 15 }}
+                    labelAlign="right"
+                    name="numberOfSoftware"
+                  >
+                    <Input type="number" />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </div>
+            <Form.Item label="Bố cục" className="font-bold" name="layout">
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Hành văn"
+              className="font-bold"
+              name="writingStyle"
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Thuật ngữ chuyên môn"
+              className="font-bold"
+              name="technicalTerms"
+            >
+              <Input />
+            </Form.Item>
+            <Divider>Nội dung</Divider>
+            <Form.Item
+              label="Những ưu điểm chính của luận văn"
+              className="font-bold"
+              name="advantages"
+            >
+              <TextArea rows={8} />
+            </Form.Item>
+            <Form.Item
+              label="Kết quả, kết luận về đề tài và triển vọng của đề tài"
+              className="font-bold"
+              name="resultsAndConclusion"
+              // name="prospects"
+            >
+              <TextArea rows={8} />
+            </Form.Item>
+            <Form.Item
+              label="Những phần thiếu sót chính của luận văn"
+              className="font-bold"
+              name="shortcomings"
+            >
+              <TextArea rows={8} />
+            </Form.Item>
+            <Form.Item label="Đề nghị" className="font-bold" name="protection">
+              <Radio.Group>
+                <Radio value="Được bảo vệ">Được bảo vệ</Radio>
+                <Radio value="Bổ sung thêm để bảo vệ">
+                  Bổ sung thêm để bảo vệ
+                </Radio>
+                <Radio value="Không được bảo vệ">Không được bảo vệ</Radio>
+                <Radio value=" Bảo vệ đợt khác"> Bảo vệ đợt khác</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item
+              label="Câu hỏi sinh viên phải trả lời trước hội đồng (Cán bộ phản biện ra ít nhất 02 câu)"
+              className="font-bold"
+            >
+              {renderQuestion()}
+              <Button className="mt-1 mb-4" onClick={handleAddQuestion}>
+                Thêm câu hỏi
               </Button>
             </Form.Item>
-            <Form.Item>
-              <Button
-                className="mt-5 ml-5"
-                style={{ color: "black" }}
-                type="default"
-                onClick={handleCreatePDF}
-              >
-                Tạo file pdf
-              </Button>
-            </Form.Item>
-          </div>
-        </Form>
-        {pdfContent}
+            <div className="table-mark h-40 flex  flex-col justify-around">
+              <Form.Item>
+                <Table dataSource={studentsData} pagination={false}>
+                  <Table.Column
+                    title="STT"
+                    dataIndex="STT"
+                    key="STT"
+                    // render={(text) => <Text key={text}>{text}</Text>}
+                  />
+                  <Table.Column
+                    title="MSSV"
+                    dataIndex="MSSV"
+                    key="MSSV"
+                    // render={() => <Input disabled />}
+                  />
+                  <Table.Column
+                    title={<Text key="fullName">Họ và tên SV</Text>}
+                    dataIndex="fullName"
+                    key="fullName"
+                    // render={() => <Input disabled />}
+                  />
+                  <Table.Column
+                    title="Điểm"
+                    dataIndex="mark"
+                    key="mark"
+                    render={(text, record, index) => (
+                      <Input
+                        key={index}
+                        value={text}
+                        type="number"
+                        onChange={(e) =>
+                          handleStudentMarkChange(index, Number(e.target.value))
+                        }
+                      />
+                    )}
+                  />
+                </Table>
+              </Form.Item>
+            </div>
+            <div style={{ display: "flex" }}>
+              <Form.Item>
+                <Button
+                  className="mt-5"
+                  style={{ color: "black" }}
+                  type="default"
+                  // onClick={handleCreatePDF}
+                  htmlType="submit"
+                >
+                  Xác Nhận
+                </Button>
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  className="mt-5 ml-5"
+                  style={{ color: "black" }}
+                  type="default"
+                  onClick={handleCreatePDF}
+                >
+                  Tạo file pdf
+                </Button>
+              </Form.Item>
+            </div>
+          </Form>
+          {pdfContent}
+        </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 export default CounterArgumentFrom;

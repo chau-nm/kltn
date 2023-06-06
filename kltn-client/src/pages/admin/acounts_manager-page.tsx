@@ -1,9 +1,6 @@
 import { UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import {
-  Input,
-  message
-} from "antd";
+import { Input, message } from "antd";
 
 import AccountList from "~/components/accounts-manager-page/AccountList";
 import AcountManagerHead from "~/components/accounts-manager-page/AccountManagerHead";
@@ -52,7 +49,7 @@ const AccountsManagerPage = (): JSX.Element => {
     onClick: handleMenuClick,
   };
   return (
-    <PageLayout pageTitle="Danh sách tài khoản">
+    <PageLayout pageTitle="Danh sách tài khoản" showTitle>
       <AcountManagerHead />
       <AccountList />
     </PageLayout>

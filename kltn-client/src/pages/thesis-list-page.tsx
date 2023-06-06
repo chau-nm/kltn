@@ -130,7 +130,7 @@ const ThesisListPage = (): JSX.Element => {
     console.log("onOk: ", value);
   };
   return (
-    <PageLayout pageTitle="Danh sách luận văn">
+    <PageLayout pageTitle="Danh sách luận văn" showTitle>
       <div className="bg-white h-full flex justify-around items-center flex-col p-2 mt-2 ml-2">
         <div className="w-full h-14 flex justify-around items-center bg-slate-100 mb-7">
           <div className="w-3/4 flex justify-around items-center">

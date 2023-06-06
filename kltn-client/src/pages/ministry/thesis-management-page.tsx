@@ -4,7 +4,7 @@ import ThesisTable from "~/components/thesis-management-page/ThesisTable";
 
 const ThesisManagementPage = () => {
   return (
-    <PageLayout pageTitle="Quản lý khóa luận">
+    <PageLayout pageTitle="Quản lý khóa luận" showTitle>
       <ThesisFilter />
       <ThesisTable />
     </PageLayout>

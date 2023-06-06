@@ -1,65 +1,86 @@
-import { Button, Input } from "antd";
+import { Button, Collapse, Form, Input } from "antd";
 
 import PageLayout from "~/components/common/PageLayout";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import NotificationPage from "../notification-page";
+import { useState } from "react";
 
+const { Panel } = Collapse;
 const { TextArea } = Input;
+interface FormItem {
+  id: number;
+  name: string;
+}
 const EvalueThesisOutlinePage = () => {
+  const [form] = Form.useForm();
+  const [formItems, setFormItems] = useState<FormItem[]>([]);
+
+  const addFormItem = () => {
+    const newItem: FormItem = {
+      id: formItems.length + 1,
+      name: `field_${formItems.length + 1}`,
+    };
+    setFormItems([...formItems, newItem]);
+  };
+
+  const removeFormItem = (id: number) => {
+    const updatedItems = formItems.filter((item) => item.id !== id);
+    setFormItems(updatedItems);
+  };
+
+  const handleSubmit = (values: any) => {
+    console.log("Form values:", values);
+  };
+
   return (
-    <PageLayout pageTitle="Đề cương">
-      <div className="bg-white h-full flex justify-around items-center flex-col p-2 mt-2 ml-2">
-        <div className="w-full">
-          <div className="w-full">
-            <div className="w-full font-bold font text-lg text-center">
-              Đây là tiêu đề
-            </div>
-          </div>
-          <div className="w-full">
-            <div className="w-full font-bold font text-lg">Nội dung</div>
-            <div className="w-full font text-lg mt-5 mb-5">
-              Contrary to popular belief, Lorem Ipsum is not simply random text.
-              It has roots in a piece of classical Latin literature from 45 BC,
-              making it over 2000 years old. Richard McClintock, a Latin
-              professor at Hampden-Sydney College in Virginia, looked up one of
-              the more obscure Latin words, consectetur, from a Lorem Ipsum
-              passage, and going through the cites of the word in classical
-              literature, discovered the undoubtable source. Lorem Ipsum comes
-              from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et
-              Malorum" (The Extremes of Good and Evil) by Cicero, written in 45
-              BC. This book is a treatise on the theory of ethics, very popular
-              during the Renaissance. The first line of Lorem Ipsum, "Lorem
-              ipsum dolor sit amet..", comes from a line in section 1.10.32. The
-              standard chunk of Lorem Ipsum used since the 1500s is reproduced
-              below for those interested. Sections 1.10.32 and 1.10.33 from "de
-              Finibus Bonorum et Malorum" by Cicero are also reproduced in their
-              exact original form, accompanied by English versions from the 1914
-              translation by H. Rackham.
-            </div>
-          </div>
-        </div>
-        <div className="w-full">
-          <div className="w-full font-bold font text-lg mb-10">
-            File đính kèm
-          </div>
-          {/* <FileViewer
-            fileType={type}
-            filePath={file}
-            errorComponent={CustomErrorComponent}
-            onError={this.onError}
-          /> */}
-        </div>
-      </div>
+    <PageLayout pageTitle="Đề cương" showTitle>
+      <NotificationPage />
+
       <div>
+        <div className="w-full font-bold font text-lg">
+          Danh sách luận văn có nội dung tương tự
+        </div>
+        <Collapse accordion>
+          <Panel header="xây dựng mạng xã hội - khóa 2015" key="1">
+            <NotificationPage />
+          </Panel>
+          <Panel header="Xây dựng ứng dụng chat - khóa 2019" key="2">
+            <NotificationPage />
+          </Panel>
+          <Panel header="xây dựng hệ thống nhận dạng - khóa 2020" key="3">
+            <NotificationPage />
+          </Panel>
+        </Collapse>
+      </div>
+      <div className="mt-8 shadow-2xl p-3 rounded shadow-slate-800">
         <div className="w-full font-bold font text-lg mb-3">Đánh giá</div>
-        <div className="w-full border mb-3">
+        {/* <div className="w-full border mb-3">
           <Editor
             wrapperClassName="wrapper-class"
             editorClassName="p-2 h-44"
             toolbarClassName="toolbar-class bg-slate-50"
             placeholder="Nhập nội dung đánh giá"
           />
-        </div>
+        </div> */}
+        <Form form={form}>
+          {formItems.map((item) => (
+            <Form.Item key={item.id} name={item.name}>
+              <Input className="w-4/5 mr-2" />
+              <Button onClick={() => removeFormItem(item.id)}>Remove</Button>
+            </Form.Item>
+          ))}
+          <Form.Item>
+            <Button
+              type="dashed"
+              className="mt-1 mb-4"
+              onClick={addFormItem}
+              style={{ width: "100%" }}
+            >
+              Add Form Item
+            </Button>
+          </Form.Item>
+        </Form>
         <div className="w-full flex justify-end">
           <Button>Gửi</Button>
         </div>

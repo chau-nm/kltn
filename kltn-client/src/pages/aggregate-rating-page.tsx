@@ -8,7 +8,7 @@ import { ArrowRightOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 const { TextArea } = Input;
 const AggregateRatingPage = () => {
   return (
-    <PageLayout pageTitle="Đề cương">
+    <PageLayout pageTitle="Đề cương" showTitle>
       <div className="bg-white h-full flex justify-around items-center p-2 mt-2 ml-2 mb-5">
         <div>
           <ArrowLeftOutlined className="cursor-pointer"></ArrowLeftOutlined>
