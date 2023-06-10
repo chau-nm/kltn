@@ -13,6 +13,7 @@ const path = {
     NOTIFICATION: '/notification',
     AGGREGATERATING:'/aggregate-rating',
     ADDREPORT:'/add-report',
+    PROGRESSPAGE:'/progress-thesis-management',
     
 }
 

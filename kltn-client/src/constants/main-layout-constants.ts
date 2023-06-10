@@ -85,6 +85,12 @@ class MainLayouConstants{
             menuPath: path.ADDREPORT,
             icon: BookOutlined
         },
+        {
+            menuId: 13,
+            menuName: 'Quản lý tiến trình luận văn',
+            menuPath: path.PROGRESSPAGE,
+            icon: BookOutlined
+        },
     ]
 }
 

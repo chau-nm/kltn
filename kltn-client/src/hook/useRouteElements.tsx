@@ -19,6 +19,7 @@ import EvalueThesisOutlinePage from "~/pages/council/evaluate-thesis-outline-pag
 import NotificationPage from "~/pages/notification-page";
 import AggregateRatingPage from "~/pages/aggregate-rating-page";
 import AddReportPage from "~/pages/add-report-schedule-page";
+import ProgressPage from "~/pages/progress-page";
 
 type AuthenticatedRouteProps = {
   roles: Array<number | null>;
@@ -177,6 +178,14 @@ const useRouteElements = () => {
           element: (
             <MainLayout>
               <AddReportPage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.PROGRESSPAGE,
+          element: (
+            <MainLayout>
+              <ProgressPage />
             </MainLayout>
           ),
         },
