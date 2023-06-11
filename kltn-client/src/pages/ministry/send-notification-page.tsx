@@ -1,4 +1,4 @@
-import { Input, Button, message, Upload, Layout } from "antd";
+import { Input, Button, message, Upload, Layout, Form, Select } from "antd";
 import type { UploadProps } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { Editor } from "react-draft-wysiwyg";
@@ -27,38 +27,73 @@ const props: UploadProps = {
 const SendNotificationPage = (): JSX.Element => {
   return (
     <PageLayout pageTitle="Gửi thông báo" showTitle>
-      <div className="bg-white h-full flex justify-around items-center flex-col p-2 mt-2 ml-2">
-        <div className="w-full">
+      <Form>
+        <div className="bg-white h-full flex justify-around items-center flex-col p-2 mt-2 ml-2">
           <div className="w-full">
-            <div className="w-full font-bold font text-lg">Tiêu Đề</div>
             <div className="w-full">
-              <TextArea placeholder="Nhập tiêu đề" />
+              <div className="w-full font-bold font text-lg">Tiêu Đề</div>
+              <div className="w-full">
+                <TextArea placeholder="Nhập tiêu đề" />
+              </div>
+            </div>
+            <div className="w-full">
+              <div className="w-full font-bold font text-lg">
+                Nội dung báo cáo
+              </div>
+              <div className="w-full border ">
+                <Editor
+                  wrapperClassName="wrapper-class"
+                  editorClassName="p-2 h-44"
+                  toolbarClassName="toolbar-class"
+                  placeholder="Nhập nội dung báo cáo"
+                />
+              </div>
             </div>
           </div>
           <div className="w-full">
-            <div className="w-full font-bold font text-lg">
-              Nội dung báo cáo
+            <div className="w-full font-bold font text-lg">Đính kèm file</div>
+            <Upload {...props}>
+              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            </Upload>
+          </div>
+          <div className="w-full">
+            <div className="w-full font-bold font text-lg mt-3">
+              Phạm vi thông báo
             </div>
-            <div className="w-full border ">
-              <Editor
-                wrapperClassName="wrapper-class"
-                editorClassName="p-2 h-44"
-                toolbarClassName="toolbar-class"
-                placeholder="Nhập nội dung báo cáo"
-              />
-            </div>
+            <Form.Item
+              label="Phạm vi"
+              labelCol={{ span: 5 }}
+              className="font-bold"
+              name="council"
+              rules={[{ required: true, message: "Please select council" }]}
+            >
+              <Select showSearch>
+                <Select.Option value="public">Chung</Select.Option>
+                <Select.Option value="id1">
+                  Tiến trình luận văn 2019
+                </Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item
+              label="Giai đoạn"
+              labelCol={{ span: 5 }}
+              className="font-bold"
+              name="council"
+              rules={[{ required: true, message: "Please select council" }]}
+            >
+              <Select showSearch>
+                <Select.Option value="public">Thông báo</Select.Option>
+                <Select.Option value="id1">Xét duyệt</Select.Option>
+                <Select.Option value="id2">Phản biện</Select.Option>
+                <Select.Option value="id3">Bảo vệ</Select.Option>
+              </Select>
+            </Form.Item>
+          </div>
+          <div className="w-full flex justify-end">
+            <Button>Gửi</Button>
           </div>
         </div>
-        <div className="w-full">
-          <div className="w-full font-bold font text-lg">Đính kèm file</div>
-          <Upload {...props}>
-            <Button icon={<UploadOutlined />}>Click to Upload</Button>
-          </Upload>
-        </div>
-        <div className="w-full flex justify-end">
-          <Button>Gửi</Button>
-        </div>
-      </div>
+      </Form>
     </PageLayout>
   );
 };

@@ -89,9 +89,13 @@ const HomePage = (): JSX.Element => {
         >
           {steps[current].content}
         </PageLayout>
-        <div style={{ marginTop: 24 }}>
+        <div className="mt-6 mb-6">
           {current < steps.length - 1 && (
-            <Button type="primary" onClick={() => next()}>
+            <Button
+              className="text-slate-950 border-slate-600"
+              type="primary"
+              onClick={() => next()}
+            >
               Next
             </Button>
           )}

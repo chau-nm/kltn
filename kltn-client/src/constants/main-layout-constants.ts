@@ -87,7 +87,7 @@ class MainLayouConstants{
         },
         {
             menuId: 13,
-            menuName: 'Quản lý tiến trình luận văn',
+            menuName: 'Xây dựng tiến trình luận văn',
             menuPath: path.PROGRESSPAGE,
             icon: BookOutlined
         },
