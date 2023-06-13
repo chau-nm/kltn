@@ -91,6 +91,30 @@ class MainLayouConstants{
             menuPath: path.PROGRESSPAGE,
             icon: BookOutlined
         },
+        {
+            menuId: 14,
+            menuName: 'Quản lý tiến trình luận văn',
+            menuPath: path.PROGRESSMANAGEMENT,
+            icon: BookOutlined
+        },
+        {
+            menuId: 15,
+            menuName: 'Quản lý Hội đồng',
+            menuPath: path.ACCOUNTS_COUNCIL_MANAGER,
+            icon: BookOutlined
+        },
+        {
+            menuId: 16,
+            menuName: 'Thêm hội đồng',
+            menuPath: path.ADD_COUNCIL_PAGE,
+            icon: BookOutlined
+        },
+        {
+            menuId: 17,
+            menuName: 'Thêm tài khoản',
+            menuPath: path.ADD_ACCOUNT_PAGE,
+            icon: BookOutlined
+        },
     ]
 }
 

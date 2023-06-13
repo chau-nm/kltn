@@ -59,12 +59,7 @@ const data: UserModel[] = [
 ];
 
 const AccountList = (): JSX.Element => {
-  return (
-    <Table
-      columns={columns}
-      dataSource={data}
-    />
-  );
+  return <Table columns={columns} dataSource={data} />;
 };
 
 export default AccountList;

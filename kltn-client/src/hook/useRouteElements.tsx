@@ -20,6 +20,10 @@ import NotificationPage from "~/pages/notification-page";
 import AggregateRatingPage from "~/pages/aggregate-rating-page";
 import AddReportPage from "~/pages/add-report-schedule-page";
 import ProgressPage from "~/pages/progress-page";
+import ThesisProgreessManagementPage from "~/pages/progress-management-page";
+import AccountsCouncilManagerPage from "~/pages/council-account-management";
+import AddCouncilPage from "~/pages/add-council-page";
+import AddAccountPage from "~/pages/add-account-ppage";
 
 type AuthenticatedRouteProps = {
   roles: Array<number | null>;
@@ -186,6 +190,38 @@ const useRouteElements = () => {
           element: (
             <MainLayout>
               <ProgressPage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.PROGRESSMANAGEMENT,
+          element: (
+            <MainLayout>
+              <ThesisProgreessManagementPage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.ACCOUNTS_COUNCIL_MANAGER,
+          element: (
+            <MainLayout>
+              <AccountsCouncilManagerPage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.ADD_COUNCIL_PAGE,
+          element: (
+            <MainLayout>
+              <AddCouncilPage />
+            </MainLayout>
+          ),
+        },
+        {
+          path: path.ADD_ACCOUNT_PAGE,
+          element: (
+            <MainLayout>
+              <AddAccountPage />
             </MainLayout>
           ),
         },

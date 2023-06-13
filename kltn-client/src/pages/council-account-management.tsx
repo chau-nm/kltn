@@ -2,9 +2,9 @@ import { UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Input, message } from "antd";
 
-import AccountList from "~/components/accounts-manager-page/AccountList";
 import AcountManagerHead from "~/components/accounts-manager-page/AccountManagerHead";
 import PageLayout from "~/components/common/PageLayout";
+import CouncilList from "~/components/council-manager-page/councilList";
 
 const { Search } = Input;
 
@@ -34,7 +34,7 @@ const items: MenuProps["items"] = [
   },
 ];
 
-const AccountsManagerPage = (): JSX.Element => {
+const AccountsCouncilManagerPage = (): JSX.Element => {
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     message.info("Click on left button.");
     console.log("click left button", e);
@@ -49,14 +49,14 @@ const AccountsManagerPage = (): JSX.Element => {
     onClick: handleMenuClick,
   };
   return (
-    <PageLayout pageTitle="Danh sách tài khoản" showTitle>
+    <PageLayout pageTitle="Danh sách Hội đồng" showTitle>
       <AcountManagerHead
-        titleButton="Thêm tài khoản"
-        placeHolderSearch="Tìm kiếm tài khoản"
+        placeHolderSearch="Tìm kiếm hội đồng"
+        titleButton="Thêm hội đồng"
       />
-      <AccountList />
+      <CouncilList />
     </PageLayout>
   );
 };
 
-export default AccountsManagerPage;
+export default AccountsCouncilManagerPage;

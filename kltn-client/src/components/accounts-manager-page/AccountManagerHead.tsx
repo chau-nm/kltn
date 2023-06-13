@@ -1,12 +1,18 @@
 import Search from "antd/es/input/Search";
 import ButtonCustom from "../common/ButtonCustom";
 
-const AcountManagerHead = (): JSX.Element => {
+interface AcountManagerHeadProps {
+  titleButton: string;
+  placeHolderSearch: string;
+}
+
+const AcountManagerHead = (props: AcountManagerHeadProps): JSX.Element => {
+  const { titleButton, placeHolderSearch } = props;
   return (
     <div className="w-full flex justify-between items-center px-2 mb-3">
-      <ButtonCustom value="Thêm tài khoản" color="green" />
+      <ButtonCustom value={titleButton} color="green" />
       <Search
-        placeholder="tìm tiếm người dùng"
+        placeholder={placeHolderSearch}
         allowClear
         style={{ width: 200 }}
       />

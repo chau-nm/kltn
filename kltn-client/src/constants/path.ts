@@ -13,8 +13,11 @@ const path = {
     NOTIFICATION: '/notification',
     AGGREGATERATING:'/aggregate-rating',
     ADDREPORT:'/add-report',
-    PROGRESSPAGE:'/progress-thesis-management',
-    
+    PROGRESSPAGE:'/build-progress-thesis',
+    PROGRESSMANAGEMENT:'/progress-thesis-management',
+    ACCOUNTS_COUNCIL_MANAGER:'/council-management',
+    ADD_COUNCIL_PAGE:'/add-council',
+    ADD_ACCOUNT_PAGE:'/add-account',
 }
 
 export default path;
