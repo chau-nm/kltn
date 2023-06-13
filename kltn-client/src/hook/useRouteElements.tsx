@@ -23,7 +23,7 @@ import ProgressPage from "~/pages/progress-page";
 import ThesisProgreessManagementPage from "~/pages/progress-management-page";
 import AccountsCouncilManagerPage from "~/pages/council-account-management";
 import AddCouncilPage from "~/pages/add-council-page";
-import AddAccountPage from "~/pages/add-account-ppage";
+import AddAccountPage from "~/pages/add-account-page";
 
 type AuthenticatedRouteProps = {
   roles: Array<number | null>;

@@ -36,7 +36,6 @@ const EvalueThesisOutlinePage = () => {
   return (
     <PageLayout pageTitle="Đề cương" showTitle>
       <NotificationPage />
-
       <div>
         <div className="w-full font-bold font text-lg">
           Danh sách luận văn có nội dung tương tự
@@ -55,14 +54,6 @@ const EvalueThesisOutlinePage = () => {
       </div>
       <div className="mt-8 shadow-2xl p-3 rounded shadow-slate-800">
         <div className="w-full font-bold font text-lg mb-3">Đánh giá</div>
-        {/* <div className="w-full border mb-3">
-          <Editor
-            wrapperClassName="wrapper-class"
-            editorClassName="p-2 h-44"
-            toolbarClassName="toolbar-class bg-slate-50"
-            placeholder="Nhập nội dung đánh giá"
-          />
-        </div> */}
         <Form form={form}>
           {formItems.map((item) => (
             <Form.Item key={item.id} name={item.name}>

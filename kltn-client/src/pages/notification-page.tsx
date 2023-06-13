@@ -24,7 +24,7 @@ const props: UploadProps = {
   },
 };
 const NotificationPage = (props: any): JSX.Element => {
-  const { showTitle } = props;
+  const { showTitle, data } = props;
   const [isOpenFile, setIsOpenFile] = useState(false);
   return (
     <PageLayout pageTitle="Thông báo" showTitle={showTitle}>
@@ -38,7 +38,8 @@ const NotificationPage = (props: any): JSX.Element => {
           <div className="w-full">
             <div className="w-full font-bold font text-lg">Nội dung</div>
             <div className="w-full font text-lg mt-5 mb-5">
-              Contrary to popular belief, Lorem Ipsum is not simply random text.
+              {data ||
+                ` Contrary to popular belief, Lorem Ipsum is not simply random text.
               It has roots in a piece of classical Latin literature from 45 BC,
               making it over 2000 years old. Richard McClintock, a Latin
               professor at Hampden-Sydney College in Virginia, looked up one of
@@ -54,7 +55,7 @@ const NotificationPage = (props: any): JSX.Element => {
               below for those interested. Sections 1.10.32 and 1.10.33 from "de
               Finibus Bonorum et Malorum" by Cicero are also reproduced in their
               exact original form, accompanied by English versions from the 1914
-              translation by H. Rackham.
+              translation by H. Rackham.`}
             </div>
           </div>
         </div>
