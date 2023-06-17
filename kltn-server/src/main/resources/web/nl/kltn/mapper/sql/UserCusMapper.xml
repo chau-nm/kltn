@@ -7,6 +7,10 @@
 		<id column="user_id" property="userId" jdbcType="VARCHAR" />
 		<result column="username" property="username" jdbcType="VARCHAR" />
 		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="fname" property="fname" jdbcType="VARCHAR" />
+		<result column="birthday" property="birthday" jdbcType="DATE" />
+		<result column="faculty" property="faculty" jdbcType="VARCHAR" />
+		<result column="student_class" property="studentClass" jdbcType="VARCHAR" />
 		<collection property="roles" ofType="string" jdbcType="VARCHAR">
 			<result column="role_name"/>
 		</collection>
@@ -18,6 +22,10 @@
 			u.user_id,
 			u.username,
 			u.password,
+			u.fname,
+			u.birthday,
+			u.faculty,
+			u.student_class,
 			r.role_name
 		FROM
 			user u
@@ -33,6 +41,10 @@
 			u.user_id,
 			u.username,
 			u.password,
+			u.fname,
+			u.birthday,
+			u.faculty,
+			u.student_class,
 			r.role_name
 		FROM
 			user u
@@ -47,6 +59,10 @@
 			u.user_id,
 			u.username,
 			u.password,
+			u.fname,
+			u.birthday,
+			u.faculty,
+			u.student_class,
 			r.role_name
 		FROM
 			user u

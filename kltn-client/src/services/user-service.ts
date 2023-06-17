@@ -22,3 +22,23 @@ export const getUsuerByToken = async (accessTokenRequest: AccessTokenRequestMode
     const user : UserCusModel = response.data as UserCusModel;
     return user ? user : null;
 }
+
+export const getUSerById = async (userId : string) : Promise<UserCusModel | null> => {
+    const response: ResponseModel<UserCusModel> = await http.get<ResponseModel<UserCusModel>>(APIURL.GET_USER_BY_ID + userId)
+                                .then(response => response)
+                                .catch(error => Promise.reject(error));
+    const user : UserCusModel = response.data as UserCusModel;
+    return user ? user : null;
+}
+
+export const updateUser = async (newUser: UserCusModel) :  Promise<UserCusModel | null>  => {
+    const requestModel : RequestModel<UserCusModel> = {
+        data: newUser
+    }
+
+    const response: ResponseModel<UserCusModel> = await http.put<ResponseModel<UserCusModel>>(APIURL.UPDATE_USER, requestModel)
+                                .then(response => response)
+                                .catch(error => Promise.reject(error));
+    const userResp : UserCusModel = response.data as UserCusModel;
+    return userResp ? userResp : null;
+}

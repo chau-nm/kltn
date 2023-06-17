@@ -2,9 +2,9 @@ import { Col, Row } from "antd";
 import React, { Suspense } from "react";
 import Header from "~/components/main-layout/Header";
 import VerticalNavigation from "~/components/main-layout/VerticalNavigation";
-import LoadingPage from "~/pages/loading-page";
+import LoadingPage from "~/pages/LoadingPage";
 
-const MainLayout = ({ children }: React.PropsWithChildren) => {
+const DashboardLayout = ({ children }: React.PropsWithChildren) => {
   return (
     <>
       <Header />
@@ -20,4 +20,4 @@ const MainLayout = ({ children }: React.PropsWithChildren) => {
   );
 };
 
-export default MainLayout;
+export default DashboardLayout;

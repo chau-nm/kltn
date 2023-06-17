@@ -27,13 +27,18 @@ public class JWTTokenUtil {
 	}
 	
     public String getUserIdFromToken(String token) {
-    	if (token == null) return null;
-        Claims claims = Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(token)
-                .getBody();
+    	try {
+    		if (token == null) return null;
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .parseClaimsJws(token)
+                    .getBody();
 
-        return claims.getSubject();
+            return claims.getSubject();
+    	}catch (Exception e) {
+    		return null;
+		}
+    	
     }
     
     public boolean validateToken(String token) {

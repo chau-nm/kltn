@@ -4,7 +4,7 @@ import NotificationCard from "~/components/home-page/NotificationCard";
 import { NotifyData } from "~/fakedata";
 import NewsModel from "~/models/news-model";
 
-const HomePage = (): JSX.Element => {
+const DashboardPage = (): JSX.Element => {
 
   return (
     <>
@@ -17,4 +17,4 @@ const HomePage = (): JSX.Element => {
   );
 };
 
-export default HomePage;
+export default DashboardPage;

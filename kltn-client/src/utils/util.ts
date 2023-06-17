@@ -11,3 +11,11 @@ export const toHoursAndMinutes = (totalSeconds: number) : TimeModel => {
 export const hasCommonValue = <T>(arr1: T[], arr2: T[]): boolean  =>{
     return arr1.some((value) => arr2.includes(value));
 }
+
+export const dateDisplay = (date : Date | null | undefined) => {
+    if (date){
+        const dateDisplay = new Date(date);
+        return `${dateDisplay.getDate()}/${dateDisplay.getMonth() + 1}/${dateDisplay.getFullYear()}`;
+    }
+    return "";
+}

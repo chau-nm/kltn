@@ -10,4 +10,6 @@ public interface UserService {
 	public UserCus findByUserId(String userId);
 	
 	public UserCus findByUsername(String username);
+
+	UserCus updateUser(UserCus newUser);
 }

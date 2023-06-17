@@ -2,7 +2,7 @@ import { ToastContainer } from "react-toastify";
 import useRouteElements from "./hook/useRouteElements";
 import { AuthContextProvider } from "./contexts/auth.context";
 import { Suspense } from "react";
-import LoadingPage from "./pages/loading-page";
+import LoadingPage from "./pages/LoadingPage";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 function App() {

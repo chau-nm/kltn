@@ -3,31 +3,40 @@ import { Navigate, Outlet, useRoutes } from "react-router-dom";
 import AuthConstants from "~/constants/auth-constants";
 import path from "~/constants/path";
 import { AuthContext } from "~/contexts/auth.context";
+import ConsoleLayout from "~/layouts/ConsoleLayout";
 
-import LoginLayout from "~/layouts/login-layout";
-import MainLayout from "~/layouts/main-layout";
+import LoginLayout from "~/layouts/LoginLayout";
+import DashboardLayout from "~/layouts/DashboardLayout";
+import ConsolePage from "~/pages/console";
+
 import { hasCommonValue } from "~/utils/util";
 
-const AccountsManagerPage = lazy(
-  () => import("~/pages/admin/acounts_manager-page")
-);
-const CounterArgumentFormPage = lazy(
-  () => import("~/pages/council/counter-argument-form-page")
-);
-const HomePage = lazy(() => import("~/pages/home-page"));
-const LoginPage = lazy(() => import("~/pages/login-page"));
-const MarkFormPage = lazy(() => import("~/pages/mark-form-page"));
-const NotificationPage = lazy(
-  () => import("~/pages/ministry/send-notification-page")
-);
-const ThesisManagementPage = lazy(
-  () => import("~/pages/ministry/thesis-management-page")
-);
-const ReportSchedulePage = lazy(() => import("~/pages/report-schedule-page"));
-const RegisterThesisPage = lazy(
-  () => import("~/pages/student/register-thesis-page")
-);
-const ThesisListPage = lazy(() => import("~/pages/thesis-list-page"));
+// const AccountsManagerPage = lazy(
+//   () => import("~/pages/admin/acounts_manager-page")
+// );
+// const CounterArgumentFormPage = lazy(
+//   () => import("~/pages/council/counter-argument-form-page")
+// );
+// const MarkFormPage = lazy(() => import("~/pages/mark-form-page"));
+// const NotificationPage = lazy(
+//   () => import("~/pages/ministry/send-notification-page")
+// );
+// const ThesisManagementPage = lazy(
+//   () => import("~/pages/ministry/thesis-management-page")
+// );
+// const ReportSchedulePage = lazy(() => import("~/pages/report-schedule-page"));
+// const RegisterThesisPage = lazy(
+//   () => import("~/pages/student/register-thesis-page")
+// );
+// const ThesisListPage = lazy(() => import("~/pages/thesis-list-page"));
+/** IMPORT PAGE START */
+const LoginPage = lazy(() => import("~/pages/LoginPage"));
+
+const HomePage = lazy(() => import("~/pages/dashboard"));
+const ProfilePage = lazy(() => import( "~/pages/dashboard/ProfilePage"));
+
+/** IMPORT PAGE END */
+
 
 type AuthenticatedRouteProps = {
   roles: Array<string | null>;
@@ -88,77 +97,44 @@ const useRouteElements = () => {
         {
           path: path.HOME,
           element: (
-            <MainLayout>
+            <DashboardLayout>
               <HomePage />
-            </MainLayout>
+            </DashboardLayout>
           ),
         },
         {
-          path: path.ACCOUNTS_MANAGER,
+          path: path.PROFILE,
           element: (
-            <MainLayout>
-              <AccountsManagerPage />
-            </MainLayout>
-          ),
-        },
-        {
-          path: path.SEND_NOTIFICATION,
-          element: (
-            <MainLayout>
-              <NotificationPage />
-            </MainLayout>
-          ),
-        },
-        {
-          path: path.THESIS_LIST_PAGE,
-          element: (
-            <MainLayout>
-              <ThesisListPage />
-            </MainLayout>
-          ),
-        },
-        {
-          path: path.COUNTER_ARGUMENT,
-          element: (
-            <MainLayout>
-              <CounterArgumentFormPage />
-            </MainLayout>
-          ),
-        },
-        {
-          path: path.REPORT_SCHEDULE,
-          element: (
-            <MainLayout>
-              <ReportSchedulePage />
-            </MainLayout>
-          ),
-        },
-        {
-          path: path.REGISTER_THESIS,
-          element: (
-            <MainLayout>
-              <RegisterThesisPage />
-            </MainLayout>
-          ),
-        },
-        {
-          path: path.THESIS_MANAGEMENT,
-          element: (
-            <MainLayout>
-              <ThesisManagementPage />
-            </MainLayout>
-          ),
-        },
-        {
-          path: path.MARK,
-          element: (
-            <MainLayout>
-              <MarkFormPage />
-            </MainLayout>
-          ),
-        },
+            <DashboardLayout>
+              <ProfilePage />
+            </DashboardLayout>
+          )
+        }
       ],
     },
+    {
+      path: "",
+      element: (
+        <AuthenticatedRoute roles={[
+          AuthConstants.AUTH_ROLES.ADMIN,
+          AuthConstants.AUTH_ROLES.MINISTRY,
+          AuthConstants.AUTH_ROLES.WEB_MANAGER,
+        ]} />
+      ),
+      children: [
+        {
+          path: path.CONSOLE,
+          element: (
+            <ConsoleLayout>
+              <ConsolePage />
+            </ConsoleLayout>
+          )
+        }
+      ],
+    },
+    {
+      path: "*"
+    }
   ]);
   return routerElements;
 };

@@ -2,7 +2,7 @@ import { SetStateAction, createContext, useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import path from "~/constants/path";
-import LoadingPage from "~/pages/loading-page";
+import LoadingPage from "~/pages/LoadingPage";
 import { getUsuerByToken } from "~/services/user-service";
 
 interface AuthContextInterface {
