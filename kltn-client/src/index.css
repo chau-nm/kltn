@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+*{
+    font-family: 'Tahoma' !important;
+    margin: 0;
+    padding: 0;
+}

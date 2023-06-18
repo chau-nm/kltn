@@ -4,6 +4,8 @@ import { AuthContextProvider } from "./contexts/auth.context";
 import { Suspense } from "react";
 import LoadingPage from "./pages/LoadingPage";
 import { QueryClient, QueryClientProvider } from "react-query";
+import UserModal from "./components/UserModal";
+import { UserModalProvider } from "./contexts/user-modal.context";
 
 function App() {
   const routeElements = useRouteElements();
@@ -12,8 +14,10 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthContextProvider>
-        {routeElements}
-        <ToastContainer />
+        <UserModalProvider>
+          {routeElements}
+          <ToastContainer />
+        </UserModalProvider>
       </AuthContextProvider>
     </QueryClientProvider>
   );

@@ -10,7 +10,7 @@ const CardCustom = ({ children, cardProps }: CardCustomProps): JSX.Element => {
     <Card
       className="mt-2 w-full"
       headStyle={{
-        backgroundColor: "#518df7",
+        backgroundColor: "#000c66",
         fontSize: "1.15rem",
         fontWeight: "bold",
         color: "#ffffff",

@@ -1,0 +1,29 @@
+.ant-modal{
+    width: fit-content !important;
+
+    .ant-modal-content{
+        padding: 0 !important;
+    
+        .ant-modal-header{
+            background-color: #000c66;
+            padding: 20px;
+    
+            .ant-modal-title{
+                color: white;
+                font-size: 18px;
+            }
+        }
+    
+        .ant-modal-body{
+            padding: 20px;
+        }
+    
+        .ant-modal-footer{
+            padding: 20px;
+        }
+    
+        .ant-modal-close-icon{
+            color: white;
+        }
+    }
+}
