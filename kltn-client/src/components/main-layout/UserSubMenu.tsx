@@ -38,7 +38,7 @@ const UserSubMenu = (): JSX.Element => {
       />
       <UserSubMenuItem
         icon={<UserOutlined />}
-        title="Trang cá nhân"
+        title="Thông tin người dùng"
         handleOnClick={handleNavigateProfile}
       />
       <UserSubMenuItem

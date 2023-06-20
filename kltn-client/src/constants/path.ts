@@ -1,17 +1,13 @@
 const path = {
-    HOME : '/home',
+    // generate
     LOGIN: '/login',
-    ACCOUNTS_MANAGER: '/accounts-manager',
-    SEND_NOTIFICATION: '/send-notification',
-    THESIS_LIST_PAGE: '/thesis-list',
-    COUNTER_ARGUMENT: '/counter-argument-form',
-    MARK: '/mark-form',
-    REPORT_SCHEDULE: '/report-schedule',
-    REGISTER_THESIS: '/register-thesis',
-    THESIS_MANAGEMENT: '/reports-management',
-    EVALUE_THESIS_OUTLINE_PAGE: '/evalue-thesis-outline-page',
-    PROFILE: '/profile',
-    CONSOLE : '/console'
+    
+    // dashboard
+    HOME : '/home',
+
+    // console
+    CONSOLE : '/console',
+    NOTIFICATION_CONSOLE: '/console/notifications'
 }
 
 export default path;

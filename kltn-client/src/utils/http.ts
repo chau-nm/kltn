@@ -15,7 +15,7 @@ export class HttpService {
   }
 
   private configRequestInterceptor(): void {
-    let accessToken = sessionStorage.getItem('access_token');
+    let accessToken = localStorage.getItem('access_token');
 
     this.axiosInstance.interceptors.request.use(
       (config : InternalAxiosRequestConfig) => {

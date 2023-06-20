@@ -38,7 +38,7 @@ const UserDropDownContent = (): JSX.Element => {
       />
       <UserDropDownItem
         icon={<UserOutlined />}
-        title="Trang cá nhân"
+        title="Thông tin người dùng"
         handleOnClick={handleNavigateProfile}
       />
       <UserDropDownItem

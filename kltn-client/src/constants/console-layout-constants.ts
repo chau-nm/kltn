@@ -11,18 +11,8 @@ class ConsoleLayoutConstants {
         },
         {
             id: 2,
-            title: 'Trang chủ',
-            to: '/console'
-        },
-        {
-            id: 3,
-            title: 'Trang chủ',
-            to: '/console'
-        },
-        {
-            id: 4,
-            title: 'Trang chủ',
-            to: '/console'
+            title: 'Thông báo',
+            to: '/console/notifications'
         },
     ];
 }

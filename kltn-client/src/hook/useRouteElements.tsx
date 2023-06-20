@@ -10,6 +10,8 @@ import DashboardLayout from "~/layouts/DashboardLayout";
 import ConsolePage from "~/pages/console";
 
 import { hasCommonValue } from "~/utils/util";
+import PageNotFounded from "~/pages/PageNotFounded";
+import Notification from "~/components/home-page/Notification";
 
 // const AccountsManagerPage = lazy(
 //   () => import("~/pages/admin/acounts_manager-page")
@@ -34,6 +36,8 @@ const LoginPage = lazy(() => import("~/pages/LoginPage"));
 
 const HomePage = lazy(() => import("~/pages/dashboard"));
 const ProfilePage = lazy(() => import( "~/pages/dashboard/ProfilePage"));
+const NotificationConsolePage = lazy(() => import("~/pages/console/NotificationConsolePage"));
+
 
 /** IMPORT PAGE END */
 
@@ -101,14 +105,6 @@ const useRouteElements = () => {
               <HomePage />
             </DashboardLayout>
           ),
-        },
-        {
-          path: path.PROFILE,
-          element: (
-            <DashboardLayout>
-              <ProfilePage />
-            </DashboardLayout>
-          )
         }
       ],
     },
@@ -133,7 +129,27 @@ const useRouteElements = () => {
       ],
     },
     {
-      path: "*"
+      path: "",
+      element: (
+        <AuthenticatedRoute roles={[
+          AuthConstants.AUTH_ROLES.MINISTRY,
+          AuthConstants.AUTH_ROLES.WEB_MANAGER,
+        ]} />
+      ),
+      children: [
+        {
+          path: path.NOTIFICATION_CONSOLE,
+          element: (
+            <ConsoleLayout>
+              <NotificationConsolePage />
+            </ConsoleLayout>
+          )
+        }
+      ],
+    },
+    {
+      path: "*",
+      element: <PageNotFounded/>
     }
   ]);
   return routerElements;

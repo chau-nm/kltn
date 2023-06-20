@@ -27,23 +27,23 @@ export const AuthContextProvider = ({
   children,
 }: React.PropsWithChildren): JSX.Element => {
   const [isAuthenticated, setAuthenticated] = useState<boolean>(() => {
-    let isAuthSession = sessionStorage.getItem("isAuthenticated");
+    let isAuthSession = localStorage.getItem("isAuthenticated");
     return isAuthSession ? JSON.parse(isAuthSession) : false;
   });
   const [user, setUser] = useState<UserCusModel | null>(() => {
-    let userSession = sessionStorage.getItem('user');
+    let userSession = localStorage.getItem('user');
     return userSession ? JSON.parse(userSession) : null;
   });
 
   useEffect(() => {
-    sessionStorage.setItem('user', JSON.stringify({
+    localStorage.setItem('user', JSON.stringify({
       ...user,
       password: 'Protected'
     }));
   }, [user])
 
   useEffect(() => {
-    sessionStorage.setItem("isAuthenticated", JSON.stringify(isAuthenticated));
+    localStorage.setItem("isAuthenticated", JSON.stringify(isAuthenticated));
   }, [isAuthenticated]);
 
   const checkLogged = useMutation(getUsuerByToken, {
@@ -65,11 +65,11 @@ export const AuthContextProvider = ({
   const signOut = () => {
     setAuthenticated(false);
     setUser(null);
-    sessionStorage.clear();
+    localStorage.clear();
   };
 
   useEffect(() => {
-    let accsessToken = sessionStorage.getItem("access_token");
+    let accsessToken = localStorage.getItem("access_token");
     if (accsessToken) {
       checkLogged.mutate({
         accessToken: accsessToken,

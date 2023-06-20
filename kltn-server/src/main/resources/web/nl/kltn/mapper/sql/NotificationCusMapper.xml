@@ -1,0 +1,43 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="web.nl.kltn.mapper.NotificationCusMapper">
+
+	<resultMap type="web.nl.kltn.model.NotificationCus"
+		id="NotificationCus">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="create_at" property="createAt"
+			jdbcType="BIGINT" />
+		<result column="update_at" property="updateAt"
+			jdbcType="BIGINT" />
+		<collection property="attachmentUrls" ofType="string"
+			jdbcType="VARCHAR">
+			<result column="attachment_url" />
+		</collection>
+	</resultMap>
+
+	<select id="search" resultMap="NotificationCus">
+		<bind name="offset" value="page * pageSize"/>
+		SELECT n.id, n.title, n.content, n.create_at, n.update_at,
+		na.attachment_url
+		FROM notification n
+		LEFT JOIN notification_attachment na ON n.id = na.notification_id
+		<where>
+			<if test="searchCondition.title != null">
+				AND title LIKE CONCAT('%', #{searchCondition.title}, '%')
+			</if>
+			<if test="searchCondition.startAt != null">
+				AND n.create_at >= #{searchCondition.startAt}
+			</if>
+			<if test="searchCondition.endAt != null">
+				AND n.create_at &lt;= #{searchCondition.endAt}
+			</if>
+			AND n.is_deleted = 0
+			AND na.is_deleted = 0
+		</where>
+		LIMIT #{pageSize} OFFSET #{offset}
+	</select>
+
+</mapper>

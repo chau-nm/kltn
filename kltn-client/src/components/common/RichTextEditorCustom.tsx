@@ -3,8 +3,8 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 type RichTextEditorCustomProps = {
-  editorHtml: string;
-  setEditorHtml: React.Dispatch<SetStateAction<string>>
+  editorHtml?: string;
+  setEditorHtml?: React.Dispatch<SetStateAction<string>>
 }
 
 const RichTextEditorCustom = ({
@@ -51,6 +51,7 @@ const RichTextEditorCustom = ({
         toolbar: toolbarOptions,
       }}
       formats={formats}
+      className="h-[250px]"
     />
   );
 };
