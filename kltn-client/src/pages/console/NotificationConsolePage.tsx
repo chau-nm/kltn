@@ -1,9 +1,14 @@
 import { Button, Row, Space } from "antd";
-import ButtonCustom from "~/components/common/ButtonCustom";
+import { useContext, useEffect } from "react";
+import ButtonCommon from "~/components/common/ButtonCommon";
 import AddNewNotificationModal from "~/components/notification-console-page/AddNewNotificationModal";
 import NotificationSearchForm from "~/components/notification-console-page/NotificationSearchForm";
 import NotificationTableResult from "~/components/notification-console-page/NotificationTableResult";
-import { NotificationConsoleProvider } from "~/contexts/notification-console-context";
+import {
+  NotificationConsoleContext,
+  NotificationConsoleProvider,
+} from "~/contexts/notification-console-context";
+import * as NotificationService from "~/services/notification-service";
 
 const NotificationConsolePage = (): JSX.Element => {
   return (

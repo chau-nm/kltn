@@ -1,7 +1,7 @@
 import { Table } from "antd";
 import { ColumnType } from "antd/es/table";
 import AccountCard from "./AccountCard";
-import { DeleteIconCustom, EditIconCustom } from "../common/IconCustom";
+import { DeleteIconCommon, EditIconCommon } from "../common/IconCommon";
 import { useNavigate } from "react-router-dom";
 import path from "~/constants/path";
 
@@ -31,8 +31,8 @@ const columns: ColumnType<UserModel>[] = [
     render: (text, record, index) => {
       return (
         <>
-          <EditIconCustom />
-          <DeleteIconCustom />
+          <EditIconCommon />
+          <DeleteIconCommon />
         </>
       );
     },

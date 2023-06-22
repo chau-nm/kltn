@@ -2,7 +2,7 @@ import { Input } from "antd";
 import { EditorState } from "draft-js";
 import { useState } from "react";
 import PageLayout from "~/components/common/PageLayout";
-import RichTextEditorCustom from "~/components/common/RichTextEditorCustom";
+import RichTextEditorCommon from "~/components/common/RichTextEditorCommon";
 
 const { TextArea } = Input;
 
@@ -11,7 +11,7 @@ const NotificationPage = (): JSX.Element => {
 
   return (
     <PageLayout pageTitle="Gửi thông báo">
-        <RichTextEditorCustom
+        <RichTextEditorCommon
           editorHtml={content}
           setEditorHtml={setContent}/>
     </PageLayout>

@@ -13,4 +13,6 @@ public interface NotificationService {
 	void update(NotificationCus notificationCus);
 
 	void deleted(String notificationId);
+
+	int getTotal(NotificationSearchCondition searchCondition);
 }

@@ -44,8 +44,8 @@ const LoginPage = (): JSX.Element => {
     let accessToken = user.accessToken;
     let refeshToken = user.refreshToken;
 
-    sessionStorage.setItem('access_token', accessToken);
-    sessionStorage.setItem('refresh_token', refeshToken);
+    localStorage.setItem('access_token', accessToken);
+    localStorage.setItem('refresh_token', refeshToken);
 
     setAuthenticated(true);
     setUser(user);    

@@ -19,17 +19,17 @@ import web.nl.kltn.service.NotificationService;
 
 @Service
 @Transactional(rollbackFor = Throwable.class)
-public class NotificationServiceImpl implements NotificationService{
-	
+public class NotificationServiceImpl implements NotificationService {
+
 	@Autowired
 	private NotificationCusMapper notificationCusMapper;
-	
+
 	@Autowired
 	private NotificationMapper notificationMapper;
-	
+
 	@Autowired
 	private NotificationAttachmentMapper attachmentMapper;
-	
+
 	@Autowired
 	private NotificationAttachmentCusMapper attachmentCusMapper;
 
@@ -48,12 +48,12 @@ public class NotificationServiceImpl implements NotificationService{
 			List<NotificationAttachment> attachments = notificationCus.createAttachments();
 			insertAttachments(attachments);
 			return notificationCus;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
 	@Override
 	public void update(NotificationCus notificationCus) {
 		Notification notification = notificationCus.createNotificationEntity();
@@ -62,7 +62,7 @@ public class NotificationServiceImpl implements NotificationService{
 		attachmentCusMapper.delete(notification.getId());
 		insertAttachments(notificationCus.createAttachments());
 	}
-	
+
 	@Override
 	public void deleted(String notificationId) {
 		Notification notification = notificationMapper.selectByPrimaryKey(notificationId);
@@ -70,10 +70,15 @@ public class NotificationServiceImpl implements NotificationService{
 		notificationMapper.updateByPrimaryKey(notification);
 		attachmentCusMapper.deleteWithFlagIsDeleted(notification.getId());
 	}
-	
+
+	@Override
+	public int getTotal(NotificationSearchCondition searchCondition) {
+		return notificationCusMapper.getTotal(searchCondition);
+	}
+
 	private void insertAttachments(List<NotificationAttachment> attachments) {
 		attachments.forEach(att -> {
-			if (attachmentMapper.insert(att) <=0) {
+			if (attachmentMapper.insert(att) <= 0) {
 				throw new RuntimeException();
 			}
 		});

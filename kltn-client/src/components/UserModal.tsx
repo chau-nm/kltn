@@ -7,8 +7,8 @@ import { AuthContext } from "~/contexts/auth.context";
 import { UserModalContext } from "~/contexts/user-modal.context";
 import { getUSerById, updateUser } from "~/services/user-service";
 import { dateDisplay } from "~/utils/util";
-import ButtonCustom from "./common/ButtonCustom";
-import ModalCustom from "./common/ModalCustom";
+import ButtonCommon from "./common/ButtonCommon";
+import ModalCommon from "./common/ModalCommon";
 
 const UserModal = (): JSX.Element => {
   const { open, setOpen } = useContext(UserModalContext);
@@ -38,14 +38,20 @@ const UserModal = (): JSX.Element => {
     if (userAuth) {
       getUserByIdMutation.mutate(userAuth.userId);
     }
+  }, [open])
+
+  useEffect(() => {
+    if (userAuth) {
+      getUserByIdMutation.mutate(userAuth.userId);
+    }
   }, []);
 
   const ModalFooter = (): JSX.Element => {
     return (
       <Row justify={"end"}>
-        <ButtonCustom value="Đóng" onClick={handleCancel} />
+        <ButtonCommon value="Đóng" onClick={handleCancel} />
         {editMode ? (
-          <ButtonCustom
+          <ButtonCommon
             value="Lưu"
             onClick={() => {
               updateUserMuitation.mutate(user);
@@ -53,7 +59,7 @@ const UserModal = (): JSX.Element => {
             }}
           />
         ) : (
-          <ButtonCustom value="Chỉnh sửa" onClick={() => setEditMode(true)} />
+          <ButtonCommon value="Chỉnh sửa" onClick={() => setEditMode(true)} />
         )}
       </Row>
     );
@@ -65,7 +71,7 @@ const UserModal = (): JSX.Element => {
   };
 
   return (
-    <ModalCustom
+    <ModalCommon
       title="Thông tin người dùng"
       open={open}
       footer={[<ModalFooter key={"1"}/>]}
@@ -169,7 +175,7 @@ const UserModal = (): JSX.Element => {
           </Col>
         </Row>
       </Spin>
-    </ModalCustom>
+    </ModalCommon>
   );
 };
 

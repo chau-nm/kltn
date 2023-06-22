@@ -1,8 +1,8 @@
 import { Modal } from "antd";
 import { ReactNode } from "react";
-import "~/assets/styles/ModalCustom.scss"
+import "~/assets/styles/ModalCommon.scss"
 
-type ModalCustomProps = {
+type ModalCommonProps = {
   title?: string;
   open?: boolean;
   footer?: ReactNode[];
@@ -13,7 +13,7 @@ type ModalCustomProps = {
   onOk?: () => void;
 };
 
-const ModalCustom = ({
+const ModalCommon = ({
   title,
   open,
   footer,
@@ -22,7 +22,7 @@ const ModalCustom = ({
   maskCloseable,
   onCanel,
   onOk
-}: ModalCustomProps): JSX.Element => {
+}: ModalCommonProps): JSX.Element => {
   return (
     <Modal 
       title={title} 
@@ -37,4 +37,4 @@ const ModalCustom = ({
   );
 };
 
-export default ModalCustom;
+export default ModalCommon;

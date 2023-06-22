@@ -2,7 +2,7 @@ import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useRef } from "react";
 import Slider, { Settings } from "react-slick";
 
-type SlickCustomProps = {
+type SlickCommonProps = {
   children: React.ReactNode;
 };
 
@@ -45,7 +45,7 @@ const slickSettings: Settings = {
   arrows: false,
 };
 
-const SlickCustom = ({ children }: SlickCustomProps): JSX.Element => {
+const SlickCommon = ({ children }: SlickCommonProps): JSX.Element => {
   const slickRef = useRef<Slider>(null);
 
   const handleOnClickPreviousButton = (): void => {
@@ -73,4 +73,4 @@ const SlickCustom = ({ children }: SlickCustomProps): JSX.Element => {
   );
 };
 
-export default SlickCustom;
+export default SlickCommon;

@@ -9,19 +9,19 @@ const ButtonColorType = {
   gray: "bg-gray-700 text-white",
 };
 
-type ButtonCustomProps = {
+type ButtonCommonProps = {
   value: string;
   color?: "yellow" | "green" | "blue" | "red" | "gray";
   className?: string;
   onClick?: MouseEventHandler;
 };
 
-const ButtonCustom = ({
+const ButtonCommon = ({
   value,
   color,
   className,
   onClick,
-}: ButtonCustomProps): JSX.Element => {
+}: ButtonCommonProps): JSX.Element => {
   return (
     <Button
       className={`py-5 flex text-base items-center ${className} ${
@@ -34,4 +34,4 @@ const ButtonCustom = ({
   );
 };
 
-export default ButtonCustom;
+export default ButtonCommon;

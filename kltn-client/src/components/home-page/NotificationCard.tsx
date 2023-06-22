@@ -1,5 +1,5 @@
 import NotifyModel from "~/models/notify-model";
-import CardCustom from "../common/CardCustom";
+import CardCommon from "../common/CardCommon";
 import Notification from "./Notification";
 
 type NotificationCardProps = {
@@ -8,7 +8,7 @@ type NotificationCardProps = {
 
 const NotificationCard = ({notifications} : NotificationCardProps) : JSX.Element => {
     return (
-        <CardCustom
+        <CardCommon
             cardProps={{
                 title : "Thông báo",
             }}>
@@ -21,7 +21,7 @@ const NotificationCard = ({notifications} : NotificationCardProps) : JSX.Element
                         )
                     })
                 }
-        </CardCustom>
+        </CardCommon>
     )
 }
 

@@ -11,4 +11,6 @@ public interface NotificationCusMapper {
 			int pageSize, 
 			NotificationSearchCondition searchCondition
 	);
+	
+	public int getTotal(NotificationSearchCondition searchCondition);
 }

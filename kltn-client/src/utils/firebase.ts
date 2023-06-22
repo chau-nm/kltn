@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJ38G24pc2zzbr5Yfnxs5WIycwi_XxzNg",
@@ -14,3 +14,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export const storage = getStorage(app);
+
+
+export const uploadFileToFirebase = async (file: File): Promise<string> => {
+  try {
+    const storageRef = ref(storage, `${Date.now()}`);
+    await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(storageRef);
+    return downloadURL;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -9,7 +9,7 @@ import {v4} from 'uuid';
 import { useForm } from "antd/es/form/Form";
 import * as NotificationService from '~/services/notification-service';
 
-const AddNewNotificationModal = (): JSX.Element => {
+const EditNotificationModal = (): JSX.Element => {
   const { openAddNewNotificationModal, setOpenAddNewNotificationModal } =
     useContext(NotificationConsoleContext);
 
@@ -89,4 +89,4 @@ const AddNewNotificationModal = (): JSX.Element => {
   );
 };
 
-export default AddNewNotificationModal;
+export default EditNotificationModal;

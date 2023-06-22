@@ -1,6 +1,6 @@
 import { Table } from "antd";
 import { ColumnProps } from "antd/es/table";
-import { DeleteIconCustom, EditIconCustom } from "../common/IconCustom";
+import { DeleteIconCommon, EditIconCommon } from "../common/IconCommon";
 
 const columns: ColumnProps<ThesisModel>[] = [
   {
@@ -40,8 +40,8 @@ const columns: ColumnProps<ThesisModel>[] = [
     render: (text, record, index) => {
       return (
         <>
-          <EditIconCustom />
-          <DeleteIconCustom/>
+          <EditIconCommon />
+          <DeleteIconCommon/>
         </>
       );
     },

@@ -2,8 +2,8 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { NewsData } from "~/fakedata";
 import NewsModel from "~/models/news-model";
-import CardCustom from "../common/CardCustom";
-import SlickCustom from "../common/SlickCustoom";
+import CardCommon from "../common/CardCommon";
+import SlickCommon from "../common/SlickCommon";
 import NewsSlide from "./NewsSlide";
 
 type NewsBannerProps = {
@@ -12,17 +12,17 @@ type NewsBannerProps = {
 
 const NewsBanner = ({ slides }: NewsBannerProps) => {
   return (
-    <CardCustom
+    <CardCommon
       cardProps={{
         title: "Tin tức",
       }}
     >
-      <SlickCustom>
+      <SlickCommon>
         {NewsData.map((news) => {
           return <NewsSlide key={news.newsId} news={news} />;
         })}
-      </SlickCustom>
-    </CardCustom>
+      </SlickCommon>
+    </CardCommon>
   );
 };
 

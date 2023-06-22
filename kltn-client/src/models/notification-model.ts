@@ -2,6 +2,7 @@ interface NotificationModel{
     id: string;
     title?: string;
     content?: string;
-    attachments?: string[];
+    attachmentUrls?: string[];
     createAt?: number;
+    updateAt?: number;
 }

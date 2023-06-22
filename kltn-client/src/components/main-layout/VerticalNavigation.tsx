@@ -1,14 +1,14 @@
 import { Space } from "antd";
 import { useLocation } from "react-router-dom";
 import MainLayouConstants from "~/constants/main-layout-constants";
-import CardCustom from "../common/CardCustom";
+import CardCommon from "../common/CardCommon";
 import NavItem from "./NavItem";
 
 const VerticalNavigation = (): JSX.Element => {
   const location = useLocation();
 
   return (
-    <CardCustom cardProps={{ title: "Menu" }}>
+    <CardCommon cardProps={{ title: "Menu" }}>
       <Space className="w-full" direction="vertical">
         {MainLayouConstants.MENU_LIST.map((menu, index) => {
           return (
@@ -22,7 +22,7 @@ const VerticalNavigation = (): JSX.Element => {
           );
         })}
       </Space>
-    </CardCustom>
+    </CardCommon>
   );
 };
 

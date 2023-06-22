@@ -64,6 +64,7 @@ public class NotificationCus {
 	}
 	
 	public List<NotificationAttachment> createAttachments(){
+		if (this.attachmentUrls == null) return null;
 		List<NotificationAttachment> attachments 
 			= this.attachmentUrls.stream().map(url -> {
 				NotificationAttachment attachment = new NotificationAttachment();

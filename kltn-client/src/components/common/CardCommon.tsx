@@ -1,11 +1,11 @@
 import { Card, CardProps } from "antd";
 
-type CardCustomProps = {
+type CardCommonProps = {
   children: React.ReactNode;
   cardProps?: CardProps;
 };
 
-const CardCustom = ({ children, cardProps }: CardCustomProps): JSX.Element => {
+const CardCommon = ({ children, cardProps }: CardCommonProps): JSX.Element => {
   return (
     <Card
       className="mt-2 w-full"
@@ -22,4 +22,4 @@ const CardCustom = ({ children, cardProps }: CardCustomProps): JSX.Element => {
   );
 };
 
-export default CardCustom;
+export default CardCommon;
