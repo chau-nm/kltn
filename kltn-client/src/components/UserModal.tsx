@@ -3,10 +3,10 @@ import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { toast } from "react-toastify";
-import { AuthContext } from "~/contexts/auth.context";
-import { UserModalContext } from "~/contexts/user-modal.context";
-import { getUSerById, updateUser } from "~/services/user-service";
-import { dateDisplay } from "~/utils/util";
+import { AuthContext } from "~/contexts/AuthContext";
+import { UserModalContext } from "~/contexts/UserModalContext";
+import { getUSerById, updateUser } from "~/services/userServices";
+import { dateDisplay } from "~/common/util";
 import ButtonCommon from "./common/ButtonCommon";
 import ModalCommon from "./common/ModalCommon";
 
@@ -14,12 +14,12 @@ const UserModal = (): JSX.Element => {
   const { open, setOpen } = useContext(UserModalContext);
 
   const { user: userAuth } = useContext(AuthContext);
-  const [user, setUser] = useState<UserCusModel>({} as UserCusModel);
+  const [user, setUser] = useState<UserModel>({} as UserModel);
   const [editMode, setEditMode] = useState<boolean>(false);
 
   const getUserByIdMutation = useMutation(getUSerById, {
     onSuccess: (data) => {
-      const userRes: UserCusModel | null = data as UserCusModel;
+      const userRes: UserModel | null = data as UserModel;
       if (userRes) {
         setUser(userRes);
       } else {
@@ -100,7 +100,7 @@ const UserModal = (): JSX.Element => {
                   setUser({
                     ...user,
                     fname: event.target.value,
-                  } as UserCusModel);
+                  } as UserModel);
                 }}
               />
             ) : (
@@ -121,7 +121,7 @@ const UserModal = (): JSX.Element => {
                     setUser({
                       ...user,
                       birthday: date.toDate(),
-                    } as UserCusModel);
+                    } as UserModel);
                   }
                 }}
               />
@@ -144,7 +144,7 @@ const UserModal = (): JSX.Element => {
                     setUser({
                       ...user,
                       studentClass: event.target.value,
-                    } as UserCusModel);
+                    } as UserModel);
                   }}
                 />
               ) : (
@@ -166,7 +166,7 @@ const UserModal = (): JSX.Element => {
                   setUser({
                     ...user,
                     faculty: event.target.value,
-                  } as UserCusModel);
+                  } as UserModel);
                 }}
               />
             ) : (

@@ -1,11 +1,11 @@
 import { ToastContainer } from "react-toastify";
 import useRouteElements from "./hook/useRouteElements";
-import { AuthContextProvider } from "./contexts/auth.context";
+import { AuthContextProvider } from "./contexts/AuthContext";
 import { Suspense } from "react";
-import LoadingPage from "./pages/LoadingPage";
+import LoadingPage from "./features/LoadingPage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import UserModal from "./components/UserModal";
-import { UserModalProvider } from "./contexts/user-modal.context";
+import { UserModalProvider } from "./contexts/UserModalContext";
 
 function App() {
   const routeElements = useRouteElements();

@@ -1,42 +1,26 @@
 import { Suspense, lazy, useContext } from "react";
 import { Navigate, Outlet, useRoutes } from "react-router-dom";
-import AuthConstants from "~/constants/auth-constants";
+import AuthConstants from "~/constants/authConstants";
 import path from "~/constants/path";
-import { AuthContext } from "~/contexts/auth.context";
+import { AuthContext } from "~/contexts/AuthContext";
 import ConsoleLayout from "~/layouts/ConsoleLayout";
 
 import LoginLayout from "~/layouts/LoginLayout";
 import DashboardLayout from "~/layouts/DashboardLayout";
-import ConsolePage from "~/pages/console";
 
-import { hasCommonValue } from "~/utils/util";
-import PageNotFounded from "~/pages/PageNotFounded";
-import Notification from "~/components/home-page/Notification";
+import { hasCommonValue } from "~/common/util";
+import PageNotFounded from "~/features/PageNotFounded";
 
-// const AccountsManagerPage = lazy(
-//   () => import("~/pages/admin/acounts_manager-page")
-// );
-// const CounterArgumentFormPage = lazy(
-//   () => import("~/pages/council/counter-argument-form-page")
-// );
-// const MarkFormPage = lazy(() => import("~/pages/mark-form-page"));
-// const NotificationPage = lazy(
-//   () => import("~/pages/ministry/send-notification-page")
-// );
-// const ThesisManagementPage = lazy(
-//   () => import("~/pages/ministry/thesis-management-page")
-// );
-// const ReportSchedulePage = lazy(() => import("~/pages/report-schedule-page"));
-// const RegisterThesisPage = lazy(
-//   () => import("~/pages/student/register-thesis-page")
-// );
-// const ThesisListPage = lazy(() => import("~/pages/thesis-list-page"));
 /** IMPORT PAGE START */
-const LoginPage = lazy(() => import("~/pages/LoginPage"));
+const LoginPage = lazy(() => import("~/features/LoginPage"));
 
-const HomePage = lazy(() => import("~/pages/dashboard"));
-const ProfilePage = lazy(() => import( "~/pages/dashboard/ProfilePage"));
-const NotificationConsolePage = lazy(() => import("~/pages/console/NotificationConsolePage"));
+//Dashboard
+const DashboardPage = lazy(() => import("~/features/Dashboard"));
+
+//Console
+const NotificationConsolePage = lazy(() => import("~/features/Console/NotificationPage"));
+const ConsolePage = lazy(() => import("~/features/Console"));
+const ThesisConsolePage = lazy(() => import("~/features/Console/ThesisPage"));
 
 
 /** IMPORT PAGE END */
@@ -56,7 +40,7 @@ const RejectedRoute = () => {
   return !isAuthenticated ? (
     <Navigate to={path.LOGIN} />
   ) : (
-    <Navigate to={path.HOME} />
+    <Navigate to={path.DASHBOARD} />
   );
 };
 
@@ -99,10 +83,10 @@ const useRouteElements = () => {
       ),
       children: [
         {
-          path: path.HOME,
+          path: path.DASHBOARD,
           element: (
             <DashboardLayout>
-              <HomePage />
+              <DashboardPage />
             </DashboardLayout>
           ),
         }
@@ -114,7 +98,6 @@ const useRouteElements = () => {
         <AuthenticatedRoute roles={[
           AuthConstants.AUTH_ROLES.ADMIN,
           AuthConstants.AUTH_ROLES.MINISTRY,
-          AuthConstants.AUTH_ROLES.WEB_MANAGER,
         ]} />
       ),
       children: [
@@ -125,18 +108,7 @@ const useRouteElements = () => {
               <ConsolePage />
             </ConsoleLayout>
           )
-        }
-      ],
-    },
-    {
-      path: "",
-      element: (
-        <AuthenticatedRoute roles={[
-          AuthConstants.AUTH_ROLES.MINISTRY,
-          AuthConstants.AUTH_ROLES.WEB_MANAGER,
-        ]} />
-      ),
-      children: [
+        },
         {
           path: path.NOTIFICATION_CONSOLE,
           element: (
@@ -144,7 +116,26 @@ const useRouteElements = () => {
               <NotificationConsolePage />
             </ConsoleLayout>
           )
+        },
+        {
+          path: path.THESIS_CONSOLE,
+          element: (
+            <ConsoleLayout>
+              <ThesisConsolePage />
+            </ConsoleLayout>
+          )
         }
+      ],
+    },
+    {
+      path: "",
+      element: (
+        <AuthenticatedRoute roles={[
+          AuthConstants.AUTH_ROLES.ADMIN,
+        ]} />
+      ),
+      children: [
+        
       ],
     },
     {

@@ -3,11 +3,12 @@ const path = {
     LOGIN: '/login',
     
     // dashboard
-    HOME : '/home',
+    DASHBOARD : '/dashboard',
 
     // console
     CONSOLE : '/console',
-    NOTIFICATION_CONSOLE: '/console/notifications'
+    NOTIFICATION_CONSOLE: '/console/notifications',
+    THESIS_CONSOLE: '/console/thesis'
 }
 
 export default path;

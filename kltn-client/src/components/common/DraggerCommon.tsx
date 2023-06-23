@@ -1,7 +1,7 @@
 import { InboxOutlined } from "@ant-design/icons";
 import { UploadFile } from "antd";
 import Dragger from "antd/es/upload/Dragger";
-import { uploadFileToFirebase } from "~/utils/firebase";
+import { uploadFileToFirebase } from "~/common/firebase";
 
 type DraggerCommonProps = {
     handleUploadSuccess: (response : string) => void;
