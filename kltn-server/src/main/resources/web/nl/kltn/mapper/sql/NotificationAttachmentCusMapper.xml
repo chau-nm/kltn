@@ -11,4 +11,12 @@
 		UPDATE notification_attachment SET is_deleted = 1 WHERE notification_id = #{notificationId}
 	</update>
 
+	<select id="getAttachmentByNotificationId" resultType="String">
+		SELECT attachment_url
+		FROM notification_attachment
+		WHERE 
+			notification_id = #{notificationId}
+			AND is_deleted = 0
+	</select>
+
 </mapper>

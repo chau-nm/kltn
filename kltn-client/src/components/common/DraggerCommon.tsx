@@ -15,7 +15,7 @@ const DraggerCommon = ({
     handleRemove
 } : DraggerCommonProps): JSX.Element => {
 
-  const CommonUploadRequest = async (options: any) => {
+  const commonUploadRequest = async (options: any) => {
     const { onSuccess, onError, file } = options;
 
     try{
@@ -35,7 +35,7 @@ const DraggerCommon = ({
   }
 
   return (
-    <Dragger CommonRequest={CommonUploadRequest} onChange={handleOnChange} onRemove={handleRemove}>
+    <Dragger customRequest={commonUploadRequest} onChange={handleOnChange} onRemove={handleRemove}>
       <p className="ant-upload-drag-icon">
         <InboxOutlined />
       </p>

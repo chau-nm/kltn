@@ -32,6 +32,12 @@ const AddNewNotificationModal = (): JSX.Element => {
     setAttachments(updateAttachment);
   }
 
+  const clearData = () => {
+    setEditorHtml('');
+    setAttachments([]);
+    form.resetFields();
+  }
+
   const handleSave = async () => {
     const notification: NotificationModel = {
       id: v4(),
@@ -46,15 +52,21 @@ const AddNewNotificationModal = (): JSX.Element => {
     if (notificationResponse){
       alert("Thành công");
       setOpenAddNewNotificationModal(false);
+      clearData();
     }else{
       alert("Thất bại");
     }
   }
 
+  const handleClose = () => {
+    clearData();
+    setOpenAddNewNotificationModal(false);
+  }
+
   const ButtonFooter = (): JSX.Element => {
     return (
         <Row justify={"end"}>
-            <ButtonCommon value="Đóng" onClick={() => setOpenAddNewNotificationModal(false)}/>
+            <ButtonCommon value="Đóng" onClick={handleClose}/>
             <ButtonCommon color="blue" value="Lưu" onClick={handleSave}/>
         </Row>
     )
@@ -64,7 +76,7 @@ const AddNewNotificationModal = (): JSX.Element => {
     <ModalCommon
       title="Thêm thông báo"
       open={openAddNewNotificationModal}
-      onCanel={() => setOpenAddNewNotificationModal(false)}
+      onCanel={handleClose}
       maskCloseable={false}
       footer={[<ButtonFooter key={v4()}/>]}
     >

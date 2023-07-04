@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import web.nl.kltn.mapper.UserCusMapper;
-import web.nl.kltn.model.UserCus;
+import web.nl.kltn.model.dto.UserDTO;
 
 @Service
 public class UserDetailCusService implements UserDetailsService{
@@ -23,7 +23,7 @@ public class UserDetailCusService implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserCus userCus = userCusMapper.findByUsername(username);
+		UserDTO userCus = userCusMapper.findByUsername(username);
 		List<GrantedAuthority> authorities = userCus.getRoles()
 												.stream().map(r -> new SimpleGrantedAuthority(r))
 												.collect(Collectors.toList());

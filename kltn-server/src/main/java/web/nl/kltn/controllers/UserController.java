@@ -21,7 +21,7 @@ import web.nl.kltn.common.ResponseModel;
 import web.nl.kltn.model.AccessTokenRequest;
 import web.nl.kltn.model.LoginCondition;
 import web.nl.kltn.model.RefreshTokenRequest;
-import web.nl.kltn.model.UserCus;
+import web.nl.kltn.model.dto.UserDTO;
 import web.nl.kltn.model.generator.RefreshToken;
 import web.nl.kltn.service.RefreshTokenService;
 import web.nl.kltn.service.UserService;
@@ -43,11 +43,11 @@ public class UserController {
 	private AuthenticationManager authenticationManager;
 
 	@PostMapping("/login")
-	public ResponseModel<UserCus> login(@RequestBody RequestModel<LoginCondition> loginCoditionRequest) {
+	public ResponseModel<UserDTO> login(@RequestBody RequestModel<LoginCondition> loginCoditionRequest) {
 
 		LoginCondition loginCondition = loginCoditionRequest.getData();
 
-		ResponseModel<UserCus> responseModel = new ResponseModel<>();
+		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
 
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginCondition.getUsername(), loginCondition.getPassword()));
@@ -55,7 +55,7 @@ public class UserController {
 		if (!authentication.isAuthenticated()) {
 			return responseModel;
 		} else {
-			UserCus userCus = userService.findByUsername(loginCondition.getUsername());
+			UserDTO userCus = userService.findByUsername(loginCondition.getUsername());
 			String accessToken = jwtTokenUtil.generateToken(userCus.getUsername());
 			RefreshToken refreshToken = refreshTokenService.generateRefreshToken();
 			refreshToken.setUserId(userCus.getUserId());
@@ -70,27 +70,27 @@ public class UserController {
 	}
 
 	@PostMapping("/get-user-with-token")
-	public ResponseModel<UserCus> getUserWithToken(@RequestBody RequestModel<AccessTokenRequest> accessTokenRequest){
+	public ResponseModel<UserDTO> getUserWithToken(@RequestBody RequestModel<AccessTokenRequest> accessTokenRequest){
 		String accessToken = accessTokenRequest.getData().getAccessToken();
-		ResponseModel<UserCus> responseModel = new ResponseModel<>();
+		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
 		String username = jwtTokenUtil.getUserIdFromToken(accessToken);
 		if (username != null) {
-			UserCus userCus = userService.findByUsername(username);
+			UserDTO userCus = userService.findByUsername(username);
 			responseModel.setData(userCus);
 		}
 		return responseModel;
 	}
 
 	@PostMapping("/refresh-token")
-	public ResponseModel<UserCus> refresToken(@RequestBody RequestModel<RefreshTokenRequest> refreshTokenRequest) {
+	public ResponseModel<UserDTO> refresToken(@RequestBody RequestModel<RefreshTokenRequest> refreshTokenRequest) {
 		String refreshTokenClient = refreshTokenRequest.getData().getRefreshToken();
 		RefreshToken refreshTokenDb = refreshTokenService.findRefreshToken(refreshTokenClient);
 		
-		ResponseModel<UserCus> responseModel = new ResponseModel<>();
+		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
 		if (refreshTokenDb == null) {
 			return responseModel;
 		}
-		UserCus userCus = userService.findByUserId(refreshTokenDb.getUserId());
+		UserDTO userCus = userService.findByUserId(refreshTokenDb.getUserId());
 		if (userCus != null) {
 			String newAccessToken = jwtTokenUtil.generateToken(userCus.getUsername());
 			userCus.setAccessToken(newAccessToken);
@@ -102,16 +102,16 @@ public class UserController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseModel<UserCus> findUserById(@PathVariable String id){
-		ResponseModel<UserCus> responseModel = new ResponseModel<>();
+	public ResponseModel<UserDTO> findUserById(@PathVariable String id){
+		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
 		responseModel.setData(userService.findByUserId(id));
 		return responseModel;
 	}
 	
 	@PutMapping("/update")
-	public ResponseModel<UserCus> refeshToken(@RequestBody RequestModel<UserCus> userUpdateRequest){
-		UserCus newUser = userUpdateRequest.getData();
-		ResponseModel<UserCus> responseModel = new ResponseModel<>();
+	public ResponseModel<UserDTO> refeshToken(@RequestBody RequestModel<UserDTO> userUpdateRequest){
+		UserDTO newUser = userUpdateRequest.getData();
+		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
 		responseModel.setData(userService.updateUser(newUser));
 		return responseModel;
 	}

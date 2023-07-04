@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import web.nl.kltn.mapper.UserCusMapper;
 import web.nl.kltn.mapper.generator.UserMapper;
 import web.nl.kltn.model.LoginCondition;
-import web.nl.kltn.model.UserCus;
+import web.nl.kltn.model.dto.UserDTO;
 import web.nl.kltn.model.generator.User;
 import web.nl.kltn.service.UserService;
 
@@ -24,22 +24,22 @@ public class UserServiceImpl implements UserService{
 	private UserCusMapper userCusMapper;
 
 	@Override
-	public UserCus login(LoginCondition loginCondition) {
+	public UserDTO login(LoginCondition loginCondition) {
 		return userCusMapper.login(loginCondition);
 	}
 
 	@Override
-	public UserCus findByUserId(String userId) {
+	public UserDTO findByUserId(String userId) {
 		return userCusMapper.findByUserId(userId);
 	}
 
 	@Override
-	public UserCus findByUsername(String username) {
+	public UserDTO findByUsername(String username) {
 		return userCusMapper.findByUsername(username);
 	}
 	
 	@Override
-	public UserCus updateUser(UserCus newUser) {
+	public UserDTO updateUser(UserDTO newUser) {
 		User user = userMapper.selectByPrimaryKey(newUser.getUserId());
 		user.setFname(newUser.getFname());
 		user.setBirthday(newUser.getBirthday());

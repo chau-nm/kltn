@@ -12,11 +12,16 @@ import usePagination from "~/hook/usePagination";
 import * as NotificationService from "~/services/notificationServices";
 
 interface NotificationConsoleContextInterface {
+  isLoading: boolean;
+
   notifications: NotificationModel[];
   setNotifications: React.Dispatch<SetStateAction<NotificationModel[]>>;
+  
   openAddNewNotificationModal: boolean;
   setOpenAddNewNotificationModal: React.Dispatch<SetStateAction<boolean>>;
-  isLoading: boolean;
+  openEditNotificationModal: boolean;
+  setOpenEditNotificationModal: React.Dispatch<SetStateAction<boolean>>;
+
   search: (searchCondition?: NotificationSearchConditionModel) => void;
   searchCondition: NotificationSearchConditionModel;
   setSearchCondition: React.Dispatch<
@@ -25,14 +30,20 @@ interface NotificationConsoleContextInterface {
   pagination: TablePaginationConfig;
   setPagination: React.Dispatch<SetStateAction<TablePaginationConfig>>;
   handleChange: (pagination: TablePaginationConfig) => void;
+
 }
 
 const initNotificationConsoleContext: NotificationConsoleContextInterface = {
+  isLoading: false,
+
   notifications: [],
   setNotifications: () => null,
+  
   openAddNewNotificationModal: false,
   setOpenAddNewNotificationModal: () => null,
-  isLoading: false,
+  openEditNotificationModal: false,
+  setOpenEditNotificationModal: () => null,
+
   search: () => {},
   searchCondition: {},
   setSearchCondition: () => null,
@@ -50,6 +61,8 @@ export const NotificationConsoleProvider = ({
 }: PropsWithChildren): JSX.Element => {
   const [notifications, setNotifications] = useState<NotificationModel[]>([]);
   const [openAddNewNotificationModal, setOpenAddNewNotificationModal] =
+    useState<boolean>(false);
+  const [openEditNotificationModal, setOpenEditNotificationModal] =
     useState<boolean>(false);
   const searchMutaion = useMutation(NotificationService.search, {
     onSuccess: (data: SearchResponseModel<NotificationModel[]>) => {
@@ -81,11 +94,16 @@ export const NotificationConsoleProvider = ({
   return (
     <NotificationConsoleContext.Provider
       value={{
+        isLoading: searchMutaion.isLoading,
+        
         notifications,
+        
         setNotifications,
         openAddNewNotificationModal,
         setOpenAddNewNotificationModal,
-        isLoading: searchMutaion.isLoading,
+        openEditNotificationModal,
+        setOpenEditNotificationModal,
+        
         search,
         searchCondition,
         setSearchCondition,

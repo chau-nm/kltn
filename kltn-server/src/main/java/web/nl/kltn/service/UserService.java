@@ -1,15 +1,15 @@
 package web.nl.kltn.service;
 
 import web.nl.kltn.model.LoginCondition;
-import web.nl.kltn.model.UserCus;
+import web.nl.kltn.model.dto.UserDTO;
 
 public interface UserService {
 	
-	public UserCus login(LoginCondition loginCondition);
+	public UserDTO login(LoginCondition loginCondition);
 
-	public UserCus findByUserId(String userId);
+	public UserDTO findByUserId(String userId);
 	
-	public UserCus findByUsername(String username);
+	public UserDTO findByUsername(String username);
 
-	UserCus updateUser(UserCus newUser);
+	UserDTO updateUser(UserDTO newUser);
 }

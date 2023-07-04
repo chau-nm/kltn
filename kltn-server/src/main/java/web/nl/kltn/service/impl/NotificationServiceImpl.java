@@ -1,6 +1,5 @@
 package web.nl.kltn.service.impl;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,8 @@ import web.nl.kltn.mapper.NotificationAttachmentCusMapper;
 import web.nl.kltn.mapper.NotificationCusMapper;
 import web.nl.kltn.mapper.generator.NotificationAttachmentMapper;
 import web.nl.kltn.mapper.generator.NotificationMapper;
-import web.nl.kltn.model.NotificationCus;
 import web.nl.kltn.model.NotificationSearchCondition;
+import web.nl.kltn.model.dto.NotificationDTO;
 import web.nl.kltn.model.generator.Notification;
 import web.nl.kltn.model.generator.NotificationAttachment;
 import web.nl.kltn.service.NotificationService;
@@ -26,61 +25,61 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Autowired
 	private NotificationMapper notificationMapper;
-
+	
+	@Autowired
+	private NotificationAttachmentCusMapper attachmentCusMapper;
+	
 	@Autowired
 	private NotificationAttachmentMapper attachmentMapper;
 
-	@Autowired
-	private NotificationAttachmentCusMapper attachmentCusMapper;
-
 	@Override
-	public List<NotificationCus> search(int page, int pageSize, NotificationSearchCondition searchCondition) {
-		return notificationCusMapper.search(page, pageSize, searchCondition);
+	public Notification insert(Notification notification) {
+		return notificationMapper.insert(notification) > 0 ? notification : null;
 	}
-
+	
 	@Override
-	public NotificationCus insert(NotificationCus notificationCus) {
+	public NotificationDTO insert(NotificationDTO notificationDTO) {
 		try {
-			Notification notification = notificationCus.createNotificationEntity();
-			if (notificationMapper.insert(notification) <= 0) {
-				throw new RuntimeException();
-			}
-			List<NotificationAttachment> attachments = notificationCus.createAttachments();
-			insertAttachments(attachments);
-			return notificationCus;
-		} catch (Exception e) {
-			e.printStackTrace();
+			Notification notification = notificationDTO;
+			List<NotificationAttachment> attachments = notificationDTO.createAttachments();
+			notificationMapper.insert(notification);
+			attachments.forEach(attachment -> {
+				attachmentMapper.insert(attachment);
+			});
+			return notificationDTO;
+		}catch(RuntimeException e) {
+			return null;
 		}
-		return null;
 	}
-
+	
 	@Override
-	public void update(NotificationCus notificationCus) {
-		Notification notification = notificationCus.createNotificationEntity();
-		notification.setUpdateAt(new Date().getTime());
-		notificationMapper.updateByPrimaryKey(notification);
-		attachmentCusMapper.delete(notification.getId());
-		insertAttachments(notificationCus.createAttachments());
-	}
-
-	@Override
-	public void deleted(String notificationId) {
+	public void delete(String notificationId) {
 		Notification notification = notificationMapper.selectByPrimaryKey(notificationId);
 		notification.setIsDeleted(true);
 		notificationMapper.updateByPrimaryKey(notification);
-		attachmentCusMapper.deleteWithFlagIsDeleted(notification.getId());
+	}
+	
+	@Override
+	public void update(Notification notification) {
+		notificationMapper.updateByPrimaryKey(notification);
 	}
 
 	@Override
 	public int getTotal(NotificationSearchCondition searchCondition) {
 		return notificationCusMapper.getTotal(searchCondition);
 	}
-
-	private void insertAttachments(List<NotificationAttachment> attachments) {
-		attachments.forEach(att -> {
-			if (attachmentMapper.insert(att) <= 0) {
-				throw new RuntimeException();
-			}
-		});
+	
+	@Override
+	public List<Notification> search(int page, int pageSize, NotificationSearchCondition searchCondition) {
+		return notificationCusMapper.search(page, pageSize, searchCondition);
+	}
+	
+	@Override
+	public NotificationDTO getDetail(String notificationId) {
+		NotificationDTO notificationDTO = new NotificationDTO();
+		Notification detail = notificationMapper.selectByPrimaryKey(notificationId);
+		notificationDTO.load(detail);
+		notificationDTO.setAttachmentUrls(attachmentCusMapper.getAttachmentByNotificationId(notificationId));
+		return notificationDTO;
 	}
 }

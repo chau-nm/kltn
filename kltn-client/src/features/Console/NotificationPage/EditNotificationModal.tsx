@@ -1,16 +1,16 @@
 import { Form, Input, Row, UploadFile } from "antd";
 import { useContext, useState } from "react";
 import { NotificationConsoleContext } from "~/contexts/NotificationConsoleContext";
-import ButtonCommon from "../common/ButtonCommon";
-import DraggerCommon from "../common/DraggerCommon";
-import ModalCommon from "../common/ModalCommon";
-import RichTextEditorCommon from "../common/RichTextEditorCommon";
+import ButtonCommon from "../../../components/common/ButtonCommon";
+import DraggerCommon from "../../../components/common/DraggerCommon";
+import ModalCommon from "../../../components/common/ModalCommon";
+import RichTextEditorCommon from "../../../components/common/RichTextEditorCommon";
 import {v4} from 'uuid';
 import { useForm } from "antd/es/form/Form";
 import * as NotificationService from '~/services/notificationServices';
 
 const EditNotificationModal = (): JSX.Element => {
-  const { openAddNewNotificationModal, setOpenAddNewNotificationModal } =
+  const { openEditNotificationModal, setOpenEditNotificationModal } =
     useContext(NotificationConsoleContext);
 
   const [editorHtml, setEditorHtml] = useState<string>("");
@@ -32,6 +32,12 @@ const EditNotificationModal = (): JSX.Element => {
     setAttachments(updateAttachment);
   }
 
+  const clearData = () => {
+    setEditorHtml('');
+    setAttachments([]);
+    form.resetFields();
+  }
+
   const handleSave = async () => {
     const notification: NotificationModel = {
       id: v4(),
@@ -45,16 +51,22 @@ const EditNotificationModal = (): JSX.Element => {
     const notificationResponse: NotificationModel | null = await NotificationService.insert(notification);
     if (notificationResponse){
       alert("Thành công");
-      setOpenAddNewNotificationModal(false);
+      setOpenEditNotificationModal(false);
+      clearData();
     }else{
       alert("Thất bại");
     }
   }
 
+  const handleClose = () => {
+    clearData();
+    setOpenEditNotificationModal(false);
+  }
+
   const ButtonFooter = (): JSX.Element => {
     return (
         <Row justify={"end"}>
-            <ButtonCommon value="Đóng" onClick={() => setOpenAddNewNotificationModal(false)}/>
+            <ButtonCommon value="Đóng" onClick={handleClose}/>
             <ButtonCommon color="blue" value="Lưu" onClick={handleSave}/>
         </Row>
     )
@@ -63,8 +75,8 @@ const EditNotificationModal = (): JSX.Element => {
   return (
     <ModalCommon
       title="Thêm thông báo"
-      open={openAddNewNotificationModal}
-      onCanel={() => setOpenAddNewNotificationModal(false)}
+      open={openEditNotificationModal}
+      onCanel={handleClose}
       maskCloseable={false}
       footer={[<ButtonFooter key={v4()}/>]}
     >
