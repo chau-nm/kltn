@@ -44,6 +44,7 @@ public class NotificationController {
 	){
 		NotificationSearchCondition searchCondition = searchConditionRequest.getData();
 		List<Notification> notifications = notificationService.search(page, pageSize, searchCondition);
+		System.out.println(notifications.get(0).getCreatedAt());
 		ResponseModel<SearchResponse<List<Notification>>> responseModel = new ResponseModel<>();
 		SearchResponse<List<Notification>> notificationSearchResponse = new SearchResponse<>();
 		notificationSearchResponse.setData(notifications);

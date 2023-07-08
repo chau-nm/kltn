@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService{
 		user.setBirthday(newUser.getBirthday());
 		user.setFaculty(newUser.getFaculty());
 		user.setStudentClass(newUser.getStudentClass());
-		user.setUpdateAt(new Date().getTime());
+		user.setUpdatedAt(new Date().getTime());
 		int updateRow = userMapper.updateByPrimaryKey(user);
 		return updateRow > 0 ? newUser : null;
 	}

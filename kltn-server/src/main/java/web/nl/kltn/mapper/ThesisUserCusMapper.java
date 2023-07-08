@@ -6,5 +6,7 @@ import web.nl.kltn.model.generator.User;
 
 public interface ThesisUserCusMapper {
 	
-	public List<User> search(String thesisId, int type);
+	public List<User> searchUser(String thesisId, int type);
+	
+	public void deleteByTheisId(String thesisId);
 }

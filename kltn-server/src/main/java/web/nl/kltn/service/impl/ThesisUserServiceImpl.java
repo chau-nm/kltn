@@ -22,10 +22,12 @@ public class ThesisUserServiceImpl implements ThesisUserService{
 	@Autowired
 	private ThesisUserCusMapper thesisUserCusMapper;
 	
+	@Override
 	public ThesisUser insert(ThesisUser thesisUser) {
 		return thesisUserMapper.insert(thesisUser) > 0 ? thesisUser : null;
 	}
 	
+	@Override
 	public List<ThesisUser> insertList(List<ThesisUser> thesisUsers){
 		try {
 			for(ThesisUser thesisUser: thesisUsers) {
@@ -39,10 +41,12 @@ public class ThesisUserServiceImpl implements ThesisUserService{
 		}
 	}
 	
+	@Override
 	public void update(ThesisUser thesisUser) {
 		thesisUserMapper.updateByPrimaryKey(thesisUser);
 	}
 	
+	@Override
 	public void delete(String id) {
 		thesisUserMapper.deleteByPrimaryKey(id);
 	}
@@ -51,11 +55,18 @@ public class ThesisUserServiceImpl implements ThesisUserService{
 	 * Type:
 	 * 	Student : 1
 	 * 	Teacher : 2
+	 * 
 	 * @param thesisId
 	 * @param type : type user
 	 * @return
 	 */
+	@Override
 	public List<User> search(String thesisId, int type){
-		return null;
+		return thesisUserCusMapper.searchUser(thesisId, type);
+	}
+	
+	@Override
+	public void deleteByThesisId(String thesisId) {
+		thesisUserCusMapper.deleteByTheisId(thesisId);
 	}
 }

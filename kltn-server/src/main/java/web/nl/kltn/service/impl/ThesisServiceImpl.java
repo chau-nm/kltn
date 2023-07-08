@@ -41,4 +41,9 @@ public class ThesisServiceImpl implements ThesisService {
 	public List<Thesis> search(int page, int pageSize, ThesisSearchCondition thesisSearchCondition) {
 		return thesisCusMapper.search(page, pageSize, thesisSearchCondition);
 	}
+	
+	@Override
+	public int getTotal(ThesisSearchCondition searchCondition) {
+		return thesisCusMapper.getTotal(searchCondition);
+	}
 }

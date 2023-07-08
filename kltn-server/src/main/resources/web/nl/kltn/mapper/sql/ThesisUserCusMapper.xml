@@ -2,4 +2,30 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="web.nl.kltn.mapper.ThesisUserCusMapper">
+
+	<delete id="deleteByTheisId" parameterType="String">
+		DELETE FROM thesis_user WHERE thesis_id = #{thesisId}
+	</delete>
+
+	<select id="searchUser" resultType="web.nl.kltn.model.generator.User">
+		SELECT
+			u.user_id,
+			u.username,
+			u.fname,
+			u.birthday,
+			u.faculty,
+			u.student_class
+		FROM
+			thesis_user tu
+		LEFT JOIN user u ON tu.user_id = u.user_id
+		<where>
+			<if test="thesisId !== null">
+				AND tu.thesis_id = #{thesisId}
+			</if>
+			AND tu.type = #{type}
+			AND u.is_deleted = 0
+			AND tu.is_deleted = 0
+		</where>
+	</select>
+
 </mapper>

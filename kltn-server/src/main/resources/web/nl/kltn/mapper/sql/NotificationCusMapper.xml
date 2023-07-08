@@ -9,9 +9,9 @@
 		<result column="title" property="title" jdbcType="VARCHAR" />
 		<result column="content" property="content" jdbcType="VARCHAR" />
 		<result column="is_deleted" property="isDeleted" jdbcType="BIT" />
-		<result column="create_at" property="createAt"
+		<result column="created_at" property="createdAt"
 			jdbcType="BIGINT" />
-		<result column="update_at" property="updateAt"
+		<result column="updated_at" property="updatedAt"
 			jdbcType="BIGINT" />
 	</resultMap>
 
@@ -19,7 +19,7 @@
 	<select id="search"
 		resultMap="Notification">
 		<bind name="offset" value="(page - 1) * pageSize" />
-		SELECT id, title, content, is_deleted, create_at, update_at
+		SELECT id, title, content, is_deleted, created_at, updated_at
 		FROM
 		notification
 		<where>
@@ -29,10 +29,10 @@
 			</if>
 			<if
 				test="searchCondition != null and searchCondition.startAt != 0">
-				AND create_at >= #{searchCondition.startAt}
+				AND created_at >= #{searchCondition.startAt}
 			</if>
 			<if test="searchCondition != null and searchCondition.endAt != 0">
-				AND create_at &lt;= #{searchCondition.endAt}
+				AND created_at &lt;= #{searchCondition.endAt}
 			</if>
 			AND is_deleted = 0
 		</where>
@@ -47,10 +47,10 @@
 				AND title LIKE CONCAT('%', #{title}, '%')
 			</if>
 			<if test="startAt != 0">
-				AND n.create_at >= #{startAt}
+				AND n.created_at >= #{startAt}
 			</if>
 			<if test="endAt != 0">
-				AND n.create_at &lt;= #{endAt}
+				AND n.created_at &lt;= #{endAt}
 			</if>
 			AND n.is_deleted = 0
 		</where>

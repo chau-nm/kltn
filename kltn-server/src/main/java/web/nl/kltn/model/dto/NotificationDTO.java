@@ -27,7 +27,7 @@ public class NotificationDTO extends Notification{
 				attachment.setId(String.valueOf(UUID.randomUUID()));
 				attachment.setAttachmentUrl(url);
 				attachment.setNotificationId(this.getId());
-				attachment.setCreateAt(new Date().getTime());
+				attachment.setCreatedAt(new Date().getTime());
 				attachment.setIsDeleted(false);
 				return attachment;
 			}).toList();
@@ -39,7 +39,7 @@ public class NotificationDTO extends Notification{
 		setContent(notification.getContent());
 		setTitle(notification.getTitle());
 		setIsDeleted(notification.getIsDeleted());
-		setCreateAt(notification.getCreateAt());
-		setUpdateAt(notification.getUpdateAt());
+		setCreatedAt(notification.getCreatedAt());
+		setUpdatedAt(notification.getUpdatedAt());
 	}
 }

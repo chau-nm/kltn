@@ -7,17 +7,16 @@
 		resultType="web.nl.kltn.model.generator.Thesis">
 		<bind name="offset" value="(page - 1) * pageSize" />
 		SELECT
-		id,
-		topic,
-		description,
-		year,
-		semester,
-		status,
-		is_deleted,
-		created_at,
-		update_at
-		FROM
-		thesis
+			id,
+			topic,
+			description,
+			year,
+			semester,
+			status,
+			is_deleted,
+			created_at,
+			updated_at
+		FROM thesis
 		<where>
 			<if
 				test="searchCondition != null and searchCondition.topic != null">
@@ -38,5 +37,30 @@
 			AND is_deleted = 0
 		</where>
 		LIMIT #{pageSize} OFFSET #{offset}
+	</select>
+	
+	<select id="getTotal"
+		resultType="int">
+		SELECT COUNT(id)
+		FROM thesis
+		<where>
+			<if
+				test="topic != null">
+				AND topic LIKE CONCAT('%', #{topic}, '%')
+			</if>
+			<if
+				test="year != null">
+				AND year = #{year}
+			</if>
+			<if
+				test="semester != null">
+				AND semester = #{semester}
+			</if>
+			<if
+				test="status != null">
+				AND status = #{status}
+			</if>
+			AND is_deleted = 0
+		</where>
 	</select>
 </mapper>

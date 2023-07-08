@@ -44,13 +44,13 @@ const NotificationTableResult = (): JSX.Element => {
     {
       title: "Thời gian đăng tin",
       render: (value, record) => {
-        return dateDisplay(new Date(record.createAt as number));
+        return dateDisplay(new Date(record.createdAt as number));
       },
     },
     {
       title: "Thời gian cập nhật",
       render: (value, record) => {
-        return dateDisplay(new Date(record.updateAt as number));
+        return dateDisplay(new Date(record.updatedAt as number));
       },
     },
     {

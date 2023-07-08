@@ -6,5 +6,9 @@ import web.nl.kltn.model.ThesisSearchCondition;
 import web.nl.kltn.model.generator.Thesis;
 
 public interface ThesisCusMapper {
-	public List<Thesis> search(int page, int pageSize, ThesisSearchCondition searchCondition);
+	public List<Thesis> search(
+			int page, 
+			int pageSize, 
+			ThesisSearchCondition searchCondition);
+	public int getTotal(ThesisSearchCondition searchCondition);
 }

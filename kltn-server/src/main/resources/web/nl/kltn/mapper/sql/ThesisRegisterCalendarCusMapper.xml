@@ -1,0 +1,22 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="web.nl.kltn.mapper.ThesisRegisterCalendarCusMapper">
+
+	<select id="getActiveRegisterCalendar" resultType="web.nl.kltn.model.generator.ThesisRegisterCalendar">
+		SELECT
+			id,
+			start_at,
+			end_at,
+			active,
+			is_deleted,
+			created_at,
+			updated_at
+		FROM thesis_register_calendar
+		WHERE
+			(UNIX_TIMESTAMP() * 1000 BETWEEN start_at AND end_at)
+			AND active = 1
+			AND is_deleted = 0
+	</select>
+
+</mapper>

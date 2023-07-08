@@ -15,4 +15,6 @@ public interface ThesisService {
 
 	Thesis insert(Thesis thesis);
 
+	int getTotal(ThesisSearchCondition searchCondition);
+
 }

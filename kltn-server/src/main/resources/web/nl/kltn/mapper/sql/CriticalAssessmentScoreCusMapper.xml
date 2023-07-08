@@ -1,0 +1,28 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="web.nl.kltn.mapper.CriticalAssessmentScoreCusMapper">
+
+	<select id="searchByCAId" resultType="web.nl.kltn.model.CriticalAssessmentScore">
+		SELECT
+			id,
+			ca_id,
+			student_id,
+			score_1,
+			score_2,
+			score_3,
+			total_score,
+			is_deleted,
+			create_at,
+			upadte_at
+		FROM critical_assessment_score
+		WHERE
+			ca_id = #{caId}
+			AND is_deleted = 0
+	</select>
+	
+	<delete id="deleteByCAId">
+		DELETE FROM critical_assessment_score WHERE ca_id = #{caId}
+	</delete>
+
+</mapper>
