@@ -1,5 +1,6 @@
 package web.nl.kltn.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class NotificationServiceImpl implements NotificationService {
 	public NotificationDTO insert(NotificationDTO notificationDTO) {
 		try {
 			Notification notification = notificationDTO;
+			notification.setIsDeleted(false);
+			notification.setCreatedAt(new Date().getTime());
+			notification.setUpdatedAt(new Date().getTime());
 			List<NotificationAttachment> attachments = notificationDTO.createAttachments();
 			notificationMapper.insert(notification);
 			attachments.forEach(attachment -> {
@@ -60,8 +64,15 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 	
 	@Override
-	public void update(Notification notification) {
+	public void update(NotificationDTO notificationDTO) {
+		System.out.println(notificationDTO.getId());
+		Notification notification = notificationDTO;
 		notificationMapper.updateByPrimaryKey(notification);
+		attachmentCusMapper.delete(notification.getId());
+		List<NotificationAttachment> attachments = notificationDTO.createAttachments();
+		attachments.forEach(attachment -> {
+			attachmentMapper.insert(attachment);
+		});
 	}
 
 	@Override
@@ -78,6 +89,9 @@ public class NotificationServiceImpl implements NotificationService {
 	public NotificationDTO getDetail(String notificationId) {
 		NotificationDTO notificationDTO = new NotificationDTO();
 		Notification detail = notificationMapper.selectByPrimaryKey(notificationId);
+		if (detail == null) {
+			return null;
+		}
 		notificationDTO.load(detail);
 		notificationDTO.setAttachmentUrls(attachmentCusMapper.getAttachmentByNotificationId(notificationId));
 		return notificationDTO;

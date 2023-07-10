@@ -44,7 +44,6 @@ public class NotificationController {
 	){
 		NotificationSearchCondition searchCondition = searchConditionRequest.getData();
 		List<Notification> notifications = notificationService.search(page, pageSize, searchCondition);
-		System.out.println(notifications.get(0).getCreatedAt());
 		ResponseModel<SearchResponse<List<Notification>>> responseModel = new ResponseModel<>();
 		SearchResponse<List<Notification>> notificationSearchResponse = new SearchResponse<>();
 		notificationSearchResponse.setData(notifications);
@@ -68,10 +67,11 @@ public class NotificationController {
 	
 	@PutMapping("/update")
 	public ResponseModel<Boolean> update(
-			@RequestBody RequestModel<Notification> notificationRequest
+			@RequestBody RequestModel<NotificationDTO> notificationRequest
 	){
 		ResponseModel<Boolean> responseModel = new ResponseModel<>();
-		Notification notification = notificationRequest.getData();
+		NotificationDTO notification = notificationRequest.getData();
+		System.out.println(notification.getId());
 		notificationService.update(notification);
 		responseModel.setData(true);
 		return responseModel;

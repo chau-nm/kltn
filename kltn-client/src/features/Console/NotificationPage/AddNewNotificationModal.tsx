@@ -44,8 +44,8 @@ const AddNewNotificationModal = (): JSX.Element => {
       title: form.getFieldValue("title"),
       content: editorHtml,
       attachmentUrls: attachments,
-      createAt: Date.now(),
-      updateAt: Date.now()
+      createdAt: Date.now(),
+      updatedAt: Date.now()
     }
 
     const notificationResponse: NotificationModel | null = await NotificationService.insert(notification);

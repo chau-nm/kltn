@@ -1,4 +1,4 @@
-import { Row, Space, Spin } from "antd";
+import { Row, Space, Spin, message } from "antd";
 import { ColumnType } from "antd/es/table";
 import { useContext, useEffect } from "react";
 import { NotificationConsoleContext } from "~/contexts/NotificationConsoleContext";
@@ -9,16 +9,31 @@ import {
   EditIconCommon,
 } from "~/components/common/IconCommon";
 import TableCommon from "~/components/common/TableCommon";
+import { useMutation } from "react-query";
+import * as NotificationService from "~/services/notificationServices";
 
 const NotificationTableResult = (): JSX.Element => {
   const {
     notifications,
     setOpenAddNewNotificationModal,
     search,
-    isLoading,
+    isLoadingList,
     pagination,
     handleChange,
+    searchDetail,
+    setOpenEditNotificationModal
   } = useContext(NotificationConsoleContext);
+
+  const deleteNotificationMutation = useMutation(NotificationService.remove, {
+    onSuccess: (data: boolean) => {
+      if (data) {
+        message.destroy("Xóa thành công");
+        search();
+      } else {
+        message.error("Xóa thất bại");
+      }
+    } 
+  })
 
   useEffect(() => {
     search();
@@ -57,11 +72,16 @@ const NotificationTableResult = (): JSX.Element => {
       title: "",
       fixed: "right",
       width: 150,
-      render: (row) => {
+      render: (row, record) => {
         return (
           <Row justify={"center"}>
-            <EditIconCommon />
-            <DeleteIconCommon />
+            <EditIconCommon onClick={() => {
+              searchDetail(record.id);
+              setOpenEditNotificationModal(true);
+            }}/>
+            <DeleteIconCommon onClick={() => {
+              deleteNotificationMutation.mutate(record.id);
+            }}/>
           </Row>
         );
       },
@@ -87,7 +107,7 @@ const NotificationTableResult = (): JSX.Element => {
           }}
         />
       </Row>
-      <Spin spinning={isLoading}>
+      <Spin spinning={isLoadingList}>
         <TableCommon
           columns={columns}
           dataSource={notifications}

@@ -4,6 +4,7 @@ const path = {
     
     // dashboard
     DASHBOARD : '/dashboard',
+    NOTIFICATION_DETAIL : '/notification',
 
     // console
     CONSOLE : '/console',

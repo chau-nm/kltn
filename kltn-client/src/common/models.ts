@@ -9,6 +9,13 @@ interface ResponseModel<T>{
     data: T
 }
 
+/** Common */
+interface TimeModel {
+    h: number;
+    m: number;
+    s: number;
+}
+
 /** API */
 interface MutationParamsModel<T> {
     page: number;
@@ -51,6 +58,7 @@ interface NotificationModel{
     title?: string;
     content?: string;
     attachmentUrls?: string[];
+    isDeleted?: boolean;
     createdAt?: number;
     updatedAt?: number;
 }

@@ -36,10 +36,12 @@ export const AuthContextProvider = ({
   });
 
   useEffect(() => {
-    localStorage.setItem('user', JSON.stringify({
-      ...user,
-      password: 'Protected'
-    }));
+    if (user) {
+      localStorage.setItem('user', JSON.stringify({
+        ...user,
+        password: 'Protected'
+      }));
+    }
   }, [user])
 
   useEffect(() => {

@@ -33,6 +33,8 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 		RefreshToken refreshToken = new RefreshToken();
 		refreshToken.setToken(UUID.randomUUID().toString());
 		refreshToken.setExpirationDate(expirationDate);
+		refreshToken.setCreatedAt(new Date().getTime());
+		refreshToken.setUpdatedAt(new Date().getTime());
 		return refreshToken;
 	}
 

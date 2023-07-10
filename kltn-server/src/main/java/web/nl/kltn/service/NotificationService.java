@@ -11,7 +11,7 @@ public interface NotificationService {
 
 	public Notification insert(Notification notification);
 
-	void update(Notification notification);
+	void update(NotificationDTO notificationDTO);
 
 	void delete(String notificationId);
 

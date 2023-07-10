@@ -16,6 +16,7 @@ const LoginPage = lazy(() => import("~/features/LoginPage"));
 
 //Dashboard
 const DashboardPage = lazy(() => import("~/features/Dashboard"));
+const NotificationDetailPage = lazy(() => import("~/features/Dashboard/NotificationDetailPage"));
 
 //Console
 const NotificationConsolePage = lazy(() => import("~/features/Console/NotificationPage"));
@@ -89,6 +90,14 @@ const useRouteElements = () => {
               <DashboardPage />
             </DashboardLayout>
           ),
+        },
+        {
+          path: `${path.NOTIFICATION_DETAIL}/:id`,
+          element: (
+            <DashboardLayout>
+              <NotificationDetailPage />
+            </DashboardLayout>
+          )
         }
       ],
     },

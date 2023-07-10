@@ -49,7 +49,7 @@ public class SecurityConfiguration {
 				.and()
 				.csrf().disable()
 				.authorizeHttpRequests()
-				.requestMatchers("/api/user/login", "/api/user/refresh-token")
+				.requestMatchers("/api/user/login", "/api/user/refresh-token", "/api/user/get-user-with-token")
 				.permitAll()
 				.anyRequest().authenticated()
 				.and()

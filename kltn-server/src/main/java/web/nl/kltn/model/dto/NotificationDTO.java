@@ -28,6 +28,7 @@ public class NotificationDTO extends Notification{
 				attachment.setAttachmentUrl(url);
 				attachment.setNotificationId(this.getId());
 				attachment.setCreatedAt(new Date().getTime());
+				attachment.setUpdatedAt(new Date().getTime());
 				attachment.setIsDeleted(false);
 				return attachment;
 			}).toList();

@@ -19,3 +19,22 @@ export const search = async (mutationParams: MutationParamsModel<NotificationSea
     const notificationsSearchResponse: SearchResponseModel<NotificationModel[]> = responseModel.data;
     return notificationsSearchResponse;
 }
+
+export const searchDetail = async (id : string) : Promise<NotificationModel>=> {
+    const responseModel: ResponseModel<NotificationModel> = await http.get(`${ApiUrlConstants.SEARCH_DETAIL_NOTIFICATION}${id}`);
+    const notificationResponse: NotificationModel = responseModel.data;
+    return notificationResponse;
+}
+
+export const update = async (notification : NotificationModel) : Promise<boolean> => {
+    const requestModel : RequestModel<NotificationModel> = {
+        data : notification
+    }
+    const responseModel: ResponseModel<boolean> = await http.put(ApiUrlConstants.UPDATE_NOTIFICATION, requestModel);
+    return responseModel ? responseModel.data : false;
+}
+
+export const remove = async (id : string) : Promise<boolean> => {
+    const responseModel: ResponseModel<boolean> = await http.delete(`${ApiUrlConstants.DELETE_NOTIFICATION}${id}`);
+    return responseModel ? responseModel.data : false;
+}

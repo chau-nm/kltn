@@ -36,6 +36,7 @@
 			</if>
 			AND is_deleted = 0
 		</where>
+		ORDER BY updated_at DESC
 		LIMIT #{pageSize} OFFSET #{offset}
 	</select>
 

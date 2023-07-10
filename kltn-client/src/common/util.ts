@@ -19,3 +19,21 @@ export const dateDisplay = (date : Date | null | undefined) => {
     }
     return "";
 }
+
+export const dateTimeDisplay = (date : Date | null | undefined) => {
+    if (date){
+        const dateDisplay = new Date(date);
+        return `${dateDisplay.getDate()}/${dateDisplay.getMonth() + 1}/${dateDisplay.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    }
+    return "";
+}
+
+/**
+ * Get filename from url
+ * 
+ * @param url 
+ * @returns 
+ */
+export const getFileNameFromUrl = (url: string): string => {
+    return url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
+}

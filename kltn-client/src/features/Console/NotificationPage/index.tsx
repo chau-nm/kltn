@@ -5,6 +5,7 @@ import {
 import AddNewNotificationModal from "./AddNewNotificationModal";
 import NotificationSearchForm from "./NotificationSearchForm";
 import NotificationTableResult from "./NotificationTableResult";
+import EditNotificationModal from "./EditNotificationModal";
 
 const NotificationConsolePage = (): JSX.Element => {
   return (
@@ -13,6 +14,7 @@ const NotificationConsolePage = (): JSX.Element => {
         <NotificationSearchForm />
         <NotificationTableResult />
         <AddNewNotificationModal />
+        <EditNotificationModal />
       </NotificationConsoleProvider>
     </Space>
   );

@@ -9,5 +9,8 @@ export class ApiUrlConstants {
 
     /** NOTIFICATION */
     public static readonly INSERT_NOTIFICATION = "/notification/insert";
+    public static readonly UPDATE_NOTIFICATION = "/notification/update";
+    public static readonly DELETE_NOTIFICATION = "/notification/delete/";
     public static readonly SEARCH_NOTIFICATION = "/notification/search/";
+    public static readonly SEARCH_DETAIL_NOTIFICATION = "/notification/";
 }
