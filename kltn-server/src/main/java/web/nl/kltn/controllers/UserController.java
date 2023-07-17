@@ -1,5 +1,7 @@
 package web.nl.kltn.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +25,7 @@ import web.nl.kltn.model.LoginCondition;
 import web.nl.kltn.model.RefreshTokenRequest;
 import web.nl.kltn.model.dto.UserDTO;
 import web.nl.kltn.model.generator.RefreshToken;
+import web.nl.kltn.model.generator.User;
 import web.nl.kltn.service.RefreshTokenService;
 import web.nl.kltn.service.UserService;
 
@@ -66,6 +69,17 @@ public class UserController {
 			responseModel.setData(userCus);
 		}
 
+		return responseModel;
+	}
+	
+	@GetMapping("/get-user-with-role")
+	public ResponseModel<List<UserDTO>> getUserWithRole(@RequestParam String role) {
+		ResponseModel<List<UserDTO>> responseModel = new ResponseModel<>();
+		if (role == null) {
+			return responseModel;
+		}
+		List<UserDTO> userDTOs = userService.findByRole(role);
+		responseModel.setData(userDTOs);
 		return responseModel;
 	}
 

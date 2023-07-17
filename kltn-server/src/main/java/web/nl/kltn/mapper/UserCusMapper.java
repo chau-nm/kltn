@@ -1,5 +1,7 @@
 package web.nl.kltn.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import web.nl.kltn.model.LoginCondition;
@@ -13,4 +15,6 @@ public interface UserCusMapper {
 	public UserDTO findByUserId(String userId);
 	
 	public UserDTO findByUsername(String username);
+	
+	public List<UserDTO> findByRole(String role);
 }

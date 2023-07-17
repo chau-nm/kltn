@@ -1,3 +1,4 @@
+import { ContainerOutlined, HomeOutlined, NotificationOutlined, UserOutlined } from "@ant-design/icons";
 import path from "./path";
 
 class ConsoleLayoutConstants {
@@ -9,17 +10,26 @@ class ConsoleLayoutConstants {
         {
             id: 1,
             title: 'Trang chủ',
-            to: path.CONSOLE
+            to: path.CONSOLE,
+            icon: HomeOutlined
         },
         {
             id: 2,
             title: 'Thông báo',
-            to: path.NOTIFICATION_CONSOLE
+            to: path.NOTIFICATION_CONSOLE,
+            icon: NotificationOutlined
         },
         {
             id: 3,
             title: 'Luận văn',
-            to: path.THESIS_CONSOLE
+            to: path.THESIS_CONSOLE,
+            icon: ContainerOutlined
+        },
+        {
+            id: 4,
+            title: 'Quản lý tài khoản',
+            to: path.USER_CONSOLE,
+            icon: UserOutlined
         },
     ];
 }

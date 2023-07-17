@@ -31,7 +31,7 @@ const ModalCommon = ({
       onCancel={onCanel}
       onOk={onOk}
       maskClosable={maskCloseable}
-      className={`${className}`}>
+      className={`${className} min-w-[500px]`}>
       {children}
     </Modal>
   );

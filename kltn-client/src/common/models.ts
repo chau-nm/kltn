@@ -73,3 +73,13 @@ interface NotificationSearchConditionModel{
 interface ThesisModel{
     
 }
+
+interface ThesisRegisterCalendarModel {
+    id?: number;
+    startAt?: number;
+    endAt?: number;
+    active?: boolean;
+    isDeleted?: boolean;
+    createdAt?: number;
+    updatedAt?: number;
+}

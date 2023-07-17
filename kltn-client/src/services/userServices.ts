@@ -42,3 +42,8 @@ export const updateUser = async (newUser: UserModel) :  Promise<UserModel | null
     const userResp : UserModel = response.data as UserModel;
     return userResp ? userResp : null;
 }
+
+export const getUserByRole = async (role : string) : Promise<UserModel[]> => {
+    const response: ResponseModel<UserModel[]> = await http.get(`${ApiUrlConstants.GET_USER_WITH_ROLE}?role=${role}`);
+    return [];
+}

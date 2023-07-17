@@ -10,6 +10,7 @@ import DashboardLayout from "~/layouts/DashboardLayout";
 
 import { hasCommonValue } from "~/common/util";
 import PageNotFounded from "~/features/PageNotFounded";
+import ThesisConsoleProvider from "~/contexts/ThesisConsoleContext";
 
 /** IMPORT PAGE START */
 const LoginPage = lazy(() => import("~/features/LoginPage"));
@@ -17,12 +18,17 @@ const LoginPage = lazy(() => import("~/features/LoginPage"));
 //Dashboard
 const DashboardPage = lazy(() => import("~/features/Dashboard"));
 const NotificationDetailPage = lazy(() => import("~/features/Dashboard/NotificationDetailPage"));
+const DashboardThesisRegisterPage = lazy(() => import("~/features/Dashboard/RegisterThesisPage"));
+const MyThesisPage = lazy(() => import("~/features/Dashboard/MyThesisPage"));
+const OutlineReviewPage = lazy(() => import("~/features/Dashboard/OutlineReviewPage"));
+const CriticalAssessmentPage = lazy(() => import("~/features/Dashboard/CriticalAssessmentPage"));
+const ProtectionPage = lazy(() => import("~/features/Dashboard/ProtectionPage"));
 
 //Console
 const NotificationConsolePage = lazy(() => import("~/features/Console/NotificationPage"));
 const ConsolePage = lazy(() => import("~/features/Console"));
 const ThesisConsolePage = lazy(() => import("~/features/Console/ThesisPage"));
-
+const UserPage = lazy(() => import("~/features/Console/UserPage"));
 
 /** IMPORT PAGE END */
 
@@ -98,7 +104,16 @@ const useRouteElements = () => {
               <NotificationDetailPage />
             </DashboardLayout>
           )
-        }
+        },
+        {
+          path: path.MY_THESIS,
+          element: (
+            <DashboardLayout>
+              <MyThesisPage />
+            </DashboardLayout>
+          )
+        },
+        
       ],
     },
     {
@@ -130,7 +145,9 @@ const useRouteElements = () => {
           path: path.THESIS_CONSOLE,
           element: (
             <ConsoleLayout>
-              <ThesisConsolePage />
+              <ThesisConsoleProvider>
+                <ThesisConsolePage />
+              </ThesisConsoleProvider>
             </ConsoleLayout>
           )
         }
@@ -144,7 +161,66 @@ const useRouteElements = () => {
         ]} />
       ),
       children: [
-        
+        {
+          path: path.USER_CONSOLE,
+          element: (
+            <ConsoleLayout>
+              <UserPage />
+            </ConsoleLayout>
+          )
+        }
+      ],
+    },
+    {
+      path: "",
+      element: (
+        <AuthenticatedRoute roles={[
+          AuthConstants.AUTH_ROLES.STUDENT,
+        ]} />
+      ),
+      children: [
+        {
+          path: path.DASHBOARD_REGISTER_THESIS_CALENDAR,
+          element: (
+            <DashboardLayout>
+              <DashboardThesisRegisterPage />
+            </DashboardLayout>
+          )
+        }
+      ],
+    },
+    {
+      path: "",
+      element: (
+        <AuthenticatedRoute roles={[
+          AuthConstants.AUTH_ROLES.COUNCIL,
+        ]} />
+      ),
+      children: [
+        {
+          path: path.OUTLINE_REVIEW,
+          element: (
+            <DashboardLayout>
+              <OutlineReviewPage />
+            </DashboardLayout>
+          )
+        },
+        {
+          path: path.CRITICAL_ASSESSMENT,
+          element: (
+            <DashboardLayout>
+              <CriticalAssessmentPage />
+            </DashboardLayout>
+          )
+        },
+        {
+          path: path.PROTECTION,
+          element: (
+            <DashboardLayout>
+              <ProtectionPage />
+            </DashboardLayout>
+          )
+        },
       ],
     },
     {

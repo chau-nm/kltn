@@ -2,7 +2,9 @@ package web.nl.kltn.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,9 +27,9 @@ public class ThesisRegisterCalendarController {
 		return responseModel;
 	}
 
-	@GetMapping("/insert")
+	@PostMapping("/insert")
 	public ResponseModel<ThesisRegisterCalendar> insert(
-			RequestModel<ThesisRegisterCalendar> theisRegisterCalendarRequest) {
+			@RequestBody RequestModel<ThesisRegisterCalendar> theisRegisterCalendarRequest) {
 		ResponseModel<ThesisRegisterCalendar> responseModel = new ResponseModel<>();
 		ThesisRegisterCalendar thesisRegisterCalendar = theisRegisterCalendarRequest.getData();
 		responseModel.setData(thesisRegisterCalendarService.insert(thesisRegisterCalendar));
@@ -43,6 +45,7 @@ public class ThesisRegisterCalendarController {
 			return responseModel;
 		}
 		calendarActive.setActive(false);
+		thesisRegisterCalendarService.update(calendarActive);
 		responseModel.setData(true);
 		return responseModel;
 	}

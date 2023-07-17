@@ -1,6 +1,7 @@
 package web.nl.kltn.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,11 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public UserDTO findByUsername(String username) {
 		return userCusMapper.findByUsername(username);
+	}
+	
+	@Override
+	public List<UserDTO> findByRole(String role) {
+		return userCusMapper.findByRole(role);
 	}
 	
 	@Override

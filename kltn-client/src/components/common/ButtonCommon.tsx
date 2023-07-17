@@ -14,6 +14,7 @@ type ButtonCommonProps = {
   color?: "yellow" | "green" | "blue" | "red" | "gray";
   className?: string;
   onClick?: MouseEventHandler;
+  disabled?: boolean;
 };
 
 const ButtonCommon = ({
@@ -21,6 +22,7 @@ const ButtonCommon = ({
   color,
   className,
   onClick,
+  disabled
 }: ButtonCommonProps): JSX.Element => {
   return (
     <Button
@@ -28,6 +30,7 @@ const ButtonCommon = ({
         color && ButtonColorType[color]
       }`}
       onClick={onClick}
+      disabled={disabled}
     >
       {value}
     </Button>

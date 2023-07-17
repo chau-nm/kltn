@@ -2,8 +2,18 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="web.nl.kltn.mapper.ThesisRegisterCalendarCusMapper">
+	
+	<resultMap type="web.nl.kltn.model.generator.ThesisRegisterCalendar" id="ThesisRegisterCalendar">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+		<result column="start_at" property="startAt" jdbcType="BIGINT"/>
+		<result column="end_at" property="endAt" jdbcType="BIGINT"/>
+		<result column="active" property="active" jdbcType="BIT" />
+		<result column="is_deleted" property="isDeleted" jdbcType="BIT"/>
+		<result column="created_at" property="createdAt" jdbcType="BIT"/>
+		<result column="updated_at" property="updatedAt" jdbcType="BIT"/>
+	</resultMap>
 
-	<select id="getActiveRegisterCalendar" resultType="web.nl.kltn.model.generator.ThesisRegisterCalendar">
+	<select id="getActiveRegisterCalendar" resultMap="ThesisRegisterCalendar">
 		SELECT
 			id,
 			start_at,

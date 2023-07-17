@@ -71,5 +71,23 @@
 		WHERE 
 			u.username = '${username}'
 	</select>
+	
+	<select id="findByRole" parameterType="java.lang.String" resultMap="UserDTO">
+		SELECT 
+			u.user_id,
+			u.username,
+			u.password,
+			u.fname,
+			u.birthday,
+			u.faculty,
+			u.student_class,
+			r.role_name
+		FROM
+			user u
+		LEFT JOIN role_user ru ON u.user_id = ru.user_id
+		LEFT JOIN role r ON ru.role_id = r.role_id
+		WHERE 
+			r.role_name = #{role}
+	</select>
 
 </mapper>
