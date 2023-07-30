@@ -83,3 +83,21 @@ interface ThesisRegisterCalendarModel {
     createdAt?: number;
     updatedAt?: number;
 }
+
+
+/** Doc2Vec */
+
+interface ThesisRegisterCalendarModel {
+    id?: number;
+    startAt?: number;
+    endAt?: number;
+    active?: boolean;
+    isDeleted?: boolean;
+    createdAt?: number;
+    updatedAt?: number;
+}
+interface Doc2VecModel {
+    id?: number;
+    title?: string;
+    url?: string;
+}

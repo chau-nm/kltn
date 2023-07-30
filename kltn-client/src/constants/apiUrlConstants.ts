@@ -15,6 +15,10 @@ export class ApiUrlConstants {
     public static readonly SEARCH_NOTIFICATION = "/notification/search/";
     public static readonly SEARCH_DETAIL_NOTIFICATION = "/notification/";
 
+
+    /** Doc2vec */
+    public static readonly SEARCH_DOC2VEC = "/doc2vec/search";
+
     /** THESIS REGISTER CALENDAR */
     public static readonly INSERT_THESIS_REGISTER_CALENDAR = "/thesis-register-calendar/insert";
     public static readonly VIEW_THESIS_REGISTER_CALENDAR = "/thesis-register-calendar/view";
