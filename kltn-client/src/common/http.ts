@@ -37,7 +37,8 @@ export class HttpService {
           const status = error.response.status;
 
           switch(status){
-            case 401:
+            case 401 || 403:
+              localStorage.clear();
               break;
             default:
               throw new Error('Error: ' + error.message);

@@ -37,3 +37,7 @@ export const dateTimeDisplay = (date : Date | null | undefined) => {
 export const getFileNameFromUrl = (url: string): string => {
     return url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
 }
+
+export const resetLocalStorage = () => {
+    localStorage.clear();
+}

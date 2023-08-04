@@ -24,6 +24,7 @@ import web.nl.kltn.model.dto.ThesisDTO;
 import web.nl.kltn.model.dto.UserDTO;
 import web.nl.kltn.model.generator.Thesis;
 import web.nl.kltn.model.generator.ThesisUser;
+import web.nl.kltn.model.generator.User;
 import web.nl.kltn.service.ThesisService;
 import web.nl.kltn.service.ThesisUserService;
 
@@ -38,7 +39,9 @@ public class ThesisController {
 	private ThesisUserService thesisUserService;
 
 	@GetMapping("/{id}")
-	public ThesisDTO viewDetail(@PathVariable(required = true) String id) {
+	public ResponseModel<ThesisDTO> viewDetail(@PathVariable(required = true) String id) {
+		ResponseModel<ThesisDTO> responseModel = new ResponseModel<>();
+		
 		return null;
 	}
 
@@ -68,38 +71,38 @@ public class ThesisController {
 				responseModel.setMessage("Insert Fail");
 				return responseModel;
 			}
-			// insert student for thesis
-			List<UserDTO> students = thesis.getStudents();
-			List<ThesisUser> thesisStudents = students.stream().map(student -> {
-				ThesisUser thesisStudent = new ThesisUser();
-				thesisStudent.setId(UUID.randomUUID().toString());
-				thesisStudent.setThesisId(thesis.getId());
-				thesisStudent.setType(Constant.THESIS_STUDENT);
-				thesisStudent.setUserId(student.getUserId());
-				thesisStudent.setIsDeleted(false);
-				thesisStudent.setCreatedAt(new Date().getTime());
-				return thesisStudent;
-			}).toList();
-			if (thesisUserService.insertList(thesisStudents) == null) {
-				responseModel.setMessage("Insert Fail");
-				return responseModel;
-			}
-			// insert teacher for thesis
-			List<UserDTO> teachers = thesis.getTeachers();
-			List<ThesisUser> thesisTeachers = teachers.stream().map(teacher -> {
-				ThesisUser thesisTeacher = new ThesisUser();
-				thesisTeacher.setId(UUID.randomUUID().toString());
-				thesisTeacher.setThesisId(thesis.getId());
-				thesisTeacher.setType(Constant.THESIS_STUDENT);
-				thesisTeacher.setUserId(teacher.getUserId());
-				thesisTeacher.setIsDeleted(false);
-				thesisTeacher.setCreatedAt(new Date().getTime());
-				return thesisTeacher;
-			}).toList();
-			if (thesisUserService.insertList(thesisTeachers) == null) {
-				responseModel.setMessage("Insert Fail");
-				return responseModel;
-			}
+//			// insert student for thesis
+//			List<User> students = thesis.getStudents();
+//			List<ThesisUser> thesisStudents = students.stream().map(student -> {
+//				ThesisUser thesisStudent = new ThesisUser();
+//				thesisStudent.setId(UUID.randomUUID().toString());
+//				thesisStudent.setThesisId(thesis.getId());
+//				thesisStudent.setType(Constant.THESIS_STUDENT);
+//				thesisStudent.setUserId(student.getUserId());
+//				thesisStudent.setIsDeleted(false);
+//				thesisStudent.setCreatedAt(new Date().getTime());
+//				return thesisStudent;
+//			}).toList();
+//			if (thesisUserService.insertList(thesisStudents) == null) {
+//				responseModel.setMessage("Insert Fail");
+//				return responseModel;
+//			}
+//			// insert teacher for thesis
+//			List<User> teachers = thesis.getTeachers();
+//			List<ThesisUser> thesisTeachers = teachers.stream().map(teacher -> {
+//				ThesisUser thesisTeacher = new ThesisUser();
+//				thesisTeacher.setId(UUID.randomUUID().toString());
+//				thesisTeacher.setThesisId(thesis.getId());
+//				thesisTeacher.setType(Constant.THESIS_STUDENT);
+//				thesisTeacher.setUserId(teacher.getUserId());
+//				thesisTeacher.setIsDeleted(false);
+//				thesisTeacher.setCreatedAt(new Date().getTime());
+//				return thesisTeacher;
+//			}).toList();
+//			if (thesisUserService.insertList(thesisTeachers) == null) {
+//				responseModel.setMessage("Insert Fail");
+//				return responseModel;
+//			}
 			responseModel.setData(thesis);
 			return responseModel;
 		} catch (Exception e) {
@@ -119,7 +122,7 @@ public class ThesisController {
 			thesisUserService.deleteByThesisId(thesis.getId());
 			
 			// insert student for thesis
-			List<UserDTO> students = thesis.getStudents();
+			List<User> students = thesis.getStudents();
 			List<ThesisUser> thesisStudents = students.stream().map(student -> {
 				ThesisUser thesisStudent = new ThesisUser();
 				thesisStudent.setId(UUID.randomUUID().toString());
@@ -135,7 +138,7 @@ public class ThesisController {
 				return responseModel;
 			}
 			// insert teacher for thesis
-			List<UserDTO> teachers = thesis.getTeachers();
+			List<User> teachers = thesis.getTeachers();
 			List<ThesisUser> thesisTeachers = teachers.stream().map(teacher -> {
 				ThesisUser thesisTeacher = new ThesisUser();
 				thesisTeacher.setId(UUID.randomUUID().toString());

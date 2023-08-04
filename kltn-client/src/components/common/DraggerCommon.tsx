@@ -22,7 +22,7 @@ const DraggerCommon = ({
 
   const commonUploadRequest = async (options: any) => {
     const { onSuccess, onError, file } = options;
-
+    console.log("a")
     try{
         const downloadURL = await uploadFileToFirebase(file);
         onSuccess(downloadURL);

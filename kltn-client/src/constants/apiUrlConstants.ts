@@ -23,4 +23,7 @@ export class ApiUrlConstants {
     public static readonly INSERT_THESIS_REGISTER_CALENDAR = "/thesis-register-calendar/insert";
     public static readonly VIEW_THESIS_REGISTER_CALENDAR = "/thesis-register-calendar/view";
     public static readonly DISABLE_THESIS_REGISTER_CALENDAR = "/thesis-register-calendar/disable";
+
+    /** THESIS */
+    public static readonly INSERT_THESIS = "/thesis/insert";
 }

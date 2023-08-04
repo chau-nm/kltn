@@ -13,17 +13,13 @@ const RegisterThesisPage = (): JSX.Element => {
     ThesisRegisterCalendarService.view
   );
 
-  const RegisterContent = (): JSX.Element => {
-    return <RegisterThesisForm />;
-  };
-
   return (
     <PageLayout pageTitle="Đăng ký khóa luận tốt nghiệp">
       <Spin spinning={isLoadingViewThesisRegisterCalendar}>
         {!thesisRegisterCalendar ? (
           <Typography.Text>Chưa tới thời gian đăng ký</Typography.Text>
         ) : (
-          <RegisterContent />
+          <RegisterThesisForm />
         )}
       </Spin>
     </PageLayout>

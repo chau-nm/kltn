@@ -4,17 +4,18 @@ import java.util.List;
 
 import web.nl.kltn.model.generator.CriticalAssessment;
 import web.nl.kltn.model.generator.Thesis;
+import web.nl.kltn.model.generator.User;
 
 public class ThesisDTO extends Thesis {
-	private List<UserDTO> students;
-	private List<UserDTO> teachers;
+	private List<User> students;
+	private List<User> teachers;
 	private List<ThesisOutlineCommentDTO> thesisOutlineComments;
 	private CriticalAssessmentDTO criticalAssessment;
 	private ProtectionRatingScoreDTO protectionRatingScoreDTO;
 	private long feedbackTime;
 	private long protectdTime;
 
-	public List<UserDTO> getStudents() {
+	public List<User> getStudents() {
 		return students;
 	}
 
@@ -50,15 +51,15 @@ public class ThesisDTO extends Thesis {
 		this.protectdTime = protectdTime;
 	}
 
-	public void setStudents(List<UserDTO> students) {
+	public void setStudents(List<User> students) {
 		this.students = students;
 	}
 
-	public List<UserDTO> getTeachers() {
+	public List<User> getTeachers() {
 		return teachers;
 	}
 
-	public void setTeachers(List<UserDTO> teachers) {
+	public void setTeachers(List<User> teachers) {
 		this.teachers = teachers;
 	}
 
@@ -68,5 +69,17 @@ public class ThesisDTO extends Thesis {
 
 	public void setThesisOutlineComments(List<ThesisOutlineCommentDTO> thesisOutlineComments) {
 		this.thesisOutlineComments = thesisOutlineComments;
+	}
+	
+	public void load(Thesis thesis) {
+		this.setId(thesis.getId());
+		this.setTopic(thesis.getTopic());
+		this.setDescription(thesis.getDescription());
+		this.setYear(thesis.getYear());
+		this.setSemester(thesis.getSemester());
+		this.setStatus(thesis.getStatus());
+		this.setIsDeleted(thesis.getIsDeleted());
+		this.setCreatedAt(thesis.getCreatedAt());
+		this.setUpdatedAt(thesis.getUpdatedAt());
 	}
 }

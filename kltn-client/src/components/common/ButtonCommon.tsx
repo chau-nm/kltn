@@ -1,4 +1,5 @@
 import { Button } from "antd";
+import { ButtonProps } from "antd/es/button/button";
 import { MouseEventHandler } from "react";
 
 const ButtonColorType = {
@@ -9,12 +10,13 @@ const ButtonColorType = {
   gray: "bg-gray-700 text-white",
 };
 
-type ButtonCommonProps = {
+interface ButtonCommonProps extends Omit<ButtonProps, 'type'> {
   value: string;
   color?: "yellow" | "green" | "blue" | "red" | "gray";
   className?: string;
   onClick?: MouseEventHandler;
   disabled?: boolean;
+  type?: 'link' | 'text' | 'ghost' | 'default' | 'primary' | 'dashed';
 };
 
 const ButtonCommon = ({
@@ -22,7 +24,8 @@ const ButtonCommon = ({
   color,
   className,
   onClick,
-  disabled
+  disabled,
+  ...rest
 }: ButtonCommonProps): JSX.Element => {
   return (
     <Button
@@ -31,6 +34,7 @@ const ButtonCommon = ({
       }`}
       onClick={onClick}
       disabled={disabled}
+      {...rest}
     >
       {value}
     </Button>

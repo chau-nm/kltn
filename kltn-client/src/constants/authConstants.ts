@@ -4,6 +4,7 @@ class AuthConstants {
         MINISTRY: 'MINISTRY',
         COUNCIL: 'COUNCIL',
         STUDENT: 'STUDENT',
+        TEACHER: 'TEACHER',
     }
 }
 export default AuthConstants;
