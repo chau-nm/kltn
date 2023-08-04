@@ -14,6 +14,9 @@
 	<description>Back end for KLTN website</description>
 	<properties>
 		<java.version>17</java.version>
+		<nd4j.version>0.7.1</nd4j.version>
+		<dl4j.version>0.7.1</dl4j.version>
+		<lucene.version>6.6.0</lucene.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -52,6 +55,36 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-common</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-queryparser</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.deeplearning4j</groupId>
+			<artifactId>deeplearning4j-ui-model</artifactId>
+			<version>${dl4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.deeplearning4j</groupId>
+			<artifactId>deeplearning4j-nlp</artifactId>
+			<version>${dl4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nd4j</groupId>
+			<artifactId>nd4j-native</artifactId>
+			<version>${nd4j.version}</version>
 		</dependency>
 	</dependencies>
 
