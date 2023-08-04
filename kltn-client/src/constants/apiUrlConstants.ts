@@ -7,6 +7,7 @@ export class ApiUrlConstants {
     public static readonly GET_USER_WITH_ROLE = "/user/get-user-with-role";
     public static readonly GET_USER_BY_ID = "/user/";
     public static readonly UPDATE_USER = "/user/update";
+    public static readonly REFRESH_TOKEN = "/user/refresh-token";
 
     /** NOTIFICATION */
     public static readonly INSERT_NOTIFICATION = "/notification/insert";

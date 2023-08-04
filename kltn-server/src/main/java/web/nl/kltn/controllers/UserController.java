@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,26 +53,27 @@ public class UserController {
 
 		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
 
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginCondition.getUsername(), loginCondition.getPassword()));
-
-		if (!authentication.isAuthenticated()) {
-			return responseModel;
-		} else {
+		try {
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+					loginCondition.getUsername(), loginCondition.getPassword()));
 			UserDTO userCus = userService.findByUsername(loginCondition.getUsername());
 			String accessToken = jwtTokenUtil.generateToken(userCus.getUsername());
-			RefreshToken refreshToken = refreshTokenService.generateRefreshToken();
-			refreshToken.setUserId(userCus.getUserId());
+			RefreshToken refreshToken = refreshTokenService.findAvailabilityByUserId(userCus.getUserId());
+			if (refreshToken == null) {
+				refreshToken = refreshTokenService.generateRefreshToken();
+				refreshToken.setUserId(userCus.getUserId());
+				refreshTokenService.saveRefreshToken(refreshToken);
+			}
 			userCus.setAccessToken(accessToken);
 			userCus.setRefreshToken(refreshToken.getToken());
-			refreshTokenService.saveRefreshToken(refreshToken);
 
 			responseModel.setData(userCus);
+			return responseModel;
+		} catch (AuthenticationException e) {
+			return responseModel;
 		}
-
-		return responseModel;
 	}
-	
+
 	@GetMapping("/get-user-with-role")
 	public ResponseModel<List<UserDTO>> getUserWithRole(@RequestParam String role) {
 		ResponseModel<List<UserDTO>> responseModel = new ResponseModel<>();
@@ -84,7 +86,7 @@ public class UserController {
 	}
 
 	@PostMapping("/get-user-with-token")
-	public ResponseModel<UserDTO> getUserWithToken(@RequestBody RequestModel<AccessTokenRequest> accessTokenRequest){
+	public ResponseModel<UserDTO> getUserWithToken(@RequestBody RequestModel<AccessTokenRequest> accessTokenRequest) {
 		String accessToken = accessTokenRequest.getData().getAccessToken();
 		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
 		String username = jwtTokenUtil.getUserIdFromToken(accessToken);
@@ -95,11 +97,9 @@ public class UserController {
 		return responseModel;
 	}
 
-	@PostMapping("/refresh-token")
-	public ResponseModel<UserDTO> refresToken(@RequestBody RequestModel<RefreshTokenRequest> refreshTokenRequest) {
-		String refreshTokenClient = refreshTokenRequest.getData().getRefreshToken();
-		RefreshToken refreshTokenDb = refreshTokenService.findRefreshToken(refreshTokenClient);
-		
+	@GetMapping("/refresh-token")
+	public ResponseModel<UserDTO> refresToken(@RequestParam(required = true) String refreshToken) {
+		RefreshToken refreshTokenDb = refreshTokenService.findRefreshToken(refreshToken);
 		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
 		if (refreshTokenDb == null) {
 			return responseModel;
@@ -114,16 +114,16 @@ public class UserController {
 
 		return responseModel;
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseModel<UserDTO> findUserById(@PathVariable String id){
+	public ResponseModel<UserDTO> findUserById(@PathVariable String id) {
 		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
 		responseModel.setData(userService.findByUserId(id));
 		return responseModel;
 	}
-	
+
 	@PutMapping("/update")
-	public ResponseModel<UserDTO> refeshToken(@RequestBody RequestModel<UserDTO> userUpdateRequest){
+	public ResponseModel<UserDTO> refeshToken(@RequestBody RequestModel<UserDTO> userUpdateRequest) {
 		UserDTO newUser = userUpdateRequest.getData();
 		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
 		responseModel.setData(userService.updateUser(newUser));
