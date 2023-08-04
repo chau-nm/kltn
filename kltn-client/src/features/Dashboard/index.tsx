@@ -26,9 +26,7 @@ const DashboardPage = (): JSX.Element => {
 
   return (
     <CardCommon
-      cardProps={{
-        title: "Thông báo",
-      }}
+      title="Thông báo"
     >
       {data?.data &&
         data.data.map((notify, index) => {

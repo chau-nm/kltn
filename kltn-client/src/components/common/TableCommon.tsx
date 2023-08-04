@@ -1,5 +1,5 @@
 import { Table } from "antd";
-import { ColumnType, TablePaginationConfig } from "antd/es/table";
+import { ColumnType, TablePaginationConfig, TableProps } from "antd/es/table";
 import '~/assets/styles/TableCommon.scss';
 
 interface TableCommonProps<T> {
@@ -15,8 +15,9 @@ const TableCommon = <T extends {}>({
   dataSource,
   className,
   pagination,
-  handleOnChange
-}: TableCommonProps<T>): JSX.Element => {
+  handleOnChange,
+  ...rest
+}: TableCommonProps<T> & TableProps<T>): JSX.Element => {
     let rowKey = 1;
   return (
     <Table 
@@ -26,7 +27,8 @@ const TableCommon = <T extends {}>({
       rowKey={() => rowKey++}
       pagination={pagination}
       onChange={handleOnChange}
-      scroll={{x: 1500}}/>
+      scroll={{x: 1500}}
+      {...rest}/>
   );
 };
 

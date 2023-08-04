@@ -1,5 +1,5 @@
 import { SetStateAction, useState } from "react";
-import ReactQuill from "react-quill";
+import ReactQuill, { ReactQuillProps } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 type RichTextEditorCommonProps = {
@@ -9,8 +9,9 @@ type RichTextEditorCommonProps = {
 
 const RichTextEditorCommon = ({
   editorHtml,
-  setEditorHtml
-}: RichTextEditorCommonProps): JSX.Element => {
+  setEditorHtml,
+  ...rest
+}: RichTextEditorCommonProps & ReactQuillProps): JSX.Element => {
 
   const toolbarOptions = [
     [{ 'font': [] }],
@@ -52,6 +53,7 @@ const RichTextEditorCommon = ({
       }}
       formats={formats}
       className="h-[250px]"
+      {...rest}
     />
   );
 };

@@ -33,7 +33,7 @@ const NotificationDetailPage = (): JSX.Element => {
   }
 
   return (
-    <CardCommon cardProps={{title: data?.title as string}}>
+    <CardCommon title={data?.title as string}>
       <ReactQuillPreviewCommon content={data?.content as string} />
       {data?.attachmentUrls && data?.attachmentUrls.length > 0 && (
         <div className="border-t py-3">

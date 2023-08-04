@@ -2,10 +2,11 @@ import { Card, CardProps } from "antd";
 
 type CardCommonProps = {
   children: React.ReactNode;
-  cardProps?: CardProps;
 };
 
-const CardCommon = ({ children, cardProps }: CardCommonProps): JSX.Element => {
+type CarType = CardCommonProps & CardProps;
+
+const CardCommon = ({ children, ...rest }: CarType): JSX.Element => {
   return (
     <Card
       className="mt-2 w-full"
@@ -15,7 +16,7 @@ const CardCommon = ({ children, cardProps }: CardCommonProps): JSX.Element => {
         fontWeight: "bold",
         color: "#ffffff",
       }}
-      {...cardProps}
+      {...rest}
     >
       {children}
     </Card>

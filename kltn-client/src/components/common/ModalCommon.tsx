@@ -1,4 +1,4 @@
-import { Modal } from "antd";
+import { Modal, ModalProps } from "antd";
 import { ReactNode } from "react";
 import "~/assets/styles/ModalCommon.scss"
 
@@ -21,8 +21,9 @@ const ModalCommon = ({
   className,
   maskCloseable,
   onCanel,
-  onOk
-}: ModalCommonProps): JSX.Element => {
+  onOk,
+  ...rest
+}: ModalCommonProps & ModalProps): JSX.Element => {
   return (
     <Modal 
       title={title} 
@@ -31,7 +32,8 @@ const ModalCommon = ({
       onCancel={onCanel}
       onOk={onOk}
       maskClosable={maskCloseable}
-      className={`${className} min-w-[500px]`}>
+      className={`${className} min-w-[500px]`}
+      {...rest}>
       {children}
     </Modal>
   );

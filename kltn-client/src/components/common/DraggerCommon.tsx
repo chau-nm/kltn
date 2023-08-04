@@ -1,6 +1,6 @@
 import { InboxOutlined } from "@ant-design/icons";
 import { UploadFile } from "antd";
-import Dragger from "antd/es/upload/Dragger";
+import Dragger, { DraggerProps } from "antd/es/upload/Dragger";
 import { SetStateAction } from "react";
 import { uploadFileToFirebase } from "~/common/firebase";
 
@@ -17,8 +17,9 @@ const DraggerCommon = ({
     handleUploadFailure,
     handleRemove,
     fileList,
-    setFileList
-} : DraggerCommonProps): JSX.Element => {
+    setFileList,
+    ...rest
+} : DraggerCommonProps & DraggerProps): JSX.Element => {
 
   const commonUploadRequest = async (options: any) => {
     const { onSuccess, onError, file } = options;
@@ -66,7 +67,12 @@ const DraggerCommon = ({
   }
 
   return (
-    <Dragger fileList={fileList} customRequest={commonUploadRequest} onChange={handleOnChange} onRemove={handleRemove}>
+    <Dragger 
+      fileList={fileList} 
+      customRequest={commonUploadRequest} 
+      onChange={handleOnChange} 
+      onRemove={handleRemove}
+      {...rest}>
       <p className="ant-upload-drag-icon">
         <InboxOutlined />
       </p>

@@ -8,7 +8,7 @@ const VerticalNavigation = (): JSX.Element => {
   const location = useLocation();
 
   return (
-    <CardCommon cardProps={{ title: "Menu" }}>
+    <CardCommon title= "Menu">
       <Space className="w-full" direction="vertical">
         {MainLayouConstants.MENU_LIST.map((menu, index) => {
           return (
