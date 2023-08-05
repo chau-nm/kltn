@@ -16,7 +16,7 @@ public class JWTTokenUtil {
 	
 	public String generateToken(String userId) {
 		Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + 86400000);
+        Date expiryDate = new Date(now.getTime() + 3600000);
         
         return Jwts.builder()
                 .setSubject(userId)

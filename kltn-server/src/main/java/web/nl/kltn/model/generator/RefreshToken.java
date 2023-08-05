@@ -119,4 +119,10 @@ public class RefreshToken {
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+
+	@Override
+	public String toString() {
+		return "RefreshToken [token=" + token + ", userId=" + userId + ", expirationDate=" + expirationDate
+				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+	}
 }

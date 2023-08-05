@@ -10,7 +10,7 @@ export class ApiUrlConstants {
     public static readonly SEARCH_USER = "/user/search/";
     public static readonly INSERT_USER = "/user/insert";
     public static readonly RESET_PASSWORD_USER = "/user/reset";
-
+    public static readonly REFRESH_TOKEN = "/user/refresh-token";
 
     /** NOTIFICATION */
     public static readonly INSERT_NOTIFICATION = "/notification/insert";

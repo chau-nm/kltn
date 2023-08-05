@@ -45,7 +45,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 	
 	@Override
 	public RefreshToken findRefreshToken(String refreshToken) {
-		return refreshTokenMapper.selectByPrimaryKey(refreshToken);
+		return refreshTokenCusMapper.findRefreshToken(refreshToken);
 	}
 
 	@Override
