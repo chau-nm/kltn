@@ -1,9 +1,9 @@
 /** HTTP */
-interface RequestModel<T>{
+interface RequestModel<T> {
     data?: T
 }
 
-interface ResponseModel<T>{
+interface ResponseModel<T> {
     status: number,
     message: string,
     data: T
@@ -24,36 +24,44 @@ interface MutationParamsModel<T> {
 }
 
 /** Auth */
-interface AccessTokenRequestModel{
+interface AccessTokenRequestModel {
     accessToken: string | null;
 }
 
-interface LoginConditionModel{
+interface LoginConditionModel {
     username: string,
     password: string
 }
 
 interface SearchResponseModel<T> {
     total?: number;
-    data? : T
+    data?: T
 }
 
 /** User */
-interface UserModel{
+interface UserModel {
     userId: string;
     username: string;
-    password: string;
+    password?: string;
     fname: string;
-    birthday: Date;
-    faculty: string;
-    studentClass: string;
+    birthday?: Date;
+    faculty?: string;
+    studentClass?: string;
     roles: string[];
-    accessToken: string;
-    refreshToken: string;
+    accessToken?: string;
+    refreshToken?: string;
+}
+
+interface UserSearchConditionModel {
+    username?: string;
+    name?: string;
+    role?: string;
+    id?: number;
+    studentClass?: string;
 }
 
 /** Notification */
-interface NotificationModel{
+interface NotificationModel {
     id: string;
     title?: string;
     content?: string;
@@ -63,7 +71,7 @@ interface NotificationModel{
     updatedAt?: number;
 }
 
-interface NotificationSearchConditionModel{
+interface NotificationSearchConditionModel {
     title?: string;
     startAt?: number;
     endAt?: number;
@@ -82,16 +90,6 @@ interface ThesisModel{
     updatedAt?: number;
     students?: UserModel[];
     teachers?: UserModel[];
-}
-
-interface ThesisRegisterCalendarModel {
-    id?: number;
-    startAt?: number;
-    endAt?: number;
-    active?: boolean;
-    isDeleted?: boolean;
-    createdAt?: number;
-    updatedAt?: number;
 }
 
 interface ThesisRegisterCalendarModel {

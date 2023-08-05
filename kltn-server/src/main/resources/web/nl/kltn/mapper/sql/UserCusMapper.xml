@@ -1,6 +1,6 @@
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="web.nl.kltn.mapper.UserCusMapper">
 
 	<resultMap type="web.nl.kltn.model.dto.UserDTO" id="UserDTO">
@@ -18,76 +18,124 @@
 
 
 	<select id="login" parameterType="web.nl.kltn.model.LoginCondition" resultMap="UserDTO">
-		SELECT 
-			u.user_id,
-			u.username,
-			u.password,
-			u.fname,
-			u.birthday,
-			u.faculty,
-			u.student_class,
-			r.role_name
+		SELECT
+		u.user_id,
+		u.username,
+		u.password,
+		u.fname,
+		u.birthday,
+		u.faculty,
+		u.student_class,
+		r.role_name
 		FROM
-			user u
+		user u
 		LEFT JOIN role_user ru ON u.user_id = ru.user_id
 		LEFT JOIN role r ON ru.role_id = r.role_id
-		WHERE 
-			u.username = '${username}'
+		WHERE
+		u.username = '${username}'
 		AND u.password = '${password}'
 	</select>
-	
+
+	<select id="search"
+			resultMap="UserDTO">
+		<bind name="offset" value="(page - 1) * pageSize" />
+		SELECT
+		u.user_id,
+		u.username,
+		u.password,
+		u.fname,
+		u.birthday,
+		u.faculty,
+		u.student_class,
+		r.role_name
+		FROM
+		user u
+		LEFT JOIN role_user ru ON u.user_id = ru.user_id
+		LEFT JOIN role r ON ru.role_id = r.role_id
+		<where>
+			<if
+					test="searchConditionModel != null and searchConditionModel.username != null">
+				AND u.username LIKE CONCAT('%', #{searchConditionModel.username}, '%')
+			</if>
+			<if
+					test="searchConditionModel != null and searchConditionModel.name != null">
+				AND u.fname LIKE CONCAT('%', #{searchConditionModel.name}, '%')
+			</if>
+			<if
+					test="searchConditionModel != null and searchConditionModel.role != null">
+				AND r.role_name LIKE CONCAT('%', #{searchConditionModel.role}, '%')
+			</if>
+			<if
+					test="searchConditionModel != null and searchConditionModel.studentClass != null">
+				AND u.student_class LIKE CONCAT('%', #{searchConditionModel.studentClass}, '%')
+			</if>
+		</where>
+		LIMIT #{pageSize} OFFSET #{offset}
+	</select>
+	<select id="getTotal" resultType="int">
+		SELECT COUNT(user_id)
+		FROM user u
+		<where>
+			<!--			<if test="title != null">-->
+			<!--				AND title LIKE CONCAT('%', #{title}, '%')-->
+			<!--			</if>-->
+		</where>
+	</select>
+
 	<select id="findByUserId" parameterType="java.lang.String" resultMap="UserDTO">
-		SELECT 
-			u.user_id,
-			u.username,
-			u.password,
-			u.fname,
-			u.birthday,
-			u.faculty,
-			u.student_class,
-			r.role_name
+		SELECT
+		u.user_id,
+		u.username,
+		u.password,
+		u.fname,
+		u.birthday,
+		u.faculty,
+		u.student_class,
+		r.role_name
 		FROM
-			user u
+		user u
 		LEFT JOIN role_user ru ON u.user_id = ru.user_id
 		LEFT JOIN role r ON ru.role_id = r.role_id
-		WHERE 
-			u.user_id = '${userId}'
+		WHERE
+		u.user_id = '${userId}'
 	</select>
-	
+
 	<select id="findByUsername" parameterType="java.lang.String" resultMap="UserDTO">
-		SELECT 
-			u.user_id,
-			u.username,
-			u.password,
-			u.fname,
-			u.birthday,
-			u.faculty,
-			u.student_class,
-			r.role_name
+		SELECT
+		u.user_id,
+		u.username,
+		u.password,
+		u.fname,
+		u.birthday,
+		u.faculty,
+		u.student_class,
+		r.role_name
 		FROM
-			user u
+		user u
 		LEFT JOIN role_user ru ON u.user_id = ru.user_id
 		LEFT JOIN role r ON ru.role_id = r.role_id
-		WHERE 
-			u.username = '${username}'
+		WHERE
+		u.username = '${username}'
 	</select>
-	
+
 	<select id="findByRole" parameterType="java.lang.String" resultMap="UserDTO">
-		SELECT 
-			u.user_id,
-			u.username,
-			u.password,
-			u.fname,
-			u.birthday,
-			u.faculty,
-			u.student_class,
-			r.role_name
+		SELECT
+		u.user_id,
+		u.username,
+		u.password,
+		u.fname,
+		u.birthday,
+		u.faculty,
+		u.student_class,
+		r.role_name
 		FROM
-			user u
+		user u
 		LEFT JOIN role_user ru ON u.user_id = ru.user_id
 		LEFT JOIN role r ON ru.role_id = r.role_id
-		WHERE 
-			r.role_name = #{role}
+		WHERE
+		r.role_name = #{role}
 	</select>
+
+
 
 </mapper>
