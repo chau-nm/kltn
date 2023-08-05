@@ -11,7 +11,7 @@
  Target Server Version : 100424
  File Encoding         : 65001
 
- Date: 17/07/2023 20:57:03
+ Date: 05/08/2023 16:07:57
 */
 
 SET NAMES utf8mb4;
@@ -89,8 +89,8 @@ CREATE TABLE `notification`  (
 -- ----------------------------
 INSERT INTO `notification` VALUES ('0001', 'Thông báo B', 'Nội dung', b'0', 12345, 1687277474320);
 INSERT INTO `notification` VALUES ('01f486a4-5fcd-45d5-86bb-85b9b114b230', 'Thông báo A', '<p><strong>Chào mọi người,</strong></p><p><em>Cảm ơn mọi người</em></p>', b'0', 1687358937005, 1687358937005);
-INSERT INTO `notification` VALUES ('1ee563f8-8fdc-46a6-a6c3-8eaebadffb5d', 'asd', '<p>asdsad</p>', b'0', 1688476596618, 1688476596618);
-INSERT INTO `notification` VALUES ('2ba9feb4-2455-4081-bb5d-b577673af2ad', 'Thong bao C', '<p>Hello</p>', b'0', 1688910331798, 1688918607903);
+INSERT INTO `notification` VALUES ('1ee563f8-8fdc-46a6-a6c3-8eaebadffb5d', 'asd', '<p>asdsad</p>', b'0', 1688476596618, 1690102021104);
+INSERT INTO `notification` VALUES ('2ba9feb4-2455-4081-bb5d-b577673af2ad', 'Thong bao C', '<p>Hello</p>', b'1', 1688910331798, 1688918607903);
 INSERT INTO `notification` VALUES ('3d3c49bd-522e-47bf-a2a6-0e6deb95de19', 'Thông báo A', '<p><strong>Chào mọi người,</strong></p><p><em>Cảm ơn mọi người</em></p>', b'0', 1687358912412, 1687358912412);
 INSERT INTO `notification` VALUES ('624391cd-c43c-4a8b-a0c7-b544727fc4d6', 'Thông báo B', '<p>ádsa</p>', b'0', 1687359299972, 1687359299972);
 INSERT INTO `notification` VALUES ('ba1df643-47ca-47a2-b267-6c3c1a16031e', 'Thông báo A', '<p><strong>Chào mọi người,</strong></p><p><em>Cảm ơn mọi người</em></p>', b'0', 1687358864583, 1687358864583);
@@ -116,6 +116,7 @@ CREATE TABLE `notification_attachment`  (
 -- Records of notification_attachment
 -- ----------------------------
 INSERT INTO `notification_attachment` VALUES ('069a1e7c-4f09-44d1-b932-5d01568d9e71', '624391cd-c43c-4a8b-a0c7-b544727fc4d6', 'https://firebasestorage.googleapis.com/v0/b/kltn-4d455.appspot.com/o/1687359293189?alt=media&token=16cb07e3-b014-4bbe-b758-9cb20d6717d9', b'0', 1687359299995, 0);
+INSERT INTO `notification_attachment` VALUES ('738bd407-7998-44ac-8b8b-92d7debbcc90', '1ee563f8-8fdc-46a6-a6c3-8eaebadffb5d', 'https://firebasestorage.googleapis.com/v0/b/kltn-4d455.appspot.com/o/1690102018133?alt=media&token=8e8de2e3-58c8-4c76-ae02-b18f8b11715d', b'0', 1690102021153, 1690102021153);
 INSERT INTO `notification_attachment` VALUES ('85cd480e-039d-4253-91c4-a31ff8e02698', '624391cd-c43c-4a8b-a0c7-b544727fc4d6', '1', b'0', 1687277474330, 0);
 INSERT INTO `notification_attachment` VALUES ('b1b23655-d8b7-41c5-b641-8981d7d0d4c9', '2ba9feb4-2455-4081-bb5d-b577673af2ad', 'https://firebasestorage.googleapis.com/v0/b/kltn-4d455.appspot.com/o/1688918603976?alt=media&token=b47cce12-7be8-4f35-a511-b16d99b561a8', b'0', 1688918607925, 1688918607925);
 INSERT INTO `notification_attachment` VALUES ('b384178b-53d1-48b8-ba7a-efb3f2ba1f98', '2ba9feb4-2455-4081-bb5d-b577673af2ad', 'https://firebasestorage.googleapis.com/v0/b/kltn-4d455.appspot.com/o/1688910001484?alt=media&token=4182b68c-cab8-4936-b810-8cc7e8c2611f', b'0', 1688918607925, 1688918607925);
@@ -213,20 +214,8 @@ CREATE TABLE `refresh_token`  (
 -- ----------------------------
 -- Records of refresh_token
 -- ----------------------------
-INSERT INTO `refresh_token` VALUES ('07f55b02-500f-4a36-9eb6-7e7e35524d0f', 'caadasdcc-sdadas', '2023-07-23 00:00:00', 12321321, 123213);
-INSERT INTO `refresh_token` VALUES ('15051bf0-819f-433c-bbf5-b1c59be4144f', 'caadasdcc-sdadas', '2023-07-24 00:00:00', 1688909707653, 1688909707653);
-INSERT INTO `refresh_token` VALUES ('1f944380-6494-471f-a4b2-8f7b71709a75', 'caadasdcc-sdadas', '2023-08-01 00:00:00', 1689567566622, 1689567566622);
-INSERT INTO `refresh_token` VALUES ('2def5db8-aefb-4fd4-80f4-51d7d7613e5e', 'caadasdcc-sdadas', '2023-07-21 00:00:00', 123123, 123123);
-INSERT INTO `refresh_token` VALUES ('47c5fb31-8129-40c9-ae1b-ff4a75d09d0a', 'caadasdcc-sdadas', '2023-08-01 00:00:00', 1689574879695, 1689574879695);
-INSERT INTO `refresh_token` VALUES ('7048319f-1830-4012-b71e-7baa0c092d1f', 'caadasdcc-sdadas', '2023-07-21 00:00:00', 213213, 213123);
-INSERT INTO `refresh_token` VALUES ('72da728c-ad95-44a4-af77-f976570c959d', 'caadasdcc-sdadas', '2023-07-24 00:00:00', 1688909974321, 1688909974321);
-INSERT INTO `refresh_token` VALUES ('835ea04c-cd0a-4bd1-9e3d-ab8a3c381474', 'caadasdcc-sdadas', '2023-07-24 00:00:00', 1688909784654, 1688909784654);
-INSERT INTO `refresh_token` VALUES ('8877ea36-3d02-4d95-92b3-ecee4f6f12b8', 'caadasdcc-sdadas', '2023-07-21 00:00:00', 123213, 123213);
-INSERT INTO `refresh_token` VALUES ('8cadd9a5-2d67-4546-9672-74dcb6f1dedc', 'caadasdcc-sdadas', '2023-07-24 00:00:00', 1688909944529, 1688909944529);
-INSERT INTO `refresh_token` VALUES ('9ca4ea6f-8f36-40fd-bef5-0f2189c20c5d', 'caadasdcc-sdadas', '2023-08-01 00:00:00', 1689567541030, 1689567541030);
-INSERT INTO `refresh_token` VALUES ('b28ba24d-03f5-4fcb-adb6-f3306b1aadbf', 'caadasdcc-sdadas', '2023-07-25 00:00:00', 1688997230055, 1688997230055);
-INSERT INTO `refresh_token` VALUES ('b4b6fbae-df37-4c2d-9c74-0bcd05c4ebb9', 'caadasdcc-sdadas', '2023-08-01 00:00:00', 1689567519281, 1689567519281);
-INSERT INTO `refresh_token` VALUES ('df2d1b9b-7c9e-46e8-990c-5154f3dfe19c', 'caadasdcc-sdadas', '2023-07-24 00:00:00', 1688909961889, 1688909961889);
+INSERT INTO `refresh_token` VALUES ('58248a19-89bc-4cb7-a715-ccb708d1a373', 'caadasdcc-sdadas', '2023-08-20 00:00:00', 1691225491095, 1691225491095);
+INSERT INTO `refresh_token` VALUES ('7dd875db-9171-4f68-989a-67205becdd17', 'caadasdcc-sdadas', '2023-08-19 00:00:00', 1691167239706, 1691167239706);
 
 -- ----------------------------
 -- Table structure for role
@@ -248,6 +237,7 @@ INSERT INTO `role` VALUES (1, 'ADMIN', b'0', 0, 0);
 INSERT INTO `role` VALUES (2, 'MINISTRY', b'0', 0, 0);
 INSERT INTO `role` VALUES (3, 'COUNCIL', b'0', 0, 0);
 INSERT INTO `role` VALUES (4, 'STUDENT', b'0', 0, 0);
+INSERT INTO `role` VALUES (5, 'TEACHER', b'0', 0, 0);
 
 -- ----------------------------
 -- Table structure for role_user
@@ -274,6 +264,8 @@ INSERT INTO `role_user` VALUES ('0001', 'caadasdcc-sdadas', 1, b'0', 0, 0);
 INSERT INTO `role_user` VALUES ('0002', 'caadasdcc-sdadas', 4, b'0', 0, 0);
 INSERT INTO `role_user` VALUES ('0003', 'caadasdcc-sdadas', 3, b'0', 0, 0);
 INSERT INTO `role_user` VALUES ('0004', 'caadasdcc-sdadas', 2, b'0', 0, 0);
+INSERT INTO `role_user` VALUES ('0005', '002', 4, b'0', 0, 0);
+INSERT INTO `role_user` VALUES ('0006', '003', 5, b'0', 0, 0);
 
 -- ----------------------------
 -- Table structure for thesis
@@ -296,6 +288,27 @@ CREATE TABLE `thesis`  (
 -- Records of thesis
 -- ----------------------------
 INSERT INTO `thesis` VALUES ('0001', 'Hello', 'Khong co gi het', 2023, 1, 1, b'0', 1231232, 123123);
+INSERT INTO `thesis` VALUES ('05b59466-f802-4be5-bfb9-b4b18ad76b8e', 'ádsa', NULL, 2000, 1, 1, b'0', 1690105579174, 1690105579174);
+INSERT INTO `thesis` VALUES ('e07cd8ef-0f6e-49a9-b5fe-e3ffd35a63fc', 'ád', NULL, 2000, 1, 1, b'0', 1690105382272, 1690105382272);
+
+-- ----------------------------
+-- Table structure for thesis_document
+-- ----------------------------
+DROP TABLE IF EXISTS `thesis_document`;
+CREATE TABLE `thesis_document`  (
+  `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `thesis_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `file_url` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `type` int NOT NULL,
+  `is_deleted` bit(1) NOT NULL,
+  `created_at` bigint NOT NULL,
+  `updated_at` bigint NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of thesis_document
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for thesis_outline_comment
@@ -334,12 +347,13 @@ CREATE TABLE `thesis_register_calendar`  (
   `created_at` bigint NOT NULL,
   `updated_at` bigint NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of thesis_register_calendar
 -- ----------------------------
 INSERT INTO `thesis_register_calendar` VALUES (3, 1689576730550, 1692859930550, b'0', b'0', 1689576733906, 1689576733906);
+INSERT INTO `thesis_register_calendar` VALUES (4, 1690098654606, 1693381854606, b'1', b'0', 1690098660629, 1690098660629);
 
 -- ----------------------------
 -- Table structure for thesis_report_calendar
@@ -389,21 +403,25 @@ CREATE TABLE `thesis_user`  (
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
   `user_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `password` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `fname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `birthday` date NULL DEFAULT NULL,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `fname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `birthday` date NOT NULL,
   `faculty` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `student_class` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `is_deleted` bit(1) NULL DEFAULT NULL,
-  `created_at` bigint NULL DEFAULT NULL,
-  `updated_at` bigint NULL DEFAULT NULL,
+  `is_deleted` bit(1) NOT NULL,
+  `created_at` bigint NOT NULL,
+  `updated_at` bigint NOT NULL,
   PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('caadasdcc-sdadas', 'chau-nm', '$2a$12$k.cYiDQKkwoEtQ/5RCKnneXD1rOrMidAkMWDE4tems3u1PstBRZXS', 'Nguyen Van B', '2005-06-22', 'CNTT', 'DH19DTA', b'0', 1232131321, 1687074361598);
+INSERT INTO `user` VALUES ('002', 'std2', '$2a$12$k.cYiDQKkwoEtQ/5RCKnneXD1rOrMidAkMWDE4tems3u1PstBRZXS', '', '', 'Nguyen Van C', '2001-03-16', 'CNTT', 'DH19DTA', b'0', 13212315, 13215163);
+INSERT INTO `user` VALUES ('003', 'teacher1', '$2a$12$k.cYiDQKkwoEtQ/5RCKnneXD1rOrMidAkMWDE4tems3u1PstBRZXS', '', '', 'Nguyen Van D', '2001-03-16', 'CNTT', 'DH19DTA', b'0', 165613, 1512321);
+INSERT INTO `user` VALUES ('caadasdcc-sdadas', 'chau-nm', '$2a$12$k.cYiDQKkwoEtQ/5RCKnneXD1rOrMidAkMWDE4tems3u1PstBRZXS', '', '', 'Nguyen Van B', '2005-06-22', 'CNTT', 'DH19DTA', b'0', 1232131321, 1687074361598);
 
 SET FOREIGN_KEY_CHECKS = 1;

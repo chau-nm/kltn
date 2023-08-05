@@ -73,8 +73,8 @@ class HttpService {
     if (!user) {
       return false;
     }
-    localStorage.setItem('access_token', user.accessToken);
-    localStorage.setItem('refresh_token', user.refreshToken);
+    localStorage.setItem('access_token', user.accessToken as string);
+    localStorage.setItem('refresh_token', user.refreshToken as string);
     return true;
   }
 
