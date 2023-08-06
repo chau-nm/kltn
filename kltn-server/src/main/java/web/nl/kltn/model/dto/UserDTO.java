@@ -20,7 +20,7 @@ public class UserDTO extends User{
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
 	}
-	
+
 	public String getAccessToken() {
 		return accessToken;
 	}

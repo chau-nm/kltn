@@ -42,7 +42,9 @@ interface SearchResponseModel<T> {
 interface UserModel {
     userId: string;
     username: string;
-    password?: string;
+    password: string;
+    gender: boolean;
+    email:string;
     fname: string;
     birthday?: Date;
     faculty?: string;
@@ -107,4 +109,12 @@ interface Doc2VecModel {
     id?: number;
     title?: string;
     url?: string;
+}
+
+/** Email Template */
+
+interface TemplateResetModel{
+    to_email: string;
+    to_name:string;
+    newPassword: string;
 }

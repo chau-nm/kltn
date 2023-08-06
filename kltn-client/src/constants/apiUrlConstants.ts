@@ -30,4 +30,10 @@ export class ApiUrlConstants {
 
     /** THESIS */
     public static readonly INSERT_THESIS = "/thesis/insert";
+
+
+    /** Email */
+    public static readonly EMAIL_PUBLIC_KEY ="zYF2rOMgmyBuMxfwX";
+    public static readonly SERVICE_EMAIL_ID ="service_ghvi71k";
+    public static readonly TEMPLATE_RESET_PASSWORD_ID ="template_y3hdy8w";
 }

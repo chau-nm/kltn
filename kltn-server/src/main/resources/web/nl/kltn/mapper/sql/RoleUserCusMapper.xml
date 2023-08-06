@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="web.nl.kltn.mapper.RoleUserCusMapper">
+
+    <select id="findRolesByUserId" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+            r.role_name
+        FROM
+            role r
+                LEFT JOIN role_user ru ON r.role_id = ru.role_id
+                LEFT JOIN user u ON u.user_id = ru.user_id
+        WHERE
+            u.user_id = #{idUser}
+    </select>
+    <delete id="deleteByIdUser" parameterType="java.lang.String" >
+        DELETE FROM role_user
+        WHERE user_id = #{id_user};
+    </delete>
+    <select id="findIdRoleByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT
+            r.role_id
+        FROM
+            role r
+        WHERE
+            r.role_name = #{roleName};
+    </select>
+
+</mapper>
