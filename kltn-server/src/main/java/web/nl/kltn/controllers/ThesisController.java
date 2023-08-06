@@ -62,50 +62,13 @@ public class ThesisController {
 	@PostMapping("/insert")
 	public ResponseModel<ThesisDTO> insert(@RequestBody RequestModel<ThesisDTO> thesisRequest) {
 		ResponseModel<ThesisDTO> responseModel = new ResponseModel<>();
-		
 		try {
-			// insert thesis
 			ThesisDTO thesis = thesisRequest.getData();
-			Thesis thesisInserted = thesisService.insert(thesis);
-			if (thesisInserted == null) {
-				responseModel.setMessage("Insert Fail");
-				return responseModel;
-			}
-//			// insert student for thesis
-//			List<User> students = thesis.getStudents();
-//			List<ThesisUser> thesisStudents = students.stream().map(student -> {
-//				ThesisUser thesisStudent = new ThesisUser();
-//				thesisStudent.setId(UUID.randomUUID().toString());
-//				thesisStudent.setThesisId(thesis.getId());
-//				thesisStudent.setType(Constant.THESIS_STUDENT);
-//				thesisStudent.setUserId(student.getUserId());
-//				thesisStudent.setIsDeleted(false);
-//				thesisStudent.setCreatedAt(new Date().getTime());
-//				return thesisStudent;
-//			}).toList();
-//			if (thesisUserService.insertList(thesisStudents) == null) {
-//				responseModel.setMessage("Insert Fail");
-//				return responseModel;
-//			}
-//			// insert teacher for thesis
-//			List<User> teachers = thesis.getTeachers();
-//			List<ThesisUser> thesisTeachers = teachers.stream().map(teacher -> {
-//				ThesisUser thesisTeacher = new ThesisUser();
-//				thesisTeacher.setId(UUID.randomUUID().toString());
-//				thesisTeacher.setThesisId(thesis.getId());
-//				thesisTeacher.setType(Constant.THESIS_STUDENT);
-//				thesisTeacher.setUserId(teacher.getUserId());
-//				thesisTeacher.setIsDeleted(false);
-//				thesisTeacher.setCreatedAt(new Date().getTime());
-//				return thesisTeacher;
-//			}).toList();
-//			if (thesisUserService.insertList(thesisTeachers) == null) {
-//				responseModel.setMessage("Insert Fail");
-//				return responseModel;
-//			}
-			responseModel.setData(thesis);
+			ThesisDTO thesisInserted = thesisService.insert(thesis);
+			responseModel.setData(thesisInserted);
 			return responseModel;
 		} catch (Exception e) {
+			System.out.println(e);
 			responseModel.setStatus(500);
 			responseModel.setMessage(e.getCause().getMessage());
 			return responseModel;
@@ -117,42 +80,7 @@ public class ThesisController {
 		ResponseModel<Boolean> responseModel = new ResponseModel<>();
 		try {
 			ThesisDTO thesis = thesisUpdateRequest.getData();
-			thesisService.update(thesis);
 			
-			thesisUserService.deleteByThesisId(thesis.getId());
-			
-			// insert student for thesis
-			List<User> students = thesis.getStudents();
-			List<ThesisUser> thesisStudents = students.stream().map(student -> {
-				ThesisUser thesisStudent = new ThesisUser();
-				thesisStudent.setId(UUID.randomUUID().toString());
-				thesisStudent.setThesisId(thesis.getId());
-				thesisStudent.setType(Constant.THESIS_STUDENT);
-				thesisStudent.setUserId(student.getUserId());
-				thesisStudent.setIsDeleted(false);
-				thesisStudent.setCreatedAt(new Date().getTime());
-				return thesisStudent;
-			}).toList();
-			if (thesisUserService.insertList(thesisStudents) == null) {
-				responseModel.setMessage("Insert Fail");
-				return responseModel;
-			}
-			// insert teacher for thesis
-			List<User> teachers = thesis.getTeachers();
-			List<ThesisUser> thesisTeachers = teachers.stream().map(teacher -> {
-				ThesisUser thesisTeacher = new ThesisUser();
-				thesisTeacher.setId(UUID.randomUUID().toString());
-				thesisTeacher.setThesisId(thesis.getId());
-				thesisTeacher.setType(Constant.THESIS_STUDENT);
-				thesisTeacher.setUserId(teacher.getUserId());
-				thesisTeacher.setIsDeleted(false);
-				thesisTeacher.setCreatedAt(new Date().getTime());
-				return thesisTeacher;
-			}).toList();
-			if (thesisUserService.insertList(thesisTeachers) == null) {
-				responseModel.setMessage("Insert Fail");
-				return responseModel;
-			}
 			responseModel.setData(true);
 			return responseModel;
 		}catch(Exception e) {

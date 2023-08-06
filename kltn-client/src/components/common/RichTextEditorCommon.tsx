@@ -52,7 +52,6 @@ const RichTextEditorCommon = ({
         toolbar: toolbarOptions,
       }}
       formats={formats}
-      className="h-[250px]"
       {...rest}
     />
   );

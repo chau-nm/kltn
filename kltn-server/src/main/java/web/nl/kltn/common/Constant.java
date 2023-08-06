@@ -13,4 +13,6 @@ public interface Constant {
     final double  similarityThreshold=0.6;
     int THESIS_STUDENT = 1;
     int THESIS_TEACHER = 2;
+    int THESIS_DOCUMENT_TYPE_OUTLINE = 1;
+    int THESIS_DOCUMENT_TYPE_DOCUMENT = 1;
 }
