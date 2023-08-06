@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import web.nl.kltn.model.LoginCondition;
 import web.nl.kltn.model.UserSearchCondition;
 import web.nl.kltn.model.dto.UserDTO;
+import web.nl.kltn.model.generator.User;
 
 
 @Mapper
@@ -20,11 +21,11 @@ public interface UserCusMapper {
 
 	public List<UserDTO> findByRole(String role);
 
-	public List<UserDTO> search(
+	public List<User> search(
 			int page,
 			int pageSize,
 			UserSearchCondition searchConditionModel
 	);
-	public int getTotal(UserSearchCondition searchCondition);
-	public void updatePassword(int idUser,String newPassword);
+	public int getTotal(UserSearchCondition searchConditionModel);
+
 }

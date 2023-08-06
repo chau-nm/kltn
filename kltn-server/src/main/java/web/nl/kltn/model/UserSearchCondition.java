@@ -15,14 +15,6 @@ public class UserSearchCondition {
         this.username = username;
     }
 
-    public String getStudentClass() {
-        return studentClass;
-    }
-
-    public void setStudentClass(String studentClass) {
-        this.studentClass = studentClass;
-    }
-
     public String getName() {
         return name;
     }
@@ -47,12 +39,11 @@ public class UserSearchCondition {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "UserSearchConditionModel{" +
-                "name='" + name + '\'' +
-                ", role='" + role + '\'' +
-                ", id=" + id +
-                '}';
+    public String getStudentClass() {
+        return studentClass;
+    }
+
+    public void setStudentClass(String studentClass) {
+        this.studentClass = studentClass;
     }
 }

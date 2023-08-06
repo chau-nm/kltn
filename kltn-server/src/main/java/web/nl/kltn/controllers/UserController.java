@@ -167,10 +167,10 @@ public class UserController {
 
     @PostMapping("/insert")
     public ResponseModel<UserDTO> insert(
-            @RequestBody RequestModel<UserDTO> notificationRequest
+            @RequestBody RequestModel<UserDTO> userRequest
     ) {
         ResponseModel<UserDTO> responseModel = new ResponseModel<>();
-        UserDTO userDTO = notificationRequest.getData();
+        UserDTO userDTO = userRequest.getData();
         UserDTO userResponse = userService.insert(userDTO);
         if (userResponse != null) {
             responseModel.setData(userResponse);
