@@ -4,6 +4,7 @@ import {
   Row,
   Select,
   Space,
+  Spin,
   Typography,
   UploadFile,
   message,
@@ -31,6 +32,7 @@ const RegisterThesisForm = (): JSX.Element => {
 
   const handleThesisNameChange = async (value: string) => {
     setThesisName(value);
+    form.setFieldValue("topic", value);
     // Clear any existing timeout to prevent the API call from being made immediately
     // Create a new timeout to call the API after 400 milliseconds of inactivity
     // Call the API to fetch documents here
@@ -39,7 +41,6 @@ const RegisterThesisForm = (): JSX.Element => {
       data = await Doc2VecServices.searchDoc2vec(value);
     }
     setDocumentList(data);
-    console.log(data);
   };
 
   const handleUploadFailed = () => {};
@@ -81,6 +82,10 @@ const RegisterThesisForm = (): JSX.Element => {
     handleSetDataTeacherSelect(teachers as UserModel[]);
   }, [teachers]);
 
+  useEffect(() => {
+    form.setFieldValue("description", editorHtml);
+  }, [editorHtml]);
+
   const handleSetDataStudentSelect = (data: UserModel[]) => {
     if (!data) return;
     let students = data.filter((std) => std.userId != user?.userId);
@@ -107,6 +112,11 @@ const RegisterThesisForm = (): JSX.Element => {
     setAttachments(updateAttachment);
   };
 
+  const handlesetEditorHtml = (value: string) => {
+    setEditorHtml(value);
+    form.setFieldValue("description", value);
+  };
+
   const handleFinish = () => {
     form.validateFields().then(() => {
       const thesis: ThesisModel = {
@@ -116,48 +126,73 @@ const RegisterThesisForm = (): JSX.Element => {
         year: 2000,
         semester: 1,
         status: 1,
+        students: [
+          user ?? ({} as UserModel),
+          ...studentSelectOptions.filter(
+            (std) => std.userId === form.getFieldValue("student2")
+          ),
+        ],
+        teacher: teacherSelectOptions.filter(
+          (teacher) => teacher.userId === form.getFieldValue("teacher")
+        )[0],
+        outlineUrls: attachments,
         isDeleted: false,
         createdAt: new Date().getTime(),
         updatedAt: new Date().getTime(),
       };
       insertThesisMutation.mutate(thesis);
+      form.resetFields();
     });
   };
 
   return (
-    <Form layout="vertical" onFinish={handleFinish} form={form}>
-      <Form.Item label="Sinh viên 2">
-        <Select>
-          {studentSelectOptions.map((std) => {
-            return <Select.Option key={std.userId}>{std.fname}</Select.Option>;
-          })}
-        </Select>
-      </Form.Item>
-      <Form.Item
-        label="Giảng viên hướng dẫn"
-        required
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <Select>
-          {teacherSelectOptions.map((teacher) => {
-            return (
-              <Select.Option key={teacher.userId}>
-                {teacher.fname}
-              </Select.Option>
-            );
-          })}
-        </Select>
-      </Form.Item>
-      <Form.Item label="Tên đề tài" name="topic" required>
-        <Input
-          type="text"
-          value={thesisName}
-          onChange={(e) => handleThesisNameChange(e.target.value)}
-        />
+    <Spin spinning={insertThesisMutation.isLoading}>
+      <Form layout="vertical" onFinish={handleFinish} form={form}>
+        <Form.Item label="Sinh viên 2" name="student2">
+          <Select>
+            {studentSelectOptions.map((std) => {
+              return (
+                <Select.Option key={std.userId}>{std.fname}</Select.Option>
+              );
+            })}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          label="Giảng viên hướng dẫn"
+          name="teacher"
+          required
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Select>
+            {teacherSelectOptions.map((teacher) => {
+              return (
+                <Select.Option key={teacher.userId}>
+                  {teacher.fname}
+                </Select.Option>
+              );
+            })}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          label="Tên đề tài"
+          name="topic"
+          rules={[
+            {
+              max: 255,
+              required: true,
+            },
+          ]}
+        >
+          <Input
+            type="text"
+            value={thesisName}
+            onChange={(e) => handleThesisNameChange(e.target.value)}
+          />
+        </Form.Item>
         {documentList.length > 0 &&
           documentList.map((data) => {
             return (
@@ -178,31 +213,41 @@ const RegisterThesisForm = (): JSX.Element => {
               </div>
             );
           })}
-      </Form.Item>
-      <Form.Item
-        label="File đề cương"
-        name="outline"
-        className="mt-14"
-        required
-      >
-        <DraggerCommon
-          handleUploadSuccess={handleUploadSuccess}
-          handleUploadFailure={handleUploadFailure}
-          handleRemove={handleRemove}
-        />
-      </Form.Item>
-      <Form.Item label="Mô tả" name="description" required>
-        <RichTextEditorCommon
-          editorHtml={editorHtml}
-          setEditorHtml={setEditorHtml}
-        />
-      </Form.Item>
-      <Form.Item>
-        <Row justify={"end"}>
-          <ButtonCommon htmlType="submit" color="blue" value="Đăng ký" />
-        </Row>
-      </Form.Item>
-    </Form>
+        <Form.Item
+          label="File đề cương"
+          name="outline"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <DraggerCommon
+            handleUploadSuccess={handleUploadSuccess}
+            handleUploadFailure={handleUploadFailure}
+            handleRemove={handleRemove}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Mô tả"
+          name="description"
+          rules={[{ required: true }]}
+        >
+          <div style={{ height: "300px", marginBottom: "20px" }}>
+            <RichTextEditorCommon
+              editorHtml={editorHtml}
+              setEditorHtml={setEditorHtml}
+              style={{ height: 270 }}
+            />
+          </div>
+        </Form.Item>
+        <Form.Item name="buttons" className="mt-5">
+          <Row justify={"end"}>
+            <ButtonCommon htmlType="submit" color="blue" value="Đăng ký" loading={insertThesisMutation.isLoading} />
+          </Row>
+        </Form.Item>
+      </Form>
+    </Spin>
   );
 };
 

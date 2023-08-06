@@ -86,12 +86,13 @@ interface ThesisModel{
     description?: string;
     year?: number;
     semester?: number;
+    students?: UserModel[];
+    teacher?: UserModel;
+    outlineUrls?: string[];
     status?: number;
     isDeleted?: boolean;
     createdAt?: number;
     updatedAt?: number;
-    students?: UserModel[];
-    teachers?: UserModel[];
 }
 
 interface ThesisRegisterCalendarModel {

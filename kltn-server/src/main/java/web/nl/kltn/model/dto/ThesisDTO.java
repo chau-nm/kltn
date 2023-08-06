@@ -4,11 +4,13 @@ import java.util.List;
 
 import web.nl.kltn.model.generator.CriticalAssessment;
 import web.nl.kltn.model.generator.Thesis;
+import web.nl.kltn.model.generator.ThesisDocument;
 import web.nl.kltn.model.generator.User;
 
 public class ThesisDTO extends Thesis {
 	private List<User> students;
-	private List<User> teachers;
+	private User teacher;
+	private List<String> outlineUrls;
 	private List<ThesisOutlineCommentDTO> thesisOutlineComments;
 	private CriticalAssessmentDTO criticalAssessment;
 	private ProtectionRatingScoreDTO protectionRatingScoreDTO;
@@ -55,12 +57,12 @@ public class ThesisDTO extends Thesis {
 		this.students = students;
 	}
 
-	public List<User> getTeachers() {
-		return teachers;
+	public User getTeacher() {
+		return teacher;
 	}
 
-	public void setTeachers(List<User> teachers) {
-		this.teachers = teachers;
+	public void setTeacher(User teacher) {
+		this.teacher = teacher;
 	}
 
 	public List<ThesisOutlineCommentDTO> getThesisOutlineComments() {
@@ -71,6 +73,14 @@ public class ThesisDTO extends Thesis {
 		this.thesisOutlineComments = thesisOutlineComments;
 	}
 	
+	public List<String> getOutlineUrls() {
+		return outlineUrls;
+	}
+
+	public void setOutlineUrls(List<String> outlineUrls) {
+		this.outlineUrls = outlineUrls;
+	}
+
 	public void load(Thesis thesis) {
 		this.setId(thesis.getId());
 		this.setTopic(thesis.getTopic());

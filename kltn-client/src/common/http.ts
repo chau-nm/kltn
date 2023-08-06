@@ -42,11 +42,10 @@ class HttpService {
               if (accessToken) {
                 const refreshedToken = await this.refreshToken();
                 if (!refreshedToken) {
-                  // localStorage.clear();
+                  localStorage.clear();
                 }
                 alert("Hết phiên đăng nhập!");
               }
-
               break;
             default:
               throw new Error('Error: ' + error.message);

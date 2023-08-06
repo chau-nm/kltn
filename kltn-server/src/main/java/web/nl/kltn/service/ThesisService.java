@@ -14,7 +14,7 @@ public interface ThesisService {
 
 	void update(Thesis thesis);
 
-	Thesis insert(Thesis thesis);
+	ThesisDTO insert(ThesisDTO thesis) throws Exception;
 
 	int getTotal(ThesisSearchCondition searchCondition);
 
