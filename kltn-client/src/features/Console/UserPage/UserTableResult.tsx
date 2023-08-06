@@ -1,4 +1,4 @@
-import { Row, Space, Spin, message } from "antd";
+import { Row, Space, Spin, Typography, message } from "antd";
 import { ColumnType } from "antd/es/table";
 import { useContext, useEffect } from "react";
 import { UserConsoleContext } from "~/contexts/UserConsoleContext";
@@ -76,6 +76,9 @@ const UserTableResult = (): JSX.Element => {
       title: "Chức vụ",
       dataIndex: "roles",
       width: 100,
+      render: (row, record) => {
+        return <Typography.Text>{record!?.roles.join(", ")}</Typography.Text>;
+      },
     },
     {
       title: "",
@@ -98,39 +101,6 @@ const UserTableResult = (): JSX.Element => {
           </Row>
         );
       },
-    },
-  ];
-
-  const dataSource: UserModel[] = [
-    {
-      userId: "caadasdcc-sdadas",
-      username: "account1",
-      fname: "Nguyễn Trần Anh",
-      roles: ["Abc", "123"],
-    },
-    {
-      userId: "caadasdcc-sdadad",
-      username: "account2",
-      fname: "Nguyễn Minh Châu",
-      roles: ["Abc"],
-    },
-    {
-      userId: "3",
-      username: "account3",
-      fname: "Nguyễn Hoài Bảo",
-      roles: ["Abc"],
-    },
-    {
-      userId: "4",
-      username: "account4",
-      fname: "Đỗ Thanh Bình",
-      roles: ["Abc"],
-    },
-    {
-      userId: "5",
-      username: "account5",
-      fname: "Huỳnh Hữu Ân",
-      roles: ["Abc"],
     },
   ];
 

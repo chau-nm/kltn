@@ -17,21 +17,32 @@ const LoginPage = lazy(() => import("~/features/LoginPage"));
 
 //Dashboard
 const DashboardPage = lazy(() => import("~/features/Dashboard"));
-const NotificationDetailPage = lazy(() => import("~/features/Dashboard/NotificationDetailPage"));
-const DashboardThesisRegisterPage = lazy(() => import("~/features/Dashboard/RegisterThesisPage"));
+const NotificationDetailPage = lazy(
+  () => import("~/features/Dashboard/NotificationDetailPage")
+);
+const DashboardThesisRegisterPage = lazy(
+  () => import("~/features/Dashboard/RegisterThesisPage")
+);
 const MyThesisPage = lazy(() => import("~/features/Dashboard/MyThesisPage"));
-const OutlineReviewPage = lazy(() => import("~/features/Dashboard/OutlineReviewPage"));
-const CriticalAssessmentPage = lazy(() => import("~/features/Dashboard/CriticalAssessmentPage"));
-const ProtectionPage = lazy(() => import("~/features/Dashboard/ProtectionPage"));
+const OutlineReviewPage = lazy(
+  () => import("~/features/Dashboard/OutlineReviewPage")
+);
+const CriticalAssessmentPage = lazy(
+  () => import("~/features/Dashboard/CriticalAssessmentPage")
+);
+const ProtectionPage = lazy(
+  () => import("~/features/Dashboard/ProtectionPage")
+);
 
 //Console
-const NotificationConsolePage = lazy(() => import("~/features/Console/NotificationPage"));
+const NotificationConsolePage = lazy(
+  () => import("~/features/Console/NotificationPage")
+);
 const ConsolePage = lazy(() => import("~/features/Console"));
 const ThesisConsolePage = lazy(() => import("~/features/Console/ThesisPage"));
 const UserPage = lazy(() => import("~/features/Console/UserPage"));
 
 /** IMPORT PAGE END */
-
 
 type AuthenticatedRouteProps = {
   roles: Array<string | null>;
@@ -60,7 +71,7 @@ const AuthenticatedRoute = ({ roles }: AuthenticatedRouteProps) => {
   let hasRole = hasCommonValue(roles, userRoles);
   if (isAuthenticated && hasRole) {
     return <Outlet />;
-  }else{
+  } else {
     return <Navigate to={path.LOGIN} />;
   }
 };
@@ -103,7 +114,7 @@ const useRouteElements = () => {
             <DashboardLayout>
               <NotificationDetailPage />
             </DashboardLayout>
-          )
+          ),
         },
         {
           path: path.MY_THESIS,
@@ -111,18 +122,19 @@ const useRouteElements = () => {
             <DashboardLayout>
               <MyThesisPage />
             </DashboardLayout>
-          )
+          ),
         },
-        
       ],
     },
     {
       path: "",
       element: (
-        <AuthenticatedRoute roles={[
-          AuthConstants.AUTH_ROLES.ADMIN,
-          AuthConstants.AUTH_ROLES.MINISTRY,
-        ]} />
+        <AuthenticatedRoute
+          roles={[
+            AuthConstants.AUTH_ROLES.ADMIN,
+            AuthConstants.AUTH_ROLES.MINISTRY,
+          ]}
+        />
       ),
       children: [
         {
@@ -131,7 +143,7 @@ const useRouteElements = () => {
             <ConsoleLayout>
               <ConsolePage />
             </ConsoleLayout>
-          )
+          ),
         },
         {
           path: path.NOTIFICATION_CONSOLE,
@@ -139,7 +151,7 @@ const useRouteElements = () => {
             <ConsoleLayout>
               <NotificationConsolePage />
             </ConsoleLayout>
-          )
+          ),
         },
         {
           path: path.THESIS_CONSOLE,
@@ -149,17 +161,13 @@ const useRouteElements = () => {
                 <ThesisConsolePage />
               </ThesisConsoleProvider>
             </ConsoleLayout>
-          )
-        }
+          ),
+        },
       ],
     },
     {
       path: "",
-      element: (
-        <AuthenticatedRoute roles={[
-          AuthConstants.AUTH_ROLES.ADMIN,
-        ]} />
-      ),
+      element: <AuthenticatedRoute roles={[AuthConstants.AUTH_ROLES.ADMIN]} />,
       children: [
         {
           path: path.USER_CONSOLE,
@@ -167,16 +175,14 @@ const useRouteElements = () => {
             <ConsoleLayout>
               <UserPage />
             </ConsoleLayout>
-          )
-        }
+          ),
+        },
       ],
     },
     {
       path: "",
       element: (
-        <AuthenticatedRoute roles={[
-          AuthConstants.AUTH_ROLES.STUDENT,
-        ]} />
+        <AuthenticatedRoute roles={[AuthConstants.AUTH_ROLES.STUDENT]} />
       ),
       children: [
         {
@@ -185,16 +191,14 @@ const useRouteElements = () => {
             <DashboardLayout>
               <DashboardThesisRegisterPage />
             </DashboardLayout>
-          )
-        }
+          ),
+        },
       ],
     },
     {
       path: "",
       element: (
-        <AuthenticatedRoute roles={[
-          AuthConstants.AUTH_ROLES.COUNCIL,
-        ]} />
+        <AuthenticatedRoute roles={[AuthConstants.AUTH_ROLES.COUNCIL]} />
       ),
       children: [
         {
@@ -203,7 +207,7 @@ const useRouteElements = () => {
             <DashboardLayout>
               <OutlineReviewPage />
             </DashboardLayout>
-          )
+          ),
         },
         {
           path: path.CRITICAL_ASSESSMENT,
@@ -211,7 +215,7 @@ const useRouteElements = () => {
             <DashboardLayout>
               <CriticalAssessmentPage />
             </DashboardLayout>
-          )
+          ),
         },
         {
           path: path.PROTECTION,
@@ -219,14 +223,14 @@ const useRouteElements = () => {
             <DashboardLayout>
               <ProtectionPage />
             </DashboardLayout>
-          )
+          ),
         },
       ],
     },
     {
       path: "*",
-      element: <PageNotFounded/>
-    }
+      element: <PageNotFounded />,
+    },
   ]);
   return routerElements;
 };

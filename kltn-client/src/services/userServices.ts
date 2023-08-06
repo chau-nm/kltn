@@ -1,4 +1,5 @@
 import { ApiUrlConstants } from "~/constants/apiUrlConstants";
+import { sendEmailResetPassword } from "./mailService";
 import http from "~/common/http";
 
 export const login = async (loginCondition: LoginConditionModel): Promise<UserModel | null> => {
@@ -40,6 +41,15 @@ export const search = async (mutationParams: MutationParamsModel<UserSearchCondi
     return notificationsSearchResponse;
 }
 
+export const insert = async (user: UserModel) : Promise<UserModel>=> {
+    const requestModel: RequestModel<UserModel> = {
+        data: user
+    }
+    const responseModel: ResponseModel<UserModel> = await http.post(ApiUrlConstants.INSERT_USER, requestModel);
+    const userResponse: UserModel = responseModel.data;
+    return userResponse;
+}
+
 
 export const updateUser = async (newUser: UserModel): Promise<UserModel | null> => {
     const requestModel: RequestModel<UserModel> = {
@@ -52,15 +62,17 @@ export const updateUser = async (newUser: UserModel): Promise<UserModel | null> 
     const userResp: UserModel = response.data as UserModel;
     return userResp ? userResp : null;
 }
-export const resetPasswordUser = async (idUser: string): Promise<string | null> => {
-    const requestModel: RequestModel<string> = {
-        data: idUser
-    }
-    const response: ResponseModel<string> = await http.post<ResponseModel<string>>(`${ApiUrlConstants.RESET_PASSWORD_USER}/${idUser}`)
+export const resetPasswordUser = async (user: UserModel): Promise<string | null> => {
+    const response: ResponseModel<string> = await http.post<ResponseModel<string>>(`${ApiUrlConstants.RESET_PASSWORD_USER}/${user.userId}`)
         .then(response => response)
         .catch(error => Promise.reject(error));
     const newPassword: string = response.data;
-    console.log("response.data",newPassword);
+    const paramsEmail : TemplateResetModel={
+        to_email:user.email?user.email:"",
+        to_name:user.fname,
+        newPassword: newPassword,
+    }
+    sendEmailResetPassword(paramsEmail);
     return newPassword ? newPassword : null;
 }
 

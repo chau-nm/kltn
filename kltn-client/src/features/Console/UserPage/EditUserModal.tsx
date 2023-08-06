@@ -23,6 +23,8 @@ import { dateDisplay } from "~/common/util";
 import dayjs from "dayjs";
 import { useMutation } from "react-query";
 import { toast } from "react-toastify";
+import { ApiUrlConstants } from "~/constants/apiUrlConstants";
+import AuthConstants from "~/constants/authConstants";
 
 const { Option } = Select;
 const EditUserModal = (): JSX.Element => {
@@ -32,8 +34,6 @@ const EditUserModal = (): JSX.Element => {
     isLoadingDetail,
     UserDetail,
   } = useContext(UserConsoleContext);
-
-  console.log(UserDetail);
 
   const [user, setUser] = useState<UserModel>({} as UserModel);
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -51,18 +51,20 @@ const EditUserModal = (): JSX.Element => {
 
   const updateUserMuitation = useMutation(UserService.updateUser, {
     onSuccess: () => {
-      toast("Cập nhật thành công");
+      message.success("Cập nhật thành công");
     },
   });
   const resetPasswordMuitation = useMutation(UserService.resetPasswordUser, {
     onSuccess: () => {
-      toast("Đặt lại thành công");
+      message.success(
+        "Đặt lại thành công, mật khẩu mới đã được gửi qua email người dùng"
+      );
     },
   });
 
   const resetPasswordUserHandle = (user: UserModel) => {
     if (confirm("Bạn chắc chắn muốn đặt lại mật khẩu cho tài khoản này?")) {
-      resetPasswordMuitation.mutate(user.userId);
+      resetPasswordMuitation.mutate(user);
     }
   };
 
@@ -108,7 +110,6 @@ const EditUserModal = (): JSX.Element => {
     setOpenEditUserModal(false);
     setEditMode(false);
   };
-
   return (
     <ModalCommon
       title="Chỉnh sửa thông tin người dùng"
@@ -147,6 +148,29 @@ const EditUserModal = (): JSX.Element => {
             )}
           </Col>
         </Row>
+
+        <Row className="min-w-[800px]">
+          <Col span={5} className="border py-3 px-4">
+            <Typography.Text strong>Email:</Typography.Text>
+          </Col>
+          <Col flex={1} className="border py-3 px-4">
+            {editMode ? (
+              <Input
+                type="email"
+                value={user!?.email}
+                onChange={(event) => {
+                  setUser({
+                    ...user!,
+                    email: event.target.value,
+                  } as UserModel);
+                }}
+              />
+            ) : (
+              <Typography.Text>{user!?.email}</Typography.Text>
+            )}
+          </Col>
+        </Row>
+
         <Row className="min-w-[800px]">
           <Col span={5} className="border py-3 px-4">
             <Typography.Text strong>Ngày sinh:</Typography.Text>
@@ -230,10 +254,17 @@ const EditUserModal = (): JSX.Element => {
                   } as UserModel);
                 }}
               >
-                <Option value="2">Ministry</Option>
-                <Option value="4">Student</Option>
-                <Option value="3">Council</Option>
-                {/* Add more options as needed */}
+                {AuthConstants.AUTH_ROLES_NAME.map((role) => {
+                  if (
+                    !user!?.roles.includes(role) &&
+                    role !== AuthConstants.AUTH_ROLES.ADMIN
+                  )
+                    return (
+                      <Option value={role} key={role}>
+                        {role}
+                      </Option>
+                    );
+                })}
               </Select>
             ) : (
               user!?.roles && (
