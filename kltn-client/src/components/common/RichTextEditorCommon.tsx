@@ -4,18 +4,17 @@ import "react-quill/dist/quill.snow.css";
 
 type RichTextEditorCommonProps = {
   editorHtml?: string;
-  setEditorHtml?: React.Dispatch<SetStateAction<string>>
-}
+  setEditorHtml?: React.Dispatch<SetStateAction<string>>;
+};
 
 const RichTextEditorCommon = ({
   editorHtml,
   setEditorHtml,
   ...rest
 }: RichTextEditorCommonProps & ReactQuillProps): JSX.Element => {
-
   const toolbarOptions = [
-    [{ 'font': [] }],
-    [{ 'size': ['small', false, 'large', 'huge'] }],
+    [{ font: [] }],
+    [{ size: ["small", false, "large", "huge"] }],
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
     ["bold", "italic", "underline", "strike"],
     [{ color: [] }, { background: [] }],
@@ -46,13 +45,13 @@ const RichTextEditorCommon = ({
 
   return (
     <ReactQuill
+      {...rest}
       value={editorHtml}
       onChange={setEditorHtml}
       modules={{
         toolbar: toolbarOptions,
       }}
       formats={formats}
-      {...rest}
     />
   );
 };
