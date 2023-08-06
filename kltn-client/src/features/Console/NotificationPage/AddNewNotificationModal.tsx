@@ -132,11 +132,13 @@ const AddNewNotificationModal = (): JSX.Element => {
               },
             ]}
           >
-            <RichTextEditorCommon
-              editorHtml={editorHtml}
-              setEditorHtml={setEditorHtml}
-              style={{ height: 270 }}
-            />
+            <div style={{ height: "300px", marginBottom: "20px" }}>
+              <RichTextEditorCommon
+                editorHtml={editorHtml}
+                setEditorHtml={setEditorHtml}
+                style={{ height: 270 }}
+              />
+            </div>
           </Form.Item>
         </Spin>
       </Form>
