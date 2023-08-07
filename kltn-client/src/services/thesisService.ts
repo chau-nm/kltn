@@ -23,6 +23,6 @@ export const getThesisById = async (thesisId: string): Promise<ThesisModel | nul
     const response: ResponseModel<ThesisModel> = await http.get<ResponseModel<ThesisModel>>(ApiUrlConstants.SEARCH_DETAIL_THESIS + thesisId)
         .then(response => response)
         .catch(error => Promise.reject(error));
-    const user: ThesisModel = response.data as ThesisModel;
-    return user ? user : null;
+    const thesis: ThesisModel = response.data as ThesisModel;
+    return thesis ? thesis : null;
 }

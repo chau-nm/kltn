@@ -55,6 +55,7 @@ public class ThesisServiceImpl implements ThesisService {
         ThesisDTO thesisDTO = new ThesisDTO();
         Thesis thesisEntity = thesisMapper.selectByPrimaryKey(id);
         thesisDTO.load(thesisEntity);
+        thesisDTO.setOutlineUrls(thesisDocumentCusMapper.getFilesByThesisId(id));
         return thesisDTO;
     }
 

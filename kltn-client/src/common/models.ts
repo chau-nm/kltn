@@ -81,28 +81,15 @@ interface NotificationSearchConditionModel {
 
 /** THESIS */
 interface ThesisModel{
-    id?: string;
-    topic?: string;
-    description?: string;
+    id: string;
+    topic: string;
+    description: string;
     year?: number;
     semester?: number;
     students?: UserModel[];
     teacher?: UserModel;
     outlineUrls?: string[];
     status?: number;
-    isDeleted?: boolean;
-    createdAt?: number;
-    updatedAt?: number;
-}
-/** THESIS OUTLINE REVIEW */
-interface OutlineReviewModel{
-    id: string;
-    topic?: string;
-    description?: string;
-    year: number;
-    semester: number;
-    status: number;
-    attachmentUrls?: string[];
     isDeleted?: boolean;
     createdAt?: number;
     updatedAt?: number;

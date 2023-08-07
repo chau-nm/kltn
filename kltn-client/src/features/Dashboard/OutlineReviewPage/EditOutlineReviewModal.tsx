@@ -1,35 +1,16 @@
-import {
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  Row,
-  Select,
-  Space,
-  Spin,
-  Typography,
-  UploadFile,
-  message,
-} from "antd";
-import { useForm } from "antd/es/form/Form";
+import { Col, Row, Space, Spin, Typography } from "antd";
 import { useContext, useEffect, useState } from "react";
-import { v4 } from "uuid";
 import { OutlineReviewContext } from "~/contexts/OutlineReviewContext";
-import * as OutlineReviewService from "~/services/OutlineReviewServices";
+import * as ThesisService from "~/services/thesisService";
 import ButtonCommon from "../../../components/common/ButtonCommon";
-import DraggerCommon from "../../../components/common/DraggerCommon";
 import ModalCommon from "../../../components/common/ModalCommon";
-import RichTextEditorCommon from "../../../components/common/RichTextEditorCommon";
-import { dateDisplay, getFileNameFromUrl } from "~/common/util";
-import dayjs from "dayjs";
+import { getFileNameFromUrl } from "~/common/util";
 import { useMutation } from "react-query";
 import { toast } from "react-toastify";
-import { ApiUrlConstants } from "~/constants/apiUrlConstants";
-import AuthConstants from "~/constants/authConstants";
 import { PaperClipOutlined } from "@ant-design/icons";
 import { JSX } from "react";
+import ReactQuillPreviewCommon from "~/components/common/ReactQuillPreviewCommon";
 
-const { Option } = Select;
 const EditOutlineReviewModal = (): JSX.Element => {
   const {
     openEditOutlineReviewModal,
@@ -38,17 +19,16 @@ const EditOutlineReviewModal = (): JSX.Element => {
     OutlineReviewDetail,
   } = useContext(OutlineReviewContext);
 
-  const [OutlineReview, setOutlineReview] = useState<OutlineReviewModel>(
-    {} as OutlineReviewModel
+  const [OutlineReview, setOutlineReview] = useState<ThesisModel>(
+    {} as ThesisModel
   );
   const [editMode, setEditMode] = useState<boolean>(false);
 
   const getOutlineReviewByIdMutation = useMutation(
-    OutlineReviewService.getOutlineReviewById,
+    ThesisService.getThesisById,
     {
       onSuccess: (data) => {
-        const OutlineReviewRes: OutlineReviewModel | null =
-          data as OutlineReviewModel;
+        const OutlineReviewRes: ThesisModel | null = data as ThesisModel;
         if (OutlineReviewRes) {
           setOutlineReview(OutlineReviewRes);
         } else {
@@ -58,36 +38,15 @@ const EditOutlineReviewModal = (): JSX.Element => {
     }
   );
 
-  // const updateOutlineReviewMuitation = useMutation(OutlineReviewService.updateOutlineReview, {
-  //   onSuccess: () => {
-  //     message.success("Cập nhật thành công");
-  //   },
-  // });
-  // const resetPasswordMuitation = useMutation(OutlineReviewService.resetPasswordOutlineReview, {
-  //   onSuccess: () => {
-  //     message.success(
-  //       "Đặt lại thành công, mật khẩu mới đã được gửi qua email người dùng"
-  //     );
-  //   },
-  // });
-
-  const resetPasswordOutlineReviewHandle = (
-    OutlineReview: OutlineReviewModel
-  ) => {
-    if (confirm("Bạn chắc chắn muốn đặt lại mật khẩu cho tài khoản này?")) {
-      // resetPasswordMuitation.mutate(OutlineReview);
-    }
-  };
-
   useEffect(() => {
     if (OutlineReviewDetail) {
-      // getOutlineReviewByIdMutation.mutate(OutlineReviewDetail!?.OutlineReviewId);
+      getOutlineReviewByIdMutation.mutate(OutlineReviewDetail.id);
     }
   }, [openEditOutlineReviewModal, OutlineReviewDetail]);
 
   useEffect(() => {
     if (OutlineReviewDetail) {
-      // getOutlineReviewByIdMutation.mutate(OutlineReviewDetail!?.OutlineReviewId);
+      getOutlineReviewByIdMutation.mutate(OutlineReviewDetail!?.id);
     }
   }, []);
 
@@ -99,7 +58,6 @@ const EditOutlineReviewModal = (): JSX.Element => {
           <ButtonCommon
             value="Lưu"
             onClick={() => {
-              // updateOutlineReviewMuitation.mutate(OutlineReview);
               setEditMode(false);
             }}
           />
@@ -129,7 +87,7 @@ const EditOutlineReviewModal = (): JSX.Element => {
             className="py-3 px-4 w-full flex items-center justify-center"
           >
             <Typography.Text className="font-bold text-xl">
-              {OutlineReview!?.topic || "Xây dựng hệ thống quản lý luận văn"}
+              {OutlineReview!?.topic}
             </Typography.Text>
           </Col>
         </Row>
@@ -138,23 +96,22 @@ const EditOutlineReviewModal = (): JSX.Element => {
             flex={1}
             className="py-3 px-4 w-full flex items-center justify-center"
           >
-            <Typography.Text className="">
-              {OutlineReview!?.topic ||
-                "Contrary to popular belief, Lorem Ipsum is nosimply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of  (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum,  comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from  by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham."}
-            </Typography.Text>
+            <ReactQuillPreviewCommon
+              content={OutlineReview!?.description}
+            ></ReactQuillPreviewCommon>
           </Col>
         </Row>
         <Row>
-          {OutlineReview!?.attachmentUrls &&
-            OutlineReview!?.attachmentUrls.length > 0 && (
-              <div className="border-t py-3">
+          {OutlineReview!?.outlineUrls &&
+            OutlineReview!?.outlineUrls.length > 0 && (
+              <div className="border-t py-3 w-full">
                 <Typography.Text className="font-bold">
                   Danh sách file đính kèm
                 </Typography.Text>
-                {OutlineReview!?.attachmentUrls?.map((url) => {
+                {OutlineReview!?.outlineUrls?.map((url) => {
                   return (
                     <Space className="block">
-                      <a href={url}>
+                      <a href={url} target="_blank">
                         <PaperClipOutlined /> {getFileNameFromUrl(url)}
                       </a>
                     </Space>

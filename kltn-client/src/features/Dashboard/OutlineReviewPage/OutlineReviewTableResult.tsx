@@ -1,21 +1,14 @@
-import { Row, Space, Spin, Typography, message } from "antd";
+import { Row, Space, Spin } from "antd";
 import { ColumnType } from "antd/es/table";
 import { useContext, useEffect } from "react";
 import { OutlineReviewContext } from "~/contexts/OutlineReviewContext";
-import { dateDisplay } from "~/common/util";
-import ButtonCommon from "~/components/common/ButtonCommon";
-import {
-  DeleteIconCommon,
-  EditIconCommon,
-} from "~/components/common/IconCommon";
+
+import { EditIconCommon } from "~/components/common/IconCommon";
 import TableCommon from "~/components/common/TableCommon";
-import { useMutation } from "react-query";
-import * as OutlineReviewService from "~/services/OutlineReviewServices";
 
 const OutlineReviewTableResult = (): JSX.Element => {
   const {
     OutlineReviews,
-    setOpenAddNewOutlineReviewModal,
     search,
     isLoadingList,
     pagination,
@@ -23,17 +16,6 @@ const OutlineReviewTableResult = (): JSX.Element => {
     searchDetail,
     setOpenEditOutlineReviewModal,
   } = useContext(OutlineReviewContext);
-
-  // const deleteOutlineReviewMutation = useMutation(OutlineReviewService.remove, {
-  //   onSuccess: (data: boolean) => {
-  //     if (data) {
-  //       message.destroy("Xóa thành công");
-  //       search();
-  //     } else {
-  //       message.error("Xóa thất bại");
-  //     }
-  //   }
-  // })
 
   useEffect(() => {
     search();
@@ -84,7 +66,7 @@ const OutlineReviewTableResult = (): JSX.Element => {
           <Row justify={"center"}>
             <EditIconCommon
               onClick={() => {
-                // searchDetail(record.userId);
+                searchDetail(record.id);
                 setOpenEditOutlineReviewModal(true);
               }}
             />
@@ -96,15 +78,6 @@ const OutlineReviewTableResult = (): JSX.Element => {
 
   return (
     <Space direction="vertical" className="w-full mt-10">
-      {/* <Row justify={"end"}>
-        <ButtonCommon
-          color="blue"
-          value="Thêm người dùng"
-          onClick={() => {
-            setOpenAddNewOutlineReviewModal(true);
-          }}
-        />
-      </Row> */}
       <Spin spinning={isLoadingList}>
         <TableCommon
           columns={columns}

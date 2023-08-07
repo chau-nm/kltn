@@ -42,7 +42,7 @@ public class ThesisController {
 	public ResponseModel<ThesisDTO> viewDetail(@PathVariable(required = true) String id) {
 		ResponseModel<ThesisDTO> responseModel = new ResponseModel<>();
 		responseModel.setData(thesisService.findById(id));
-		return null;
+		return responseModel;
 	}
 
 
