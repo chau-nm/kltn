@@ -20,4 +20,5 @@ public interface ThesisService {
 
 	ThesisDTO findById(String id);
 
+	public ThesisDTO findDetailById(String id) ;
 }

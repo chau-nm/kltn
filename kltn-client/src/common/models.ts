@@ -94,6 +94,24 @@ interface ThesisModel{
     createdAt?: number;
     updatedAt?: number;
 }
+/** THESIS OUTLINE REVIEW */
+interface OutlineReviewModel{
+    id: string;
+    topic?: string;
+    description?: string;
+    year: number;
+    semester: number;
+    status: number;
+    attachmentUrls?: string[];
+    isDeleted?: boolean;
+    createdAt?: number;
+    updatedAt?: number;
+}
+
+interface OutlineReviewSearchConditionModel{}
+
+
+///
 
 interface ThesisRegisterCalendarModel {
     id?: number;

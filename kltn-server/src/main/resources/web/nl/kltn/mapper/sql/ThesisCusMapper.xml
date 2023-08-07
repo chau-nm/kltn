@@ -23,15 +23,15 @@
 				AND topic LIKE CONCAT('%', #{searchCondition.topic}, '%')
 			</if>
 			<if
-				test="searchCondition != null and searchCondition.year != null">
+				test="searchCondition != null and searchCondition.year != 0">
 				AND year = #{searchCondition.year}
 			</if>
 			<if
-				test="searchCondition != null and searchCondition.semester != null">
+				test="searchCondition != null and searchCondition.semester != 0">
 				AND semester = #{searchCondition.semester}
 			</if>
 			<if
-				test="searchCondition != null and searchCondition.status != null">
+				test="searchCondition != null and searchCondition.status != 0">
 				AND status = #{searchCondition.status}
 			</if>
 			AND is_deleted = 0
@@ -49,18 +49,19 @@
 				AND topic LIKE CONCAT('%', #{topic}, '%')
 			</if>
 			<if
-				test="year != null">
+				test="year != 0">
 				AND year = #{year}
 			</if>
 			<if
-				test="semester != null">
+				test="semester != 0">
 				AND semester = #{semester}
 			</if>
 			<if
-				test="status != null">
+				test="status != 0">
 				AND status = #{status}
 			</if>
 			AND is_deleted = 0
 		</where>
 	</select>
+
 </mapper>

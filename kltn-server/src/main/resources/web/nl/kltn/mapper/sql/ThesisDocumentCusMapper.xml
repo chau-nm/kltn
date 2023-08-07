@@ -1,0 +1,15 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="web.nl.kltn.mapper.ThesisDocumentCusMapper">
+
+
+    <select id="getFilesByThesisId"
+            parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+        file_url
+        FROM thesis_document
+        WHERE thesis_id = #{thesisId}
+    </select>
+
+</mapper>

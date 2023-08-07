@@ -41,9 +41,10 @@ public class ThesisController {
 	@GetMapping("/{id}")
 	public ResponseModel<ThesisDTO> viewDetail(@PathVariable(required = true) String id) {
 		ResponseModel<ThesisDTO> responseModel = new ResponseModel<>();
-		
+		responseModel.setData(thesisService.findById(id));
 		return null;
 	}
+
 
 	@PostMapping("/search/{page}")
 	public ResponseModel<SearchResponse<List<Thesis>>> search(@PathVariable int page,

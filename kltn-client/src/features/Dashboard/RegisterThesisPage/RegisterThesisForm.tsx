@@ -106,6 +106,8 @@ const RegisterThesisForm = (): JSX.Element => {
 
   const handleUploadSuccess = (response: string) => {
     const updateAttachments = attachments.concat(response);
+    console.log("updateAttachments", updateAttachments);
+
     setAttachments(updateAttachments);
   };
 
@@ -247,7 +249,12 @@ const RegisterThesisForm = (): JSX.Element => {
         </Form.Item>
         <Form.Item name="buttons" className="mt-5">
           <Row justify={"end"}>
-            <ButtonCommon htmlType="submit" color="blue" value="Đăng ký" loading={insertThesisMutation.isLoading} />
+            <ButtonCommon
+              htmlType="submit"
+              color="blue"
+              value="Đăng ký"
+              loading={insertThesisMutation.isLoading}
+            />
           </Row>
         </Form.Item>
       </Form>
