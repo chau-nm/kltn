@@ -26,14 +26,14 @@ const ModalCommon = ({
 }: ModalCommonProps & ModalProps): JSX.Element => {
   return (
     <Modal 
+      {...rest}
       title={title} 
       open={open} 
       footer={footer}
       onCancel={onCanel}
       onOk={onOk}
       maskClosable={maskCloseable}
-      className={`${className} min-w-[500px]`}
-      {...rest}>
+      className={`${className} min-w-[500px]`}>
       {children}
     </Modal>
   );

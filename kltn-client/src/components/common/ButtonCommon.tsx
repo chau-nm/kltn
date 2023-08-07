@@ -29,12 +29,12 @@ const ButtonCommon = ({
 }: ButtonCommonProps): JSX.Element => {
   return (
     <Button
+      {...rest}
       className={`py-5 flex text-base items-center ${className} ${
         color && ButtonColorType[color]
       }`}
       onClick={onClick}
       disabled={disabled}
-      {...rest}
     >
       {value}
     </Button>

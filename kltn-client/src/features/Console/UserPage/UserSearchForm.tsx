@@ -1,4 +1,4 @@
-import { Button, DatePicker, Form, Input } from "antd";
+import { Button, DatePicker, Form, Input, Row } from "antd";
 import { useContext } from "react";
 import { UserConsoleContext } from "~/contexts/UserConsoleContext";
 
@@ -19,6 +19,11 @@ const UserSearchForm = (): JSX.Element => {
     });
   };
 
+  const formItemLayout = {
+    labelCol: {span: 2},
+    wrapperCol:{offset: 1}
+  };
+
   return (
     <Form
       layout="inline"
@@ -26,24 +31,26 @@ const UserSearchForm = (): JSX.Element => {
       onFinish={handleSearch}
       onValuesChange={handleValueChange}
     >
-      <Form.Item label="tên tài khoản" name="username" labelCol={{ span: 5 }}>
-        <Input className="w-[250px]" />
+      <Form.Item label="Tên tài khoản" name="username" {...formItemLayout} labelAlign="left">
+        <Input />
       </Form.Item>
-      <Form.Item label="Tên" name="name" labelCol={{ span: 5 }}>
-        <Input className="w-[250px]" />
+      <Form.Item label="Họ và tên" name="name" {...formItemLayout} labelAlign="left">
+        <Input/>
       </Form.Item>
-      <Form.Item label="chức vụ" name="role" labelCol={{ span: 5 }}>
-        <Input className="w-[250px]" />
+      <Form.Item label="Chức vụ" name="role" {...formItemLayout} labelAlign="left">
+        <Input/>
       </Form.Item>
-      <Form.Item label="lớp" name="studentClass" labelCol={{ span: 5 }}>
-        <Input className="w-[250px]" />
+      <Form.Item label="Lớp" name="studentClass" {...formItemLayout} labelAlign="left">
+        <Input/>
       </Form.Item>
 
       {/* <Form.Item label="mã số công tác" name="id">
                 <Input className="w-[300px]" />
             </Form.Item> */}
       <Form.Item>
-        <Button htmlType="submit">Tìm kiếm</Button>
+        <Row justify={"end"}>
+          <Button htmlType="submit">Tìm kiếm</Button>
+        </Row>
       </Form.Item>
     </Form>
   );

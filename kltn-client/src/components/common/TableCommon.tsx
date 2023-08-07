@@ -21,14 +21,14 @@ const TableCommon = <T extends {}>({
     let rowKey = 1;
   return (
     <Table 
+      {...rest}
       columns={columns} 
       dataSource={dataSource} 
       className={className} 
       rowKey={() => rowKey++}
       pagination={pagination}
       onChange={handleOnChange}
-      scroll={{x: 1500}}
-      {...rest}/>
+      scroll={{x: 1500}}/>
   );
 };
 

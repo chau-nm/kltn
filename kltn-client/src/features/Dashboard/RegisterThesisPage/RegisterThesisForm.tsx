@@ -86,6 +86,10 @@ const RegisterThesisForm = (): JSX.Element => {
     form.setFieldValue("description", editorHtml);
   }, [editorHtml]);
 
+  useEffect(() => {
+    form.setFieldValue("outline", attachments);
+  }, [attachments])
+
   const handleSetDataStudentSelect = (data: UserModel[]) => {
     if (!data) return;
     let students = data.filter((std) => std.userId != user?.userId);

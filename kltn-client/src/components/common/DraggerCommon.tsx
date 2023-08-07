@@ -23,7 +23,6 @@ const DraggerCommon = ({
 
   const commonUploadRequest = async (options: any) => {
     const { onSuccess, onError, file } = options;
-    console.log("a")
     try{
         const downloadURL = await uploadFileToFirebase(file);
         onSuccess(downloadURL);
@@ -68,11 +67,11 @@ const DraggerCommon = ({
 
   return (
     <Dragger 
+      {...rest}
       fileList={fileList} 
       customRequest={commonUploadRequest} 
       onChange={handleOnChange} 
-      onRemove={handleRemove}
-      {...rest}>
+      onRemove={handleRemove}>
       <p className="ant-upload-drag-icon">
         <InboxOutlined />
       </p>
