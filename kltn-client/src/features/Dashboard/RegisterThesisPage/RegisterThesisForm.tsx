@@ -119,7 +119,7 @@ const RegisterThesisForm = (): JSX.Element => {
     setAttachments(updateAttachment);
   };
 
-  const handlesetEditorHtml = (value: string) => {
+  const handleSetEditorHtml = (value: string) => {
     setEditorHtml(value);
     form.setFieldValue("description", value);
   };
@@ -131,14 +131,14 @@ const RegisterThesisForm = (): JSX.Element => {
         if (std.userId === form.getFieldValue("student2")) {
           return std.userId;
         }
-      }),
+      }).filter(std => std),
     ];
 
     let teacherId = teacherSelectOptions.map((teacher) => {
       if (teacher.userId === form.getFieldValue("teacher")) {
         return teacher.userId;
       }
-    })[0];
+    }).filter(std => std)[0];
 
     form.validateFields().then(() => {
       let thesisId = v4();

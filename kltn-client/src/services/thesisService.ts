@@ -25,6 +25,8 @@ export const getThesisById = async (thesisId: string): Promise<ThesisModel | nul
         .catch(error => Promise.reject(error));
     const thesis: ThesisModel = response.data as ThesisModel;
     return thesis ? thesis : null;
+}
+
 export const update = async (thesis: ThesisModel): Promise<boolean> => {
     const requestModel : RequestModel<ThesisModel> = {
         data: thesis
