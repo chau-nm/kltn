@@ -145,7 +145,7 @@
         LEFT JOIN role_user ru ON u.user_id = ru.user_id
         LEFT JOIN role r ON ru.role_id = r.role_id
         WHERE
-        u.user_id = '${userId}'
+        u.user_id = #{userId}
     </select>
 
     <select id="findByUsername" parameterType="java.lang.String" resultMap="UserDTO">
@@ -165,7 +165,7 @@
         LEFT JOIN role_user ru ON u.user_id = ru.user_id
         LEFT JOIN role r ON ru.role_id = r.role_id
         WHERE
-        u.username = '${username}'
+        u.username = #{username}
     </select>
 
     <select id="findByRole" parameterType="java.lang.String" resultMap="UserDTO">

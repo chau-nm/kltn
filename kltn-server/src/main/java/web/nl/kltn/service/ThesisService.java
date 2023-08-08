@@ -8,7 +8,7 @@ import web.nl.kltn.model.generator.Thesis;
 
 public interface ThesisService {
 
-	List<Thesis> search(int page, int pageSize, ThesisSearchCondition thesisSearchCondition);
+	List<ThesisDTO> search(int page, int pageSize, ThesisSearchCondition thesisSearchCondition);
 
 	void delete(String id);
 
@@ -20,6 +20,8 @@ public interface ThesisService {
 
 	ThesisDTO findById(String id);
 
+	public ThesisDTO findDetailById(String id) ;
+  
 	List<ThesisDTO> findByUser(String userId);
 
 }

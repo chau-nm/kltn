@@ -31,13 +31,16 @@ const NotificationDetailPage = (): JSX.Element => {
   if (isLoading) {
     return <LoadingPage />;
   }
+  console.log(data);
 
   return (
     <CardCommon title={data?.title as string}>
       <ReactQuillPreviewCommon content={data?.content as string} />
       {data?.attachmentUrls && data?.attachmentUrls.length > 0 && (
         <div className="border-t py-3">
-          <Typography.Text className="font-bold">Danh sách file đính kèm</Typography.Text>
+          <Typography.Text className="font-bold">
+            Danh sách file đính kèm
+          </Typography.Text>
           {data?.attachmentUrls?.map((url) => {
             return (
               <Space className="block">
@@ -50,7 +53,9 @@ const NotificationDetailPage = (): JSX.Element => {
         </div>
       )}
       <Row justify={"end"}>
-        <Typography.Text type="secondary" italic>Cập nhật: {dateTimeDisplay(new Date(data?.updatedAt as number))}</Typography.Text>
+        <Typography.Text type="secondary" italic>
+          Cập nhật: {dateTimeDisplay(new Date(data?.updatedAt as number))}
+        </Typography.Text>
       </Row>
     </CardCommon>
   );

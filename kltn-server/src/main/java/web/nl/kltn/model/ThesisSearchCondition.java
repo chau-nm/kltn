@@ -6,6 +6,7 @@ public class ThesisSearchCondition {
 	private int semester;
 	private int status;
 
+
 	public String getTopic() {
 		return topic;
 	}

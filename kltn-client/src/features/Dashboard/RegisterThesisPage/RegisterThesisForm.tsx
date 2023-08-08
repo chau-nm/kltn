@@ -106,6 +106,8 @@ const RegisterThesisForm = (): JSX.Element => {
 
   const handleUploadSuccess = (response: string) => {
     const updateAttachments = attachments.concat(response);
+    console.log("updateAttachments", updateAttachments);
+
     setAttachments(updateAttachments);
   };
 

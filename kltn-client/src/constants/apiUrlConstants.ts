@@ -30,6 +30,14 @@ export class ApiUrlConstants {
 
     /** THESIS */
     public static readonly INSERT_THESIS = "/thesis/insert";
+    public static readonly SEARCH_THESIS = "/thesis/search/";
+    public static readonly SEARCH_DETAIL_THESIS = "/thesis/";
+
+    /** THESIS OUTLINE Comment */
+    public static readonly INSERT_OURLINE_COMMENT = "/thesis-outline-comment/insert";
+
+    /** THESIS OUTLINE REVIEW */
+    public static readonly SEARCH_OURLINE_REVIEW = "/thesis-outline-review/search";
     public static readonly UPDATE_THESIS = "/thesis/udpate";
     public static readonly SEARCH_THESIS_BY_USER = "/thesis/find-by-user";
 

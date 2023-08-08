@@ -1,5 +1,6 @@
 package web.nl.kltn.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import web.nl.kltn.common.Constant;
 import web.nl.kltn.mapper.ThesisCusMapper;
+import web.nl.kltn.mapper.ThesisDocumentCusMapper;
 import web.nl.kltn.mapper.ThesisOutlineCommentCusMapper;
 import web.nl.kltn.mapper.ThesisUserCusMapper;
 import web.nl.kltn.mapper.generator.ThesisDocumentMapper;
@@ -47,13 +49,25 @@ public class ThesisServiceImpl implements ThesisService {
 	@Autowired
 	private ThesisDocumentMapper thesisDocumentMapper;
 	
-	@Override
-	public ThesisDTO findById(String id) {
-		ThesisDTO thesisDTO = new ThesisDTO();
-		Thesis thesisEntity = thesisMapper.selectByPrimaryKey(id);
-		thesisDTO.load(thesisEntity);
-		return thesisDTO;
-	}
+  @Override
+  public ThesisDTO findById(String id) {
+      ThesisDTO thesisDTO = new ThesisDTO();
+      Thesis thesisEntity = thesisMapper.selectByPrimaryKey(id);
+      thesisDTO.load(thesisEntity);
+      thesisDTO.setOutlineUrls(thesisDocumentCusMapper.getFilesByThesisId(id));
+      thesisDTO.setStudents(thesisUserCusMapper.searchUser(id, 1));
+      return thesisDTO;
+  }
+  
+  @Override
+  public ThesisDTO findDetailById(String id) {
+      ThesisDTO thesisDTO = new ThesisDTO();
+      Thesis thesisEntity = thesisMapper.selectByPrimaryKey(id);
+      thesisDTO.load(thesisEntity);
+      thesisDTO.setOutlineUrls(thesisDocumentCusMapper.getFilesByThesisId(id));
+      return thesisDTO;
+  }
+
 	
 	@Override
 	public List<ThesisDTO> findByUser(String userId) {
@@ -134,10 +148,17 @@ public class ThesisServiceImpl implements ThesisService {
 		thesisMapper.deleteByPrimaryKey(id);
 	}
 
-	@Override
-	public List<Thesis> search(int page, int pageSize, ThesisSearchCondition thesisSearchCondition) {
-		return thesisCusMapper.search(page, pageSize, thesisSearchCondition);
-	}
+  @Override
+  public List<ThesisDTO> search(int page, int pageSize, ThesisSearchCondition thesisSearchCondition) {
+      List<ThesisDTO> thesisDTOs = thesisCusMapper.search(page, pageSize, thesisSearchCondition);
+        thesisDTOs.forEach((thesisDTO -> {
+            thesisDTO.setStudents(thesisUserCusMapper.searchUser(thesisDTO.getId(), Constant.THESIS_STUDENT));
+            List<User> teachers = thesisUserCusMapper.searchUser(thesisDTO.getId(), Constant.THESIS_TEACHER);
+            if (teachers != null) thesisDTO.setTeacher(teachers.get(0));
+            thesisDTO.setOutlineUrls(thesisDocumentCusMapper.getFilesByThesisId(thesisDTO.getId()));
+        }));
+        return thesisDTOs;
+    }
 
 	@Override
 	public int getTotal(ThesisSearchCondition searchCondition) {
