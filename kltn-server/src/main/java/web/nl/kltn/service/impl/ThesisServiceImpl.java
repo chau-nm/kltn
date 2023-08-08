@@ -57,7 +57,7 @@ public class ThesisServiceImpl implements ThesisService {
         Thesis thesisEntity = thesisMapper.selectByPrimaryKey(id);
         thesisDTO.load(thesisEntity);
         thesisDTO.setOutlineUrls(thesisDocumentCusMapper.getFilesByThesisId(id));
-        thesisDTO.setStudents(thesisUserCusMapper.searchUser(id,1));
+        thesisDTO.setStudents(thesisUserCusMapper.searchUser(id, 1));
         return thesisDTO;
     }
 
@@ -138,8 +138,9 @@ public class ThesisServiceImpl implements ThesisService {
     public List<ThesisDTO> search(int page, int pageSize, ThesisSearchCondition thesisSearchCondition) {
         List<ThesisDTO> thesisDTOs = thesisCusMapper.search(page, pageSize, thesisSearchCondition);
         thesisDTOs.forEach((thesisDTO -> {
-            System.err.println(thesisDTO.getUpdatedAt());
-            thesisDTO.setStudents(thesisUserCusMapper.searchUser(thesisDTO.getId(),Constant.THESIS_STUDENT));
+            thesisDTO.setStudents(thesisUserCusMapper.searchUser(thesisDTO.getId(), Constant.THESIS_STUDENT));
+            List<User> teachers = thesisUserCusMapper.searchUser(thesisDTO.getId(), Constant.THESIS_TEACHER);
+            if (teachers != null) thesisDTO.setTeacher(teachers.get(0));
             thesisDTO.setOutlineUrls(thesisDocumentCusMapper.getFilesByThesisId(thesisDTO.getId()));
         }));
         return thesisDTOs;

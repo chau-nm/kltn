@@ -10,6 +10,7 @@ import {
   ThesisConsoleContext,
   ThesisConsoleProvider,
 } from "~/contexts/ThesisConsoleContext";
+import AddCouncilModal from "./AddCouncilModal";
 
 const ThesisPage = () => {
   const { isOpenRegisterThesisModal } = useContext(ThesisConsoleContext);
@@ -21,6 +22,7 @@ const ThesisPage = () => {
         <ThesisSearchForm />
         <ButtonsComponent />
         <ThesisTableResult />
+        <AddCouncilModal></AddCouncilModal>
         <OpenThesisRegisterModal open={isOpenRegisterThesisModal} />
       </ThesisConsoleProvider>
     </Space>

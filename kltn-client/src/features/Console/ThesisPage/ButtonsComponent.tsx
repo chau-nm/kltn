@@ -7,17 +7,25 @@ import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 import * as ThesisRegisterCalendarService from "~/services/thesisRegisterCalendarService";
 
 const ButtonsComponent = (): JSX.Element => {
-  const { setIsOpenRegisterThesisModal, thesisRegisterCalendar, loadThesisRegisterCalendar } =
-    useContext(ThesisConsoleContext);
+  const {
+    setIsOpenRegisterThesisModal,
+    thesisRegisterCalendar,
+    loadThesisRegisterCalendar,
+    listThesisSelected,
+    setOpenAddCouncilModal,
+  } = useContext(ThesisConsoleContext);
 
-  const disableThesisRegisterCalendar = useMutation(ThesisRegisterCalendarService.disable, {
-    onSuccess: (data : Boolean) => {
-      if (data) {
-        message.success("Đã đóng đăng ký khóa luận");
-        loadThesisRegisterCalendar();
-      }
+  const disableThesisRegisterCalendar = useMutation(
+    ThesisRegisterCalendarService.disable,
+    {
+      onSuccess: (data: Boolean) => {
+        if (data) {
+          message.success("Đã đóng đăng ký khóa luận");
+          loadThesisRegisterCalendar();
+        }
+      },
     }
-  });
+  );
 
   const handleCloseThesisRegister = () => {
     if (confirm("Bạn chắc chắn muốn đóng đăng ký khóa luận?")) {
@@ -27,6 +35,15 @@ const ButtonsComponent = (): JSX.Element => {
 
   return (
     <Row justify={"end"} gutter={20} className="py-10">
+      {listThesisSelected.length > 1 && (
+        <Col>
+          <ButtonCommon
+            color="blue"
+            value="Thêm hội đồng chấm"
+            onClick={() => setOpenAddCouncilModal(true)}
+          />
+        </Col>
+      )}
       {!thesisRegisterCalendar ? (
         <Col>
           <ButtonCommon

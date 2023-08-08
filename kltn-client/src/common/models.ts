@@ -98,8 +98,16 @@ interface ThesisSearchConditionModel{}
 
 interface OutlineReviewSearchConditionModel{}
 
+interface OutlineCommentModel{
+    thesisId: string;
+    userId: string;
+    comment?: string;
+    order: number;
+    isDeleted?: boolean;
+    createdAt?: number;
+    updatedAt?: number;
+}
 
-///
 
 interface ThesisRegisterCalendarModel {
     id?: number;

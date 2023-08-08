@@ -10,8 +10,14 @@ interface ThesisConsoleContextInterface {
 
   listThesis: ThesisModel[];
 
+  listThesisSelected: ThesisModel[];
+  setlistThesisSelected: React.Dispatch<SetStateAction<ThesisModel[]>>;
+
   isOpenRegisterThesisModal: boolean;
   setIsOpenRegisterThesisModal: React.Dispatch<SetStateAction<boolean>>;
+
+  openAddCouncilModal: boolean;
+  setOpenAddCouncilModal: React.Dispatch<SetStateAction<boolean>>;
 
   thesisRegisterCalendar: ThesisRegisterCalendarModel | undefined;
   loadThesisRegisterCalendar: () => void;
@@ -32,8 +38,14 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
 
   listThesis: [],
 
+  listThesisSelected: [],
+  setlistThesisSelected: () => null,
+
   isOpenRegisterThesisModal: false,
   setIsOpenRegisterThesisModal: () => null,
+
+  openAddCouncilModal: false,
+  setOpenAddCouncilModal: () => null,
 
   thesisRegisterCalendar: undefined,
   loadThesisRegisterCalendar: () => {},
@@ -55,8 +67,15 @@ export const ThesisConsoleProvider = ({
   children,
 }: React.PropsWithChildren): JSX.Element => {
   const [listThesis, setlistThesis] = useState<ThesisModel[]>([]);
+  const [listThesisSelected, setlistThesisSelected] = useState<ThesisModel[]>(
+    []
+  );
   const [searchCondition, setSearchCondition] =
     useState<ThesisSearchConditionModel>({});
+
+  const [openAddCouncilModal, setOpenAddCouncilModal] =
+    useState<boolean>(false);
+
   const [isOpenRegisterThesisModal, setIsOpenRegisterThesisModal] =
     useState<boolean>(false);
 
@@ -105,9 +124,17 @@ export const ThesisConsoleProvider = ({
       value={{
         listThesis,
 
+        listThesisSelected,
+        setlistThesisSelected,
+
         isLoadingTableResults: searchMutaion.isLoading,
+
+        openAddCouncilModal,
+        setOpenAddCouncilModal,
+
         isOpenRegisterThesisModal,
         setIsOpenRegisterThesisModal,
+
         thesisRegisterCalendar: viewThesisRegisterCalendarMutation.data,
         loadThesisRegisterCalendar,
 

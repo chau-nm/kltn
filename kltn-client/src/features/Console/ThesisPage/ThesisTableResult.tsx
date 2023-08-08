@@ -3,7 +3,7 @@ import { ColumnType } from "antd/es/table";
 import { TableRowSelection } from "antd/es/table/interface";
 import { useContext, useEffect, useState } from "react";
 import { dateDisplay } from "~/common/util";
-import { EditIconCommon } from "~/components/common/IconCommon";
+import { EditIconCommon, UserIconCommon } from "~/components/common/IconCommon";
 import TableCommon from "~/components/common/TableCommon";
 import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 
@@ -11,7 +11,9 @@ const ThesisTableResult = (): JSX.Element => {
   const {
     listThesis,
     search,
+    setlistThesisSelected,
     isLoadingTableResults,
+    setOpenAddCouncilModal,
     pagination,
     handleChange,
     // searchDetail,
@@ -20,9 +22,16 @@ const ThesisTableResult = (): JSX.Element => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
-  const handleOnChangeRowSelection = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
+  const handleOnChangeRowSelection = async (
+    newSelectedRowKeys: React.Key[]
+  ) => {
+    // console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
+    const temp: ThesisModel[] = listThesis.filter(
+      (thesis) => newSelectedRowKeys.indexOf(thesis.id) > -1
+    );
+    // console.log("temp: ", temp);
+    setlistThesisSelected(temp);
   };
 
   const rowSelection: TableRowSelection<ThesisModel> = {
@@ -95,10 +104,16 @@ const ThesisTableResult = (): JSX.Element => {
     {
       title: "",
       fixed: "right",
-      width: 2,
+      width: 4,
       render: (row, record) => {
         return (
           <Row justify={"center"}>
+            <UserIconCommon
+              onClick={() => {
+                handleOnChangeRowSelection([record.id]);
+                setOpenAddCouncilModal(true);
+              }}
+            />
             <EditIconCommon
               onClick={() => {
                 // searchDetail(record.id);
