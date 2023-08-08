@@ -6,6 +6,7 @@ import { AuthContext } from "~/contexts/AuthContext";
 import * as ThesisService from "~/services/thesisService";
 import UserCreatedMessage from "./UserCreateMessage";
 import ThesisInvitedList from "./ThesisInvitedList";
+import ThesisDetail from "./ThesisDetail";
 
 const MyThesisPage = (): JSX.Element => {
   const { user } = useContext(AuthContext);
@@ -28,7 +29,12 @@ const MyThesisPage = (): JSX.Element => {
           </Typography.Text>
         )}
         <UserCreatedMessage data={data} />
-        <ThesisInvitedList data={data}/>
+        <ThesisInvitedList data={data} />
+        {data?.map((thesis) => {
+          if (thesis.status && thesis.status > 1) {
+            return <ThesisDetail key={thesis.id} thesis={thesis} />;
+          }
+        })}
       </Spin>
     </PageLayout>
   );

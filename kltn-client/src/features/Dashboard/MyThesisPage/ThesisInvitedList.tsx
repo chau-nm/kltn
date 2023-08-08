@@ -9,7 +9,6 @@ type ThesisInvitedListProps = {
 
 const ThesisInvitedList = ({ data }: ThesisInvitedListProps): JSX.Element => {
   const { user } = useContext(AuthContext);
-  //   const [acceptedOtherThesis, setAcceptOtherThesis] = useState(false);
 
   const thesisInvitedList = data?.filter(
     (thesis) => thesis.createdBy !== user?.userId
@@ -30,13 +29,19 @@ const ThesisInvitedList = ({ data }: ThesisInvitedListProps): JSX.Element => {
           (tu) => tu.status === 1 && tu.userId === user?.userId
         );
         let thesisUserWaiting = thesisUsers.filter((tu) => tu.status === 0);
+        let thesisAccepted = thesisUsers.filter((tu) => tu.status === 1);
         if (thesisAcceptedByMe.length > 0) {
           acceptedOtherThesis = true;
+          if (thesisAccepted.length === thesisUsers.length) {
+            return;
+          }
           return (
             <Typography.Text key={thesis.id}>
               Bạn đã đồng ý tham gia luận văn {thesis.topic} <br />
-              Hãy đợi những người khác: 
-              <strong>{thesisUserWaiting.map((tu) => `${tu.user?.fname} `)}</strong>
+              Hãy đợi những người khác:
+              <strong>
+                {thesisUserWaiting.map((tu) => `${tu.user?.fname} `)}
+              </strong>
             </Typography.Text>
           );
         }

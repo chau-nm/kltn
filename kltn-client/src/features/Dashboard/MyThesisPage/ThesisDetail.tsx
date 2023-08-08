@@ -2,7 +2,13 @@ import { Col, Row, Space, Typography } from "antd";
 import ButtonCommon from "~/components/common/ButtonCommon";
 import ReactQuillPreviewCommon from "~/components/common/ReactQuillPreviewCommon";
 
-const ThesisDetail = (): JSX.Element => {
+type ThesisDetailProps = {
+  thesis: ThesisModel;
+}
+
+const ThesisDetail = ({
+  thesis
+}: ThesisDetailProps): JSX.Element => {
   const colLayout = {
     span: 3,
     offset: 1,

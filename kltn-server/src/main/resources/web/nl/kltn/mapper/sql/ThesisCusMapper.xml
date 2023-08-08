@@ -14,6 +14,7 @@
 		<result column="is_deleted" property="isDeleted" jdbcType="BIT"/>
 		<result column="created_at" property="createdAt" jdbcType="BIGINT"/>
 		<result column="updated_at" property="updatedAt" jdbcType="BIGINT"/>
+	</resultMap>
 
 	<resultMap type="web.nl.kltn.model.generator.Thesis" id="Thesis">
 		<id column="id" property="id" jdbcType="VARCHAR"/>
@@ -108,6 +109,7 @@
 			thesis_user tu ON t.id = tu.thesis_id
 		<where>
 			tu.user_id = #{userId}
+			AND t.status != 0
 		</where>
 	</select>
 </mapper>

@@ -64,6 +64,7 @@ const RegisterThesisForm = (): JSX.Element => {
     ["load-teacher-select"],
     () => UserService.getUserByRole(AuthConstants.AUTH_ROLES.TEACHER)
   );
+
   const insertThesisMutation = useMutation(ThesisService.insert, {
     onSuccess: (data: ThesisModel | null) => {
       if (data) {
@@ -181,6 +182,8 @@ const RegisterThesisForm = (): JSX.Element => {
       form.resetFields();
     });
   };
+
+
 
   return (
     <Spin spinning={insertThesisMutation.isLoading}>
