@@ -94,6 +94,7 @@ interface ThesisModel{
     createdAt?: number;
     updatedAt?: number;
 }
+interface ThesisSearchConditionModel{}
 
 interface OutlineReviewSearchConditionModel{}
 

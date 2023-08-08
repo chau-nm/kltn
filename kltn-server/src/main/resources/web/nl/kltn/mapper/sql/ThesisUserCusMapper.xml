@@ -19,7 +19,7 @@
 			thesis_user tu
 		LEFT JOIN user u ON tu.user_id = u.user_id
 		<where>
-			<if test="thesisId !== null">
+			<if test="thesisId != null">
 				AND tu.thesis_id = #{thesisId}
 			</if>
 			AND tu.type = #{type}

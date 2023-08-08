@@ -3,8 +3,20 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="web.nl.kltn.mapper.ThesisCusMapper">
 
+	<resultMap type="web.nl.kltn.model.dto.ThesisDTO" id="ThesisDTO">
+		<id column="id" property="id" jdbcType="VARCHAR"/>
+		<result column="topic" property="topic" jdbcType="VARCHAR"/>
+		<result column="description" property="description" jdbcType="VARCHAR"/>
+		<result column="year" property="year" jdbcType="INTEGER"/>
+		<result column="semester" property="semester" jdbcType="INTEGER"/>
+		<result column="status" property="status" jdbcType="INTEGER"/>
+		<result column="is_deleted" property="isDeleted" jdbcType="BIT"/>
+		<result column="created_at" property="createdAt" jdbcType="BIGINT"/>
+		<result column="updated_at" property="updatedAt" jdbcType="BIGINT"/>
+	</resultMap>
+
 	<select id="search"
-		resultType="web.nl.kltn.model.generator.Thesis">
+		resultMap="ThesisDTO">
 		<bind name="offset" value="(page - 1) * pageSize" />
 		SELECT
 			id,

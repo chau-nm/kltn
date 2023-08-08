@@ -1,5 +1,6 @@
 package web.nl.kltn.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -56,6 +57,7 @@ public class ThesisServiceImpl implements ThesisService {
         Thesis thesisEntity = thesisMapper.selectByPrimaryKey(id);
         thesisDTO.load(thesisEntity);
         thesisDTO.setOutlineUrls(thesisDocumentCusMapper.getFilesByThesisId(id));
+        thesisDTO.setStudents(thesisUserCusMapper.searchUser(id,1));
         return thesisDTO;
     }
 
@@ -133,8 +135,14 @@ public class ThesisServiceImpl implements ThesisService {
     }
 
     @Override
-    public List<Thesis> search(int page, int pageSize, ThesisSearchCondition thesisSearchCondition) {
-        return thesisCusMapper.search(page, pageSize, thesisSearchCondition);
+    public List<ThesisDTO> search(int page, int pageSize, ThesisSearchCondition thesisSearchCondition) {
+        List<ThesisDTO> thesisDTOs = thesisCusMapper.search(page, pageSize, thesisSearchCondition);
+        thesisDTOs.forEach((thesisDTO -> {
+            System.err.println(thesisDTO.getUpdatedAt());
+            thesisDTO.setStudents(thesisUserCusMapper.searchUser(thesisDTO.getId(),Constant.THESIS_STUDENT));
+            thesisDTO.setOutlineUrls(thesisDocumentCusMapper.getFilesByThesisId(thesisDTO.getId()));
+        }));
+        return thesisDTOs;
     }
 
     @Override

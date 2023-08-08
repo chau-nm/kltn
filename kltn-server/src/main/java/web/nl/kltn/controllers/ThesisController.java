@@ -47,13 +47,13 @@ public class ThesisController {
 
 
 	@PostMapping("/search/{page}")
-	public ResponseModel<SearchResponse<List<Thesis>>> search(@PathVariable int page,
+	public ResponseModel<SearchResponse<List<ThesisDTO>>> search(@PathVariable int page,
 			@RequestParam(defaultValue = "1") int pageSize,
 			@RequestBody(required = false) RequestModel<ThesisSearchCondition> searchConditionRequest) {
 		ThesisSearchCondition searchCondition = searchConditionRequest.getData();
-		ResponseModel<SearchResponse<List<Thesis>>> responseModel = new ResponseModel<>();
-		List<Thesis> thesisResponse = thesisService.search(page, pageSize, searchCondition);
-		SearchResponse<List<Thesis>> searchResponse = new SearchResponse<>();
+		ResponseModel<SearchResponse<List<ThesisDTO>>> responseModel = new ResponseModel<>();
+		List<ThesisDTO> thesisResponse = thesisService.search(page, pageSize, searchCondition);
+		SearchResponse<List<ThesisDTO>> searchResponse = new SearchResponse<>();
 		searchResponse.setData(thesisResponse);
 		searchResponse.setTotal(thesisService.getTotal(searchCondition));
 		responseModel.setData(searchResponse);
