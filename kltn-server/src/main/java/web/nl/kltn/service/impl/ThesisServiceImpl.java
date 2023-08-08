@@ -18,6 +18,7 @@ import web.nl.kltn.mapper.generator.ThesisUserMapper;
 import web.nl.kltn.mapper.generator.UserMapper;
 import web.nl.kltn.model.ThesisSearchCondition;
 import web.nl.kltn.model.dto.ThesisDTO;
+import web.nl.kltn.model.dto.ThesisUserDTO;
 import web.nl.kltn.model.generator.Thesis;
 import web.nl.kltn.model.generator.ThesisDocument;
 import web.nl.kltn.model.generator.ThesisUser;
@@ -45,13 +46,44 @@ public class ThesisServiceImpl implements ThesisService {
 
 	@Autowired
 	private ThesisDocumentMapper thesisDocumentMapper;
-
+	
 	@Override
 	public ThesisDTO findById(String id) {
 		ThesisDTO thesisDTO = new ThesisDTO();
 		Thesis thesisEntity = thesisMapper.selectByPrimaryKey(id);
 		thesisDTO.load(thesisEntity);
 		return thesisDTO;
+	}
+	
+	@Override
+	public List<ThesisDTO> findByUser(String userId) {
+		List<Thesis> thesisList = thesisCusMapper.findByUser(userId);
+		
+		List<ThesisDTO> thesisDTOList = thesisList
+			.stream()
+			.map(thesis -> {
+				ThesisDTO thesisDTO = new ThesisDTO();
+				thesisDTO.load(thesis);
+				thesisDTO.setUserCreated(userMapper.selectByPrimaryKey(thesisDTO.getCreatedBy()));
+				List<ThesisUser> thesisUsers = thesisUserCusMapper.search(thesis.getId(), 1);
+				thesisDTO.setStudents(
+					thesisUsers
+						.stream()
+						.map(tu -> {
+							ThesisUserDTO thesisUserDTO = new ThesisUserDTO();
+							thesisUserDTO.load(tu);
+							thesisUserDTO.setUser(userMapper.selectByPrimaryKey(tu.getUserId()));
+							return thesisUserDTO;
+						}).toList()
+				);
+				ThesisUser teacher = thesisUserCusMapper.search(thesis.getId(), 2).get(0);
+				ThesisUserDTO teacherDTO = new ThesisUserDTO();
+				teacherDTO.load(teacher);
+				teacherDTO.setUser(userMapper.selectByPrimaryKey(teacher.getUserId()));
+				thesisDTO.setTeacher(teacherDTO);
+				return thesisDTO;
+			}).toList();
+		return thesisDTOList;
 	}
 
 	@Transactional(rollbackFor = Throwable.class)
@@ -63,33 +95,16 @@ public class ThesisServiceImpl implements ThesisService {
 		if (thesisMapper.insert(thesisDTO) <= 0) {
 			throw new Exception("Thêm thất bại");
 		}
-		List<User> students = thesisDTO.getStudents();
-		for (User std : students) {
-			ThesisUser thesisUser = new ThesisUser();
-			thesisUser.setId(String.valueOf(UUID.randomUUID()));
-			thesisUser.setThesisId(thesisDTO.getId());
-			thesisUser.setUserId(std.getUserId());
-			thesisUser.setType(Constant.THESIS_STUDENT);
-			thesisUser.setIsDeleted(false);
-			thesisUser.setCreatedAt(new Date().getTime());
-			thesisUser.setUpdatedAt(new Date().getTime());
+		List<ThesisUserDTO> students = thesisDTO.getStudents();
+		for (ThesisUser thesisUser : students) {
 			if (thesisUserMapper.insert(thesisUser) <= 0) {
 				throw new Exception("Thêm thất bại");
 			}
 		}
-		User teacher = thesisDTO.getTeacher();
-		ThesisUser thesisUser = new ThesisUser();
-		thesisUser.setId(String.valueOf(UUID.randomUUID()));
-		thesisUser.setThesisId(thesisDTO.getId());
-		thesisUser.setUserId(teacher.getUserId());
-		thesisUser.setType(Constant.THESIS_TEACHER);
-		thesisUser.setIsDeleted(false);
-		thesisUser.setCreatedAt(new Date().getTime());
-		thesisUser.setUpdatedAt(new Date().getTime());
+		ThesisUserDTO thesisUser = thesisDTO.getTeacher();
 		if (thesisUserMapper.insert(thesisUser) <= 0) {
 			throw new Exception("Thêm thất bại");
 		}
-		
 		List<String> outlineUrls= thesisDTO.getOutlineUrls();
 		for (String outlineUrl: outlineUrls) {
 			ThesisDocument document = new ThesisDocument();
@@ -108,9 +123,10 @@ public class ThesisServiceImpl implements ThesisService {
 		return thesisDTO;
 	}
 
+	@Transactional(rollbackFor = Throwable.class)
 	@Override
-	public void update(Thesis thesis) {
-		thesisMapper.updateByPrimaryKey(thesis);
+	public void update(ThesisDTO thesisDTO) {
+		thesisMapper.updateByPrimaryKey(thesisDTO);
 	}
 
 	@Override

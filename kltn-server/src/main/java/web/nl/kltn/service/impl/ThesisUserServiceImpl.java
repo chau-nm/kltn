@@ -14,57 +14,65 @@ import web.nl.kltn.service.ThesisUserService;
 
 @Service
 @Transactional(rollbackFor = Throwable.class)
-public class ThesisUserServiceImpl implements ThesisUserService{
+public class ThesisUserServiceImpl implements ThesisUserService {
 
 	@Autowired
 	private ThesisUserMapper thesisUserMapper;
-	
+
 	@Autowired
 	private ThesisUserCusMapper thesisUserCusMapper;
-	
+
+	@Override
+	public ThesisUser view(String id) {
+		return thesisUserMapper.selectByPrimaryKey(id);
+	}
+
 	@Override
 	public ThesisUser insert(ThesisUser thesisUser) {
 		return thesisUserMapper.insert(thesisUser) > 0 ? thesisUser : null;
 	}
-	
+
 	@Override
-	public List<ThesisUser> insertList(List<ThesisUser> thesisUsers){
+	public List<ThesisUser> insertList(List<ThesisUser> thesisUsers) {
 		try {
-			for(ThesisUser thesisUser: thesisUsers) {
+			for (ThesisUser thesisUser : thesisUsers) {
 				if (thesisUserMapper.insertSelective(thesisUser) <= 0) {
 					throw new RuntimeException("Error");
 				}
 			}
 			return thesisUsers;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public void update(ThesisUser thesisUser) {
 		thesisUserMapper.updateByPrimaryKey(thesisUser);
 	}
-	
+
 	@Override
 	public void delete(String id) {
 		thesisUserMapper.deleteByPrimaryKey(id);
 	}
+
+	@Override
+	public List<ThesisUser> searchByThesis(String thesisId) {
+		return thesisUserCusMapper.searchByThesis(thesisId);
+	}
+
 	/**
-	 * Search thesis_user with thesis_id and type
-	 * Type:
-	 * 	Student : 1
-	 * 	Teacher : 2
+	 * Search thesis_user with thesis_id and type Type: Student : 1 Teacher : 2
 	 * 
 	 * @param thesisId
-	 * @param type : type user
+	 * @param type     : type user
 	 * @return
 	 */
 	@Override
-	public List<User> search(String thesisId, int type){
-		return thesisUserCusMapper.searchUser(thesisId, type);
+	public List<ThesisUser> search(String thesisId, int type) {
+		return thesisUserCusMapper.search(thesisId, type);
 	}
-	
+
 	@Override
 	public void deleteByThesisId(String thesisId) {
 		thesisUserCusMapper.deleteByTheisId(thesisId);

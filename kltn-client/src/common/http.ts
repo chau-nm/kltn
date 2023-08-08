@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { ApiUrlConstants } from '~/constants/apiUrlConstants';
 
@@ -44,7 +45,7 @@ class HttpService {
                 if (!refreshedToken) {
                   localStorage.clear();
                 }
-                alert("Hết phiên đăng nhập!");
+                message.error("Hết phiên đăng nhập");
               }
               break;
             default:

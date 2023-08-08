@@ -88,7 +88,7 @@ const RegisterThesisForm = (): JSX.Element => {
 
   useEffect(() => {
     form.setFieldValue("outline", attachments);
-  }, [attachments])
+  }, [attachments]);
 
   const handleSetDataStudentSelect = (data: UserModel[]) => {
     if (!data) return;
@@ -122,25 +122,56 @@ const RegisterThesisForm = (): JSX.Element => {
   };
 
   const handleFinish = () => {
+    let studentIds = [
+      user?.userId,
+      ...studentSelectOptions.map((std) => {
+        if (std.userId === form.getFieldValue("student2")) {
+          return std.userId;
+        }
+      }),
+    ];
+
+    let teacherId = teacherSelectOptions.map((teacher) => {
+      if (teacher.userId === form.getFieldValue("teacher")) {
+        return teacher.userId;
+      }
+    })[0];
+
     form.validateFields().then(() => {
+      let thesisId = v4();
       const thesis: ThesisModel = {
-        id: v4(),
+        id: thesisId,
         topic: form.getFieldValue("topic"),
         description: form.getFieldValue("description"),
         year: 2000,
         semester: 1,
         status: 1,
-        students: [
-          user ?? ({} as UserModel),
-          ...studentSelectOptions.filter(
-            (std) => std.userId === form.getFieldValue("student2")
-          ),
-        ],
-        teacher: teacherSelectOptions.filter(
-          (teacher) => teacher.userId === form.getFieldValue("teacher")
-        )[0],
+        students: studentIds.map((stdId) => {
+          return {
+            id: v4(),
+            thesisId,
+            userId: stdId,
+            type: 1,
+            status: stdId === user?.userId ? 1 : 0,
+            isDeleted: false,
+            createdAt: new Date().getTime(),
+            updatedAt: new Date().getTime(),
+          } as ThesisUserModel;
+        }),
+        teacher: {
+          id: v4(),
+          thesisId,
+          userId: teacherId,
+          type: 2,
+          status: 0,
+          isDeleted: false,
+          createdAt: new Date().getTime(),
+          updatedAt: new Date().getTime(),
+        } as ThesisUserModel,
+        userCreated: user ?? undefined,
         outlineUrls: attachments,
         isDeleted: false,
+        createdBy: user?.userId ?? undefined,
         createdAt: new Date().getTime(),
         updatedAt: new Date().getTime(),
       };
@@ -247,7 +278,12 @@ const RegisterThesisForm = (): JSX.Element => {
         </Form.Item>
         <Form.Item name="buttons" className="mt-5">
           <Row justify={"end"}>
-            <ButtonCommon htmlType="submit" color="blue" value="Đăng ký" loading={insertThesisMutation.isLoading} />
+            <ButtonCommon
+              htmlType="submit"
+              color="blue"
+              value="Đăng ký"
+              loading={insertThesisMutation.isLoading}
+            />
           </Row>
         </Form.Item>
       </Form>

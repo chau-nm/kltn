@@ -5,11 +5,13 @@ import java.util.List;
 import web.nl.kltn.model.generator.CriticalAssessment;
 import web.nl.kltn.model.generator.Thesis;
 import web.nl.kltn.model.generator.ThesisDocument;
+import web.nl.kltn.model.generator.ThesisUser;
 import web.nl.kltn.model.generator.User;
 
 public class ThesisDTO extends Thesis {
-	private List<User> students;
-	private User teacher;
+	private User userCreated;
+	private List<ThesisUserDTO> students;
+	private ThesisUserDTO teacher;
 	private List<String> outlineUrls;
 	private List<ThesisOutlineCommentDTO> thesisOutlineComments;
 	private CriticalAssessmentDTO criticalAssessment;
@@ -17,7 +19,7 @@ public class ThesisDTO extends Thesis {
 	private long feedbackTime;
 	private long protectdTime;
 
-	public List<User> getStudents() {
+	public List<ThesisUserDTO> getStudents() {
 		return students;
 	}
 
@@ -53,15 +55,15 @@ public class ThesisDTO extends Thesis {
 		this.protectdTime = protectdTime;
 	}
 
-	public void setStudents(List<User> students) {
+	public void setStudents(List<ThesisUserDTO> students) {
 		this.students = students;
 	}
 
-	public User getTeacher() {
+	public ThesisUserDTO getTeacher() {
 		return teacher;
 	}
 
-	public void setTeacher(User teacher) {
+	public void setTeacher(ThesisUserDTO teacher) {
 		this.teacher = teacher;
 	}
 
@@ -72,13 +74,21 @@ public class ThesisDTO extends Thesis {
 	public void setThesisOutlineComments(List<ThesisOutlineCommentDTO> thesisOutlineComments) {
 		this.thesisOutlineComments = thesisOutlineComments;
 	}
-	
+
 	public List<String> getOutlineUrls() {
 		return outlineUrls;
 	}
 
 	public void setOutlineUrls(List<String> outlineUrls) {
 		this.outlineUrls = outlineUrls;
+	}
+
+	public User getUserCreated() {
+		return userCreated;
+	}
+
+	public void setUserCreated(User userCreated) {
+		this.userCreated = userCreated;
 	}
 
 	public void load(Thesis thesis) {
@@ -88,6 +98,7 @@ public class ThesisDTO extends Thesis {
 		this.setYear(thesis.getYear());
 		this.setSemester(thesis.getSemester());
 		this.setStatus(thesis.getStatus());
+		this.setCreatedBy(thesis.getCreatedBy());
 		this.setIsDeleted(thesis.getIsDeleted());
 		this.setCreatedAt(thesis.getCreatedAt());
 		this.setUpdatedAt(thesis.getUpdatedAt());

@@ -17,7 +17,7 @@ public interface ThesisUserService {
 	 * @param type : type user
 	 * @return
 	 */
-	List<User> search(String thesisId, int type);
+	List<ThesisUser> search(String thesisId, int type);
 
 	void delete(String id);
 
@@ -28,5 +28,9 @@ public interface ThesisUserService {
 	ThesisUser insert(ThesisUser thesisUser);
 
 	void deleteByThesisId(String thesisId);
+
+	List<ThesisUser> searchByThesis(String thesisId);
+
+	ThesisUser view(String id);
 
 }

@@ -12,12 +12,14 @@ public interface ThesisService {
 
 	void delete(String id);
 
-	void update(Thesis thesis);
+	void update(ThesisDTO thesisDTO);
 
 	ThesisDTO insert(ThesisDTO thesis) throws Exception;
 
 	int getTotal(ThesisSearchCondition searchCondition);
 
 	ThesisDTO findById(String id);
+
+	List<ThesisDTO> findByUser(String userId);
 
 }
