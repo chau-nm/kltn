@@ -44,8 +44,14 @@ public class ThesisController {
 		responseModel.setData(thesisService.findById(id));
 		return responseModel;
 	}
-
-
+	
+	@GetMapping("/find-by-user")
+	public ResponseModel<List<ThesisDTO>> findByUser(@RequestParam String userId){
+		ResponseModel<List<ThesisDTO>> responseModel = new ResponseModel<>();
+		responseModel.setData(thesisService.findByUser(userId));
+		return responseModel;
+	}
+	
 	@PostMapping("/search/{page}")
 	public ResponseModel<SearchResponse<List<ThesisDTO>>> search(@PathVariable int page,
 			@RequestParam(defaultValue = "1") int pageSize,
@@ -81,10 +87,11 @@ public class ThesisController {
 		ResponseModel<Boolean> responseModel = new ResponseModel<>();
 		try {
 			ThesisDTO thesis = thesisUpdateRequest.getData();
-			
+			thesisService.update(thesis);
 			responseModel.setData(true);
 			return responseModel;
 		}catch(Exception e) {
+			responseModel.setData(false);
 			return responseModel;
 		}
 	}

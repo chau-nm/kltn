@@ -12,7 +12,7 @@ public interface ThesisService {
 
 	void delete(String id);
 
-	void update(Thesis thesis);
+	void update(ThesisDTO thesisDTO);
 
 	ThesisDTO insert(ThesisDTO thesis) throws Exception;
 
@@ -21,4 +21,7 @@ public interface ThesisService {
 	ThesisDTO findById(String id);
 
 	public ThesisDTO findDetailById(String id) ;
+  
+	List<ThesisDTO> findByUser(String userId);
+
 }

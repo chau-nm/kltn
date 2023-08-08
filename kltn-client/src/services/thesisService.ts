@@ -25,4 +25,17 @@ export const getThesisById = async (thesisId: string): Promise<ThesisModel | nul
         .catch(error => Promise.reject(error));
     const thesis: ThesisModel = response.data as ThesisModel;
     return thesis ? thesis : null;
+export const update = async (thesis: ThesisModel): Promise<boolean> => {
+    const requestModel : RequestModel<ThesisModel> = {
+        data: thesis
+    }
+    const thesisResponse: ResponseModel<boolean> 
+        = await http.put(ApiUrlConstants.UPDATE_THESIS, requestModel);
+    return thesisResponse.data;
+}
+
+export const searchByUser = async (userId: string) : Promise<ThesisModel[]> => {
+    const thesisLiseResponse: ResponseModel<ThesisModel[]>
+        = await http.get(`${ApiUrlConstants.SEARCH_THESIS_BY_USER}?userId=${userId}`);
+    return thesisLiseResponse.data ?? [];
 }
