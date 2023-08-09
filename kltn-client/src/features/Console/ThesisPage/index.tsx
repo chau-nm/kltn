@@ -1,20 +1,15 @@
-import { Col, Layout, Row, Space, Typography } from "antd";
-import ThesisSearchForm from "./ThesisSearchForm";
-import ButtonCommon from "~/components/common/ButtonCommon";
-import ButtonsComponent from "./ButtonsComponent";
-import HeaderMessage from "./HeaderMessage";
-import ThesisTableResult from "./ThesisTableResult";
-import OpenThesisRegisterModal from "./OpenThesisRegisterModal";
-import { useContext } from "react";
+import { Space } from "antd";
 import {
-  ThesisConsoleContext,
-  ThesisConsoleProvider,
+  ThesisConsoleProvider
 } from "~/contexts/ThesisConsoleContext";
 import AddCouncilModal from "./AddCouncilModal";
+import ButtonsComponent from "./ButtonsComponent";
+import HeaderMessage from "./HeaderMessage";
+import OpenThesisRegisterModal from "./OpenThesisRegisterModal";
+import ThesisSearchForm from "./ThesisSearchForm";
+import ThesisTableResult from "./ThesisTableResult";
 
 const ThesisPage = () => {
-  const { isOpenRegisterThesisModal } = useContext(ThesisConsoleContext);
-
   return (
     <Space direction="vertical" className="p-10 w-full">
       <ThesisConsoleProvider>
@@ -22,8 +17,8 @@ const ThesisPage = () => {
         <ThesisSearchForm />
         <ButtonsComponent />
         <ThesisTableResult />
-        <AddCouncilModal></AddCouncilModal>
-        <OpenThesisRegisterModal open={isOpenRegisterThesisModal} />
+        <AddCouncilModal />
+        <OpenThesisRegisterModal />
       </ThesisConsoleProvider>
     </Space>
   );

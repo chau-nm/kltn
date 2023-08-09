@@ -1,8 +1,6 @@
 package web.nl.kltn.controllers;
 
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,16 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import web.nl.kltn.common.Constant;
 import web.nl.kltn.common.RequestModel;
 import web.nl.kltn.common.ResponseModel;
 import web.nl.kltn.model.SearchResponse;
 import web.nl.kltn.model.ThesisSearchCondition;
 import web.nl.kltn.model.dto.ThesisDTO;
-import web.nl.kltn.model.dto.UserDTO;
-import web.nl.kltn.model.generator.Thesis;
-import web.nl.kltn.model.generator.ThesisUser;
-import web.nl.kltn.model.generator.User;
 import web.nl.kltn.service.ThesisService;
 import web.nl.kltn.service.ThesisUserService;
 

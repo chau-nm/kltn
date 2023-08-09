@@ -21,8 +21,13 @@ public interface Constant {
     int THESIS_DOCUMENT_TYPE_DOCUMENT = 2;
     
     /** Thesis status*/
-    int THESIS_STATUS_CANCEL = 0;
+    int THESIS_STATUS_CANCEL = -1;
     int THESIS_STATUS_WAIT_ACCEPT = 1;
+    int THESIS_STATUS_OUTLINE_EVALUTE = 2;
+    int THESIS_STATUS_DOING = 3;
+    int THESIS_STATUS_CRITICAL_ASSESSMENT = 4;
+    int THESIS_STATUS_PROTECT = 5;
+    int THESIS_STATUS_FINISH = 6;
     
     /** Thesis user status */
     int THESIS_USER_TYPE_WAITING = 0;

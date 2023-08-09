@@ -11,7 +11,7 @@ const HeaderMessage = (): JSX.Element => {
       <Typography.Text type="secondary" className="italic">
         Đang mở đăng ký khóa luận:{" "}
         {dateTimeDisplay(new Date(thesisRegisterCalendar.startAt as number))} -{" "}
-        {dateTimeDisplay(new Date(thesisRegisterCalendar.startAt as number))}
+        {dateTimeDisplay(new Date(thesisRegisterCalendar.endAt as number))}
       </Typography.Text>
     );
   }

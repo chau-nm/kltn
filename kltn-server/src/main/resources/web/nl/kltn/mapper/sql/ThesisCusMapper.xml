@@ -30,7 +30,7 @@
 	</resultMap>
 
 	<select id="search"
-		resultMap="ThesisDTO">
+		resultMap="Thesis">
 		<bind name="offset" value="(page - 1) * pageSize" />
 		SELECT
 			id,
