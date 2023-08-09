@@ -113,7 +113,6 @@ public class ThesisServiceImpl implements ThesisService {
 		}
 		List<ThesisUserDTO> students = thesisDTO.getStudents();
 		for (ThesisUser thesisUser : students) {
-			System.out.println(thesisUser.getUserId());
 			if (thesisUserMapper.insert(thesisUser) <= 0) {
 				throw new Exception("Thêm thất bại");
 			}

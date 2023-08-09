@@ -11,7 +11,7 @@
  Target Server Version : 100424
  File Encoding         : 65001
 
- Date: 09/08/2023 21:48:30
+ Date: 09/08/2023 23:12:38
 */
 
 SET NAMES utf8mb4;
@@ -250,6 +250,8 @@ INSERT INTO `refresh_token` VALUES ('9b7bcbd5-1343-4c8a-a73c-4cf0383ab0b5', 'caa
 INSERT INTO `refresh_token` VALUES ('9ebbd6b7-3aba-48c0-adc4-f28aa1e30697', 'caadasdcc-sdadas', '2023-08-23 00:00:00', 1691512225412, 1691512225412);
 INSERT INTO `refresh_token` VALUES ('a1ed600a-1964-47c4-9dbc-6bd35529d0b2', 'caadasdcc-sdadas', '2023-08-21 00:00:00', 1691327153682, 1691327153682);
 INSERT INTO `refresh_token` VALUES ('aa04cbc2-737e-470e-8a4b-ab85ef428879', 'caadasdcc-sdadas', '2023-08-21 00:00:00', 1691327134025, 1691327134025);
+INSERT INTO `refresh_token` VALUES ('ae708131-2e8e-4be5-b1f2-77f0ec05d58f', 'caadasdcc-sdadas', '2023-08-24 00:00:00', 1691597360300, 1691597360300);
+INSERT INTO `refresh_token` VALUES ('b778dc7f-2f7f-4dcd-8482-7ae6cce4ae79', 'caadasdcc-sdadas', '2023-08-24 00:00:00', 1691593323657, 1691593323657);
 INSERT INTO `refresh_token` VALUES ('c4181471-38d2-4d28-be64-b2d5f3bc5105', 'caadasdcc-sdadas', '2023-08-21 00:00:00', 1691313162457, 1691313162457);
 INSERT INTO `refresh_token` VALUES ('dba65024-1990-41b7-8475-8a68541c39c6', 'ac72e785-27e0-4a27-ad9b-0fe65101c849', '2023-08-24 00:00:00', 1691519708173, 1691519708173);
 INSERT INTO `refresh_token` VALUES ('e42a9f7e-a2f6-4f0b-96ef-3fb4ecf25c65', 'caadasdcc-sdadas', '2023-08-23 00:00:00', 1691504591078, 1691504591078);
@@ -376,8 +378,8 @@ CREATE TABLE `thesis_outline_comment`  (
   `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `thesis_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `user_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `comment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `order` int NULL DEFAULT NULL,
+  `comment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `order` int NOT NULL,
   `is_deleted` bit(1) NOT NULL,
   `created_at` bigint NOT NULL,
   `updated_at` bigint NOT NULL,

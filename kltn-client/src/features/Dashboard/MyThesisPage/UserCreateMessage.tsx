@@ -26,7 +26,8 @@ const UserCreatedMessage = ({ data }: UserCreatedMessageProps): JSX.Element => {
         ];
         let thesisUsersAccepted = thesisUsers.filter((tu) => tu.status === 1);
         let thesisUsersDecline = thesisUsers.filter((tu) => tu.status === 2);
-
+        console.log(thesisUsers.length);
+        console.log(thesisUsersAccepted.length);
         if (
           thesisUsersDecline.length === 0 &&
           thesisUsersAccepted.length < thesisUsers.length
