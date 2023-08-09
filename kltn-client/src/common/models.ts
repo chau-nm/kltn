@@ -122,9 +122,9 @@ interface ThesisRegisterCalendarModel {
 }
 
 interface ThesisUserModel {
-    id?: string;
-    thesisId?: string;
-    userId?: string;
+    id: string;
+    thesisId: string;
+    userId: string;
     user?: UserModel;
     type?: number;
     status?: number;

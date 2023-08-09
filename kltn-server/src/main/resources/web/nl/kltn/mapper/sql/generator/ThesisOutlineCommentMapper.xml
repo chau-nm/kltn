@@ -149,7 +149,7 @@
       This element was generated on Tue Aug 08 21:20:48 ICT 2023.
     -->
     insert into thesis_outline_comment (id, thesis_id, user_id, 
-      comment, order, is_deleted, 
+      comment, `order`, is_deleted,
       created_at, updated_at)
     values (#{id,jdbcType=VARCHAR}, #{thesisId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
       #{comment,jdbcType=VARCHAR}, #{order,jdbcType=INTEGER}, #{isDeleted,jdbcType=BIT}, 
