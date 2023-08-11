@@ -195,12 +195,18 @@ const EditOutlineReviewModal = (): JSX.Element => {
               </div>
             )}
         </Row>
-
-        <Row>
-          {documentList!?.length > 0 &&
-            documentList!?.map((data) => {
-              return (
-                <div className="border-2 border-slate-200 rounded-sm p-1 mb-1">
+        <Row className="w-[800px] mt-8">
+          <Col flex={1} className="w-[250px]">
+            <Typography.Text className="font-bold ">
+              Danh sách luận văn có tiêu đề tương tự:{" "}
+            </Typography.Text>
+          </Col>
+        </Row>
+        {documentList!?.length > 0 &&
+          documentList!?.map((data) => {
+            return (
+              <Row>
+                <div className="w-full border-2 border-slate-200 rounded-sm p-1 mb-1">
                   <ReactQuillPreviewCommon content={data?.title as string} />
                   {data?.url && (
                     <div className="border-t py-3">
@@ -215,9 +221,9 @@ const EditOutlineReviewModal = (): JSX.Element => {
                     </div>
                   )}
                 </div>
-              );
-            })}
-        </Row>
+              </Row>
+            );
+          })}
 
         <Row className="mt-9">
           <Form layout="vertical" onFinish={handleFinish} form={form}>
