@@ -20,8 +20,8 @@ const UserSearchForm = (): JSX.Element => {
   };
 
   const formItemLayout = {
-    labelCol: {span: 2},
-    wrapperCol:{offset: 1}
+    labelCol: { span: 3 },
+    wrapperCol: { offset: 1 },
   };
 
   return (
@@ -31,17 +31,37 @@ const UserSearchForm = (): JSX.Element => {
       onFinish={handleSearch}
       onValuesChange={handleValueChange}
     >
-      <Form.Item label="Tên tài khoản" name="username" {...formItemLayout} labelAlign="left">
+      <Form.Item
+        label="Tên tài khoản"
+        name="username"
+        {...formItemLayout}
+        labelAlign="left"
+      >
         <Input />
       </Form.Item>
-      <Form.Item label="Họ và tên" name="name" {...formItemLayout} labelAlign="left">
-        <Input/>
+      <Form.Item
+        label="Họ và tên"
+        name="name"
+        {...formItemLayout}
+        labelAlign="left"
+      >
+        <Input />
       </Form.Item>
-      <Form.Item label="Chức vụ" name="role" {...formItemLayout} labelAlign="left">
-        <Input/>
+      <Form.Item
+        label="Chức vụ"
+        name="role"
+        {...formItemLayout}
+        labelAlign="left"
+      >
+        <Input />
       </Form.Item>
-      <Form.Item label="Lớp" name="studentClass" {...formItemLayout} labelAlign="left">
-        <Input/>
+      <Form.Item
+        label="Lớp"
+        name="studentClass"
+        {...formItemLayout}
+        labelAlign="left"
+      >
+        <Input />
       </Form.Item>
 
       {/* <Form.Item label="mã số công tác" name="id">

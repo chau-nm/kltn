@@ -64,7 +64,7 @@ const ThesisSearchForm = (): JSX.Element => {
           <Form.Item
             label="Học kì"
             name="semester"
-            labelCol={{ span: 4 }}
+            labelCol={{ span: 5 }}
             labelAlign="left"
             wrapperCol={{ span: 24 }}
           >
