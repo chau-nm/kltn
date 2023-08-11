@@ -47,7 +47,7 @@ const AddCouncilModal = (): JSX.Element => {
     let idAllTeacherHaveThesis: string[] = [];
     console.log(listThesis);
     listThesis.map((thesis) =>
-      idAllTeacherHaveThesis.push(thesis.teacher!?.userId)
+      idAllTeacherHaveThesis.push(thesis.teacher!?.user!?.userId)
     );
     if (!data) return;
     console.log("idAllTeacherHaveThesis", idAllTeacherHaveThesis);
@@ -139,7 +139,7 @@ const AddCouncilModal = (): JSX.Element => {
                     <Typography.Text>{thesis.topic}</Typography.Text>
                   </Col>
                   <Col flex={1} className=" py-3 px-4">
-                    <Typography.Text>{thesis.teacher?.fname}</Typography.Text>
+                    <Typography.Text>{thesis.teacher?.user?.fname}</Typography.Text>
                   </Col>
                 </>
               </Row>

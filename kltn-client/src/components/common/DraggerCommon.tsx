@@ -58,7 +58,6 @@ const DraggerCommon = ({
         }
       }
     }
-    console.log("file.status", file.status);
     if (file.status === "done") {
       handleUploadSuccess(file.response);
     } else if (file.status === "error") {

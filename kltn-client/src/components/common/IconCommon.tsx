@@ -3,6 +3,7 @@ import {
   DeleteOutlined,
   EyeOutlined,
   UserOutlined,
+  FileProtectOutlined,
 } from "@ant-design/icons";
 import { MouseEventHandler } from "react";
 
@@ -42,6 +43,15 @@ export const SeeIconCommon = ({ onClick }: IconCommonType) => {
 export const UserIconCommon = ({ onClick }: IconCommonType) => {
   return (
     <UserOutlined
+      className={`text-blue-700 hover:text-red-500 ${iconTextClass}`}
+      onClick={onClick}
+    />
+  );
+};
+
+export const ProtectedIconCommon = ({ onClick }: IconCommonType) => {
+  return (
+    <FileProtectOutlined
       className={`text-blue-700 hover:text-red-500 ${iconTextClass}`}
       onClick={onClick}
     />

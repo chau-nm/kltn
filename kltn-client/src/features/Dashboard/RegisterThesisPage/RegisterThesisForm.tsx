@@ -50,7 +50,7 @@ const RegisterThesisForm = (): JSX.Element => {
   const [teacherSelectOptions, setTeacherSelectOptions] = useState<UserModel[]>(
     []
   );
-  const [editorHtml, setEditorHtml] = useState<string>("");
+  const [editorHtml, setEditorHtml] = useState<string | undefined>("");
   const [attachments, setAttachments] = useState<string[]>([]);
 
   const { user } = useContext(AuthContext);
