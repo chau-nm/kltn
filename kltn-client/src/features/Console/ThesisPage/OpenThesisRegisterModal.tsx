@@ -1,7 +1,7 @@
 import { DatePicker, Form, Row, Spin, message } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { now } from "moment";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useMutation } from "react-query";
 import { v4 } from "uuid";
 import ButtonCommon from "~/components/common/ButtonCommon";
@@ -9,15 +9,14 @@ import ModalCommon from "~/components/common/ModalCommon";
 import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 import * as ThesisRegisterCalendarService from "~/services/thesisRegisterCalendarService";
 
-type OpenThesisRegisterModalProps = {
-  open: boolean;
-};
+const OpenThesisRegisterModal = ({}): JSX.Element => {
+  useEffect(() => {
+    console.log(open);
+  }, [open]);
 
-const OpenThesisRegisterModal = ({
-  open,
-}: OpenThesisRegisterModalProps): JSX.Element => {
   const [form] = useForm();
-  const { setIsOpenRegisterThesisModal } = useContext(ThesisConsoleContext);
+  const { isOpenRegisterThesisModal, setIsOpenRegisterThesisModal } =
+    useContext(ThesisConsoleContext);
 
   const insertThesisRegisterCalendarMutation = useMutation(
     ThesisRegisterCalendarService.insert,
@@ -80,7 +79,7 @@ const OpenThesisRegisterModal = ({
   return (
     <ModalCommon
       title="Mở đăng ký khóa luận"
-      open={open}
+      open={isOpenRegisterThesisModal}
       onCanel={() => setIsOpenRegisterThesisModal(false)}
       maskCloseable={false}
       footer={[<ButtonFooter key={v4()} />]}

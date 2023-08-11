@@ -49,4 +49,8 @@
 		AND is_deleted = 0
 	</select>
 
+	<delete id="deleteByThesis" parameterType="String">
+		DELETE FROM thesis_outline_comment WHERE thesis_id = #{thesisId}
+	</delete>
+
 </mapper>

@@ -28,3 +28,8 @@ export const insert = async (outlineComment: OutlineCommentModel) : Promise<Outl
     return outlineResponse;
 }
 
+export const remove = async (id : string) : Promise<boolean> => {
+    const responseModel: ResponseModel<boolean> = await http.delete(`${ApiUrlConstants.DELETE_OUTLINE_COMMENT_BY_THESIS}${id}`);
+    return responseModel ? responseModel.data : false;
+}
+

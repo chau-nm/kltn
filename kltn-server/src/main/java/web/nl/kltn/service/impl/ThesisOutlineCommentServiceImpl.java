@@ -53,4 +53,9 @@ public class ThesisOutlineCommentServiceImpl implements ThesisOutlineCommentServ
 	public void deleted(String id) {
 		thesisOutlineCommentMapper.deleteByPrimaryKey(id);
 	}
+	@Override
+	public void deletedByThesis(String id) {
+		thesisOutlineCommentCusMapper.deleteByThesis(id);
+	}
+
 }

@@ -72,17 +72,29 @@ const AddCouncilModal = (): JSX.Element => {
     {
       onSuccess: (data: OutlineCommentModel | null) => {
         if (data) {
-          // message.success("Thêm thành công");
+          message.success("Thêm thành công");
           // setOpenAddCouncilModal(false);
           // clearData();
           // setSearchCondition(() => {
           //   return {};
           // });
           // search();
-          console.log("Thành công");
+        } else {
+          message.error("Thêm thất bại");
+        }
+      },
+    }
+  );
+
+  const removeOulineCommentMutation = useMutation(
+    OutlineCommentService.remove,
+    {
+      onSuccess: (data: boolean) => {
+        if (data) {
+          console.log("Xóa thành công");
         } else {
           // message.error("Thêm thất bại");
-          console.log("thất bại");
+          console.log("Xóa thất bại");
         }
       },
     }
@@ -94,6 +106,7 @@ const AddCouncilModal = (): JSX.Element => {
       const listIdTeacher: string[] = form.getFieldValue("coucil");
       for (let i = 0; i < listThesisSelected.length; i++) {
         const thesisId = listThesisSelected[i].id;
+        removeOulineCommentMutation.mutate(thesisId);
         for (let j = 0; j < listIdTeacher.length; j++) {
           let oulineComment: OutlineCommentModel = {
             thesisId,

@@ -3,8 +3,13 @@ import { ColumnType } from "antd/es/table";
 import { TableRowSelection } from "antd/es/table/interface";
 import { useContext, useEffect, useState } from "react";
 import { dateDisplay } from "~/common/util";
-import { EditIconCommon, UserIconCommon } from "~/components/common/IconCommon";
+import {
+  DeleteIconCommon,
+  EditIconCommon,
+  UserIconCommon,
+} from "~/components/common/IconCommon";
 import TableCommon from "~/components/common/TableCommon";
+import CommonConstants from "~/constants/commonConstants";
 import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 
 const ThesisTableResult = (): JSX.Element => {
@@ -49,6 +54,21 @@ const ThesisTableResult = (): JSX.Element => {
     search();
   }, []);
 
+  const getColorStatus = (status: number) => {
+    switch (status) {
+      case -1:
+        return "text-red-500";
+      case 1:
+        return "text-yellow-500";
+      case 2 || 3 || 4 || 5:
+        return "text-blue-500";
+      case 6:
+        return "text-green-500";
+      default:
+        return "text-blue-500";
+    }
+  };
+
   const columns: ColumnType<ThesisModel>[] = [
     {
       title: "STT",
@@ -71,7 +91,15 @@ const ThesisTableResult = (): JSX.Element => {
       title: "Trạng thái",
       dataIndex: "status",
       render: (row, record) => {
-        return <Row className="text-green-500">Đang đánh giá</Row>;
+        return (
+          <Row className={getColorStatus(record.status ?? 0)}>
+            {
+              CommonConstants.THESIS_STATUS.filter(
+                (ts) => ts.value === record.status
+              )[0].text
+            }
+          </Row>
+        );
       },
       width: 5,
     },
@@ -115,6 +143,12 @@ const ThesisTableResult = (): JSX.Element => {
               }}
             />
             <EditIconCommon
+              onClick={() => {
+                // searchDetail(record.id);
+                // setOpenEditOutlineReviewModal(true);
+              }}
+            />
+            <DeleteIconCommon
               onClick={() => {
                 // searchDetail(record.id);
                 // setOpenEditOutlineReviewModal(true);

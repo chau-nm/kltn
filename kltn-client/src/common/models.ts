@@ -110,7 +110,7 @@ interface OutlineCommentModel{
     thesisId: string;
     userId: string;
     comment?: string;
-    order: number;
+    order?: number;
     isDeleted?: boolean;
     createdAt?: number;
     updatedAt?: number;

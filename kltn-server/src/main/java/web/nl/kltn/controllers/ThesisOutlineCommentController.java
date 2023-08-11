@@ -71,4 +71,16 @@ public class ThesisOutlineCommentController {
 		}
 		return responseModel;
 	}
+	@DeleteMapping("/delete-by-thesis/{id}")
+	public ResponseModel<Boolean> deleteByThesis(@PathVariable String id) {
+		ResponseModel<Boolean> responseModel = new ResponseModel<>();
+		System.err.println(id);
+		try {
+			thesisOutlineCommentService.deletedByThesis(id);
+			responseModel.setData(true);
+		} catch (Exception exception) {
+			responseModel.setData(false);
+		}
+		return responseModel;
+	}
 }
