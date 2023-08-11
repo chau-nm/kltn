@@ -5,7 +5,15 @@ public class ThesisSearchCondition {
 	private int year;
 	private int semester;
 	private int status;
+	private String councilId;
 
+	public String getCouncilId() {
+		return councilId;
+	}
+
+	public void setCouncilId(String councilId) {
+		this.councilId = councilId;
+	}
 
 	public String getTopic() {
 		return topic;

@@ -96,7 +96,13 @@ interface ThesisModel{
     createdAt?: number;
     updatedAt?: number;
 }
-interface ThesisSearchConditionModel{}
+interface ThesisSearchConditionModel{
+    topic?: string;
+	year?:number;
+	semester?:number;
+	status?:number;
+	councilId?:string;
+}
 
 interface OutlineReviewSearchConditionModel{}
 

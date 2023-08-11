@@ -103,4 +103,18 @@ public class ThesisController {
 		responseModel.setData(true);
 		return responseModel;
 	}
+
+	@PostMapping("/find-by-council/{page}")
+	public ResponseModel<SearchResponse<List<ThesisDTO>>> findByCouncil(@PathVariable int page,
+														@RequestParam(defaultValue = "1") int pageSize,
+														@RequestBody(required = false)  RequestModel<ThesisSearchCondition> searchConditionRequest){
+		ResponseModel<SearchResponse<List<ThesisDTO>>> responseModel = new ResponseModel<>();
+		ThesisSearchCondition searchCondition = searchConditionRequest.getData();
+		SearchResponse<List<ThesisDTO>> searchResponse = new SearchResponse<>();
+		searchResponse.setData(thesisService.findByCouncil(page,pageSize,searchCondition));
+		searchResponse.setTotal(thesisService.getTotalByCouncilId(searchCondition));
+
+		responseModel.setData(searchResponse);
+		return responseModel;
+	}
 }

@@ -10,11 +10,19 @@ export const insert = async (thesis: ThesisModel): Promise<ThesisModel | null> =
     return thesisResponse.data ? thesisResponse.data : null;
 }
 
-export const search = async (mutationParams: MutationParamsModel<OutlineReviewSearchConditionModel>): Promise<SearchResponseModel<ThesisModel[]>> => {
-    const requestModel: RequestModel<OutlineReviewSearchConditionModel> = {
+export const search = async (mutationParams: MutationParamsModel<ThesisSearchConditionModel>): Promise<SearchResponseModel<ThesisModel[]>> => {
+    const requestModel: RequestModel<ThesisSearchConditionModel> = {
         data: mutationParams.searchCondition
     }
     const responseModel: ResponseModel<SearchResponseModel<ThesisModel[]>> = await http.post(`${ApiUrlConstants.SEARCH_THESIS}${mutationParams.page}?pageSize=${mutationParams.pageSize}`, requestModel);
+    const notificationsSearchResponse: SearchResponseModel<ThesisModel[]> = responseModel.data;
+    return notificationsSearchResponse;
+}
+export const searchByCouncilId = async (mutationParams: MutationParamsModel<ThesisSearchConditionModel>): Promise<SearchResponseModel<ThesisModel[]>> => {
+    const requestModel: RequestModel<ThesisSearchConditionModel> = {
+        data: mutationParams.searchCondition
+    }
+    const responseModel: ResponseModel<SearchResponseModel<ThesisModel[]>> = await http.post(`${ApiUrlConstants.SEARCH_BY_COUNCIL_ID}${mutationParams.page}?pageSize=${mutationParams.pageSize}`, requestModel);
     const notificationsSearchResponse: SearchResponseModel<ThesisModel[]> = responseModel.data;
     return notificationsSearchResponse;
 }

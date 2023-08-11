@@ -9,4 +9,6 @@ public interface ThesisOutlineCommentCusMapper {
 	public List<ThesisOutlineComment> searchByThesisId(String thesisId);
 	
 	public ThesisOutlineComment searchByUserId(String userId);
+
+	public List<String> findCouncilByOutlineComment(String thesisId);
 }

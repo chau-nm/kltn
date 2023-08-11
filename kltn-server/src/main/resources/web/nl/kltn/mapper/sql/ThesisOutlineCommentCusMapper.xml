@@ -39,4 +39,14 @@
 		ORDER BY order
 	</select>
 
+	<select id="findCouncilByOutlineComment" resultType="java.lang.String">
+		SELECT
+		user_id
+		FROM
+		thesis_outline_comment
+		WHERE
+		thesis_id = #{thesisId}
+		AND is_deleted = 0
+	</select>
+
 </mapper>

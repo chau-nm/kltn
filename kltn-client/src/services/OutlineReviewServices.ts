@@ -2,12 +2,12 @@ import { ApiUrlConstants } from "~/constants/apiUrlConstants";
 import http from "~/common/http";
 
 
-export const getOutlineReviewById = async (thesisId: string): Promise<ThesisModel | null> => {
-    const response: ResponseModel<ThesisModel> = await http.get<ResponseModel<ThesisModel>>(ApiUrlConstants.SEARCH_OURLINE_REVIEW + thesisId)
+export const getOutlineReviewerById = async (thesisId: string): Promise<UserModel[] | []> => {
+    const response: ResponseModel<UserModel[] | []> = await http.get<ResponseModel<UserModel[]>>(ApiUrlConstants.GET_COUNCIL_OULINE_BY_THESIS + thesisId)
         .then(response => response)
         .catch(error => Promise.reject(error));
-    const user: ThesisModel = response.data as ThesisModel;
-    return user ? user : null;
+    const user: UserModel[] |[] = response.data as UserModel[];
+    return user ? user : [];
 }
 
 export const search = async (mutationParams: MutationParamsModel<OutlineReviewSearchConditionModel>): Promise<SearchResponseModel<ThesisModel[]>> => {
@@ -23,7 +23,7 @@ export const insert = async (outlineComment: OutlineCommentModel) : Promise<Outl
     const requestModel: RequestModel<OutlineCommentModel> = {
         data: outlineComment
     }
-    const responseModel: ResponseModel<OutlineCommentModel> = await http.post(ApiUrlConstants.INSERT_OURLINE_COMMENT, requestModel);
+    const responseModel: ResponseModel<OutlineCommentModel> = await http.post(ApiUrlConstants.INSERT_OUTLINE_COMMENT, requestModel);
     const outlineResponse: OutlineCommentModel = responseModel.data;
     return outlineResponse;
 }

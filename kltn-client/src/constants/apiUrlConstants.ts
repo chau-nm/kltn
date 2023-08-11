@@ -11,6 +11,7 @@ export class ApiUrlConstants {
     public static readonly INSERT_USER = "/user/insert";
     public static readonly RESET_PASSWORD_USER = "/user/reset";
     public static readonly REFRESH_TOKEN = "/user/refresh-token";
+    
 
     /** NOTIFICATION */
     public static readonly INSERT_NOTIFICATION = "/notification/insert";
@@ -32,9 +33,11 @@ export class ApiUrlConstants {
     public static readonly INSERT_THESIS = "/thesis/insert";
     public static readonly SEARCH_THESIS = "/thesis/search/";
     public static readonly SEARCH_DETAIL_THESIS = "/thesis/";
+    public static readonly SEARCH_BY_COUNCIL_ID = "/thesis/find-by-council/";
 
     /** THESIS OUTLINE Comment */
-    public static readonly INSERT_OURLINE_COMMENT = "/thesis-outline-comment/insert";
+
+    public static readonly INSERT_OUTLINE_COMMENT = "/thesis-outline-comment/insert";
 
     /** THESIS OUTLINE REVIEW */
     public static readonly SEARCH_OURLINE_REVIEW = "/thesis-outline-review/search";

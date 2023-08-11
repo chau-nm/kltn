@@ -14,4 +14,7 @@ public interface ThesisCusMapper {
 	public int getTotal(ThesisSearchCondition searchCondition);
 	
 	public List<Thesis> findByUser(String userId);
+	public int getTotalByCouncilId(ThesisSearchCondition searchCondition);
+
+	public List<ThesisDTO> findByCouncilId(int page, int pageSize,ThesisSearchCondition searchCondition);
 }

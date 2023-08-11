@@ -2,11 +2,7 @@ package web.nl.kltn.model.dto;
 
 import java.util.List;
 
-import web.nl.kltn.model.generator.CriticalAssessment;
-import web.nl.kltn.model.generator.Thesis;
-import web.nl.kltn.model.generator.ThesisDocument;
-import web.nl.kltn.model.generator.ThesisUser;
-import web.nl.kltn.model.generator.User;
+import web.nl.kltn.model.generator.*;
 
 public class ThesisDTO extends Thesis {
 	private User userCreated;
