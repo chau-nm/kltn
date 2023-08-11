@@ -81,9 +81,9 @@ interface NotificationSearchConditionModel {
 
 /** THESIS */
 interface ThesisModel{
-    id: string;
-    topic: string;
-    description: string;
+    id?: string;
+    topic?: string;
+    description?: string;
     year?: number;
     semester?: number;
     students?: ThesisUserModel[];

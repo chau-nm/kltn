@@ -18,7 +18,7 @@ const AddNewNotificationModal = (): JSX.Element => {
     setSearchCondition,
   } = useContext(NotificationConsoleContext);
 
-  const [editorHtml, setEditorHtml] = useState<string>("");
+  const [editorHtml, setEditorHtml] = useState<string | undefined>("");
   const [attachments, setAttachments] = useState<string[]>([]);
 
   const [form] = useForm();

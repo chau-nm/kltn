@@ -16,6 +16,11 @@ interface ThesisConsoleContextInterface {
   isOpenRegisterThesisModal: boolean;
   setIsOpenRegisterThesisModal: React.Dispatch<SetStateAction<boolean>>;
 
+  isEditModal: boolean;
+  setIsEditModal:  React.Dispatch<SetStateAction<boolean>>,
+  isOpenAddEditThesisModal: boolean,
+  setIsOpenAddEditThesisModal:  React.Dispatch<SetStateAction<boolean>>,
+
   openAddCouncilModal: boolean;
   setOpenAddCouncilModal: React.Dispatch<SetStateAction<boolean>>;
 
@@ -43,6 +48,11 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
 
   isOpenRegisterThesisModal: false,
   setIsOpenRegisterThesisModal: () => null,
+
+  isEditModal: false,
+  setIsEditModal: () => null,
+  isOpenAddEditThesisModal: false,
+  setIsOpenAddEditThesisModal: () => null,
 
   openAddCouncilModal: false,
   setOpenAddCouncilModal: () => null,
@@ -78,6 +88,10 @@ export const ThesisConsoleProvider = ({
 
   const [isOpenRegisterThesisModal, setIsOpenRegisterThesisModal] =
     useState<boolean>(false);
+
+  const [isOpenAddEditThesisModal, setIsOpenAddEditThesisModal] =
+    useState<boolean>(false);
+  const [isEditModal, setIsEditModal] = useState<boolean>(false);
 
   const viewThesisRegisterCalendarMutation = useMutation(
     ThesisRegisterCalendarService.view
@@ -134,6 +148,11 @@ export const ThesisConsoleProvider = ({
 
         isOpenRegisterThesisModal,
         setIsOpenRegisterThesisModal,
+        
+        isEditModal,
+        setIsEditModal,
+        isOpenAddEditThesisModal,
+        setIsOpenAddEditThesisModal,
 
         thesisRegisterCalendar: viewThesisRegisterCalendarMutation.data,
         loadThesisRegisterCalendar,

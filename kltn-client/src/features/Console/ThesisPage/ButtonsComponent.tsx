@@ -13,6 +13,8 @@ const ButtonsComponent = (): JSX.Element => {
     loadThesisRegisterCalendar,
     listThesisSelected,
     setOpenAddCouncilModal,
+    setIsEditModal,
+    setIsOpenAddEditThesisModal,
   } = useContext(ThesisConsoleContext);
 
   const disableThesisRegisterCalendar = useMutation(
@@ -70,7 +72,14 @@ const ButtonsComponent = (): JSX.Element => {
         <ButtonCommon color="blue" value="Đặt lịch bảo vệ" />
       </Col>
       <Col>
-        <ButtonCommon color="blue" value="Thêm đề tài" />
+        <ButtonCommon
+          color="blue"
+          value="Thêm đề tài"
+          onClick={() => {
+            setIsEditModal(() => false);
+            setIsOpenAddEditThesisModal(true);
+          }}
+        />
       </Col>
     </Row>
   );

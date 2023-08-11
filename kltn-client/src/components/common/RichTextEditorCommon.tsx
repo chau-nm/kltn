@@ -3,8 +3,8 @@ import ReactQuill, { ReactQuillProps } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 type RichTextEditorCommonProps = {
-  editorHtml?: string;
-  setEditorHtml?: React.Dispatch<SetStateAction<string>>;
+  editorHtml?: string | undefined;
+  setEditorHtml?: React.Dispatch<SetStateAction<string | undefined>>;
 };
 
 const RichTextEditorCommon = ({

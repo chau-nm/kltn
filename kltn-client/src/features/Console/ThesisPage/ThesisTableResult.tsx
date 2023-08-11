@@ -1,3 +1,4 @@
+import { FileProtectOutlined } from "@ant-design/icons";
 import { Button, Row, Spin } from "antd";
 import { ColumnType } from "antd/es/table";
 import { TableRowSelection } from "antd/es/table/interface";
@@ -6,6 +7,7 @@ import { dateDisplay } from "~/common/util";
 import {
   DeleteIconCommon,
   EditIconCommon,
+  ProtectedIconCommon,
   UserIconCommon,
 } from "~/components/common/IconCommon";
 import TableCommon from "~/components/common/TableCommon";
@@ -135,7 +137,7 @@ const ThesisTableResult = (): JSX.Element => {
       width: 4,
       render: (row, record) => {
         return (
-          <Row justify={"center"}>
+          <Row justify={"start"}>
             <UserIconCommon
               onClick={() => {
                 handleOnChangeRowSelection([record.id]);
@@ -154,6 +156,7 @@ const ThesisTableResult = (): JSX.Element => {
                 // setOpenEditOutlineReviewModal(true);
               }}
             />
+            <ProtectedIconCommon />
           </Row>
         );
       },

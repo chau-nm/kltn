@@ -50,7 +50,7 @@ const AddCouncilModal = (): JSX.Element => {
     let idAllTeacherHaveThesis: string[] = [];
     console.log("listThesis", listThesis);
     listThesis.map((thesis) =>
-      idAllTeacherHaveThesis.push(thesis!?.teacher!?.userId)
+      idAllTeacherHaveThesis.push(thesis.teacher!?.user!?.userId)
     );
     if (!data) return;
     console.log("idAllTeacherHaveThesis", idAllTeacherHaveThesis);

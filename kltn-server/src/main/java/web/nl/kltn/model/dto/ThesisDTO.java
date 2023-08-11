@@ -10,6 +10,7 @@ public class ThesisDTO extends Thesis {
 	private ThesisUserDTO teacher;
 	private List<String> outlineUrls;
 	private List<ThesisOutlineCommentDTO> thesisOutlineComments;
+	private String documentUrl;
 	private CriticalAssessmentDTO criticalAssessment;
 	private ProtectionRatingScoreDTO protectionRatingScoreDTO;
 	private long feedbackTime;
@@ -77,6 +78,14 @@ public class ThesisDTO extends Thesis {
 
 	public void setOutlineUrls(List<String> outlineUrls) {
 		this.outlineUrls = outlineUrls;
+	}
+	
+	public String getDocumentUrl() {
+		return documentUrl;
+	}
+	
+	public void setDocumentUrl(String documentUrl) {
+		this.documentUrl = documentUrl;
 	}
 
 	public User getUserCreated() {

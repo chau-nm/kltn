@@ -8,6 +8,7 @@ import HeaderMessage from "./HeaderMessage";
 import OpenThesisRegisterModal from "./OpenThesisRegisterModal";
 import ThesisSearchForm from "./ThesisSearchForm";
 import ThesisTableResult from "./ThesisTableResult";
+import AddEditThesisModal from "./AddEditThesisModal";
 
 const ThesisPage = () => {
   return (
@@ -19,6 +20,7 @@ const ThesisPage = () => {
         <ThesisTableResult />
         <AddCouncilModal />
         <OpenThesisRegisterModal />
+        <AddEditThesisModal />
       </ThesisConsoleProvider>
     </Space>
   );
