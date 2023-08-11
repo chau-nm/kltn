@@ -23,5 +23,6 @@ public interface ThesisService {
 	public ThesisDTO findDetailById(String id) ;
   
 	List<ThesisDTO> findByUser(String userId);
-
+	List<ThesisDTO> findByCouncil(int page, int pageSize, ThesisSearchCondition thesisSearchCondition);
+	int getTotalByCouncilId(ThesisSearchCondition searchCondition);
 }

@@ -18,6 +18,14 @@ export const search = async (mutationParams: MutationParamsModel<ThesisSearchCon
     const notificationsSearchResponse: SearchResponseModel<ThesisModel[]> = responseModel.data;
     return notificationsSearchResponse;
 }
+export const searchByCouncilId = async (mutationParams: MutationParamsModel<ThesisSearchConditionModel>): Promise<SearchResponseModel<ThesisModel[]>> => {
+    const requestModel: RequestModel<ThesisSearchConditionModel> = {
+        data: mutationParams.searchCondition
+    }
+    const responseModel: ResponseModel<SearchResponseModel<ThesisModel[]>> = await http.post(`${ApiUrlConstants.SEARCH_BY_COUNCIL_ID}${mutationParams.page}?pageSize=${mutationParams.pageSize}`, requestModel);
+    const notificationsSearchResponse: SearchResponseModel<ThesisModel[]> = responseModel.data;
+    return notificationsSearchResponse;
+}
 
 export const getThesisById = async (thesisId: string): Promise<ThesisModel | null> => {
     const response: ResponseModel<ThesisModel> = await http.get<ResponseModel<ThesisModel>>(ApiUrlConstants.SEARCH_DETAIL_THESIS + thesisId)

@@ -98,9 +98,10 @@ interface ThesisModel{
 }
 interface ThesisSearchConditionModel{
     topic?: string;
-    status?: number;
-    year?: number;
-    semester?: number;
+	year?:number;
+	semester?:number;
+	status?:number;
+	councilId?:string;
 }
 
 interface OutlineReviewSearchConditionModel{}
@@ -109,7 +110,7 @@ interface OutlineCommentModel{
     thesisId: string;
     userId: string;
     comment?: string;
-    order: number;
+    order?: number;
     isDeleted?: boolean;
     createdAt?: number;
     updatedAt?: number;
@@ -127,9 +128,9 @@ interface ThesisRegisterCalendarModel {
 }
 
 interface ThesisUserModel {
-    id?: string;
-    thesisId?: string;
-    userId?: string;
+    id: string;
+    thesisId: string;
+    userId: string;
     user?: UserModel;
     type?: number;
     status?: number;

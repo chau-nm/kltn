@@ -25,4 +25,6 @@ public interface UserService {
 
 	List<UserDTO> search(int page, int pageSize, UserSearchCondition searchCondition);
 	UserDTO updatePassword(String userId, String newPassword);
+
+	List<UserDTO> findCouncilByOutlineComent(String thesisId);
 }

@@ -1,14 +1,13 @@
 import { ApiUrlConstants } from "~/constants/apiUrlConstants";
-import { sendEmailResetPassword } from "./mailService";
 import http from "~/common/http";
 
 
-export const getOutlineReviewById = async (thesisId: string): Promise<ThesisModel | null> => {
-    const response: ResponseModel<ThesisModel> = await http.get<ResponseModel<ThesisModel>>(ApiUrlConstants.SEARCH_OURLINE_REVIEW + thesisId)
+export const getOutlineReviewerById = async (thesisId: string): Promise<UserModel[] | []> => {
+    const response: ResponseModel<UserModel[] | []> = await http.get<ResponseModel<UserModel[]>>(ApiUrlConstants.GET_COUNCIL_OULINE_BY_THESIS + thesisId)
         .then(response => response)
         .catch(error => Promise.reject(error));
-    const user: ThesisModel = response.data as ThesisModel;
-    return user ? user : null;
+    const user: UserModel[] |[] = response.data as UserModel[];
+    return user ? user : [];
 }
 
 export const search = async (mutationParams: MutationParamsModel<OutlineReviewSearchConditionModel>): Promise<SearchResponseModel<ThesisModel[]>> => {
@@ -20,42 +19,17 @@ export const search = async (mutationParams: MutationParamsModel<OutlineReviewSe
     return notificationsSearchResponse;
 }
 
-export const insert = async (user: UserModel) : Promise<UserModel>=> {
-    const requestModel: RequestModel<UserModel> = {
-        data: user
+export const insert = async (outlineComment: OutlineCommentModel) : Promise<OutlineCommentModel>=> {
+    const requestModel: RequestModel<OutlineCommentModel> = {
+        data: outlineComment
     }
-    const responseModel: ResponseModel<UserModel> = await http.post(ApiUrlConstants.INSERT_USER, requestModel);
-    const userResponse: UserModel = responseModel.data;
-    return userResponse;
+    const responseModel: ResponseModel<OutlineCommentModel> = await http.post(ApiUrlConstants.INSERT_OUTLINE_COMMENT, requestModel);
+    const outlineResponse: OutlineCommentModel = responseModel.data;
+    return outlineResponse;
 }
 
-
-export const updateUser = async (newUser: UserModel): Promise<UserModel | null> => {
-    const requestModel: RequestModel<UserModel> = {
-        data: newUser
-    }
-
-    const response: ResponseModel<UserModel> = await http.put<ResponseModel<UserModel>>(ApiUrlConstants.UPDATE_USER, requestModel)
-        .then(response => response)
-        .catch(error => Promise.reject(error));
-    const userResp: UserModel = response.data as UserModel;
-    return userResp ? userResp : null;
-}
-export const resetPasswordUser = async (user: UserModel): Promise<string | null> => {
-    const response: ResponseModel<string> = await http.post<ResponseModel<string>>(`${ApiUrlConstants.RESET_PASSWORD_USER}/${user.userId}`)
-        .then(response => response)
-        .catch(error => Promise.reject(error));
-    const newPassword: string = response.data;
-    const paramsEmail : TemplateResetModel={
-        to_email:user.email?user.email:"",
-        to_name:user.fname,
-        newPassword: newPassword,
-    }
-    sendEmailResetPassword(paramsEmail);
-    return newPassword ? newPassword : null;
+export const remove = async (id : string) : Promise<boolean> => {
+    const responseModel: ResponseModel<boolean> = await http.delete(`${ApiUrlConstants.DELETE_OUTLINE_COMMENT_BY_THESIS}${id}`);
+    return responseModel ? responseModel.data : false;
 }
 
-export const getUserByRole = async (role: string): Promise<UserModel[]> => {
-    const response: ResponseModel<UserModel[]> = await http.get(`${ApiUrlConstants.GET_USER_WITH_ROLE}?role=${role}`);
-    return response.data ? response.data : [];
-}

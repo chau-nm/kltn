@@ -1,6 +1,8 @@
 package web.nl.kltn.service.impl;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,8 @@ import web.nl.kltn.mapper.ThesisOutlineCommentCusMapper;
 import web.nl.kltn.mapper.generator.ThesisOutlineCommentMapper;
 import web.nl.kltn.model.generator.ThesisOutlineComment;
 import web.nl.kltn.service.ThesisOutlineCommentService;
+
+import static web.nl.kltn.common.Util.generateRandomString;
 
 @Service
 @Transactional(rollbackFor = Throwable.class)
@@ -33,6 +37,10 @@ public class ThesisOutlineCommentServiceImpl implements ThesisOutlineCommentServ
 
 	@Override
 	public ThesisOutlineComment insert(ThesisOutlineComment thesisOutlineComment) {
+		thesisOutlineComment.setId(String.valueOf(UUID.randomUUID()));
+		thesisOutlineComment.setCreatedAt(new Date().getTime());
+		thesisOutlineComment.setIsDeleted(false);
+		thesisOutlineComment.setUpdatedAt(new Date().getTime());
 		return thesisOutlineCommentMapper.insert(thesisOutlineComment) > 0 ? thesisOutlineComment : null;
 	}
 
@@ -45,4 +53,9 @@ public class ThesisOutlineCommentServiceImpl implements ThesisOutlineCommentServ
 	public void deleted(String id) {
 		thesisOutlineCommentMapper.deleteByPrimaryKey(id);
 	}
+	@Override
+	public void deletedByThesis(String id) {
+		thesisOutlineCommentCusMapper.deleteByThesis(id);
+	}
+
 }

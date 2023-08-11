@@ -16,9 +16,10 @@ import ButtonCommon from "../../../components/common/ButtonCommon";
 import ModalCommon from "../../../components/common/ModalCommon";
 import { useForm } from "antd/es/form/Form";
 import * as UserService from "~/services/userServices";
+import * as OutlineCommentService from "~/services/OutlineReviewServices";
 import { v4 } from "uuid";
 import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import AuthConstants from "~/constants/authConstants";
 
 const AddCouncilModal = (): JSX.Element => {
@@ -27,6 +28,8 @@ const AddCouncilModal = (): JSX.Element => {
     setOpenAddCouncilModal,
     listThesisSelected,
     listThesis,
+    setSearchCondition,
+    search,
   } = useContext(ThesisConsoleContext);
 
   const [teacherSelectOptions, setTeacherSelectOptions] = useState<UserModel[]>(
@@ -40,12 +43,12 @@ const AddCouncilModal = (): JSX.Element => {
 
   useEffect(() => {
     handleSetDataTeacherSelect(teachers as UserModel[]);
-  }, [teachers]);
+  }, [teachers, isLoadingTeachers, listThesis]);
 
   const handleSetDataTeacherSelect = (data: UserModel[]) => {
     // console.log(the);
     let idAllTeacherHaveThesis: string[] = [];
-    console.log(listThesis);
+    console.log("listThesis", listThesis);
     listThesis.map((thesis) =>
       idAllTeacherHaveThesis.push(thesis.teacher!?.user!?.userId)
     );
@@ -64,29 +67,59 @@ const AddCouncilModal = (): JSX.Element => {
     form.resetFields();
   };
 
+  const insertOulineCommentMutation = useMutation(
+    OutlineCommentService.insert,
+    {
+      onSuccess: (data: OutlineCommentModel | null) => {
+        if (data) {
+          message.success("Thêm thành công");
+          // setOpenAddCouncilModal(false);
+          // clearData();
+          // setSearchCondition(() => {
+          //   return {};
+          // });
+          // search();
+        } else {
+          message.error("Thêm thất bại");
+        }
+      },
+    }
+  );
+
+  const removeOulineCommentMutation = useMutation(
+    OutlineCommentService.remove,
+    {
+      onSuccess: (data: boolean) => {
+        if (data) {
+          console.log("Xóa thành công");
+        } else {
+          // message.error("Thêm thất bại");
+          console.log("Xóa thất bại");
+        }
+      },
+    }
+  );
+
   const handleSave = async () => {
-    form.validateFields().then(async () => {
-      const user: UserModel = {
-        userId: v4(),
-        username: form.getFieldValue("username"),
-        password: form.getFieldValue("password"),
-        email: form.getFieldValue("email"),
-        fname: form.getFieldValue("fname"),
-        gender: form.getFieldValue("gender"),
-        birthday: form.getFieldValue("birthday"),
-        roles: [],
-        faculty: form.getFieldValue("faculty"),
-        studentClass: form.getFieldValue("studentClass"),
-      };
-      console.log(user);
-      const UserResponse: UserModel | null = await UserService.insert(user);
-      if (UserResponse) {
-        message.success("Lưu thành công");
-        setOpenAddCouncilModal(false);
-        clearData();
-      } else {
-        message.error("Lưu thất bại");
+    form.validateFields().then(() => {
+      const outlineCommentsModel: OutlineCommentModel[] = [];
+      const listIdTeacher: string[] = form.getFieldValue("coucil");
+      for (let i = 0; i < listThesisSelected.length; i++) {
+        const thesisId = listThesisSelected[i].id;
+        removeOulineCommentMutation.mutate(thesisId);
+        for (let j = 0; j < listIdTeacher.length; j++) {
+          let oulineComment: OutlineCommentModel = {
+            thesisId,
+            userId: listIdTeacher[j],
+            order: 1,
+          };
+          outlineCommentsModel.push(oulineComment);
+        }
       }
+      console.log(outlineCommentsModel);
+      outlineCommentsModel.map((item) => {
+        insertOulineCommentMutation.mutate(item);
+      });
     });
   };
 
@@ -131,15 +164,17 @@ const AddCouncilModal = (): JSX.Element => {
               </Col>
             </>
           </Row>
-          {listThesisSelected.map((thesis) => {
+          {listThesisSelected.map((thesis, index) => {
             return (
-              <Row className="border">
+              <Row className="border" key={index}>
                 <>
                   <Col span={15} className="py-3 px-4">
                     <Typography.Text>{thesis.topic}</Typography.Text>
                   </Col>
                   <Col flex={1} className=" py-3 px-4">
-                    <Typography.Text>{thesis.teacher?.user?.fname}</Typography.Text>
+                    <Typography.Text>
+                      {thesis.teacher?.user?.fname}
+                    </Typography.Text>
                   </Col>
                 </>
               </Row>

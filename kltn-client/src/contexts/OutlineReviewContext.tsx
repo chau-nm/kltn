@@ -4,6 +4,7 @@ import {
   PropsWithChildren,
   SetStateAction,
   createContext,
+  useContext,
   useEffect,
   useState,
 } from "react";
@@ -11,6 +12,7 @@ import { useMutation } from "react-query";
 import usePagination from "~/hook/usePagination";
 import * as ThesisService from "~/services/thesisService";
 import * as OutlineReviewService from "~/services/OutlineReviewServices";
+import { AuthContext } from "./AuthContext";
 
 interface OutlineReviewContextInterface {
   isLoadingList: boolean;
@@ -66,6 +68,7 @@ export const OutlineReviewContext = createContext(initOutlineReviewContext);
 export const OutlineReviewProvider = ({
   children,
 }: PropsWithChildren): JSX.Element => {
+  const { user } = useContext(AuthContext);
   const [OutlineReviews, setOutlineReviews] = useState<ThesisModel[]>([]);
   const [OutlineReviewDetail, setOutlineReviewDetail] =
     useState<ThesisModel | null>(null);
@@ -77,7 +80,7 @@ export const OutlineReviewProvider = ({
   /**
    * search list OutlineReview mutation
    */
-  const searchMutaion = useMutation(ThesisService.search, {
+  const searchMutaion = useMutation(ThesisService.searchByCouncilId, {
     onSuccess: (data: SearchResponseModel<ThesisModel[]>) => {
       if (data) {
         setOutlineReviews(data.data as ThesisModel[]);
@@ -114,7 +117,7 @@ export const OutlineReviewProvider = ({
     searchMutaion.mutate({
       page: 1,
       pageSize: pagination.pageSize,
-      searchCondition,
+      searchCondition: { ...searchCondition, councilId: user?.userId },
     });
   };
 

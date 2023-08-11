@@ -19,8 +19,12 @@ import * as UserService from "~/services/userServices";
 import { v4 } from "uuid";
 
 const AddNewUserModal = (): JSX.Element => {
-  const { openAddNewUserModal, setOpenAddNewUserModal } =
-    useContext(UserConsoleContext);
+  const {
+    openAddNewUserModal,
+    setOpenAddNewUserModal,
+    setSearchCondition,
+    search,
+  } = useContext(UserConsoleContext);
 
   const [form] = useForm();
 
@@ -48,6 +52,10 @@ const AddNewUserModal = (): JSX.Element => {
         message.success("Lưu thành công");
         setOpenAddNewUserModal(false);
         clearData();
+        setSearchCondition(() => {
+          return {};
+        });
+        search();
       } else {
         message.error("Lưu thất bại");
       }
