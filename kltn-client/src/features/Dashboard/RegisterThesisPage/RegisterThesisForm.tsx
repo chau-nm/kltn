@@ -25,6 +25,8 @@ import * as ThesisService from "~/services/thesisService";
 import * as Doc2VecServices from "~/services/doc2vecService";
 import { PaperClipOutlined } from "@ant-design/icons";
 import { getFileNameFromUrl } from "~/common/util";
+import { now } from "moment";
+import DraggerSingleCommon from "~/components/common/DraggerSingleCommon";
 
 const RegisterThesisForm = (): JSX.Element => {
   const [thesisName, setThesisName] = useState(""); // State to store the thesis name input value
@@ -51,7 +53,8 @@ const RegisterThesisForm = (): JSX.Element => {
     []
   );
   const [editorHtml, setEditorHtml] = useState<string | undefined>("");
-  const [attachments, setAttachments] = useState<string[]>([]);
+  const [outlineDocument, setOutlineDocument] = useState<string>();
+  const [file, setFile] = useState<UploadFile>();
 
   const { user } = useContext(AuthContext);
   const [form] = useForm();
@@ -88,8 +91,8 @@ const RegisterThesisForm = (): JSX.Element => {
   }, [editorHtml]);
 
   useEffect(() => {
-    form.setFieldValue("outline", attachments);
-  }, [attachments]);
+    form.setFieldValue("outline", outlineDocument);
+  }, [outlineDocument]);
 
   const handleSetDataStudentSelect = (data: UserModel[]) => {
     if (!data) return;
@@ -105,18 +108,12 @@ const RegisterThesisForm = (): JSX.Element => {
 
   const handleUploadFailure = () => {};
 
-  const handleUploadSuccess = (response: string) => {
-    const updateAttachments = attachments.concat(response);
-    console.log("updateAttachments", updateAttachments);
-
-    setAttachments(updateAttachments);
+  const handleUploadSuccess = (file: UploadFile) => {
+    setOutlineDocument(file.response);
   };
 
   const handleRemove = (file: UploadFile) => {
-    const updateAttachment = attachments.filter(
-      (attachment) => attachment !== file.response
-    );
-    setAttachments(updateAttachment);
+    setOutlineDocument(undefined);
   };
 
   const handleSetEditorHtml = (value: string) => {
@@ -127,18 +124,22 @@ const RegisterThesisForm = (): JSX.Element => {
   const handleFinish = () => {
     let studentIds = [
       user?.userId,
-      ...studentSelectOptions.map((std) => {
-        if (std.userId === form.getFieldValue("student2")) {
-          return std.userId;
-        }
-      }).filter(std => std),
+      ...studentSelectOptions
+        .map((std) => {
+          if (std.userId === form.getFieldValue("student2")) {
+            return std.userId;
+          }
+        })
+        .filter((std) => std),
     ];
 
-    let teacherId = teacherSelectOptions.map((teacher) => {
-      if (teacher.userId === form.getFieldValue("teacher")) {
-        return teacher.userId;
-      }
-    }).filter(std => std)[0];
+    let teacherId = teacherSelectOptions
+      .map((teacher) => {
+        if (teacher.userId === form.getFieldValue("teacher")) {
+          return teacher.userId;
+        }
+      })
+      .filter((std) => std)[0];
 
     form.validateFields().then(() => {
       let thesisId = v4();
@@ -146,7 +147,7 @@ const RegisterThesisForm = (): JSX.Element => {
         id: thesisId,
         topic: form.getFieldValue("topic"),
         description: form.getFieldValue("description"),
-        year: 2000,
+        year: new Date().getFullYear(),
         semester: 1,
         status: 1,
         students: studentIds.map((stdId) => {
@@ -172,7 +173,7 @@ const RegisterThesisForm = (): JSX.Element => {
           updatedAt: new Date().getTime(),
         } as ThesisUserModel,
         userCreated: user ?? undefined,
-        outlineUrls: attachments,
+        outlineUrl: outlineDocument,
         isDeleted: false,
         createdBy: user?.userId ?? undefined,
         createdAt: new Date().getTime(),
@@ -182,8 +183,6 @@ const RegisterThesisForm = (): JSX.Element => {
       form.resetFields();
     });
   };
-
-
 
   return (
     <Spin spinning={insertThesisMutation.isLoading}>
@@ -262,10 +261,11 @@ const RegisterThesisForm = (): JSX.Element => {
             },
           ]}
         >
-          <DraggerCommon
-            handleUploadSuccess={handleUploadSuccess}
-            handleUploadFailure={handleUploadFailure}
-            handleRemove={handleRemove}
+          <DraggerSingleCommon
+            handleSuccess={handleUploadSuccess}
+            handleFailure={handleUploadFailure}
+            file={file}
+            setFile={setFile}
           />
         </Form.Item>
         <Form.Item

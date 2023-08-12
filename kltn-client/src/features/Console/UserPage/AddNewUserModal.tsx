@@ -81,7 +81,7 @@ const AddNewUserModal = (): JSX.Element => {
       title="Thêm người dùng"
       open={openAddNewUserModal}
       footer={[<ButtonFooter key={"1"} />]}
-      onCanel={handleClose}
+      onCancel={handleClose}
       maskCloseable={false}
     >
       <Spin spinning={false}>

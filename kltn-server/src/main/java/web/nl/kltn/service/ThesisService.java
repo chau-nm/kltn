@@ -12,7 +12,7 @@ public interface ThesisService {
 
 	void delete(String id);
 
-	void update(ThesisDTO thesisDTO);
+	void update(ThesisDTO thesisDTO) throws Exception;
 
 	ThesisDTO insert(ThesisDTO thesis) throws Exception;
 

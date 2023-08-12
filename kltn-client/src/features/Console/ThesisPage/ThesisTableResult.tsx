@@ -8,6 +8,7 @@ import {
   DeleteIconCommon,
   EditIconCommon,
   ProtectedIconCommon,
+  SeeIconCommon,
   UserIconCommon,
 } from "~/components/common/IconCommon";
 import TableCommon from "~/components/common/TableCommon";
@@ -23,8 +24,10 @@ const ThesisTableResult = (): JSX.Element => {
     setOpenAddCouncilModal,
     pagination,
     handleChange,
-    // searchDetail,
-    // setOpenEditThesisModal,
+    setIsOpenAddEditThesisModal,
+    setIsEditModal,
+    searchDetail,
+    setIsOpenThesisDetailModal,
   } = useContext(ThesisConsoleContext);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -35,7 +38,7 @@ const ThesisTableResult = (): JSX.Element => {
     // console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
     const temp: ThesisModel[] = listThesis.filter(
-      (thesis) => newSelectedRowKeys.indexOf(thesis.id) > -1
+      (thesis) => newSelectedRowKeys.indexOf(thesis.id!) > -1
     );
     // console.log("temp: ", temp);
     setlistThesisSelected(temp);
@@ -138,25 +141,32 @@ const ThesisTableResult = (): JSX.Element => {
       render: (row, record) => {
         return (
           <Row justify={"start"}>
+            <SeeIconCommon
+              onClick={() => {
+                searchDetail(record.id!);
+                setIsOpenThesisDetailModal(true);
+              }}
+            />
             <UserIconCommon
               onClick={() => {
-                handleOnChangeRowSelection([record.id]);
+                handleOnChangeRowSelection([record.id!]);
                 setOpenAddCouncilModal(true);
               }}
             />
             <EditIconCommon
               onClick={() => {
-                // searchDetail(record.id);
-                // setOpenEditOutlineReviewModal(true);
-              }}
-            />
-            <DeleteIconCommon
-              onClick={() => {
-                // searchDetail(record.id);
-                // setOpenEditOutlineReviewModal(true);
+                searchDetail(record.id!);
+                setIsEditModal(() => true);
+                setIsOpenAddEditThesisModal(true);
               }}
             />
             <ProtectedIconCommon />
+            <DeleteIconCommon
+              onClick={() => {
+                // searchDetail(record.id!);
+                // setOpenEditOutlineReviewModal(true);
+              }}
+            />
           </Row>
         );
       },
@@ -171,7 +181,7 @@ const ThesisTableResult = (): JSX.Element => {
         dataSource={listThesis}
         pagination={pagination}
         handleOnChange={handleChange}
-        rowKey={(record) => record.id}
+        rowKey={(record) => record.id!}
       />
     </Spin>
   );

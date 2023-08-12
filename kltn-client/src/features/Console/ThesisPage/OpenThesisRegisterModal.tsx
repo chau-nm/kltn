@@ -80,7 +80,7 @@ const OpenThesisRegisterModal = ({}): JSX.Element => {
     <ModalCommon
       title="Mở đăng ký khóa luận"
       open={isOpenRegisterThesisModal}
-      onCanel={() => setIsOpenRegisterThesisModal(false)}
+      onCancel={() => setIsOpenRegisterThesisModal(false)}
       maskCloseable={false}
       footer={[<ButtonFooter key={v4()} />]}
     >

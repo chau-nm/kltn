@@ -135,7 +135,7 @@ const EditOutlineReviewModal = (): JSX.Element => {
       title="Đánh giá luận văn"
       open={openEditOutlineReviewModal}
       footer={[<ModalFooter key={"1"} />]}
-      onCanel={handleCancel}
+      onCancel={handleCancel}
       maskCloseable={false}
     >
       <Spin spinning={isLoadingDetail}>

@@ -75,7 +75,7 @@ const UserModal = (): JSX.Element => {
       title="Thông tin người dùng"
       open={open}
       footer={[<ModalFooter key={"1"}/>]}
-      onCanel={handleCancel}
+      onCancel={handleCancel}
       maskCloseable={false}
     >
       <Spin spinning={updateUserMuitation.isLoading}>

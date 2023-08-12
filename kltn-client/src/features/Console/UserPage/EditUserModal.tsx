@@ -115,7 +115,7 @@ const EditUserModal = (): JSX.Element => {
       title="Chỉnh sửa thông tin người dùng"
       open={openEditUserModal}
       footer={[<ModalFooter key={"1"} />]}
-      onCanel={handleCancel}
+      onCancel={handleCancel}
       maskCloseable={false}
     >
       <Spin spinning={isLoadingDetail}>

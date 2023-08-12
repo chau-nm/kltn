@@ -9,6 +9,7 @@ interface ThesisConsoleContextInterface {
   isLoadingTableResults: boolean;
 
   listThesis: ThesisModel[];
+  thesis: ThesisModel | undefined;
 
   listThesisSelected: ThesisModel[];
   setlistThesisSelected: React.Dispatch<SetStateAction<ThesisModel[]>>;
@@ -17,9 +18,13 @@ interface ThesisConsoleContextInterface {
   setIsOpenRegisterThesisModal: React.Dispatch<SetStateAction<boolean>>;
 
   isEditModal: boolean;
-  setIsEditModal:  React.Dispatch<SetStateAction<boolean>>,
-  isOpenAddEditThesisModal: boolean,
-  setIsOpenAddEditThesisModal:  React.Dispatch<SetStateAction<boolean>>,
+  setIsEditModal: React.Dispatch<SetStateAction<boolean>>;
+
+  isOpenAddEditThesisModal: boolean;
+  setIsOpenAddEditThesisModal: React.Dispatch<SetStateAction<boolean>>;
+
+  isOpenThesisDetailModal: boolean;
+  setIsOpenThesisDetailModal: React.Dispatch<SetStateAction<boolean>>;
 
   openAddCouncilModal: boolean;
   setOpenAddCouncilModal: React.Dispatch<SetStateAction<boolean>>;
@@ -33,6 +38,8 @@ interface ThesisConsoleContextInterface {
     SetStateAction<ThesisSearchConditionModel>
   >;
 
+  searchDetail: (thesisId: string) => void;
+
   pagination: TablePaginationConfig;
   setPagination: React.Dispatch<SetStateAction<TablePaginationConfig>>;
   handleChange: (pagination: TablePaginationConfig) => void;
@@ -42,6 +49,7 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
   isLoadingTableResults: false,
 
   listThesis: [],
+  thesis: undefined,
 
   listThesisSelected: [],
   setlistThesisSelected: () => null,
@@ -54,6 +62,9 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
   isOpenAddEditThesisModal: false,
   setIsOpenAddEditThesisModal: () => null,
 
+  isOpenThesisDetailModal: false,
+  setIsOpenThesisDetailModal: () => null,
+
   openAddCouncilModal: false,
   setOpenAddCouncilModal: () => null,
 
@@ -63,6 +74,8 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
   search: () => {},
   searchCondition: {},
   setSearchCondition: () => null,
+
+  searchDetail: () => {},
 
   pagination: {},
   setPagination: () => null,
@@ -77,6 +90,7 @@ export const ThesisConsoleProvider = ({
   children,
 }: React.PropsWithChildren): JSX.Element => {
   const [listThesis, setlistThesis] = useState<ThesisModel[]>([]);
+  const [thesis, setThesis] = useState<ThesisModel | undefined>();
   const [listThesisSelected, setlistThesisSelected] = useState<ThesisModel[]>(
     []
   );
@@ -91,6 +105,10 @@ export const ThesisConsoleProvider = ({
 
   const [isOpenAddEditThesisModal, setIsOpenAddEditThesisModal] =
     useState<boolean>(false);
+
+  const [isOpenThesisDetailModal, setIsOpenThesisDetailModal] =
+    useState<boolean>(false);
+
   const [isEditModal, setIsEditModal] = useState<boolean>(false);
 
   const viewThesisRegisterCalendarMutation = useMutation(
@@ -115,6 +133,14 @@ export const ThesisConsoleProvider = ({
     },
   });
 
+  const searchDetailMutation = useMutation(ThesisService.getThesisById, {
+    onSuccess: (data: ThesisModel | null) => {
+      if (data) {
+        setThesis(data);
+      }
+    },
+  });
+
   const [pagination, setPagination, handleChange] =
     usePagination<ThesisSearchConditionModel>(
       searchMutaion.mutate,
@@ -133,10 +159,15 @@ export const ThesisConsoleProvider = ({
     });
   };
 
+  const searchDetail = (id: string) => {
+    searchDetailMutation.mutate(id);
+  };
+
   return (
     <ThesisConsoleContext.Provider
       value={{
         listThesis,
+        thesis,
 
         listThesisSelected,
         setlistThesisSelected,
@@ -148,11 +179,14 @@ export const ThesisConsoleProvider = ({
 
         isOpenRegisterThesisModal,
         setIsOpenRegisterThesisModal,
-        
+
         isEditModal,
         setIsEditModal,
         isOpenAddEditThesisModal,
         setIsOpenAddEditThesisModal,
+
+        isOpenThesisDetailModal,
+        setIsOpenThesisDetailModal,
 
         thesisRegisterCalendar: viewThesisRegisterCalendarMutation.data,
         loadThesisRegisterCalendar,
@@ -163,6 +197,8 @@ export const ThesisConsoleProvider = ({
         pagination,
         setPagination,
         handleChange,
+
+        searchDetail,
       }}
     >
       {children}

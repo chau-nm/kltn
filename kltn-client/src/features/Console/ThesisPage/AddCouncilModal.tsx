@@ -142,7 +142,7 @@ const AddCouncilModal = (): JSX.Element => {
       title="Thêm thành viên hội đồng chấm"
       open={openAddCouncilModal}
       footer={[<ButtonFooter key={"1"} />]}
-      onCanel={handleClose}
+      onCancel={handleClose}
       maskCloseable={false}
     >
       <Spin spinning={false}>

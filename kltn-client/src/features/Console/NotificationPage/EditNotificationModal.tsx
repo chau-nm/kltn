@@ -103,7 +103,7 @@ const EditNotificationModal = (): JSX.Element => {
     <ModalCommon
       title="Thêm thông báo"
       open={openEditNotificationModal}
-      onCanel={handleClose}
+      onCancel={handleClose}
       maskCloseable={false}
       footer={[<ButtonFooter key={v4()} />]}
     >

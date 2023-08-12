@@ -64,20 +64,14 @@ const ThesisDetail = ({ thesis }: ThesisDetailProps): JSX.Element => {
         </Row>
         <div className="ml-[41.125px]">
           <Typography.Text>Mô tả:</Typography.Text>
-          <ReactQuillPreviewCommon content={thesis.description} />
+          <ReactQuillPreviewCommon content={thesis.description!} />
         </div>
       </div>
       <div>
-        <Typography.Text className="font-bold">Đề cương:</Typography.Text>
-        {thesis.outlineUrls?.map((url) => {
-          return (
-            <Space className="block">
-              <a href={url}>
-                <PaperClipOutlined /> {getFileNameFromUrl(url)}
-              </a>
-            </Space>
-          );
-        })}
+        <Typography.Text className="font-bold">
+          Đề cương:
+          <a href={thesis.outlineUrl}>click here</a>
+        </Typography.Text>
       </div>
       <div>
         <Typography.Text className="font-bold">

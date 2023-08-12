@@ -37,14 +37,14 @@ public class ThesisController {
 		responseModel.setData(thesisService.findById(id));
 		return responseModel;
 	}
-	
+
 	@GetMapping("/find-by-user")
-	public ResponseModel<List<ThesisDTO>> findByUser(@RequestParam String userId){
+	public ResponseModel<List<ThesisDTO>> findByUser(@RequestParam String userId) {
 		ResponseModel<List<ThesisDTO>> responseModel = new ResponseModel<>();
 		responseModel.setData(thesisService.findByUser(userId));
 		return responseModel;
 	}
-	
+
 	@PostMapping("/search/{page}")
 	public ResponseModel<SearchResponse<List<ThesisDTO>>> search(@PathVariable int page,
 			@RequestParam(defaultValue = "1") int pageSize,
@@ -68,7 +68,6 @@ public class ThesisController {
 			responseModel.setData(thesisInserted);
 			return responseModel;
 		} catch (Exception e) {
-			System.out.println(e);
 			responseModel.setStatus(500);
 			responseModel.setMessage(e.getCause().getMessage());
 			return responseModel;
@@ -83,7 +82,7 @@ public class ThesisController {
 			thesisService.update(thesis);
 			responseModel.setData(true);
 			return responseModel;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			responseModel.setData(false);
 			return responseModel;
 		}
@@ -99,12 +98,12 @@ public class ThesisController {
 
 	@PostMapping("/find-by-council/{page}")
 	public ResponseModel<SearchResponse<List<ThesisDTO>>> findByCouncil(@PathVariable int page,
-														@RequestParam(defaultValue = "1") int pageSize,
-														@RequestBody(required = false)  RequestModel<ThesisSearchCondition> searchConditionRequest){
+			@RequestParam(defaultValue = "1") int pageSize,
+			@RequestBody(required = false) RequestModel<ThesisSearchCondition> searchConditionRequest) {
 		ResponseModel<SearchResponse<List<ThesisDTO>>> responseModel = new ResponseModel<>();
 		ThesisSearchCondition searchCondition = searchConditionRequest.getData();
 		SearchResponse<List<ThesisDTO>> searchResponse = new SearchResponse<>();
-		searchResponse.setData(thesisService.findByCouncil(page,pageSize,searchCondition));
+		searchResponse.setData(thesisService.findByCouncil(page, pageSize, searchCondition));
 		searchResponse.setTotal(thesisService.getTotalByCouncilId(searchCondition));
 
 		responseModel.setData(searchResponse);

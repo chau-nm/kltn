@@ -56,15 +56,7 @@ public class ThesisServiceImpl implements ThesisService {
 	public ThesisDTO findById(String id) {
 		ThesisDTO thesisDTO = new ThesisDTO();
 		Thesis thesisEntity = thesisMapper.selectByPrimaryKey(id);
-		thesisDTO.load(thesisEntity);
-		thesisDTO.setOutlineUrls(thesisDocumentCusMapper.getFilesByThesisId(id));
-		List<ThesisUser> thesisUsers = thesisUserCusMapper.search(id, 1);
-		thesisDTO.setStudents(thesisUsers.stream().map(tu -> {
-			ThesisUserDTO thesisUserDTO = new ThesisUserDTO();
-			thesisUserDTO.load(tu);
-			thesisUserDTO.setUser(userMapper.selectByPrimaryKey(tu.getUserId()));
-			return thesisUserDTO;
-		}).toList());
+		thesisDTO.load(thesisEntity, thesisUserCusMapper, userMapper, thesisDocumentCusMapper);
 		return thesisDTO;
 	}
 
@@ -72,33 +64,16 @@ public class ThesisServiceImpl implements ThesisService {
 	public ThesisDTO findDetailById(String id) {
 		ThesisDTO thesisDTO = new ThesisDTO();
 		Thesis thesisEntity = thesisMapper.selectByPrimaryKey(id);
-		thesisDTO.load(thesisEntity);
-		thesisDTO.setOutlineUrls(thesisDocumentCusMapper.getFilesByThesisId(id));
+		thesisDTO.load(thesisEntity, thesisUserCusMapper, userMapper, thesisDocumentCusMapper);
 		return thesisDTO;
 	}
 
 	@Override
 	public List<ThesisDTO> findByUser(String userId) {
 		List<Thesis> thesisList = thesisCusMapper.findByUser(userId);
-
 		List<ThesisDTO> thesisDTOList = thesisList.stream().map(thesis -> {
 			ThesisDTO thesisDTO = new ThesisDTO();
-			thesisDTO.load(thesis);
-			thesisDTO.setUserCreated(userMapper.selectByPrimaryKey(thesisDTO.getCreatedBy()));
-            List<ThesisUser> thesisUsers = thesisUserCusMapper.search(thesisDTO.getId(), 1);
-            thesisDTO.setStudents(thesisUsers.stream().map(tu -> {
-                ThesisUserDTO thesisUserDTO = new ThesisUserDTO();
-                thesisUserDTO.load(tu);
-                thesisUserDTO.setUser(userMapper.selectByPrimaryKey(tu.getUserId()));
-                return thesisUserDTO;
-            }).toList());
-            ThesisUser teacher = thesisUserCusMapper.search(thesisDTO.getId(), 2).get(0);
-            if (teacher != null) {
-                ThesisUserDTO teacherDTO = new ThesisUserDTO();
-                teacherDTO.load(teacher);
-                teacherDTO.setUser(userMapper.selectByPrimaryKey(teacher.getUserId()));
-                thesisDTO.setTeacher(teacherDTO);
-            }
+			thesisDTO.load(thesis, thesisUserCusMapper, userMapper, thesisDocumentCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOList;
@@ -123,8 +98,8 @@ public class ThesisServiceImpl implements ThesisService {
 		if (thesisUserMapper.insert(thesisUser) <= 0) {
 			throw new Exception("Thêm thất bại");
 		}
-		List<String> outlineUrls = thesisDTO.getOutlineUrls();
-		for (String outlineUrl : outlineUrls) {
+		String outlineUrl = thesisDTO.getOutlineUrl();
+		if (outlineUrl != null) {
 			ThesisDocument document = new ThesisDocument();
 			document.setId(String.valueOf(UUID.randomUUID()));
 			document.setFileUrl(outlineUrl);
@@ -137,14 +112,56 @@ public class ThesisServiceImpl implements ThesisService {
 				throw new Exception("Thêm thất bại");
 			}
 		}
-
+		String thesisDocumentUrl = thesisDTO.getDocumentUrl();
+		if (thesisDocumentUrl != null) {
+			ThesisDocument document = new ThesisDocument();
+			document.setId(String.valueOf(UUID.randomUUID()));
+			document.setFileUrl(thesisDocumentUrl);
+			document.setType(Constant.THESIS_DOCUMENT_TYPE_DOCUMENT);
+			document.setThesisId(thesisDTO.getId());
+			document.setIsDeleted(false);
+			document.setCreatedAt(new Date().getTime());
+			document.setUpdatedAt(new Date().getTime());
+			if (thesisDocumentMapper.insert(document) <= 0) {
+				throw new Exception("Thêm thất bại");
+			}
+		}
 		return thesisDTO;
 	}
 
 	@Transactional(rollbackFor = Throwable.class)
 	@Override
-	public void update(ThesisDTO thesisDTO) {
-		thesisMapper.updateByPrimaryKey(thesisDTO);
+	public void update(ThesisDTO thesisDTO) throws Exception {
+
+		if (thesisDTO == null) {
+			thesisMapper.updateByPrimaryKey(thesisDTO);
+		}
+		List<ThesisUserDTO> students = thesisDTO.getStudents();
+		thesisUserCusMapper.deleteByTheisId(thesisDTO.getId());
+		for (ThesisUser thesisUser : students) {
+			if (thesisUserMapper.insert(thesisUser) <= 0) {
+				throw new Exception("Cập nhật thất bại");
+			}
+		}
+		ThesisUserDTO thesisUser = thesisDTO.getTeacher();
+		if (thesisUserMapper.insert(thesisUser) <= 0) {
+			throw new Exception("Cập nhật thất bại");
+		}
+		thesisDocumentCusMapper.deteleByThesisId(thesisDTO.getId(), 2);
+		String thesisDocumentUrl = thesisDTO.getDocumentUrl();
+		if (thesisDocumentUrl != null) {
+			ThesisDocument document = new ThesisDocument();
+			document.setId(String.valueOf(UUID.randomUUID()));
+			document.setFileUrl(thesisDocumentUrl);
+			document.setType(Constant.THESIS_DOCUMENT_TYPE_DOCUMENT);
+			document.setThesisId(thesisDTO.getId());
+			document.setIsDeleted(false);
+			document.setCreatedAt(new Date().getTime());
+			document.setUpdatedAt(new Date().getTime());
+			if (thesisDocumentMapper.insert(document) <= 0) {
+				throw new Exception("Cập nhật thất bại");
+			}
+		}
 	}
 
 	@Override
@@ -157,22 +174,7 @@ public class ThesisServiceImpl implements ThesisService {
 		List<Thesis> thesisList = thesisCusMapper.search(page, pageSize, thesisSearchCondition);
 		List<ThesisDTO> thesisDTOs = thesisList.stream().map(thesis -> {
 			ThesisDTO thesisDTO = new ThesisDTO();
-			thesisDTO.load(thesis);
-			thesisDTO.setUserCreated(userMapper.selectByPrimaryKey(thesisDTO.getCreatedBy()));
-            List<ThesisUser> thesisUsers = thesisUserCusMapper.search(thesisDTO.getId(), 1);
-            thesisDTO.setStudents(thesisUsers.stream().map(tu -> {
-                ThesisUserDTO thesisUserDTO = new ThesisUserDTO();
-                thesisUserDTO.load(tu);
-                thesisUserDTO.setUser(userMapper.selectByPrimaryKey(tu.getUserId()));
-                return thesisUserDTO;
-            }).toList());
-            ThesisUser teacher = thesisUserCusMapper.search(thesisDTO.getId(), 2).get(0);
-            if (teacher != null) {
-                ThesisUserDTO teacherDTO = new ThesisUserDTO();
-                teacherDTO.load(teacher);
-                teacherDTO.setUser(userMapper.selectByPrimaryKey(teacher.getUserId()));
-                thesisDTO.setTeacher(teacherDTO);
-            }
+			thesisDTO.load(thesis, thesisUserCusMapper, userMapper, thesisDocumentCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOs;
@@ -183,29 +185,29 @@ public class ThesisServiceImpl implements ThesisService {
 		return thesisCusMapper.getTotal(searchCondition);
 	}
 
-
 	@Override
-	public List<ThesisDTO> findByCouncil(int page, int pageSize, ThesisSearchCondition thesisSearchCondition){
-		List<ThesisDTO> thesisDTOs = thesisCusMapper.findByCouncilId(page,pageSize,thesisSearchCondition);
+	public List<ThesisDTO> findByCouncil(int page, int pageSize, ThesisSearchCondition thesisSearchCondition) {
+		List<ThesisDTO> thesisDTOs = thesisCusMapper.findByCouncilId(page, pageSize, thesisSearchCondition);
 		thesisDTOs.forEach((thesisDTO -> {
-			List<ThesisUser> thesisUsers = thesisUserCusMapper.search(thesisDTO.getId(), 1);
-			thesisDTO.setStudents(thesisUsers.stream().map(tu -> {
-				ThesisUserDTO thesisUserDTO = new ThesisUserDTO();
-				thesisUserDTO.load(tu);
-				thesisUserDTO.setUser(userMapper.selectByPrimaryKey(tu.getUserId()));
-				return thesisUserDTO;
-			}).toList());
-			ThesisUser teacher = thesisUserCusMapper.search(thesisDTO.getId(), 2).get(0);
-			if (teacher != null) {
-				ThesisUserDTO teacherDTO = new ThesisUserDTO();
-				teacherDTO.load(teacher);
-				teacherDTO.setUser(userMapper.selectByPrimaryKey(teacher.getUserId()));
-				thesisDTO.setTeacher(teacherDTO);
-			}
-			thesisDTO.setOutlineUrls(thesisDocumentCusMapper.getFilesByThesisId(thesisDTO.getId()));
+			thesisDTO.load(thesisDTO, thesisUserCusMapper, userMapper, thesisDocumentCusMapper);
+//			List<ThesisUser> thesisUsers = thesisUserCusMapper.search(thesisDTO.getId(), 1);
+//			thesisDTO.setStudents(thesisUsers.stream().map(tu -> {
+//				ThesisUserDTO thesisUserDTO = new ThesisUserDTO();
+//				thesisUserDTO.load(tu);
+//				thesisUserDTO.setUser(userMapper.selectByPrimaryKey(tu.getUserId()));
+//				return thesisUserDTO;
+//			}).toList());
+//			ThesisUser teacher = thesisUserCusMapper.search(thesisDTO.getId(), 2).get(0);
+//			if (teacher != null) {
+//				ThesisUserDTO teacherDTO = new ThesisUserDTO();
+//				teacherDTO.load(teacher);
+//				teacherDTO.setUser(userMapper.selectByPrimaryKey(teacher.getUserId()));
+//				thesisDTO.setTeacher(teacherDTO);
+//			}
 		}));
 		return thesisDTOs;
 	}
+
 	@Override
 	public int getTotalByCouncilId(ThesisSearchCondition searchCondition) {
 		return thesisCusMapper.getTotalByCouncilId(searchCondition);

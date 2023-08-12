@@ -88,7 +88,8 @@ interface ThesisModel{
     semester?: number;
     students?: ThesisUserModel[];
     teacher?: ThesisUserModel;
-    outlineUrls?: string[];
+    outlineUrl?: string;
+    documentUrl?: string;
     userCreated?: UserModel;
     status?: number;
     isDeleted?: boolean;

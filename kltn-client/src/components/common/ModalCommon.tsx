@@ -9,7 +9,7 @@ type ModalCommonProps = {
   children?: ReactNode;
   className?: string;
   maskCloseable?: boolean;
-  onCanel?: () => void;
+  onCancel?: () => void;
   onOk?: () => void;
 };
 
@@ -20,7 +20,7 @@ const ModalCommon = ({
   children,
   className,
   maskCloseable,
-  onCanel,
+  onCancel,
   onOk,
   ...rest
 }: ModalCommonProps & ModalProps): JSX.Element => {
@@ -30,7 +30,7 @@ const ModalCommon = ({
       title={title} 
       open={open} 
       footer={footer}
-      onCancel={onCanel}
+      onCancel={onCancel}
       onOk={onOk}
       maskClosable={maskCloseable}
       className={`${className} min-w-[500px]`}>

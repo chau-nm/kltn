@@ -21,7 +21,7 @@ const NotificationTableResult = (): JSX.Element => {
     pagination,
     handleChange,
     searchDetail,
-    setOpenEditNotificationModal
+    setOpenEditNotificationModal,
   } = useContext(NotificationConsoleContext);
 
   const deleteNotificationMutation = useMutation(NotificationService.remove, {
@@ -32,8 +32,8 @@ const NotificationTableResult = (): JSX.Element => {
       } else {
         message.error("Xóa thất bại");
       }
-    } 
-  })
+    },
+  });
 
   useEffect(() => {
     search();
@@ -75,13 +75,18 @@ const NotificationTableResult = (): JSX.Element => {
       render: (row, record) => {
         return (
           <Row justify={"center"}>
-            <EditIconCommon onClick={() => {
-              searchDetail(record.id);
-              setOpenEditNotificationModal(true);
-            }}/>
-            <DeleteIconCommon onClick={() => {
-              deleteNotificationMutation.mutate(record.id);
-            }}/>
+            <EditIconCommon
+              onClick={() => {
+                searchDetail(record.id);
+                setOpenEditNotificationModal(true);
+              }}
+            />
+            <DeleteIconCommon
+              onClick={() => {
+                confirm("Bạn có chắn chắn muốn xóa không?") &&
+                  deleteNotificationMutation.mutate(record.id);
+              }}
+            />
           </Row>
         );
       },

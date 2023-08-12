@@ -11,7 +11,7 @@ export class ApiUrlConstants {
     public static readonly INSERT_USER = "/user/insert";
     public static readonly RESET_PASSWORD_USER = "/user/reset";
     public static readonly REFRESH_TOKEN = "/user/refresh-token";
-    
+
 
     /** NOTIFICATION */
     public static readonly INSERT_NOTIFICATION = "/notification/insert";
@@ -34,6 +34,8 @@ export class ApiUrlConstants {
     public static readonly SEARCH_THESIS = "/thesis/search/";
     public static readonly SEARCH_DETAIL_THESIS = "/thesis/";
     public static readonly SEARCH_BY_COUNCIL_ID = "/thesis/find-by-council/";
+    public static readonly UPDATE_THESIS = "/thesis/update";
+    public static readonly SEARCH_THESIS_BY_USER = "/thesis/find-by-user";
 
     /** THESIS OUTLINE Comment */
     public static readonly UPDATE_OUTLINE_COMMENT = "thesis-outline-comment/update-comment";
@@ -42,15 +44,13 @@ export class ApiUrlConstants {
 
     /** THESIS OUTLINE REVIEW */
     public static readonly SEARCH_OURLINE_REVIEW = "/thesis-outline-review/search";
-    public static readonly UPDATE_THESIS = "/thesis/udpate";
-    public static readonly SEARCH_THESIS_BY_USER = "/thesis/find-by-user";
 
     /** THESIS USER */
     public static readonly FIND_THESIS_USER_BY_THESIS = "/thesis-user/find-by-thesis";
     public static readonly UPDATE_THESIS_USER = "/thesis-user/find-by-thesis";
 
     /** Email */
-    public static readonly EMAIL_PUBLIC_KEY ="zYF2rOMgmyBuMxfwX";
-    public static readonly SERVICE_EMAIL_ID ="service_ghvi71k";
-    public static readonly TEMPLATE_RESET_PASSWORD_ID ="template_y3hdy8w";
+    public static readonly EMAIL_PUBLIC_KEY = "zYF2rOMgmyBuMxfwX";
+    public static readonly SERVICE_EMAIL_ID = "service_ghvi71k";
+    public static readonly TEMPLATE_RESET_PASSWORD_ID = "template_y3hdy8w";
 }

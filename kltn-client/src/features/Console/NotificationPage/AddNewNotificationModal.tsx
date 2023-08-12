@@ -93,7 +93,7 @@ const AddNewNotificationModal = (): JSX.Element => {
     <ModalCommon
       title="Thêm thông báo"
       open={openAddNewNotificationModal}
-      onCanel={handleClose}
+      onCancel={handleClose}
       maskCloseable={false}
       footer={[<ButtonFooter key={v4()} />]}
     >

@@ -1,21 +1,25 @@
 import { InboxOutlined } from "@ant-design/icons";
 import { UploadFile } from "antd";
 import Dragger, { DraggerProps } from "antd/es/upload/Dragger";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { uploadFileToFirebase } from "~/common/firebase";
 
 type DraggerSingleCommon = {
   handleSuccess?: (file: UploadFile) => void;
   handleFailure?: (file: UploadFile) => void;
   handleRemove?: () => void;
+  file: UploadFile | undefined;
+  setFile: React.Dispatch<SetStateAction<UploadFile | undefined>>;
 };
 
 const DraggerSingleCommon = ({
   handleSuccess,
   handleFailure,
   handleRemove,
+  file,
+  setFile,
 }: DraggerSingleCommon): JSX.Element => {
-  const [file, setFile] = useState<UploadFile>();
+  // const [file, setFile] = useState<UploadFile>();
 
   const commonUploadRequest = async (options: any) => {
     const { onSuccess, onError, file } = options;
@@ -35,7 +39,11 @@ const DraggerSingleCommon = ({
   const draggerConfig: DraggerProps = {
     onRemove: remove,
     onChange: ({ file }: { file: UploadFile }) => {
-      setFile(file);
+      if (file.status === "removed") {
+        setFile(undefined);
+      } else {
+        setFile(file);
+      }
       if (file.status === "done") {
         handleSuccess && handleSuccess(file);
       } else if (file.status === "error") {

@@ -1,5 +1,6 @@
 package web.nl.kltn.model.dto;
 
+import web.nl.kltn.mapper.generator.UserMapper;
 import web.nl.kltn.model.generator.ThesisUser;
 import web.nl.kltn.model.generator.User;
 
@@ -14,7 +15,7 @@ public class ThesisUserDTO extends ThesisUser {
 		this.user = user;
 	}
 	
-	public void load(ThesisUser thesisUser) {
+	public void load(ThesisUser thesisUser, UserMapper userMapper) {
 		this.setId(thesisUser.getId());
 		this.setThesisId(thesisUser.getThesisId());
 		this.setUserId(thesisUser.getUserId());
@@ -23,5 +24,6 @@ public class ThesisUserDTO extends ThesisUser {
 		this.setIsDeleted(thesisUser.getIsDeleted());
 		this.setCreatedAt(thesisUser.getCreatedAt());
 		this.setUpdatedAt(thesisUser.getUpdatedAt());
+		this.setUser(userMapper.selectByPrimaryKey(thesisUser.getId()));
 	}
 }

@@ -71,7 +71,6 @@ public class NotificationController {
 	){
 		ResponseModel<Boolean> responseModel = new ResponseModel<>();
 		NotificationDTO notification = notificationRequest.getData();
-		System.out.println(notification.getId());
 		notificationService.update(notification);
 		responseModel.setData(true);
 		return responseModel;

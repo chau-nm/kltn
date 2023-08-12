@@ -41,3 +41,7 @@ export const getFileNameFromUrl = (url: string): string => {
 export const resetLocalStorage = () => {
     localStorage.clear();
 }
+
+/**
+ * 
+ */

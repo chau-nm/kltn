@@ -7,9 +7,20 @@
     <select id="getFilesByThesisId"
             parameterType="java.lang.String" resultType="java.lang.String">
         SELECT
-        file_url
+        	file_url
         FROM thesis_document
-        WHERE thesis_id = #{thesisId}
+        <where>
+        	<if test="thesisId != null">
+        		thesis_id = #{thesisId}
+        	</if>
+        	<if test="type != 0">
+        		AND type = #{type}
+        	</if>
+        </where>
     </select>
+    
+    <delete id="deteleByThesisId">
+    	DELETE FROM thesis_document WHERE thesis_id = #{thesisId} AND type = #{type} 
+    </delete>
 
 </mapper>
