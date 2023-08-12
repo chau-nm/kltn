@@ -15,6 +15,8 @@ public interface ThesisOutlineCommentService {
 	ThesisOutlineComment searchByUserId(String userId);
 
 	List<ThesisOutlineComment> searchByThesisId(String thesisId);
+	ThesisOutlineComment searchByThesisIdAndCouncilId(String thesisId,String userId);
+
 	void deletedByThesis(String id);
 
 

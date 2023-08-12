@@ -1,4 +1,4 @@
-import { Col, Form, Row, Space, Spin, Typography } from "antd";
+import { Col, Form, Row, Space, Spin, Typography, message } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { OutlineReviewContext } from "~/contexts/OutlineReviewContext";
 import * as ThesisService from "~/services/thesisService";
@@ -13,19 +13,20 @@ import ReactQuillPreviewCommon from "~/components/common/ReactQuillPreviewCommon
 import RichTextEditorCommon from "~/components/common/RichTextEditorCommon";
 import { useForm } from "antd/es/form/Form";
 import * as Doc2VecServices from "~/services/doc2vecService";
+import * as OutlineReviewServices from "~/services/OutlineReviewServices";
+import { AuthContext } from "~/contexts/AuthContext";
 
 const EditOutlineReviewModal = (): JSX.Element => {
   const {
     openEditOutlineReviewModal,
     setOpenEditOutlineReviewModal,
     isLoadingDetail,
-    OutlineReviewDetail,
+    thesisDetail,
+    setThesisDetail,
   } = useContext(OutlineReviewContext);
-
+  const { user } = useContext(AuthContext);
   const [documentList, setDocumentList] = useState<Doc2VecModel[]>();
-  const [OutlineReview, setOutlineReview] = useState<ThesisModel>(
-    {} as ThesisModel
-  );
+  // const [thesis, setThesis] = useState<ThesisModel>({} as ThesisModel);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [editorHtml, setEditorHtml] = useState<string>("");
   const [form] = useForm();
@@ -34,10 +35,11 @@ const EditOutlineReviewModal = (): JSX.Element => {
     form.setFieldValue("description", editorHtml);
   }, [editorHtml]);
 
+  console.log("thesisDetail", thesisDetail);
+
   useEffect(() => {
-    getSimilarData(OutlineReview.topic);
-    console.log(documentList);
-  }, [OutlineReview]);
+    getSimilarData(thesisDetail!?.topic);
+  }, [thesisDetail]);
 
   const getSimilarData = async (value: string) => {
     let data: [] | Doc2VecModel[] = [];
@@ -51,25 +53,25 @@ const EditOutlineReviewModal = (): JSX.Element => {
     ThesisService.getThesisById,
     {
       onSuccess: (data) => {
-        const OutlineReviewRes: ThesisModel | null = data as ThesisModel;
-        if (OutlineReviewRes) {
-          setOutlineReview(OutlineReviewRes);
+        const thesisRes: ThesisModel = data as ThesisModel;
+        if (thesisRes) {
+          setThesisDetail(thesisRes);
         } else {
-          toast("Không thể lấy thông tin người dùng");
+          toast("Không thể lấy thông tin luận văn");
         }
       },
     }
   );
 
   useEffect(() => {
-    if (OutlineReviewDetail) {
-      getOutlineReviewByIdMutation.mutate(OutlineReviewDetail.id);
+    if (thesisDetail) {
+      getOutlineReviewByIdMutation.mutate(thesisDetail!?.id);
     }
-  }, [openEditOutlineReviewModal, OutlineReviewDetail]);
+  }, [openEditOutlineReviewModal]);
 
   useEffect(() => {
-    if (OutlineReviewDetail) {
-      getOutlineReviewByIdMutation.mutate(OutlineReviewDetail!?.id);
+    if (thesisDetail) {
+      getOutlineReviewByIdMutation.mutate(thesisDetail!?.id);
     }
   }, []);
 
@@ -82,6 +84,7 @@ const EditOutlineReviewModal = (): JSX.Element => {
             value="Lưu"
             onClick={() => {
               setEditMode(false);
+              handleSave();
             }}
           />
         ) : (
@@ -96,7 +99,37 @@ const EditOutlineReviewModal = (): JSX.Element => {
     setEditMode(false);
   };
 
-  const handleFinish = () => {};
+  const handleSave = async () => {
+    form.setFieldValue("description", editorHtml);
+    form.validateFields().then(() => {
+      const outlineCommentModel: OutlineCommentModel = {
+        thesisId: thesisDetail!?.id,
+        userId: user?.userId,
+        comment: form.getFieldValue("description"),
+      };
+
+      updateOutlineReviewMutation.mutate(outlineCommentModel);
+    });
+  };
+
+  const updateOutlineReviewMutation = useMutation(
+    OutlineReviewServices.updateComment,
+    {
+      onSuccess: (data: boolean) => {
+        if (data) {
+          message.success("Thêm thành công");
+          // clearData();
+          // setSearchCondition(() => {
+          //   return {};
+          // });
+          // search();
+        } else {
+          message.error("Thêm thất bại");
+        }
+      },
+    }
+  );
+
   return (
     <ModalCommon
       title="Đánh giá luận văn"
@@ -106,7 +139,7 @@ const EditOutlineReviewModal = (): JSX.Element => {
       maskCloseable={false}
     >
       <Spin spinning={isLoadingDetail}>
-        {OutlineReview.students?.map((student) => {
+        {thesisDetail!?.students?.map((student) => {
           return (
             <Row className="w-[800px]">
               <Col className="w-[250px]">
@@ -133,13 +166,13 @@ const EditOutlineReviewModal = (): JSX.Element => {
               Họ tên Giảng viên hướng dẫn:{" "}
             </Typography.Text>
             <Typography.Text>
-              {OutlineReview.teacher?.user?.fname}
+              {thesisDetail!?.teacher?.user?.fname}
             </Typography.Text>
           </Col>
           <Col flex={1} className="w-[250px]">
             <Typography.Text className="font-bold ">Email: </Typography.Text>
             <Typography.Text>
-              {OutlineReview.teacher?.user?.email}
+              {thesisDetail!?.teacher?.user?.email}
             </Typography.Text>
           </Col>
         </Row>
@@ -155,7 +188,7 @@ const EditOutlineReviewModal = (): JSX.Element => {
             className="py-3 px-4 w-full flex items-center justify-center"
           >
             <Typography.Text className="font-bold text-xl">
-              {OutlineReview!?.topic}
+              {thesisDetail!?.topic}
             </Typography.Text>
           </Col>
         </Row>
@@ -172,18 +205,18 @@ const EditOutlineReviewModal = (): JSX.Element => {
             className="py-3 px-4 w-full flex items-center justify-center"
           >
             <ReactQuillPreviewCommon
-              content={OutlineReview!?.description}
+              content={thesisDetail!?.description}
             ></ReactQuillPreviewCommon>
           </Col>
         </Row>
         <Row>
-          {OutlineReview!?.outlineUrls &&
-            OutlineReview!?.outlineUrls.length > 0 && (
+          {thesisDetail!?.outlineUrls &&
+            thesisDetail!?.outlineUrls.length > 0 && (
               <div className="border-t py-3 w-full">
                 <Typography.Text className="font-bold">
                   Danh sách file đính kèm
                 </Typography.Text>
-                {OutlineReview!?.outlineUrls?.map((url) => {
+                {thesisDetail!?.outlineUrls?.map((url) => {
                   return (
                     <Space className="block">
                       <a href={url} target="_blank">
@@ -226,7 +259,7 @@ const EditOutlineReviewModal = (): JSX.Element => {
           })}
 
         <Row className="mt-9">
-          <Form layout="vertical" onFinish={handleFinish} form={form}>
+          <Form layout="vertical" onFinish={handleSave} form={form}>
             <Form.Item
               label="Đánh giá"
               name="description"

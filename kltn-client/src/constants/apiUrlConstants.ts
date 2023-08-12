@@ -36,7 +36,7 @@ export class ApiUrlConstants {
     public static readonly SEARCH_BY_COUNCIL_ID = "/thesis/find-by-council/";
 
     /** THESIS OUTLINE Comment */
-
+    public static readonly UPDATE_OUTLINE_COMMENT = "thesis-outline-comment/update-comment";
     public static readonly INSERT_OUTLINE_COMMENT = "/thesis-outline-comment/insert";
     public static readonly DELETE_OUTLINE_COMMENT_BY_THESIS = "/thesis-outline-comment/delete-by-thesis/";
 

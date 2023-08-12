@@ -58,4 +58,9 @@ public class ThesisOutlineCommentServiceImpl implements ThesisOutlineCommentServ
 		thesisOutlineCommentCusMapper.deleteByThesis(id);
 	}
 
+	@Override
+	public ThesisOutlineComment searchByThesisIdAndCouncilId(String thesisId,String userId) {
+		return thesisOutlineCommentCusMapper.searchByThesisIdAndUserId(thesisId,userId);
+	}
+
 }
