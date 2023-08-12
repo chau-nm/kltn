@@ -18,10 +18,10 @@ interface OutlineReviewContextInterface {
   isLoadingList: boolean;
   isLoadingDetail: boolean;
 
-  OutlineReviews: ThesisModel[];
-  setOutlineReviews: React.Dispatch<SetStateAction<ThesisModel[]>>;
-  OutlineReviewDetail: ThesisModel | null;
-  setOutlineReviewDetail: React.Dispatch<SetStateAction<ThesisModel | null>>;
+  listThesis: ThesisModel[];
+  setListThesis: React.Dispatch<SetStateAction<ThesisModel[]>>;
+  thesisDetail: ThesisModel | null;
+  setThesisDetail: React.Dispatch<SetStateAction<ThesisModel | null>>;
 
   openAddNewOutlineReviewModal: boolean;
   setOpenAddNewOutlineReviewModal: React.Dispatch<SetStateAction<boolean>>;
@@ -44,10 +44,11 @@ const initOutlineReviewContext: OutlineReviewContextInterface = {
   isLoadingList: false,
   isLoadingDetail: false,
 
-  OutlineReviews: [],
-  setOutlineReviews: () => null,
-  OutlineReviewDetail: null,
-  setOutlineReviewDetail: () => null,
+  listThesis: [],
+  setListThesis: () => null,
+
+  thesisDetail: null,
+  setThesisDetail: () => null,
 
   openAddNewOutlineReviewModal: false,
   setOpenAddNewOutlineReviewModal: () => null,
@@ -69,9 +70,8 @@ export const OutlineReviewProvider = ({
   children,
 }: PropsWithChildren): JSX.Element => {
   const { user } = useContext(AuthContext);
-  const [OutlineReviews, setOutlineReviews] = useState<ThesisModel[]>([]);
-  const [OutlineReviewDetail, setOutlineReviewDetail] =
-    useState<ThesisModel | null>(null);
+  const [listThesis, setListThesis] = useState<ThesisModel[]>([]);
+  const [thesisDetail, setThesisDetail] = useState<ThesisModel | null>(null);
   const [openAddNewOutlineReviewModal, setOpenAddNewOutlineReviewModal] =
     useState<boolean>(false);
   const [openEditOutlineReviewModal, setOpenEditOutlineReviewModal] =
@@ -83,7 +83,7 @@ export const OutlineReviewProvider = ({
   const searchMutaion = useMutation(ThesisService.searchByCouncilId, {
     onSuccess: (data: SearchResponseModel<ThesisModel[]>) => {
       if (data) {
-        setOutlineReviews(data.data as ThesisModel[]);
+        setListThesis(data.data as ThesisModel[]);
         setPagination((pagination) => {
           return {
             ...pagination,
@@ -100,7 +100,7 @@ export const OutlineReviewProvider = ({
   const searchDetailMutation = useMutation(ThesisService.getThesisById, {
     onSuccess: (data: ThesisModel | null) => {
       if (data) {
-        setOutlineReviewDetail(data);
+        setThesisDetail(data);
       }
     },
   });
@@ -131,11 +131,12 @@ export const OutlineReviewProvider = ({
         isLoadingList: searchMutaion.isLoading,
         isLoadingDetail: searchDetailMutation.isLoading,
 
-        OutlineReviews,
-        OutlineReviewDetail,
-        setOutlineReviewDetail,
+        listThesis,
+        setListThesis,
 
-        setOutlineReviews,
+        thesisDetail,
+        setThesisDetail,
+
         openAddNewOutlineReviewModal,
         setOpenAddNewOutlineReviewModal,
         openEditOutlineReviewModal,

@@ -1,5 +1,6 @@
 package web.nl.kltn.controllers;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,65 +23,84 @@ import web.nl.kltn.service.ThesisOutlineCommentService;
 @RequestMapping("/api/thesis-outline-comment")
 public class ThesisOutlineCommentController {
 
-	@Autowired
-	private ThesisOutlineCommentService thesisOutlineCommentService;
-	
-	@GetMapping("/search-by-thesisId")
-	public ResponseModel<List<ThesisOutlineComment>> searchByThesisId(@RequestParam String thesisId) {
-		ResponseModel<List<ThesisOutlineComment>> responseModel = new ResponseModel<>();
-		responseModel.setData(thesisOutlineCommentService.searchByThesisId(thesisId));
-		return responseModel;
-	}
-	
-	@GetMapping("/search-by-userId")
-	public ResponseModel<ThesisOutlineComment> searchByUserId(@RequestParam String userId) {
-		ResponseModel<ThesisOutlineComment> responseModel = new ResponseModel<>();
-		responseModel.setData(thesisOutlineCommentService.searchByUserId(userId));
-		return responseModel;
-	}
-	
-	@PostMapping("/insert")
-	public ResponseModel<ThesisOutlineComment> insert(@RequestBody RequestModel<ThesisOutlineComment> thesisOutlineCommentRequest) {
-		ResponseModel<ThesisOutlineComment> responseModel = new ResponseModel<>();
-		ThesisOutlineComment thesisOutlineComment = thesisOutlineCommentRequest.getData();
-		responseModel.setData(thesisOutlineCommentService.insert(thesisOutlineComment));
-		return responseModel;
-	}
-	
-	@PutMapping("/update")
-	public ResponseModel<Boolean> update(@RequestBody RequestModel<ThesisOutlineComment> thesisOutlineCommentRequest) {
-		ResponseModel<Boolean> responseModel = new ResponseModel<>();
-		try {
-			ThesisOutlineComment thesisOutlineComment = thesisOutlineCommentRequest.getData();
-			thesisOutlineCommentService.update(thesisOutlineComment);
-			responseModel.setData(true);
-		} catch (Exception exception) {
-			responseModel.setData(false);
-		}
-		return responseModel;
-	}
-	
-	@DeleteMapping("/delete/{id}")
-	public ResponseModel<Boolean> delete(@PathVariable String id) {
-		ResponseModel<Boolean> responseModel = new ResponseModel<>();
-		try {
-			thesisOutlineCommentService.deleted(id);
-			responseModel.setData(true);
-		} catch (Exception exception) {
-			responseModel.setData(false);
-		}
-		return responseModel;
-	}
-	@DeleteMapping("/delete-by-thesis/{id}")
-	public ResponseModel<Boolean> deleteByThesis(@PathVariable String id) {
-		ResponseModel<Boolean> responseModel = new ResponseModel<>();
-		System.err.println(id);
-		try {
-			thesisOutlineCommentService.deletedByThesis(id);
-			responseModel.setData(true);
-		} catch (Exception exception) {
-			responseModel.setData(false);
-		}
-		return responseModel;
-	}
+    @Autowired
+    private ThesisOutlineCommentService thesisOutlineCommentService;
+
+    @GetMapping("/search-by-thesisId")
+    public ResponseModel<List<ThesisOutlineComment>> searchByThesisId(@RequestParam String thesisId) {
+        ResponseModel<List<ThesisOutlineComment>> responseModel = new ResponseModel<>();
+        responseModel.setData(thesisOutlineCommentService.searchByThesisId(thesisId));
+        return responseModel;
+    }
+
+    @GetMapping("/search-by-userId")
+    public ResponseModel<ThesisOutlineComment> searchByUserId(@RequestParam String userId) {
+        ResponseModel<ThesisOutlineComment> responseModel = new ResponseModel<>();
+        responseModel.setData(thesisOutlineCommentService.searchByUserId(userId));
+        return responseModel;
+    }
+
+    @PutMapping("/update-comment")
+    public ResponseModel<Boolean> updateComment(@RequestBody RequestModel<ThesisOutlineComment> thesisOutlineCommentRequest) {
+        ResponseModel<Boolean> responseModel = new ResponseModel<>();
+        ThesisOutlineComment thesisOutlineComment = thesisOutlineCommentRequest.getData();
+        ThesisOutlineComment result = thesisOutlineCommentService.searchByThesisIdAndCouncilId(thesisOutlineComment.getThesisId(),thesisOutlineComment.getUserId());
+        thesisOutlineComment.setId(result.getId());
+        thesisOutlineComment.setOrder(1);
+        thesisOutlineComment.setCreatedAt(result.getCreatedAt());
+        thesisOutlineComment.setIsDeleted(false);
+        thesisOutlineComment.setUpdatedAt(new Date().getTime());
+        System.err.println(thesisOutlineComment.getId()+" "+thesisOutlineComment.getComment()+" "+thesisOutlineComment.getUpdatedAt()+" "+thesisOutlineComment.getCreatedAt()+" "+thesisOutlineComment.getOrder()+" "+ thesisOutlineComment.getUserId()+" "+ thesisOutlineComment.getThesisId());
+
+            thesisOutlineCommentService.update(thesisOutlineComment);
+            responseModel.setData(true);
+
+        return responseModel;
+    }
+
+    @PostMapping("/insert")
+    public ResponseModel<ThesisOutlineComment> insert(@RequestBody RequestModel<ThesisOutlineComment> thesisOutlineCommentRequest) {
+        ResponseModel<ThesisOutlineComment> responseModel = new ResponseModel<>();
+        ThesisOutlineComment thesisOutlineComment = thesisOutlineCommentRequest.getData();
+        responseModel.setData(thesisOutlineCommentService.insert(thesisOutlineComment));
+        return responseModel;
+    }
+
+    @PutMapping("/update")
+    public ResponseModel<Boolean> update(@RequestBody RequestModel<ThesisOutlineComment> thesisOutlineCommentRequest) {
+        ResponseModel<Boolean> responseModel = new ResponseModel<>();
+        try {
+            ThesisOutlineComment thesisOutlineComment = thesisOutlineCommentRequest.getData();
+            thesisOutlineCommentService.update(thesisOutlineComment);
+            responseModel.setData(true);
+        } catch (Exception exception) {
+            responseModel.setData(false);
+        }
+        return responseModel;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseModel<Boolean> delete(@PathVariable String id) {
+        ResponseModel<Boolean> responseModel = new ResponseModel<>();
+        try {
+            thesisOutlineCommentService.deleted(id);
+            responseModel.setData(true);
+        } catch (Exception exception) {
+            responseModel.setData(false);
+        }
+        return responseModel;
+    }
+
+    @DeleteMapping("/delete-by-thesis/{id}")
+    public ResponseModel<Boolean> deleteByThesis(@PathVariable String id) {
+        ResponseModel<Boolean> responseModel = new ResponseModel<>();
+        System.err.println(id);
+        try {
+            thesisOutlineCommentService.deletedByThesis(id);
+            responseModel.setData(true);
+        } catch (Exception exception) {
+            responseModel.setData(false);
+        }
+        return responseModel;
+    }
 }

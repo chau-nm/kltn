@@ -8,7 +8,7 @@ import TableCommon from "~/components/common/TableCommon";
 
 const OutlineReviewTableResult = (): JSX.Element => {
   const {
-    OutlineReviews,
+    listThesis,
     search,
     isLoadingList,
     pagination,
@@ -66,7 +66,7 @@ const OutlineReviewTableResult = (): JSX.Element => {
           <Row justify={"center"}>
             <EditIconCommon
               onClick={() => {
-                searchDetail(record.id);
+                searchDetail(record!?.id);
                 setOpenEditOutlineReviewModal(true);
               }}
             />
@@ -81,7 +81,7 @@ const OutlineReviewTableResult = (): JSX.Element => {
       <Spin spinning={isLoadingList}>
         <TableCommon
           columns={columns}
-          dataSource={OutlineReviews}
+          dataSource={listThesis}
           pagination={pagination}
           handleOnChange={handleChange}
         />

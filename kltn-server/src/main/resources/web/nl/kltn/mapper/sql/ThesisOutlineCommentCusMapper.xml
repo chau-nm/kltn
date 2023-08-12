@@ -2,41 +2,51 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="web.nl.kltn.mapper.ThesisOutlineCommentCusMapper">
+	<resultMap id="ThesisOutlineComment" type="web.nl.kltn.model.generator.ThesisOutlineComment">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="thesis_id" jdbcType="VARCHAR" property="thesisId" />
+		<result column="user_id" jdbcType="VARCHAR" property="userId" />
+		<result column="comment" jdbcType="VARCHAR" property="comment" />
+		<result column="order" jdbcType="INTEGER" property="order" />
+		<result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+		<result column="created_at" jdbcType="BIGINT" property="createdAt" />
+		<result column="updated_at" jdbcType="BIGINT" property="updatedAt" />
+	</resultMap>
 
-	<select id="searchByThesisId" resultType="web.nl.kltn.model.generator.ThesisOutlineComment">
+	<select id="searchByThesisId" resultMap="ThesisOutlineComment">
 		SELECT
-			id,
-			thesis_id,
-			user_id,
-			comment,
-			order,
-			is_deleted,
-			created_at,
-			update_at
+			toc.id,
+			toc.thesis_id,
+			toc.user_id,
+			toc.comment,
+			toc.order,
+			toc.is_deleted,
+			toc.created_at,
+			toc.updated_at
 		FROM
-			thesis_outline_comment
+			thesis_outline_comment toc
 		WHERE
-			thesis_id = #{thesisId}
-			AND is_deleted = 0
-		ORDER BY order
+			toc.thesis_id = #{thesisId}
+			AND toc.is_deleted = 0
+		ORDER BY toc.order
 	</select>
 	
-	<select id="searchByUserId" resultType="web.nl.kltn.model.generator.ThesisOutlineComment">
+	<select id="searchByUserId"  resultMap="ThesisOutlineComment">
 		SELECT
-			id,
-			thesis_id,
-			user_id,
-			comment,
-			order,
-			is_deleted,
-			created_at,
-			update_at
+		toc.id,
+		toc.thesis_id,
+		toc.user_id,
+		toc.comment,
+		toc.order,
+		toc.is_deleted,
+		toc.created_at,
+		toc.updated_at
 		FROM
-			thesis_outline_comment
+		thesis_outline_comment toc
 		WHERE
-			user_id = #{user_id}
-			AND is_deleted = 0
-		ORDER BY order
+		toc.user_id = #{user_id}
+			AND toc.is_deleted = 0
+		ORDER BY toc.order
 	</select>
 
 	<select id="findCouncilByOutlineComment" resultType="java.lang.String">
@@ -52,5 +62,24 @@
 	<delete id="deleteByThesis" parameterType="String">
 		DELETE FROM thesis_outline_comment WHERE thesis_id = #{thesisId}
 	</delete>
+
+	<select id="searchByThesisIdAndUserId" resultMap="ThesisOutlineComment">
+		SELECT
+		toc.id,
+		toc.thesis_id,
+		toc.user_id,
+		toc.comment,
+		toc.order,
+		toc.is_deleted,
+		toc.created_at,
+		toc.updated_at
+		FROM
+		thesis_outline_comment toc
+		WHERE
+		toc.thesis_id = #{thesisId}
+		AND toc.user_id = #{userId}
+		AND toc.is_deleted = 0
+		ORDER BY toc.order
+	</select>
 
 </mapper>
