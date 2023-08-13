@@ -44,6 +44,12 @@ export const update = async (thesis: ThesisModel): Promise<boolean> => {
     return thesisResponse.data;
 }
 
+export const updateStatus = async (id:string, status:number): Promise<boolean> => {
+    const thesisResponse: ResponseModel<boolean> 
+        = await http.put(`${ApiUrlConstants.UPDATE_STATUS_THESIS}${id}?status=${status}`);
+        return thesisResponse.data;
+}
+
 export const searchByUser = async (userId: string) : Promise<ThesisModel[]> => {
     const thesisLiseResponse: ResponseModel<ThesisModel[]>
         = await http.get(`${ApiUrlConstants.SEARCH_THESIS_BY_USER}?userId=${userId}`);

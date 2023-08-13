@@ -30,6 +30,7 @@ import RichTextEditorCommon from "~/components/common/RichTextEditorCommon";
 import ReactQuillPreviewCommon from "~/components/common/ReactQuillPreviewCommon";
 import { UserOutlined } from "@ant-design/icons";
 import * as OutlineReviewServices from "~/services/OutlineReviewServices";
+import * as ThesisService from "~/services/thesisService";
 import { AuthContext } from "~/contexts/AuthContext";
 
 const AddCommentMinistryModal = (): JSX.Element => {
@@ -39,6 +40,7 @@ const AddCommentMinistryModal = (): JSX.Element => {
     setOpenAddCommentMinistryModal,
     listCommentOfCouncil,
     searchListComment,
+    search,
   } = useContext(ThesisConsoleContext);
   const { user } = useContext(AuthContext);
 
@@ -121,11 +123,28 @@ const AddCommentMinistryModal = (): JSX.Element => {
     setOpenAddCommentMinistryModal(false);
     clearData();
   };
+  const updateStatusThesis = async () => {
+    const data = await ThesisService.updateStatus(
+      listThesisSelected[0]!?.id as string,
+      3
+    );
+    if (data) {
+      message.success("Phê duyệt thành công");
+      setOpenAddCommentMinistryModal(false);
+      clearData();
+      search();
+    } else {
+      message.error("Phê duyệt thất bại");
+    }
+  };
 
   const ButtonFooter = (): JSX.Element => {
     return (
       <Row justify={"end"}>
         <ButtonCommon value="Đóng" onClick={handleClose} />
+        {listThesisSelected[0].status == 2 && (
+          <ButtonCommon value="Duyệt đề cương" onClick={updateStatusThesis} />
+        )}
         <ButtonCommon color="blue" value={"Lưu"} onClick={handleSave} />
       </Row>
     );
