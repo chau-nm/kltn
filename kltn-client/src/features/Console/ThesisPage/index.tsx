@@ -12,6 +12,7 @@ import ThesisTableResult from "./ThesisTableResult";
 import AddEditThesisModal from "./AddEditThesisModal";
 import ThesisDetailView from "~/components/ThesisDetailView";
 import { useContext } from "react";
+import AddCommentMinistryModal from "./AddCommentMinistryModal";
 
 const ThesisPage = () => {
   const { thesis, isOpenThesisDetailModal, setIsOpenThesisDetailModal } =
@@ -24,6 +25,7 @@ const ThesisPage = () => {
       <ButtonsComponent />
       <ThesisTableResult />
       <AddCouncilModal />
+      <AddCommentMinistryModal />
       <OpenThesisRegisterModal />
       <AddEditThesisModal />
       {thesis && (

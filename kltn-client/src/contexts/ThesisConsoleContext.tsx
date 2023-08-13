@@ -4,12 +4,18 @@ import { useMutation, useQuery } from "react-query";
 import usePagination from "~/hook/usePagination";
 import * as ThesisRegisterCalendarService from "~/services/thesisRegisterCalendarService";
 import * as ThesisService from "~/services/thesisService";
+import * as OutlineReviewServices from "~/services/OutlineReviewServices";
 
 interface ThesisConsoleContextInterface {
   isLoadingTableResults: boolean;
 
   listThesis: ThesisModel[];
   thesis: ThesisModel | undefined;
+
+  listCommentOfCouncil: OutlineCommentModel[];
+  setListCommentOfCouncil: React.Dispatch<
+    SetStateAction<OutlineCommentModel[]>
+  >;
 
   listThesisSelected: ThesisModel[];
   setlistThesisSelected: React.Dispatch<SetStateAction<ThesisModel[]>>;
@@ -29,6 +35,9 @@ interface ThesisConsoleContextInterface {
   openAddCouncilModal: boolean;
   setOpenAddCouncilModal: React.Dispatch<SetStateAction<boolean>>;
 
+  openAddCommentMinistryModal: boolean;
+  setOpenAddCommentMinistryModal: React.Dispatch<SetStateAction<boolean>>;
+
   thesisRegisterCalendar: ThesisRegisterCalendarModel | undefined;
   loadThesisRegisterCalendar: () => void;
 
@@ -39,6 +48,7 @@ interface ThesisConsoleContextInterface {
   >;
 
   searchDetail: (thesisId: string) => void;
+  searchListComment: (thesisId: string) => void;
 
   pagination: TablePaginationConfig;
   setPagination: React.Dispatch<SetStateAction<TablePaginationConfig>>;
@@ -51,6 +61,9 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
   listThesis: [],
   thesis: undefined,
 
+  listCommentOfCouncil: [],
+  setListCommentOfCouncil: () => null,
+
   listThesisSelected: [],
   setlistThesisSelected: () => null,
 
@@ -59,6 +72,7 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
 
   isEditModal: false,
   setIsEditModal: () => null,
+
   isOpenAddEditThesisModal: false,
   setIsOpenAddEditThesisModal: () => null,
 
@@ -68,6 +82,9 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
   openAddCouncilModal: false,
   setOpenAddCouncilModal: () => null,
 
+  openAddCommentMinistryModal: false,
+  setOpenAddCommentMinistryModal: () => null,
+
   thesisRegisterCalendar: undefined,
   loadThesisRegisterCalendar: () => {},
 
@@ -76,6 +93,7 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
   setSearchCondition: () => null,
 
   searchDetail: () => {},
+  searchListComment: () => {},
 
   pagination: {},
   setPagination: () => null,
@@ -91,6 +109,9 @@ export const ThesisConsoleProvider = ({
 }: React.PropsWithChildren): JSX.Element => {
   const [listThesis, setlistThesis] = useState<ThesisModel[]>([]);
   const [thesis, setThesis] = useState<ThesisModel | undefined>();
+  const [listCommentOfCouncil, setListCommentOfCouncil] = useState<
+    OutlineCommentModel[]
+  >([]);
   const [listThesisSelected, setlistThesisSelected] = useState<ThesisModel[]>(
     []
   );
@@ -98,6 +119,9 @@ export const ThesisConsoleProvider = ({
     useState<ThesisSearchConditionModel>({});
 
   const [openAddCouncilModal, setOpenAddCouncilModal] =
+    useState<boolean>(false);
+
+  const [openAddCommentMinistryModal, setOpenAddCommentMinistryModal] =
     useState<boolean>(false);
 
   const [isOpenRegisterThesisModal, setIsOpenRegisterThesisModal] =
@@ -133,6 +157,17 @@ export const ThesisConsoleProvider = ({
     },
   });
 
+  const searchCommentMutaion = useMutation(
+    OutlineReviewServices.getCommentByThesisId,
+    {
+      onSuccess: (data: OutlineCommentModel[] | []) => {
+        if (data) {
+          setListCommentOfCouncil(data as OutlineCommentModel[]);
+        }
+      },
+    }
+  );
+
   const searchDetailMutation = useMutation(ThesisService.getThesisById, {
     onSuccess: (data: ThesisModel | null) => {
       if (data) {
@@ -163,11 +198,18 @@ export const ThesisConsoleProvider = ({
     searchDetailMutation.mutate(id);
   };
 
+  const searchListComment = (idThesis: string) => {
+    searchCommentMutaion.mutate(idThesis);
+  };
+
   return (
     <ThesisConsoleContext.Provider
       value={{
         listThesis,
         thesis,
+
+        listCommentOfCouncil,
+        setListCommentOfCouncil,
 
         listThesisSelected,
         setlistThesisSelected,
@@ -182,11 +224,15 @@ export const ThesisConsoleProvider = ({
 
         isEditModal,
         setIsEditModal,
+
         isOpenAddEditThesisModal,
         setIsOpenAddEditThesisModal,
 
         isOpenThesisDetailModal,
         setIsOpenThesisDetailModal,
+
+        openAddCommentMinistryModal,
+        setOpenAddCommentMinistryModal,
 
         thesisRegisterCalendar: viewThesisRegisterCalendarMutation.data,
         loadThesisRegisterCalendar,
@@ -194,6 +240,7 @@ export const ThesisConsoleProvider = ({
         search,
         searchCondition,
         setSearchCondition,
+        searchListComment,
         pagination,
         setPagination,
         handleChange,

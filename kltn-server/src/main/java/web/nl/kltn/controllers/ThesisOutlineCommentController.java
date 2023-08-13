@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import web.nl.kltn.common.RequestModel;
 import web.nl.kltn.common.ResponseModel;
+import web.nl.kltn.model.dto.ThesisOutlineCommentDTO;
 import web.nl.kltn.model.generator.ThesisOutlineComment;
 import web.nl.kltn.service.ThesisOutlineCommentService;
 
@@ -33,6 +34,13 @@ public class ThesisOutlineCommentController {
         return responseModel;
     }
 
+    @GetMapping("/search-comment-by-thesisId")
+    public ResponseModel<List<ThesisOutlineCommentDTO>> searchCommentByThesisId(@RequestParam String thesisId) {
+        ResponseModel<List<ThesisOutlineCommentDTO>> responseModel = new ResponseModel<>();
+        responseModel.setData(thesisOutlineCommentService.searchCommentByThesisId(thesisId));
+        return responseModel;
+    }
+
     @GetMapping("/search-by-userId")
     public ResponseModel<ThesisOutlineComment> searchByUserId(@RequestParam String userId) {
         ResponseModel<ThesisOutlineComment> responseModel = new ResponseModel<>();
@@ -44,16 +52,14 @@ public class ThesisOutlineCommentController {
     public ResponseModel<Boolean> updateComment(@RequestBody RequestModel<ThesisOutlineComment> thesisOutlineCommentRequest) {
         ResponseModel<Boolean> responseModel = new ResponseModel<>();
         ThesisOutlineComment thesisOutlineComment = thesisOutlineCommentRequest.getData();
-        ThesisOutlineComment result = thesisOutlineCommentService.searchByThesisIdAndCouncilId(thesisOutlineComment.getThesisId(),thesisOutlineComment.getUserId());
+        ThesisOutlineComment result = thesisOutlineCommentService.searchByThesisIdAndCouncilId(thesisOutlineComment.getThesisId(), thesisOutlineComment.getUserId());
         thesisOutlineComment.setId(result.getId());
         thesisOutlineComment.setOrder(1);
         thesisOutlineComment.setCreatedAt(result.getCreatedAt());
         thesisOutlineComment.setIsDeleted(false);
         thesisOutlineComment.setUpdatedAt(new Date().getTime());
-        System.err.println(thesisOutlineComment.getId()+" "+thesisOutlineComment.getComment()+" "+thesisOutlineComment.getUpdatedAt()+" "+thesisOutlineComment.getCreatedAt()+" "+thesisOutlineComment.getOrder()+" "+ thesisOutlineComment.getUserId()+" "+ thesisOutlineComment.getThesisId());
-
-            thesisOutlineCommentService.update(thesisOutlineComment);
-            responseModel.setData(true);
+        thesisOutlineCommentService.update(thesisOutlineComment);
+        responseModel.setData(true);
 
         return responseModel;
     }
@@ -94,7 +100,6 @@ public class ThesisOutlineCommentController {
     @DeleteMapping("/delete-by-thesis/{id}")
     public ResponseModel<Boolean> deleteByThesis(@PathVariable String id) {
         ResponseModel<Boolean> responseModel = new ResponseModel<>();
-        System.err.println(id);
         try {
             thesisOutlineCommentService.deletedByThesis(id);
             responseModel.setData(true);

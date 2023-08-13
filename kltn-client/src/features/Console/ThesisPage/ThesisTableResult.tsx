@@ -5,6 +5,7 @@ import { TableRowSelection } from "antd/es/table/interface";
 import { useContext, useEffect, useState } from "react";
 import { dateDisplay } from "~/common/util";
 import {
+  CommentIconCommon,
   DeleteIconCommon,
   EditIconCommon,
   ProtectedIconCommon,
@@ -22,6 +23,7 @@ const ThesisTableResult = (): JSX.Element => {
     setlistThesisSelected,
     isLoadingTableResults,
     setOpenAddCouncilModal,
+    setOpenAddCommentMinistryModal,
     pagination,
     handleChange,
     setIsOpenAddEditThesisModal,
@@ -158,6 +160,12 @@ const ThesisTableResult = (): JSX.Element => {
                 searchDetail(record.id!);
                 setIsEditModal(() => true);
                 setIsOpenAddEditThesisModal(true);
+              }}
+            />
+            <CommentIconCommon
+              onClick={() => {
+                handleOnChangeRowSelection([record.id]);
+                setOpenAddCommentMinistryModal(true);
               }}
             />
             <ProtectedIconCommon />

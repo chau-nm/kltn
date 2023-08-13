@@ -35,10 +35,8 @@ const EditOutlineReviewModal = (): JSX.Element => {
     form.setFieldValue("description", editorHtml);
   }, [editorHtml]);
 
-  console.log("thesisDetail", thesisDetail);
-
   useEffect(() => {
-    getSimilarData(thesisDetail!?.topic);
+    thesisDetail!?.topic && getSimilarData(thesisDetail!?.topic);
   }, [thesisDetail]);
 
   const getSimilarData = async (value: string) => {
@@ -65,13 +63,15 @@ const EditOutlineReviewModal = (): JSX.Element => {
 
   useEffect(() => {
     if (thesisDetail) {
-      getOutlineReviewByIdMutation.mutate(thesisDetail!?.id);
+      thesisDetail!?.id &&
+        getOutlineReviewByIdMutation.mutate(thesisDetail!?.id);
     }
   }, [openEditOutlineReviewModal]);
 
   useEffect(() => {
     if (thesisDetail) {
-      getOutlineReviewByIdMutation.mutate(thesisDetail!?.id);
+      thesisDetail!?.id &&
+        getOutlineReviewByIdMutation.mutate(thesisDetail!?.id);
     }
   }, []);
 
@@ -103,8 +103,8 @@ const EditOutlineReviewModal = (): JSX.Element => {
     form.setFieldValue("description", editorHtml);
     form.validateFields().then(() => {
       const outlineCommentModel: OutlineCommentModel = {
-        thesisId: thesisDetail!?.id,
-        userId: user?.userId,
+        thesisId: thesisDetail!?.id ? thesisDetail!?.id : "",
+        userId: user?.userId ? user?.userId : "",
         comment: form.getFieldValue("description"),
       };
 
@@ -205,28 +205,24 @@ const EditOutlineReviewModal = (): JSX.Element => {
             className="py-3 px-4 w-full flex items-center justify-center"
           >
             <ReactQuillPreviewCommon
-              content={thesisDetail!?.description}
+              content={thesisDetail!?.description as string}
             ></ReactQuillPreviewCommon>
           </Col>
         </Row>
         <Row>
-          {thesisDetail!?.outlineUrls &&
-            thesisDetail!?.outlineUrls.length > 0 && (
-              <div className="border-t py-3 w-full">
-                <Typography.Text className="font-bold">
-                  Danh sách file đính kèm
-                </Typography.Text>
-                {thesisDetail!?.outlineUrls?.map((url) => {
-                  return (
-                    <Space className="block">
-                      <a href={url} target="_blank">
-                        <PaperClipOutlined /> {getFileNameFromUrl(url)}
-                      </a>
-                    </Space>
-                  );
-                })}
-              </div>
-            )}
+          {thesisDetail!?.outlineUrl && (
+            <div className="border-t py-3 w-full">
+              <Typography.Text className="font-bold">
+                Danh sách file đính kèm
+              </Typography.Text>
+              <Space className="block">
+                <a href={thesisDetail!?.outlineUrl} target="_blank">
+                  <PaperClipOutlined />{" "}
+                  {getFileNameFromUrl(thesisDetail!?.outlineUrl)}
+                </a>
+              </Space>
+            </div>
+          )}
         </Row>
         <Row className="w-[800px] mt-8">
           <Col flex={1} className="w-[250px]">

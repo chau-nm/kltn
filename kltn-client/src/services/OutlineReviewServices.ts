@@ -2,11 +2,11 @@ import { ApiUrlConstants } from "~/constants/apiUrlConstants";
 import http from "~/common/http";
 
 
-export const getOutlineReviewerById = async (thesisId: string): Promise<UserModel[] | []> => {
-    const response: ResponseModel<UserModel[] | []> = await http.get<ResponseModel<UserModel[]>>(ApiUrlConstants.GET_COUNCIL_OULINE_BY_THESIS + thesisId)
+export const getCommentByThesisId = async (thesisId: string): Promise<OutlineCommentModel[] | []> => {
+    const response: ResponseModel<OutlineCommentModel[] | []> = await http.get<ResponseModel<OutlineCommentModel[]>>(`${ApiUrlConstants.GET_OULINE_COMMENT_BY_THESIS_ID}?thesisId=${thesisId}`)
         .then(response => response)
         .catch(error => Promise.reject(error));
-    const user: UserModel[] |[] = response.data as UserModel[];
+    const user: OutlineCommentModel[] |[] = response.data as OutlineCommentModel[];
     return user ? user : [];
 }
 
