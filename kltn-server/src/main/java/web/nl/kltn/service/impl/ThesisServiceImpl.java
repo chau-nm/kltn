@@ -18,6 +18,7 @@ import web.nl.kltn.mapper.generator.ThesisDocumentMapper;
 import web.nl.kltn.mapper.generator.ThesisMapper;
 import web.nl.kltn.mapper.generator.ThesisUserMapper;
 import web.nl.kltn.mapper.generator.UserMapper;
+import web.nl.kltn.model.DocumentData;
 import web.nl.kltn.model.ThesisSearchCondition;
 import web.nl.kltn.model.dto.ThesisDTO;
 import web.nl.kltn.model.dto.ThesisUserDTO;
@@ -51,6 +52,9 @@ public class ThesisServiceImpl implements ThesisService {
 
 	@Autowired
 	private ThesisDocumentCusMapper thesisDocumentCusMapper;
+
+	@Autowired
+	private LuceneServiceImpl luceneService;
 
 	@Override
 	public ThesisDTO findById(String id) {
@@ -98,6 +102,10 @@ public class ThesisServiceImpl implements ThesisService {
 		if (thesisUserMapper.insert(thesisUser) <= 0) {
 			throw new Exception("Thêm thất bại");
 		}
+		DocumentData doc = new DocumentData(thesisDTO.getId(),thesisDTO.getTopic(),thesisDTO.getDocumentUrl());
+		System.err.println(thesisDTO.getId()+" "+thesisDTO.getTopic()+" "+thesisDTO.getDocumentUrl());
+		luceneService.indexDocument(doc);
+
 		String outlineUrl = thesisDTO.getOutlineUrl();
 		if (outlineUrl != null) {
 			ThesisDocument document = new ThesisDocument();
@@ -125,7 +133,9 @@ public class ThesisServiceImpl implements ThesisService {
 			if (thesisDocumentMapper.insert(document) <= 0) {
 				throw new Exception("Thêm thất bại");
 			}
+
 		}
+
 		return thesisDTO;
 	}
 
