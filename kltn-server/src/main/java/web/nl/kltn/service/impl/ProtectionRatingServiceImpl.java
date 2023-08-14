@@ -49,9 +49,6 @@ public class ProtectionRatingServiceImpl implements ProtectionRatingService{
 		ProtectionRatingDTO protectionRatingDTO = new ProtectionRatingDTO();
 		protectionRatingDTO.load(pr);
 		protectionRatingDTO.setUserMaker(userMapper.selectByPrimaryKey(pr.getMarker()));
-		List<ProtectionRatingQuestion> protectionRatingQuestions
-			= protectionRatingQuestionCusMapper.searchByPrId(pr.getId());
-		protectionRatingDTO.setQuestions(protectionRatingQuestions);
 		List<ProtectionRatingScoreDTO> protectionRatingScoreDTOs
 			= protectionRatingScoreCusMapper.searchByPrId(pr.getId())
 				.stream()
@@ -88,25 +85,25 @@ public class ProtectionRatingServiceImpl implements ProtectionRatingService{
 			if (rowInsertedPr <= 0) {
 				return null;
 			}
-			List<ProtectionRatingQuestion> protectionRatingQuestions = protectionRatingDTO.getQuestions();
-			for (ProtectionRatingQuestion question : protectionRatingQuestions) {
-				if (protectionRatingQuestionMapper.insert(question) <= 0) {
-					throw new RuntimeException();
-				}
-			}
-			List<ProtectionRatingScore> protectionRatingScores
-				= protectionRatingDTO.getScores()
-					.stream()
-					.map(sDTO -> {
-						ProtectionRatingScore protectionRatingScore = sDTO;
-						return protectionRatingScore;
-					})
-					.toList();
-			for (ProtectionRatingScore score: protectionRatingScores) {
-				if (protectionRatingScoreMapper.insert(score) <= 0) {
-					throw new RuntimeException();
-				}
-			}
+//			List<ProtectionRatingQuestion> protectionRatingQuestions = protectionRatingDTO.getQuestions();
+//			for (ProtectionRatingQuestion question : protectionRatingQuestions) {
+//				if (protectionRatingQuestionMapper.insert(question) <= 0) {
+//					throw new RuntimeException();
+//				}
+//			}
+//			List<ProtectionRatingScore> protectionRatingScores
+//				= protectionRatingDTO.getScores()
+//					.stream()
+//					.map(sDTO -> {
+//						ProtectionRatingScore protectionRatingScore = sDTO;
+//						return protectionRatingScore;
+//					})
+//					.toList();
+//			for (ProtectionRatingScore score: protectionRatingScores) {
+//				if (protectionRatingScoreMapper.insert(score) <= 0) {
+//					throw new RuntimeException();
+//				}
+//			}
 			return protectionRatingDTO;
 		} catch (Exception e) {
 			return null;
@@ -117,26 +114,26 @@ public class ProtectionRatingServiceImpl implements ProtectionRatingService{
 	public void update(ProtectionRatingDTO protectionRatingDTO) {
 		protectionRatingMapper.updateByPrimaryKey(protectionRatingDTO);
 		protectionRatingQuestionCusMapper.deleteByPrId(protectionRatingDTO.getId());
-		List<ProtectionRatingQuestion> protectionRatingQuestions = protectionRatingDTO.getQuestions();
-		for (ProtectionRatingQuestion question : protectionRatingQuestions) {
-			if (protectionRatingQuestionMapper.insert(question) <= 0) {
-				throw new RuntimeException();
-			}
-		}
-		protectionRatingScoreCusMapper.deleteByPrId(protectionRatingDTO.getId());
-		List<ProtectionRatingScore> protectionRatingScores
-			= protectionRatingDTO.getScores()
-				.stream()
-				.map(sDTO -> {
-					ProtectionRatingScore protectionRatingScore = sDTO;
-					return protectionRatingScore;
-				})
-				.toList();
-		for (ProtectionRatingScore score: protectionRatingScores) {
-			if (protectionRatingScoreMapper.insert(score) <= 0) {
-				throw new RuntimeException();
-			}
-		}
+//		List<ProtectionRatingQuestion> protectionRatingQuestions = protectionRatingDTO.getQuestions();
+//		for (ProtectionRatingQuestion question : protectionRatingQuestions) {
+//			if (protectionRatingQuestionMapper.insert(question) <= 0) {
+//				throw new RuntimeException();
+//			}
+//		}
+//		protectionRatingScoreCusMapper.deleteByPrId(protectionRatingDTO.getId());
+//		List<ProtectionRatingScore> protectionRatingScores
+//			= protectionRatingDTO.getScores()
+//				.stream()
+//				.map(sDTO -> {
+//					ProtectionRatingScore protectionRatingScore = sDTO;
+//					return protectionRatingScore;
+//				})
+//				.toList();
+//		for (ProtectionRatingScore score: protectionRatingScores) {
+//			if (protectionRatingScoreMapper.insert(score) <= 0) {
+//				throw new RuntimeException();
+//			}
+//		}
 	}
 
 	@Override

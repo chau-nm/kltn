@@ -101,16 +101,17 @@ const AddEditThesisModal = (): JSX.Element => {
       });
       setDesciption(thesis?.description);
       setDocumentUrl(thesis?.documentUrl);
-      setFile({
-        uid: v4(),
-        name: thesis!?.documentUrl!?.substring(
-          thesis!?.documentUrl!.lastIndexOf("/") + 1,
-          thesis!?.documentUrl!.indexOf("?")
-        ),
-        status: "done",
-        url: thesis?.documentUrl,
-        response: thesis?.documentUrl,
-      });
+      thesis?.documentUrl &&
+        setFile({
+          uid: v4(),
+          name: thesis!?.documentUrl!.substring(
+            thesis!?.documentUrl!.lastIndexOf("/") + 1,
+            thesis!?.documentUrl!.indexOf("?")
+          ),
+          status: "done",
+          url: thesis?.documentUrl,
+          response: thesis?.documentUrl,
+        });
     }
   }, [thesis]);
 

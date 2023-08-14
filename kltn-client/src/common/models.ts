@@ -44,7 +44,7 @@ interface UserModel {
     username: string;
     password: string;
     gender: boolean;
-    email:string;
+    email: string;
     fname: string;
     birthday?: Date;
     faculty?: string;
@@ -80,7 +80,7 @@ interface NotificationSearchConditionModel {
 }
 
 /** THESIS */
-interface ThesisModel{
+interface ThesisModel {
     id?: string;
     topic?: string;
     description?: string;
@@ -97,17 +97,17 @@ interface ThesisModel{
     createdAt?: number;
     updatedAt?: number;
 }
-interface ThesisSearchConditionModel{
+interface ThesisSearchConditionModel {
     topic?: string;
-	year?:number;
-	semester?:number;
-	status?:number;
-	councilId?:string;
+    year?: number;
+    semester?: number;
+    status?: number;
+    councilId?: string;
 }
 
-interface OutlineReviewSearchConditionModel{}
+interface OutlineReviewSearchConditionModel { }
 
-interface OutlineCommentModel{
+interface OutlineCommentModel {
     thesisId: string;
     userId: string;
     comment?: string;
@@ -141,6 +141,46 @@ interface ThesisUserModel {
     updatedAt?: number;
 }
 
+/** CRITICAL ASSESSMENT */
+interface CriticalAssessmentModel {
+    id: string;
+    thesisId: string;
+    marker: string;
+    pageNumber: number;
+    chapterNumber: number;
+    tableNumber: number;
+    chartNumber: number;
+    drawingBoardNumber: number;
+    imageNumber: number;
+    documentNumber: number;
+    calculationSoftwareNumber: number;
+    layout: string;
+    writing: string;
+    technicalTerms: string;
+    advantage: string;
+    defect: string;
+    conclude: string;
+    suggestion: string;
+    isDeleted: boolean;
+    createdAt: number;
+    updatedAt: number;
+}
+
+interface CriticalAssessmentScoreModel {
+
+}
+
+/** THESIS REPORT CALENDAR */
+interface ThesisReportCalendarModel {
+    id?: string;
+    thesisId?: string;
+    timestamp?: number;
+    type?: number;
+    isDeleted?: boolean;
+    createdAt?: number;
+    updatedAt?: number;
+}
+
 /** Doc2Vec */
 interface Doc2VecModel {
     id?: number;
@@ -150,8 +190,8 @@ interface Doc2VecModel {
 
 /** Email Template */
 
-interface TemplateResetModel{
+interface TemplateResetModel {
     to_email: string;
-    to_name:string;
+    to_name: string;
     newPassword: string;
 }

@@ -4,171 +4,194 @@
 <mapper namespace="web.nl.kltn.mapper.ThesisCusMapper">
 
 
-    <resultMap type="web.nl.kltn.model.dto.ThesisDTO" id="ThesisDTO">
-        <id column="id" property="id" jdbcType="VARCHAR"/>
-        <result column="topic" property="topic" jdbcType="VARCHAR"/>
-        <result column="description" property="description" jdbcType="VARCHAR"/>
-        <result column="year" property="year" jdbcType="INTEGER"/>
-        <result column="semester" property="semester" jdbcType="INTEGER"/>
-        <result column="status" property="status" jdbcType="INTEGER"/>
-        <result column="is_deleted" property="isDeleted" jdbcType="BIT"/>
-        <result column="created_at" property="createdAt" jdbcType="BIGINT"/>
-        <result column="updated_at" property="updatedAt" jdbcType="BIGINT"/>
-    </resultMap>
+	<resultMap type="web.nl.kltn.model.dto.ThesisDTO"
+		id="ThesisDTO">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="topic" property="topic" jdbcType="VARCHAR" />
+		<result column="description" property="description"
+			jdbcType="VARCHAR" />
+		<result column="year" property="year" jdbcType="INTEGER" />
+		<result column="semester" property="semester"
+			jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="is_deleted" property="isDeleted" jdbcType="BIT" />
+		<result column="created_at" property="createdAt"
+			jdbcType="BIGINT" />
+		<result column="updated_at" property="updatedAt"
+			jdbcType="BIGINT" />
+	</resultMap>
 
-    <resultMap type="web.nl.kltn.model.generator.Thesis" id="Thesis">
-        <id column="id" property="id" jdbcType="VARCHAR"/>
-        <result column="topic" property="topic" jdbcType="VARCHAR"/>
-        <result column="description" property="description" jdbcType="VARCHAR"/>
-        <result column="year" property="year" jdbcType="INTEGER"/>
-        <result column="semester" property="semester" jdbcType="INTEGER"/>
-        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
-        <result column="is_deleted" property="isDeleted" jdbcType="BIT"/>
-        <result column="created_at" property="createdAt" jdbcType="BIGINT"/>
-        <result column="update_at" property="updatedAt" jdbcType="BIGINT"/>
+	<resultMap type="web.nl.kltn.model.generator.Thesis"
+		id="Thesis">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="topic" property="topic" jdbcType="VARCHAR" />
+		<result column="description" property="description"
+			jdbcType="VARCHAR" />
+		<result column="year" property="year" jdbcType="INTEGER" />
+		<result column="semester" property="semester"
+			jdbcType="INTEGER" />
+		<result column="created_by" property="createdBy"
+			jdbcType="VARCHAR" />
+		<result column="is_deleted" property="isDeleted" jdbcType="BIT" />
+		<result column="created_at" property="createdAt"
+			jdbcType="BIGINT" />
+		<result column="update_at" property="updatedAt"
+			jdbcType="BIGINT" />
 
-    </resultMap>
+	</resultMap>
 
-    <select id="search"
-            resultMap="Thesis">
-        <bind name="offset" value="(page - 1) * pageSize"/>
-        SELECT
-        id,
-        topic,
-        description,
-        year,
-        semester,
-        status,
-        is_deleted,
-        created_at,
-        updated_at
-        FROM thesis
-        <where>
-            <if
-                    test="searchCondition != null and searchCondition.topic != null">
-                AND topic LIKE CONCAT('%', #{searchCondition.topic}, '%')
-            </if>
-            <if
-                    test="searchCondition != null and searchCondition.year != 0">
-                AND year = #{searchCondition.year}
-            </if>
-            <if
-                    test="searchCondition != null and searchCondition.semester != 0">
-                AND semester = #{searchCondition.semester}
-            </if>
-            <if
-                    test="searchCondition != null and searchCondition.status != 0">
-                AND status = #{searchCondition.status}
-            </if>
-            AND is_deleted = 0
-        </where>
-        LIMIT #{pageSize} OFFSET #{offset}
-    </select>
-
-
-    <select id="findByCouncilId"
-            resultMap="ThesisDTO">
-        <bind name="offset" value="(page - 1) * pageSize"/>
-        SELECT
-        t.id,
-        t.topic,
-        t.description,
-        t.year,
-        t.semester,
-        t.status,
-        t.is_deleted,
-        t.created_at,
-        t.updated_at
-        FROM
-        thesis t
-        LEFT JOIN
-        thesis_outline_comment toc ON t.id = toc.thesis_id
-        <where>
-            <if test="searchCondition != null and searchCondition.councilId != null">
-                AND toc.user_id = #{searchCondition.councilId}
-            </if>
-            AND toc.is_deleted = 0
-        </where>
-        LIMIT #{pageSize} OFFSET #{offset}
-    </select>
-
-    <select id="getTotal"
-            resultType="int">
-        SELECT COUNT(id)
-        FROM thesis
-        <where>
-            <if
-                    test="topic != null">
-                AND topic LIKE CONCAT('%', #{topic}, '%')
-            </if>
-            <if
-                    test="year != 0">
-                AND year = #{year}
-            </if>
-            <if
-                    test="semester != 0">
-                AND semester = #{semester}
-            </if>
-            <if
-                    test="status != 0">
-                AND status = #{status}
-            </if>
-            AND is_deleted = 0
-        </where>
-    </select>
-
-    <select id="getTotalByCouncilId"
-            resultType="int">
-        SELECT COUNT(t.id)
-        FROM
-        thesis t
-        LEFT JOIN
-        thesis_outline_comment toc ON t.id = toc.thesis_id
-        <where>
-            <if
-                    test="topic != null">
-                AND t.topic LIKE CONCAT('%', #{topic}, '%')
-            </if>
-            <if
-                    test="year != 0">
-                AND t.year = #{year}
-            </if>
-            <if
-                    test="semester != 0">
-                AND t.semester = #{semester}
-            </if>
-            <if
-                    test="status != 0">
-                AND t.status = #{status}
-            </if>
-            <if
-                    test="councilId != null">
-                AND toc.user_id = #{councilId}
-            </if>
-            AND t.is_deleted = 0
-        </where>
-    </select>
+	<select id="search" resultMap="Thesis">
+		<bind name="offset" value="(page - 1) * pageSize" />
+		SELECT
+		id,
+		topic,
+		description,
+		year,
+		semester,
+		status,
+		is_deleted,
+		created_at,
+		updated_at
+		FROM thesis
+		<where>
+			<if
+				test="searchCondition != null and searchCondition.topic != null">
+				AND topic LIKE CONCAT('%', #{searchCondition.topic}, '%')
+			</if>
+			<if test="searchCondition != null and searchCondition.year != 0">
+				AND year = #{searchCondition.year}
+			</if>
+			<if
+				test="searchCondition != null and searchCondition.semester != 0">
+				AND semester = #{searchCondition.semester}
+			</if>
+			<if test="searchCondition != null and searchCondition.status != 0">
+				AND status = #{searchCondition.status}
+			</if>
+			AND is_deleted = 0
+		</where>
+		LIMIT #{pageSize} OFFSET #{offset}
+	</select>
 
 
-    <select id="findByUser" parameterType="java.lang.String" resultMap="Thesis">
-        SELECT
-        t.id,
-        t.topic,
-        t.description,
-        t.year,
-        t.semester,
-        t.status,
-        t.created_by,
-        t.is_deleted,
-        t.created_at,
-        t.updated_at
-        FROM
-        thesis t
-        LEFT JOIN
-        thesis_user tu ON t.id = tu.thesis_id
-        <where>
-            tu.user_id = #{userId}
-            AND t.status != 0
-        </where>
-    </select>
+	<select id="findByCouncilId" resultMap="ThesisDTO">
+		<bind name="offset" value="(page - 1) * pageSize" />
+		SELECT
+		t.id,
+		t.topic,
+		t.description,
+		t.year,
+		t.semester,
+		t.status,
+		t.is_deleted,
+		t.created_at,
+		t.updated_at
+		FROM
+		thesis t
+		LEFT JOIN
+		thesis_outline_comment toc ON t.id = toc.thesis_id
+		<where>
+			<if
+				test="searchCondition != null and searchCondition.councilId != null">
+				AND toc.user_id = #{searchCondition.councilId}
+			</if>
+			AND toc.is_deleted = 0
+		</where>
+		LIMIT #{pageSize} OFFSET #{offset}
+	</select>
+
+	<select id="getTotal" resultType="int">
+		SELECT COUNT(id)
+		FROM thesis
+		<where>
+			<if test="topic != null">
+				AND topic LIKE CONCAT('%', #{topic}, '%')
+			</if>
+			<if test="year != 0">
+				AND year = #{year}
+			</if>
+			<if test="semester != 0">
+				AND semester = #{semester}
+			</if>
+			<if test="status != 0">
+				AND status = #{status}
+			</if>
+			AND is_deleted = 0
+		</where>
+	</select>
+
+	<select id="getTotalByCouncilId" resultType="int">
+		SELECT COUNT(t.id)
+		FROM
+		thesis t
+		LEFT JOIN
+		thesis_outline_comment toc ON
+		t.id = toc.thesis_id
+		<where>
+			<if test="topic != null">
+				AND t.topic LIKE CONCAT('%', #{topic}, '%')
+			</if>
+			<if test="year != 0">
+				AND t.year = #{year}
+			</if>
+			<if test="semester != 0">
+				AND t.semester = #{semester}
+			</if>
+			<if test="status != 0">
+				AND t.status = #{status}
+			</if>
+			<if test="councilId != null">
+				AND toc.user_id = #{councilId}
+			</if>
+			AND t.is_deleted = 0
+		</where>
+	</select>
+
+
+	<select id="findByUser" parameterType="java.lang.String"
+		resultMap="Thesis">
+		SELECT
+		t.id,
+		t.topic,
+		t.description,
+		t.year,
+		t.semester,
+		t.status,
+		t.created_by,
+		t.is_deleted,
+		t.created_at,
+		t.updated_at
+		FROM
+		thesis t
+		LEFT
+		JOIN
+		thesis_user tu ON t.id = tu.thesis_id
+		<where>
+			tu.user_id = #{userId}
+			AND t.status != 0
+		</where>
+	</select>
+
+	<select id="searchThesisCAByUserId"
+		parameterType="java.lang.String" resultMap="Thesis">
+		SELECT
+		t.id,
+		t.topic,
+		t.description,
+		t.year,
+		t.semester,
+		t.status,
+		t.created_by,
+		t.is_deleted,
+		t.created_at,
+		t.updated_at
+		FROM
+		thesis t
+		LEFT
+		JOIN
+		critical_assessment ca ON ca.thesis_id = t.id
+		<where>
+			ca.marker = #{userId}
+		</where>
+	</select>
 </mapper>

@@ -25,7 +25,6 @@ import web.nl.kltn.service.ThesisUserService;
 @RestController
 @RequestMapping("/api/thesis")
 public class ThesisController {
-
     @Autowired
     private ThesisService thesisService;
 
@@ -120,4 +119,11 @@ public class ThesisController {
         responseModel.setData(searchResponse);
         return responseModel;
     }
+
+	@GetMapping("/search-thesis-ca-by-user-id")
+	public ResponseModel<List<ThesisDTO>> searchThesisCriticalAssessmentByUserId(@RequestParam String userId) {
+		ResponseModel<List<ThesisDTO>> responseModel = new ResponseModel<>();
+		responseModel.setData(thesisService.searchThesisCAByUserId(userId));
+		return responseModel;
+	}
 }

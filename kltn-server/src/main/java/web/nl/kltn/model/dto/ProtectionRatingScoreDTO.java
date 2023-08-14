@@ -16,12 +16,5 @@ public class ProtectionRatingScoreDTO extends ProtectionRatingScore{
 	}
 	
 	public void load(ProtectionRatingScore protectionRatingScore) {
-		this.setId(protectionRatingScore.getId());
-		this.setPrId(protectionRatingScore.getPrId());
-		this.setStudentId(protectionRatingScore.getStudentId());
-		this.setScore(protectionRatingScore.getScore());
-		this.setIsDeleted(protectionRatingScore.getIsDeleted());
-		this.setCreatedAt(protectionRatingScore.getCreatedAt());
-		this.setUpdatedAt(protectionRatingScore.getUpdatedAt());
 	}
 }

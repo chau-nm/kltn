@@ -5,7 +5,9 @@ import {
   UserOutlined,
   FileProtectOutlined,
   CommentOutlined,
+  FileSyncOutlined,
 } from "@ant-design/icons";
+import { Button } from "antd";
 import { MouseEventHandler } from "react";
 
 type IconCommonType = {
@@ -17,7 +19,7 @@ const iconTextClass = "text-xl mx-2 cursor-pointer duration-300";
 export const EditIconCommon = ({ onClick }: IconCommonType) => {
   return (
     <FormOutlined
-      className={`text-yellow-700 hover:text-yellow-500 ${iconTextClass}`}
+      className={`text-yellow-700 mt-2 hover:text-yellow-500 ${iconTextClass}`}
       onClick={onClick}
     />
   );
@@ -26,7 +28,7 @@ export const EditIconCommon = ({ onClick }: IconCommonType) => {
 export const DeleteIconCommon = ({ onClick }: IconCommonType) => {
   return (
     <DeleteOutlined
-      className={`text-red-700 hover:text-red-500 ${iconTextClass}`}
+      className={`text-red-700 mt-2 hover:text-red-500 ${iconTextClass}`}
       onClick={onClick}
     />
   );
@@ -35,7 +37,7 @@ export const DeleteIconCommon = ({ onClick }: IconCommonType) => {
 export const SeeIconCommon = ({ onClick }: IconCommonType) => {
   return (
     <EyeOutlined
-      className={`text-blue-700 hover:text-red-500 ${iconTextClass}`}
+      className={`text-blue-700 mt-2 hover:text-red-500 ${iconTextClass}`}
       onClick={onClick}
     />
   );
@@ -44,7 +46,16 @@ export const SeeIconCommon = ({ onClick }: IconCommonType) => {
 export const UserIconCommon = ({ onClick }: IconCommonType) => {
   return (
     <UserOutlined
-      className={`text-blue-700 hover:text-red-500 ${iconTextClass}`}
+      className={`text-blue-700 mt-2 hover:text-red-500 ${iconTextClass}`}
+      onClick={onClick}
+    />
+  );
+};
+
+export const CriticalAssessmentIconCommon = ({ onClick }: IconCommonType) => {
+  return (
+    <FileSyncOutlined
+      className={`text-blue-700 mt-2 hover:text-red-500 ${iconTextClass}`}
       onClick={onClick}
     />
   );
@@ -53,7 +64,7 @@ export const UserIconCommon = ({ onClick }: IconCommonType) => {
 export const ProtectedIconCommon = ({ onClick }: IconCommonType) => {
   return (
     <FileProtectOutlined
-      className={`text-blue-700 hover:text-red-500 ${iconTextClass}`}
+      className={`text-blue-700 mt-2 hover:text-red-500 ${iconTextClass}`}
       onClick={onClick}
     />
   );

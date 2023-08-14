@@ -3,17 +3,19 @@ package web.nl.kltn.model.dto;
 import java.util.List;
 
 import web.nl.kltn.model.generator.CriticalAssessment;
+import web.nl.kltn.model.generator.CriticalAssessmentQuestion;
 import web.nl.kltn.model.generator.User;
 
 public class CriticalAssessmentDTO extends CriticalAssessment {
 
 	private List<CriticalAssessmentScoreDTO> critialAssessmentScores;
+	private List<CriticalAssessmentQuestion> criticalAssessmentQuestions;
 	private User userMaker;
-	
+
 	public User getUserMaker() {
 		return userMaker;
 	}
-	
+
 	public void setUserMaker(User userMaker) {
 		this.userMaker = userMaker;
 	}
@@ -25,18 +27,15 @@ public class CriticalAssessmentDTO extends CriticalAssessment {
 	public void setCritialAssessmentScores(List<CriticalAssessmentScoreDTO> critialAssessmentScores) {
 		this.critialAssessmentScores = critialAssessmentScores;
 	}
-	
+
+	public List<CriticalAssessmentQuestion> getCriticalAssessmentQuestions() {
+		return criticalAssessmentQuestions;
+	}
+
+	public void setCriticalAssessmentQuestions(List<CriticalAssessmentQuestion> criticalAssessmentQuestions) {
+		this.criticalAssessmentQuestions = criticalAssessmentQuestions;
+	}
+
 	public void load(CriticalAssessment criticalAssessment) {
-		this.setId(criticalAssessment.getId());
-		this.setThesisId(criticalAssessment.getThesisId());
-		this.setContent(criticalAssessment.getContent());
-		this.setAnalysisResults(criticalAssessment.getAnalysisResults());
-		this.setFeedbackLecturerQuestion(criticalAssessment.getFeedbackLecturerQuestion());
-		this.setCouncilQuestion(criticalAssessment.getCouncilQuestion());
-		this.setBehavior(criticalAssessment.getBehavior());
-		this.setMarker(criticalAssessment.getMarker());
-		this.setIsDeleted(criticalAssessment.getIsDeleted());
-		this.setCreatedAt(criticalAssessment.getCreatedAt());
-		this.setUpdatedAt(criticalAssessment.getUpdatedAt());
 	}
 }

@@ -238,5 +238,19 @@ public class ThesisServiceImpl implements ThesisService {
         return thesisMapper.updateByPrimaryKey(thesis) > 0;
     }
 
+	@Override
+	public List<ThesisDTO> searchThesisCAByUserId(String userId) {
+		List<Thesis> thesisList = thesisCusMapper.searchThesisCAByUserId(userId);
+		List<ThesisDTO> thesisDTOs = thesisList.stream().map(thesis -> {
+			ThesisDTO thesisDTO = new ThesisDTO();
+			thesisDTO.load(thesis, thesisUserCusMapper, userMapper, thesisDocumentCusMapper);
+			return thesisDTO;
+		}).toList();
+		return thesisDTOs;
+	}
 
+	@Override
+	public int getTotalByCouncilId(ThesisSearchCondition searchCondition) {
+		return thesisCusMapper.getTotalByCouncilId(searchCondition);
+	}
 }

@@ -23,6 +23,14 @@ interface ThesisConsoleContextInterface {
   isOpenRegisterThesisModal: boolean;
   setIsOpenRegisterThesisModal: React.Dispatch<SetStateAction<boolean>>;
 
+  isOpenCriticalAssessmentModal: boolean;
+  setIsOpenCriticalAssessmentModal: React.Dispatch<SetStateAction<boolean>>;
+
+  isOpenCriticalAssessmentDetailModal: boolean;
+  setIsOpenCriticalAssessmentDetailModal: React.Dispatch<
+    SetStateAction<boolean>
+  >;
+
   isEditModal: boolean;
   setIsEditModal: React.Dispatch<SetStateAction<boolean>>;
 
@@ -69,6 +77,12 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
 
   isOpenRegisterThesisModal: false,
   setIsOpenRegisterThesisModal: () => null,
+
+  isOpenCriticalAssessmentDetailModal: false,
+  setIsOpenCriticalAssessmentDetailModal: () => null,
+
+  isOpenCriticalAssessmentModal: false,
+  setIsOpenCriticalAssessmentModal: () => null,
 
   isEditModal: false,
   setIsEditModal: () => null,
@@ -129,6 +143,14 @@ export const ThesisConsoleProvider = ({
 
   const [isOpenAddEditThesisModal, setIsOpenAddEditThesisModal] =
     useState<boolean>(false);
+
+  const [isOpenCriticalAssessmentModal, setIsOpenCriticalAssessmentModal] =
+    useState<boolean>(false);
+
+  const [
+    isOpenCriticalAssessmentDetailModal,
+    setIsOpenCriticalAssessmentDetailModal,
+  ] = useState<boolean>(false);
 
   const [isOpenThesisDetailModal, setIsOpenThesisDetailModal] =
     useState<boolean>(false);
@@ -221,6 +243,12 @@ export const ThesisConsoleProvider = ({
 
         isOpenRegisterThesisModal,
         setIsOpenRegisterThesisModal,
+
+        isOpenCriticalAssessmentModal,
+        setIsOpenCriticalAssessmentModal,
+
+        isOpenCriticalAssessmentDetailModal,
+        setIsOpenCriticalAssessmentDetailModal,
 
         isEditModal,
         setIsEditModal,

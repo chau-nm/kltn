@@ -55,3 +55,9 @@ export const searchByUser = async (userId: string) : Promise<ThesisModel[]> => {
         = await http.get(`${ApiUrlConstants.SEARCH_THESIS_BY_USER}?userId=${userId}`);
     return thesisLiseResponse.data ?? [];
 }
+
+export const searchThesisCAByUserId = async (userId: string) : Promise<ThesisModel[]> => {
+    const thesisLiseResponse: ResponseModel<ThesisModel[]>
+        = await http.get(`${ApiUrlConstants.SEARCH_THESIS_CA_BY_USER_ID}?userId=${userId}`);
+    return thesisLiseResponse.data ?? [];
+}

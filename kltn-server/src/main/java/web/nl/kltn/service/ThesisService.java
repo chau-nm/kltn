@@ -26,4 +26,5 @@ public interface ThesisService {
 	List<ThesisDTO> findByCouncil(int page, int pageSize, ThesisSearchCondition thesisSearchCondition);
 	int getTotalByCouncilId(ThesisSearchCondition searchCondition);
 	boolean updateStatus(String id, int status);
+	List<ThesisDTO> searchThesisCAByUserId(String userId);
 }
