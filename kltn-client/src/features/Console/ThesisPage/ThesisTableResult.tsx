@@ -168,8 +168,9 @@ const ThesisTableResult = (): JSX.Element => {
             />
             <CommentIconCommon
               onClick={() => {
-                handleOnChangeRowSelection([record.id]);
+                handleOnChangeRowSelection([record.id as React.Key]);
                 setOpenAddCommentMinistryModal(true);
+              }}/>
             <CriticalAssessmentIconCommon
               onClick={() => {
                 searchDetail(record.id!);

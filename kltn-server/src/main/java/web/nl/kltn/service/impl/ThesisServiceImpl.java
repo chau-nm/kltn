@@ -227,11 +227,6 @@ public class ThesisServiceImpl implements ThesisService {
     }
 
     @Override
-    public int getTotalByCouncilId(ThesisSearchCondition searchCondition) {
-        return thesisCusMapper.getTotalByCouncilId(searchCondition);
-    }
-
-    @Override
     public boolean updateStatus(String id, int status) {
         Thesis thesis = thesisMapper.selectByPrimaryKey(id);
         thesis.setStatus(status);
