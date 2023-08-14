@@ -35,6 +35,7 @@ export class ApiUrlConstants {
     public static readonly SEARCH_DETAIL_THESIS = "/thesis/";
     public static readonly SEARCH_BY_COUNCIL_ID = "/thesis/find-by-council/";
     public static readonly UPDATE_THESIS = "/thesis/update";
+    public static readonly UPDATE_STATUS_THESIS = "/thesis/update-status/";
     public static readonly SEARCH_THESIS_BY_USER = "/thesis/find-by-user";
     public static readonly SEARCH_THESIS_CA_BY_USER_ID = "/thesis/search-thesis-ca-by-user-id";
 
@@ -45,6 +46,7 @@ export class ApiUrlConstants {
     public static readonly UPDATE_OUTLINE_COMMENT = "thesis-outline-comment/update-comment";
     public static readonly INSERT_OUTLINE_COMMENT = "/thesis-outline-comment/insert";
     public static readonly DELETE_OUTLINE_COMMENT_BY_THESIS = "/thesis-outline-comment/delete-by-thesis/";
+    public static readonly GET_OULINE_COMMENT_BY_THESIS_ID = "/thesis-outline-comment/search-comment-by-thesisId";
 
     /** THESIS OUTLINE REVIEW */
     public static readonly SEARCH_OURLINE_REVIEW = "/thesis-outline-review/search";

@@ -10,9 +10,7 @@ import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 import * as ThesisRegisterCalendarService from "~/services/thesisRegisterCalendarService";
 
 const OpenThesisRegisterModal = ({}): JSX.Element => {
-  useEffect(() => {
-    console.log(open);
-  }, [open]);
+  useEffect(() => {}, [open]);
 
   const [form] = useForm();
   const { isOpenRegisterThesisModal, setIsOpenRegisterThesisModal } =

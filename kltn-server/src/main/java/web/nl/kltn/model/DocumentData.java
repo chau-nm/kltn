@@ -1,12 +1,12 @@
 package web.nl.kltn.model;
 
 public class DocumentData {
-    private int id;
+    private String id;
     private String title;
     private String url;
 
 
-    public DocumentData(int id, String title, String url) {
+    public DocumentData(String id, String title, String url) {
         this.id = id;
         this.title = title;
         this.url = url;
@@ -14,11 +14,13 @@ public class DocumentData {
     }
 
     // Getters and setters for the fields
-    public int getId() {
+
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

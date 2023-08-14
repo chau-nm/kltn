@@ -63,7 +63,7 @@ public class Doc2VecServiceImpl implements Doc2vecService {
 
         for (ScoreDoc scoreDoc : scoreDocs) {
             Document luceneDoc = indexSearcher.doc(scoreDoc.doc);
-            int id = Integer.parseInt(luceneDoc.get("id"));
+            String id = luceneDoc.get("id");
             String title = luceneDoc.get("title");
             String url = luceneDoc.get("url");
 

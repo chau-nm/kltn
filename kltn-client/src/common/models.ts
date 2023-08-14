@@ -115,6 +115,7 @@ interface OutlineCommentModel {
     isDeleted?: boolean;
     createdAt?: number;
     updatedAt?: number;
+    user?:UserModel;
 }
 
 

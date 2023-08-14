@@ -1,8 +1,11 @@
-import { PaperClipOutlined } from "@ant-design/icons";
-import { Col, Row, Space, Typography } from "antd";
+import { PaperClipOutlined, UserOutlined } from "@ant-design/icons";
+import { Avatar, Col, Row, Space, Typography } from "antd";
+import { useEffect, useState } from "react";
+import { useMutation } from "react-query";
 import { getFileNameFromUrl } from "~/common/util";
 import ButtonCommon from "~/components/common/ButtonCommon";
 import ReactQuillPreviewCommon from "~/components/common/ReactQuillPreviewCommon";
+import * as OutlineReviewServices from "~/services/OutlineReviewServices";
 
 type ThesisDetailProps = {
   thesis: ThesisModel;
@@ -13,6 +16,27 @@ const ThesisDetail = ({ thesis }: ThesisDetailProps): JSX.Element => {
     span: 3,
     offset: 1,
   };
+  const [listCommentOfCouncil, setListCommentOfCouncil] = useState<
+    OutlineCommentModel[]
+  >([]);
+  const searchCommentMutaion = useMutation(
+    OutlineReviewServices.getCommentByThesisId,
+    {
+      onSuccess: (data: OutlineCommentModel[] | []) => {
+        if (data) {
+          setListCommentOfCouncil(data as OutlineCommentModel[]);
+        }
+      },
+    }
+  );
+
+  const searchListComment = (idThesis: string) => {
+    searchCommentMutaion.mutate(idThesis);
+  };
+
+  useEffect(() => {
+    thesis!?.id && searchListComment(thesis!?.id);
+  }, [thesis]);
 
   const thesisStudents = thesis.students;
   const thesisTeacher = thesis.teacher;
@@ -77,14 +101,36 @@ const ThesisDetail = ({ thesis }: ThesisDetailProps): JSX.Element => {
         <Typography.Text className="font-bold">
           Đánh giá đề cương
         </Typography.Text>
-        <div>
-          <div className="ml-[41.125px]">
-            <Typography.Text className="font-bold">Dũ</Typography.Text>
-          </div>
-          <div className="ml-[41.125px]">
-            <Typography.Text>Tốt</Typography.Text>
-          </div>
-        </div>
+        {listCommentOfCouncil.map((comment, index) => {
+          return (
+            !comment!?.user!?.roles.includes("MINISTRY") && (
+              <Row
+                className="p-3 border rounded-lg max-w-[1000px] mb-3"
+                key={index}
+              >
+                <>
+                  <Col span={2} className="comment-avatar">
+                    <Avatar
+                      icon={<UserOutlined />}
+                      size={50}
+                      className="flex items-center justify-center"
+                    />
+                  </Col>
+                  <Col span={18} className="comment-content">
+                    <Typography.Text>
+                      <strong className="commenter-name">
+                        {comment!?.user!?.fname}
+                      </strong>
+                      <ReactQuillPreviewCommon
+                        content={comment!?.comment as string}
+                      ></ReactQuillPreviewCommon>
+                    </Typography.Text>
+                  </Col>
+                </>
+              </Row>
+            )
+          );
+        })}
       </div>
       <div>
         <Typography.Text className="font-bold">

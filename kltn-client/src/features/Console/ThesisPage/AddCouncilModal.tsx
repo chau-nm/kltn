@@ -46,18 +46,14 @@ const AddCouncilModal = (): JSX.Element => {
   }, [teachers, isLoadingTeachers, listThesis]);
 
   const handleSetDataTeacherSelect = (data: UserModel[]) => {
-    // console.log(the);
     let idAllTeacherHaveThesis: string[] = [];
-    console.log("listThesis", listThesis);
     listThesis.map((thesis) =>
       idAllTeacherHaveThesis.push(thesis.teacher!?.user!?.userId)
     );
     if (!data) return;
-    console.log("idAllTeacherHaveThesis", idAllTeacherHaveThesis);
     let teachersHaveNoThesis = data.filter(
       (teacher) => idAllTeacherHaveThesis.indexOf(teacher.userId) < 0
     );
-    console.log("teachersHaveNoThesis", teachersHaveNoThesis);
     setTeacherSelectOptions(teachersHaveNoThesis);
   };
 

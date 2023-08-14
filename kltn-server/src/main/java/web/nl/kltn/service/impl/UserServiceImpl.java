@@ -97,7 +97,6 @@ public class UserServiceImpl implements UserService {
         List<String> idUsers = thesisOutlineCommentCusMapper.findCouncilByOutlineComment(thesisId);
         List<UserDTO> userDTOs = new ArrayList<>();
         UserDTO userDTO;
-        System.err.println(idUsers.get(0));
         for (int i = 0; i < idUsers.size(); i++) {
             User user =userMapper.selectByPrimaryKey(idUsers.get(i));
             userDTO = new UserDTO();
@@ -132,7 +131,6 @@ public class UserServiceImpl implements UserService {
         user.setFaculty(newUser.getFaculty());
         user.setStudentClass(newUser.getStudentClass());
         user.setUpdatedAt(new Date().getTime());
-        System.err.println(newUser.getRoles().toString());
         roleUserCusMapper.deleteByIdUser(newUser.getUserId());
         RoleUser roleUser;
         for (int i = 0; i < newUser.getRoles().size(); i++) {

@@ -191,7 +191,9 @@ const RegisterThesisForm = (): JSX.Element => {
           <Select>
             {studentSelectOptions.map((std) => {
               return (
-                <Select.Option key={std.userId}>{std.fname}</Select.Option>
+                <Select.Option
+                  key={std.userId}
+                >{`${std.fname} - ${std.username}`}</Select.Option>
               );
             })}
           </Select>

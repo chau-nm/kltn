@@ -23,7 +23,6 @@ import { dateDisplay } from "~/common/util";
 import dayjs from "dayjs";
 import { useMutation } from "react-query";
 import { toast } from "react-toastify";
-import { ApiUrlConstants } from "~/constants/apiUrlConstants";
 import AuthConstants from "~/constants/authConstants";
 
 const { Option } = Select;
@@ -37,7 +36,6 @@ const EditUserModal = (): JSX.Element => {
 
   const [user, setUser] = useState<UserModel>({} as UserModel);
   const [editMode, setEditMode] = useState<boolean>(false);
-
   const getUserByIdMutation = useMutation(UserService.getUSerById, {
     onSuccess: (data) => {
       const userRes: UserModel | null = data as UserModel;

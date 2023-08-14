@@ -4,6 +4,7 @@ import {
   EyeOutlined,
   UserOutlined,
   FileProtectOutlined,
+  CommentOutlined,
   FileSyncOutlined,
 } from "@ant-design/icons";
 import { Button } from "antd";
@@ -64,6 +65,15 @@ export const ProtectedIconCommon = ({ onClick }: IconCommonType) => {
   return (
     <FileProtectOutlined
       className={`text-blue-700 mt-2 hover:text-red-500 ${iconTextClass}`}
+      onClick={onClick}
+    />
+  );
+};
+
+export const CommentIconCommon = ({ onClick }: IconCommonType) => {
+  return (
+    <CommentOutlined
+      className={`text-blue-700 hover:text-red-500 ${iconTextClass}`}
       onClick={onClick}
     />
   );
