@@ -3,6 +3,7 @@ package web.nl.kltn.service;
 import java.util.List;
 
 import web.nl.kltn.model.dto.CriticalAssessmentDTO;
+import web.nl.kltn.model.generator.CriticalAssessment;
 
 public interface CriticalAssessmentService {
 
@@ -15,5 +16,7 @@ public interface CriticalAssessmentService {
 	CriticalAssessmentDTO searchByMarker(String userId);
 
 	List<CriticalAssessmentDTO> searchByThesisId(String thesisId);
+
+	CriticalAssessment insertUser(String thesisId, String userId) throws Exception;
 
 }

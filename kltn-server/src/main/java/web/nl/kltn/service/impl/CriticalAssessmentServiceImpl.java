@@ -1,6 +1,8 @@
 package web.nl.kltn.service.impl;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,6 +56,21 @@ public class CriticalAssessmentServiceImpl implements CriticalAssessmentService{
 		return criticalAssessmentDTO;
 	}
 
+	@Override
+	public CriticalAssessment insertUser(String thesisId, String userId) throws Exception {
+		CriticalAssessment criticalAssessment = new CriticalAssessment();
+		criticalAssessment.setId(String.valueOf(UUID.randomUUID()));
+		criticalAssessment.setThesisId(thesisId);
+		criticalAssessment.setMarker(userId);
+		criticalAssessment.setCreatedAt(new Date().getTime());
+		criticalAssessment.setUpdatedAt(new Date().getTime());
+		criticalAssessment.setIsDeleted(false);
+		if (criticalAssessmentMapper.insert(criticalAssessment) <= 0) {
+			throw new Exception("Thêm phản biện thất bại");
+		}
+		return criticalAssessment;
+	}
+	
 	@Override
 	public List<CriticalAssessmentDTO> searchByThesisId(String thesisId) {
 		List<CriticalAssessmentDTO> criticalAssessments 

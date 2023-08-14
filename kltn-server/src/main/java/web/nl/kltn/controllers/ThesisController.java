@@ -109,4 +109,11 @@ public class ThesisController {
 		responseModel.setData(searchResponse);
 		return responseModel;
 	}
+
+	@GetMapping("/search-thesis-ca-by-user-id")
+	public ResponseModel<List<ThesisDTO>> searchThesisCriticalAssessmentByUserId(@RequestParam String userId) {
+		ResponseModel<List<ThesisDTO>> responseModel = new ResponseModel<>();
+		responseModel.setData(thesisService.searchThesisCAByUserId(userId));
+		return responseModel;
+	}
 }

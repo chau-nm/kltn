@@ -1,10 +1,11 @@
-import { FileProtectOutlined } from "@ant-design/icons";
-import { Button, Row, Spin } from "antd";
+import { EyeOutlined, FileProtectOutlined } from "@ant-design/icons";
+import { Button, Row, Spin, Tooltip } from "antd";
 import { ColumnType } from "antd/es/table";
 import { TableRowSelection } from "antd/es/table/interface";
 import { useContext, useEffect, useState } from "react";
 import { dateDisplay } from "~/common/util";
 import {
+  CriticalAssessmentIconCommon,
   DeleteIconCommon,
   EditIconCommon,
   ProtectedIconCommon,
@@ -28,6 +29,7 @@ const ThesisTableResult = (): JSX.Element => {
     setIsEditModal,
     searchDetail,
     setIsOpenThesisDetailModal,
+    setIsOpenCriticalAssessmentModal,
   } = useContext(ThesisConsoleContext);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -141,12 +143,14 @@ const ThesisTableResult = (): JSX.Element => {
       render: (row, record) => {
         return (
           <Row justify={"start"}>
-            <SeeIconCommon
-              onClick={() => {
-                searchDetail(record.id!);
-                setIsOpenThesisDetailModal(true);
-              }}
-            />
+            <Tooltip title="Chi tiết luận văn" placement="top">
+              <SeeIconCommon
+                onClick={() => {
+                  searchDetail(record.id!);
+                  setIsOpenThesisDetailModal(true);
+                }}
+              />
+            </Tooltip>
             <UserIconCommon
               onClick={() => {
                 handleOnChangeRowSelection([record.id!]);
@@ -158,6 +162,12 @@ const ThesisTableResult = (): JSX.Element => {
                 searchDetail(record.id!);
                 setIsEditModal(() => true);
                 setIsOpenAddEditThesisModal(true);
+              }}
+            />
+            <CriticalAssessmentIconCommon
+              onClick={() => {
+                searchDetail(record.id!);
+                setIsOpenCriticalAssessmentModal(true);
               }}
             />
             <ProtectedIconCommon />
