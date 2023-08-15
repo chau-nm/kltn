@@ -19,7 +19,7 @@ import AuthConstants from "~/constants/authConstants";
 import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 import * as ThesisReportCalendarService from "~/services/thesisReportCalendarService";
 import * as UserService from "~/services/userServices";
-import * as CriticalAssessmentService from "~/services/criticalAssessmentService";
+import * as ProtectionRateService from "~/services/protectionRateService";
 import { UserOutlined } from "@ant-design/icons";
 
 interface protectionDisplayModal {
@@ -64,14 +64,27 @@ const ProtectionModal = () => {
     }
   );
 
-  const insertUserCriticalAssessment = useMutation(
-    CriticalAssessmentService.insertUser,
+  const insertUserProtectionRate = useMutation(
+    ProtectionRateService.insertUser,
     {
-      onSuccess: (data: ThesisReportCalendarModel) => {
+      onSuccess: (data: ProtectionRatingModel[]) => {
         if (data) {
-          message.success("Cập nhật người phản biện thành công");
+          message.success("Cập nhật hội đồng bảo vệ thành công");
         } else {
-          message.error("Cập nhật người phản biện thất bại");
+          message.error("Cập nhật hội đồng bảo vệ thất bại");
+        }
+      },
+    }
+  );
+
+  const deleteProtectionRateByThesisId = useMutation(
+    ProtectionRateService.deleteByThesisId,
+    {
+      onSuccess: (data: boolean) => {
+        if (data) {
+          message.success("Xóa hội đồng cũ bảo vệ thành công");
+        } else {
+          message.error("Xóa hội đồng bảo vệ thất bại");
         }
       },
     }
@@ -104,7 +117,7 @@ const ProtectionModal = () => {
       id: v4(),
       thesisId: thesis?.id,
       timestamp: caCalendar,
-      type: 1,
+      type: 2,
       createdAt: new Date().getTime(),
       updatedAt: new Date().getTime(),
       isDeleted: false,
@@ -113,14 +126,16 @@ const ProtectionModal = () => {
     setIsEditCACalendarMode(false);
   };
 
-  const handleSaveCriticalAssessmentPerson = () => {
+  const handleSaveProtectionRatePerson = async () => {
     if (!thesis?.id || !caPerson) {
       return;
     }
-    //   insertUserCriticalAssessment.mutate({
-    //     thesisId: thesis?.id,
-    //     userId: caPerson,
-    //   });
+    deleteProtectionRateByThesisId.mutate(thesis?.id);
+    const element = caPerson.map((item) => item.id);
+    insertUserProtectionRate.mutate({
+      thesisId: thesis?.id,
+      usersId: element,
+    });
     setIsEditCAPersonMode(false);
   };
 
@@ -252,7 +267,7 @@ const ProtectionModal = () => {
                 </span>
                 <span
                   className="text-green-700 select-none cursor-pointer hover:text-green-500 duration-300 mx-3"
-                  onClick={handleSaveCriticalAssessmentPerson}
+                  onClick={handleSaveProtectionRatePerson}
                 >
                   Lưu
                 </span>

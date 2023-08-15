@@ -58,6 +58,10 @@ export class ApiUrlConstants {
     /** CRITICAL ASSESSMENT */
     public static readonly INSERT_USER_CRITICAL_ASSESSMENT = "/critical-assessment/insert-user";
 
+    /** PROTECTION RATE */
+    public static readonly INSERT_USER_PROTECTION_RATE = "/protection-rating/insert-user";
+    public static readonly DELETE_PROTECTION_RATE_BY_THESIS_ID = "/protection-rating/delete-by-thesisId";
+
     /** Email */
     public static readonly EMAIL_PUBLIC_KEY = "zYF2rOMgmyBuMxfwX";
     public static readonly SERVICE_EMAIL_ID = "service_ghvi71k";
