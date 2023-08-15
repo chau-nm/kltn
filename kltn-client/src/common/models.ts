@@ -170,6 +170,21 @@ interface CriticalAssessmentScoreModel {
 
 }
 
+/** PROTECTION RATTING*/
+interface ProtectionRatingModel {
+    id: string;
+    thesisId: string;
+    marker: string;
+    content: number;
+    analysisResult: number;
+    feedBackLectureQuestion: number;
+    councilQuestin: number;
+    behavior: number;
+    isDeleted: boolean;
+    createdAt: number;
+    updatedAt: number;
+}
+
 /** THESIS REPORT CALENDAR */
 interface ThesisReportCalendarModel {
     id?: string;

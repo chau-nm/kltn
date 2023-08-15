@@ -32,6 +32,7 @@ const ThesisTableResult = (): JSX.Element => {
     searchDetail,
     setIsOpenThesisDetailModal,
     setIsOpenCriticalAssessmentModal,
+    setIsOpenProtectionModal,
   } = useContext(ThesisConsoleContext);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -170,14 +171,20 @@ const ThesisTableResult = (): JSX.Element => {
               onClick={() => {
                 handleOnChangeRowSelection([record.id as React.Key]);
                 setOpenAddCommentMinistryModal(true);
-              }}/>
+              }}
+            />
             <CriticalAssessmentIconCommon
               onClick={() => {
                 searchDetail(record.id!);
                 setIsOpenCriticalAssessmentModal(true);
               }}
             />
-            <ProtectedIconCommon />
+            <ProtectedIconCommon
+              onClick={() => {
+                searchDetail(record.id!);
+                setIsOpenProtectionModal(true);
+              }}
+            />
             <DeleteIconCommon
               onClick={() => {
                 // searchDetail(record.id!);

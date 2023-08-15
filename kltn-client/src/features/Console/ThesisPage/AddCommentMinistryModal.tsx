@@ -32,6 +32,7 @@ import { UserOutlined } from "@ant-design/icons";
 import * as OutlineReviewServices from "~/services/OutlineReviewServices";
 import * as ThesisService from "~/services/thesisService";
 import { AuthContext } from "~/contexts/AuthContext";
+import { dateTimeDisplay } from "~/common/util";
 
 const AddCommentMinistryModal = (): JSX.Element => {
   const {
@@ -196,11 +197,11 @@ const AddCommentMinistryModal = (): JSX.Element => {
         {listCommentOfCouncil.map((comment, index) => {
           return (
             !comment!?.user!?.roles.includes("MINISTRY") && (
-              <Row
-                className="p-3 border rounded-lg max-w-[1000px] mb-3"
-                key={index}
-              >
-                <>
+              <>
+                <Row
+                  className="p-3 border rounded-lg max-w-[1000px] mb-3"
+                  key={index}
+                >
                   <Col span={2} className="comment-avatar">
                     <Avatar
                       icon={<UserOutlined />}
@@ -213,13 +214,18 @@ const AddCommentMinistryModal = (): JSX.Element => {
                       <strong className="commenter-name">
                         {comment!?.user!?.fname}
                       </strong>
+                      <Row>
+                        {dateTimeDisplay(
+                          new Date(comment!?.updatedAt as number)
+                        )}
+                      </Row>
                       <ReactQuillPreviewCommon
                         content={comment!?.comment as string}
                       ></ReactQuillPreviewCommon>
                     </Typography.Text>
                   </Col>
-                </>
-              </Row>
+                </Row>
+              </>
             )
           );
         })}

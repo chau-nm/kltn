@@ -26,10 +26,16 @@ interface ThesisConsoleContextInterface {
   isOpenCriticalAssessmentModal: boolean;
   setIsOpenCriticalAssessmentModal: React.Dispatch<SetStateAction<boolean>>;
 
+  isOpenProtectionModal: boolean;
+  setIsOpenProtectionModal: React.Dispatch<SetStateAction<boolean>>;
+
   isOpenCriticalAssessmentDetailModal: boolean;
   setIsOpenCriticalAssessmentDetailModal: React.Dispatch<
     SetStateAction<boolean>
   >;
+
+  isOpenProtectionDetailModal: boolean;
+  setIsOpenProtectionDetailModal: React.Dispatch<SetStateAction<boolean>>;
 
   isEditModal: boolean;
   setIsEditModal: React.Dispatch<SetStateAction<boolean>>;
@@ -84,6 +90,9 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
   isOpenCriticalAssessmentModal: false,
   setIsOpenCriticalAssessmentModal: () => null,
 
+  isOpenProtectionModal: false,
+  setIsOpenProtectionModal: () => null,
+
   isEditModal: false,
   setIsEditModal: () => null,
 
@@ -92,6 +101,9 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
 
   isOpenThesisDetailModal: false,
   setIsOpenThesisDetailModal: () => null,
+
+  isOpenProtectionDetailModal: false,
+  setIsOpenProtectionDetailModal: () => null,
 
   openAddCouncilModal: false,
   setOpenAddCouncilModal: () => null,
@@ -147,10 +159,16 @@ export const ThesisConsoleProvider = ({
   const [isOpenCriticalAssessmentModal, setIsOpenCriticalAssessmentModal] =
     useState<boolean>(false);
 
+  const [isOpenProtectionModal, setIsOpenProtectionModal] =
+    useState<boolean>(false);
+
   const [
     isOpenCriticalAssessmentDetailModal,
     setIsOpenCriticalAssessmentDetailModal,
   ] = useState<boolean>(false);
+
+  const [isOpenProtectionDetailModal, setIsOpenProtectionDetailModal] =
+    useState<boolean>(false);
 
   const [isOpenThesisDetailModal, setIsOpenThesisDetailModal] =
     useState<boolean>(false);
@@ -247,8 +265,14 @@ export const ThesisConsoleProvider = ({
         isOpenCriticalAssessmentModal,
         setIsOpenCriticalAssessmentModal,
 
+        isOpenProtectionModal,
+        setIsOpenProtectionModal,
+
         isOpenCriticalAssessmentDetailModal,
         setIsOpenCriticalAssessmentDetailModal,
+
+        isOpenProtectionDetailModal,
+        setIsOpenProtectionDetailModal,
 
         isEditModal,
         setIsEditModal,
