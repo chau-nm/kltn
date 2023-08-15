@@ -14,10 +14,17 @@ import ThesisDetailView from "~/components/ThesisDetailView";
 import { useContext } from "react";
 import AddCommentMinistryModal from "./AddCommentMinistryModal";
 import CriticalAssessmentModal from "./CriticalAssessmentModal";
+import ProtectionModal from "./ProtectionModal";
+import ProtectionDetailView from "~/components/protectionDetailView";
 
 const ThesisPage = () => {
-  const { thesis, isOpenThesisDetailModal, setIsOpenThesisDetailModal } =
-    useContext(ThesisConsoleContext);
+  const {
+    thesis,
+    isOpenThesisDetailModal,
+    setIsOpenThesisDetailModal,
+    isOpenProtectionDetailModal,
+    setIsOpenProtectionDetailModal,
+  } = useContext(ThesisConsoleContext);
 
   return (
     <Space direction="vertical" className="p-10 w-full">
@@ -30,6 +37,7 @@ const ThesisPage = () => {
       <OpenThesisRegisterModal />
       <AddEditThesisModal />
       <CriticalAssessmentModal />
+      <ProtectionModal />
       {thesis && (
         <ThesisDetailView
           thesis={thesis}
@@ -37,6 +45,12 @@ const ThesisPage = () => {
           setIsOpen={setIsOpenThesisDetailModal}
         />
       )}
+
+      <ProtectionDetailView
+        protectionRating={{} as ProtectionRatingModel}
+        isOpen={isOpenProtectionDetailModal}
+        setIsOpen={setIsOpenProtectionDetailModal}
+      />
     </Space>
   );
 };
