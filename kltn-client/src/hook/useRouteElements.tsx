@@ -11,6 +11,7 @@ import DashboardLayout from "~/layouts/DashboardLayout";
 import { hasCommonValue } from "~/common/util";
 import PageNotFounded from "~/features/PageNotFounded";
 import ThesisConsoleProvider from "~/contexts/ThesisConsoleContext";
+import { CriticalAssessmentDashboardProvider } from "~/contexts/CriticalAssessmentDashboardContext";
 
 /** IMPORT PAGE START */
 const LoginPage = lazy(() => import("~/features/LoginPage"));
@@ -213,7 +214,9 @@ const useRouteElements = () => {
           path: path.CRITICAL_ASSESSMENT,
           element: (
             <DashboardLayout>
-              <CriticalAssessmentPage />
+              <CriticalAssessmentDashboardProvider>
+                <CriticalAssessmentPage />
+              </CriticalAssessmentDashboardProvider>
             </DashboardLayout>
           ),
         },

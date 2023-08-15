@@ -7,9 +7,18 @@ import CommonConstants from "~/constants/commonConstants";
 import { AuthContext } from "~/contexts/AuthContext";
 import * as ThesisService from "~/services/thesisService";
 import CriticalAssessmentFormModal from "./CriticalAssessmentFormModal";
+import { CriticalAssessmentDashboardContext } from "~/contexts/CriticalAssessmentDashboardContext";
+import ThesisDetailView from "~/components/ThesisDetailView";
 
 const CriticalAssessmentPage = (): JSX.Element => {
   const { user } = useContext(AuthContext);
+  const {
+    setIsOpenCriticalAssessmentFormModal,
+    setThesis,
+    thesis,
+    setIsOpenThesisDetail,
+    isOpenThesisDetail,
+  } = useContext(CriticalAssessmentDashboardContext);
 
   const { data: thesisList } = useQuery(["search-thesis-ca-by-user-id"], () =>
     ThesisService.searchThesisCAByUserId(user?.userId!)
@@ -41,7 +50,17 @@ const CriticalAssessmentPage = (): JSX.Element => {
     {
       title: "",
       render: (value, record, index) => {
-        return "Đánh giá";
+        return (
+          <span
+            className="text-blue-400 cursor-pointer select-none hover:text-blue-500 duration-300"
+            onClick={() => {
+              setThesis(record);
+              setIsOpenCriticalAssessmentFormModal(true);
+            }}
+          >
+            Đánh giá
+          </span>
+        );
       },
     },
   ];
@@ -50,6 +69,13 @@ const CriticalAssessmentPage = (): JSX.Element => {
     <PageLayout pageTitle="Phản biện">
       <Table columns={columns} dataSource={thesisList} />
       <CriticalAssessmentFormModal />
+      {thesis && (
+        <ThesisDetailView
+          thesis={thesis}
+          isOpen={isOpenThesisDetail}
+          setIsOpen={setIsOpenThesisDetail}
+        />
+      )}
     </PageLayout>
   );
 };
