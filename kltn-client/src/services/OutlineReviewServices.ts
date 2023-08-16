@@ -2,6 +2,11 @@ import { ApiUrlConstants } from "~/constants/apiUrlConstants";
 import http from "~/common/http";
 
 
+type InsertUserParams = {
+    thesisId: string;
+    usersId: string[];
+}
+
 export const getCommentByThesisId = async (thesisId: string): Promise<OutlineCommentModel[] | []> => {
     const response: ResponseModel<OutlineCommentModel[] | []> = await http.get<ResponseModel<OutlineCommentModel[]>>(`${ApiUrlConstants.GET_OULINE_COMMENT_BY_THESIS_ID}?thesisId=${thesisId}`)
         .then(response => response)
@@ -19,12 +24,9 @@ export const search = async (mutationParams: MutationParamsModel<OutlineReviewSe
     return notificationsSearchResponse;
 }
 
-export const insert = async (outlineComment: OutlineCommentModel) : Promise<OutlineCommentModel>=> {
-    const requestModel: RequestModel<OutlineCommentModel> = {
-        data: outlineComment
-    }
-    const responseModel: ResponseModel<OutlineCommentModel> = await http.post(ApiUrlConstants.INSERT_OUTLINE_COMMENT, requestModel);
-    const outlineResponse: OutlineCommentModel = responseModel.data;
+export const insert = async ({ thesisId, usersId }: InsertUserParams) : Promise<OutlineCommentModel[] | []>=> {
+    const responseModel: ResponseModel<OutlineCommentModel[] | []> = await http.post(`${ApiUrlConstants.INSERT_OUTLINE_COMMENT}/${thesisId}`, usersId);
+    const outlineResponse: OutlineCommentModel[] | [] = responseModel.data;
     return outlineResponse;
 }
 

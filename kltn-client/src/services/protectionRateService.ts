@@ -2,7 +2,7 @@ import http from "~/common/http";
 import { ApiUrlConstants } from "~/constants/apiUrlConstants";
 
 
-type InsertUserParams = {
+export type InsertUserParams = {
     thesisId: string;
     usersId: string[];
 }

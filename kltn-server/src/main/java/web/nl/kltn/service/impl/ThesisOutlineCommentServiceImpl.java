@@ -14,6 +14,7 @@ import web.nl.kltn.mapper.UserCusMapper;
 import web.nl.kltn.mapper.generator.ThesisOutlineCommentMapper;
 import web.nl.kltn.model.dto.ThesisOutlineCommentDTO;
 import web.nl.kltn.model.dto.UserDTO;
+import web.nl.kltn.model.generator.ProtectionRating;
 import web.nl.kltn.model.generator.ThesisOutlineComment;
 import web.nl.kltn.service.ThesisOutlineCommentService;
 
@@ -56,12 +57,23 @@ public class ThesisOutlineCommentServiceImpl implements ThesisOutlineCommentServ
     }
 
     @Override
-    public ThesisOutlineComment insert(ThesisOutlineComment thesisOutlineComment) {
-        thesisOutlineComment.setId(String.valueOf(UUID.randomUUID()));
-        thesisOutlineComment.setCreatedAt(new Date().getTime());
-        thesisOutlineComment.setIsDeleted(false);
-        thesisOutlineComment.setUpdatedAt(new Date().getTime());
-        return thesisOutlineCommentMapper.insert(thesisOutlineComment) > 0 ? thesisOutlineComment : null;
+    public List<ThesisOutlineComment> insertListThesisCouncil(String theisId, List<String> usersId) throws Exception {
+        List<ThesisOutlineComment> thesisOutlineComments = new ArrayList<>();
+        for (int i = 0; i < usersId.size(); i++) {
+            ThesisOutlineComment thesisOutlineComment = new ThesisOutlineComment();
+            thesisOutlineComment.setId(String.valueOf(UUID.randomUUID()));
+            thesisOutlineComment.setUserId(usersId.get(i));
+            thesisOutlineComment.setThesisId(theisId);
+            thesisOutlineComment.setOrder(1);
+            thesisOutlineComment.setCreatedAt(new Date().getTime());
+            thesisOutlineComment.setIsDeleted(false);
+            thesisOutlineComment.setUpdatedAt(new Date().getTime());
+            if (thesisOutlineCommentMapper.insert(thesisOutlineComment) <= 0) {
+                throw new Exception("Thêm hội đồng thất bại");
+            }
+            thesisOutlineComments.add(thesisOutlineComment);
+        }
+        return thesisOutlineComments;
     }
 
     @Override

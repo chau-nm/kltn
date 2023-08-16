@@ -21,6 +21,7 @@ import { v4 } from "uuid";
 import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 import { useMutation, useQuery } from "react-query";
 import AuthConstants from "~/constants/authConstants";
+import { InsertUserParams } from "~/services/protectionRateService";
 
 const AddCouncilModal = (): JSX.Element => {
   const {
@@ -66,17 +67,13 @@ const AddCouncilModal = (): JSX.Element => {
   const insertOulineCommentMutation = useMutation(
     OutlineCommentService.insert,
     {
-      onSuccess: (data: OutlineCommentModel | null) => {
+      onSuccess: (data: OutlineCommentModel[] | []) => {
         if (data) {
-          message.success("Thêm thành công");
-          // setOpenAddCouncilModal(false);
-          // clearData();
-          // setSearchCondition(() => {
-          //   return {};
-          // });
-          // search();
+          message.success("Thêm hội đồng thành công");
+          setOpenAddCouncilModal(false);
+          clearData();
         } else {
-          message.error("Thêm thất bại");
+          message.error("Thêm hội đồng thất bại");
         }
       },
     }
@@ -98,24 +95,16 @@ const AddCouncilModal = (): JSX.Element => {
 
   const handleSave = async () => {
     form.validateFields().then(() => {
-      const outlineCommentsModel: OutlineCommentModel[] = [];
       const listIdTeacher: string[] = form.getFieldValue("coucil");
       for (let i = 0; i < listThesisSelected.length; i++) {
         const thesisId = listThesisSelected[i].id;
-        removeOulineCommentMutation.mutate(thesisId);
-        for (let j = 0; j < listIdTeacher.length; j++) {
-          let oulineComment: OutlineCommentModel = {
-            thesisId,
-            userId: listIdTeacher[j],
-            order: 1,
-          };
-          outlineCommentsModel.push(oulineComment);
-        }
+        removeOulineCommentMutation.mutate(thesisId!);
+        let payloadModel: InsertUserParams = {
+          thesisId: thesisId!,
+          usersId: listIdTeacher,
+        };
+        insertOulineCommentMutation.mutate(payloadModel);
       }
-      console.log(outlineCommentsModel);
-      outlineCommentsModel.map((item) => {
-        insertOulineCommentMutation.mutate(item);
-      });
     });
   };
 

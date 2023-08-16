@@ -11,7 +11,7 @@ public interface ThesisOutlineCommentService {
 
 	void update(ThesisOutlineComment thesisOutlineComment);
 
-	ThesisOutlineComment insert(ThesisOutlineComment thesisOutlineComment);
+	List<ThesisOutlineComment> insertListThesisCouncil(String theisId, List<String> usersId) throws Exception;
 
 	ThesisOutlineComment searchByUserId(String userId);
 

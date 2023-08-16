@@ -64,11 +64,10 @@ public class ThesisOutlineCommentController {
         return responseModel;
     }
 
-    @PostMapping("/insert")
-    public ResponseModel<ThesisOutlineComment> insert(@RequestBody RequestModel<ThesisOutlineComment> thesisOutlineCommentRequest) {
-        ResponseModel<ThesisOutlineComment> responseModel = new ResponseModel<>();
-        ThesisOutlineComment thesisOutlineComment = thesisOutlineCommentRequest.getData();
-        responseModel.setData(thesisOutlineCommentService.insert(thesisOutlineComment));
+    @PostMapping("/insert/{thesisId}")
+    public ResponseModel<List<ThesisOutlineComment>> insertListThesisCouncil(@PathVariable String thesisId,@RequestBody List<String> usersId) throws Exception {
+        ResponseModel<List<ThesisOutlineComment>> responseModel = new ResponseModel<>();
+        responseModel.setData(thesisOutlineCommentService.insertListThesisCouncil(thesisId,usersId));
         return responseModel;
     }
 
