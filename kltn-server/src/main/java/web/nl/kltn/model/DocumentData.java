@@ -1,19 +1,30 @@
 package web.nl.kltn.model;
 
+import web.nl.kltn.common.Util;
+
+import java.io.IOException;
+
 public class DocumentData {
     private String id;
+    private String titleSearch;
     private String title;
     private String url;
 
-
-    public DocumentData(String id, String title, String url) {
+    public DocumentData(String id, String title, String url) throws IOException {
         this.id = id;
         this.title = title;
+        this.titleSearch = Util.processTitle(title).toLowerCase();
         this.url = url;
-
     }
 
-    // Getters and setters for the fields
+    public String getTitleSearch() {
+        return titleSearch;
+    }
+
+    public void setTitleSearch(String titleSearch) {
+        this.titleSearch = titleSearch;
+    }
+
 
 
     public String getId() {

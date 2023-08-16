@@ -38,12 +38,17 @@ const RegisterThesisForm = (): JSX.Element => {
     // Clear any existing timeout to prevent the API call from being made immediately
     // Create a new timeout to call the API after 400 milliseconds of inactivity
     // Call the API to fetch documents here
-    let data: [] | Doc2VecModel[] = [];
-    if (value) {
-      data = await Doc2VecServices.searchDoc2vec(value);
-    }
-    setDocumentList(data);
   };
+  useEffect(() => {
+    const getData = setTimeout(async () => {
+      let data: [] | Doc2VecModel[] = [];
+      if (thesisName) {
+        data = await Doc2VecServices.searchDoc2vec(thesisName);
+      }
+      setDocumentList(data);
+    }, 500);
+    return () => clearTimeout(getData);
+  }, [thesisName]);
 
   const handleUploadFailed = () => {};
   const [studentSelectOptions, setStudentSelectOptions] = useState<UserModel[]>(

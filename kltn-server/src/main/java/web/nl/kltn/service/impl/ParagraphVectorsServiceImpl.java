@@ -100,6 +100,7 @@ public class ParagraphVectorsServiceImpl implements ParagraphVectorsService {
         }
         List<String> tokens1 = p2v.getTokenizerFactory().create(text1).getTokens();
         List<String> tokens2 = p2v.getTokenizerFactory().create(text2).getTokens();
+
         INDArray docmean1 = meanArrayOf(tokens1);
         INDArray docmean2 = meanArrayOf(tokens2);
 
@@ -142,6 +143,6 @@ public class ParagraphVectorsServiceImpl implements ParagraphVectorsService {
 
     public static void main(String[] args) throws IOException {
         ParagraphVectorsService p2v = new ParagraphVectorsServiceImpl();
-//        p2v.createModel(new File(Constant.dataset),"new model");
+        p2v.createModel(new File(Constant.dataset),"new model");
     }
 }

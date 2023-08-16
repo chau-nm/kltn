@@ -86,6 +86,11 @@
 			<artifactId>nd4j-native</artifactId>
 			<version>${nd4j.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>5.5.2</version> <!-- Use the latest version available -->
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -94,11 +99,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<dependencies>
-					<dependency>
-						<groupId>com.github.CrispyBaconBits</groupId>
-						<artifactId>mybatis-generator-plugins</artifactId>
-						<version>2.0.1</version>
-					</dependency>
+
 				</dependencies>
 			</plugin>
 		</plugins>

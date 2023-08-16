@@ -1,5 +1,6 @@
 package web.nl.kltn.service.impl;
 
+import com.opencsv.exceptions.CsvException;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -11,6 +12,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.stereotype.Service;
 import web.nl.kltn.common.Constant;
+import web.nl.kltn.common.Util;
 import web.nl.kltn.model.DocumentData;
 import web.nl.kltn.service.LuceneService;
 
@@ -27,7 +29,8 @@ public class LuceneServiceImpl implements LuceneService {
         IndexWriter indexWriter = new IndexWriter(directory, config);
         Document luceneDoc = new Document();
         luceneDoc.add(new TextField("id", String.valueOf(documentData.getId()), Field.Store.YES));
-        luceneDoc.add(new TextField("title", documentData.getTitle().toLowerCase(), Field.Store.YES));
+        luceneDoc.add(new TextField("title", documentData.getTitle(), Field.Store.YES));
+        luceneDoc.add(new TextField("titleSearch",documentData.getTitleSearch(), Field.Store.YES));
         luceneDoc.add(new TextField("url", documentData.getUrl(), Field.Store.YES));
         indexWriter.addDocument(luceneDoc);
         indexWriter.close();
@@ -91,7 +94,7 @@ public class LuceneServiceImpl implements LuceneService {
 
         DocumentData document10 = new DocumentData(
                 "10",
-                "mức_lương là một vấn_đề khá nhạy_cảm đặc_biệt là khi những câu_trả_lời phỏng_vấn trước_đó của bạn đều thành_công trót_lọt",
+                "mức lương là một vấn đề khá nhạy cảm đặc biệt là khi những câu trả lời phỏng vấn trước đó của bạn đều thành công trót lọt",
                 "https://example.com/document10"
         );
         lucene.indexDocument(document1);
@@ -104,8 +107,6 @@ public class LuceneServiceImpl implements LuceneService {
         lucene.indexDocument(document8);
         lucene.indexDocument(document9);
         lucene.indexDocument(document10);
-
-
 
     }
 }

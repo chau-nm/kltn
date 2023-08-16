@@ -16,6 +16,7 @@ import org.deeplearning4j.models.paragraphvectors.ParagraphVectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import web.nl.kltn.common.Constant;
+import web.nl.kltn.common.Util;
 import web.nl.kltn.model.DocumentData;
 import web.nl.kltn.service.Doc2vecService;
 import web.nl.kltn.service.LuceneService;
@@ -42,14 +43,15 @@ public class Doc2VecServiceImpl implements Doc2vecService {
         return searchSimilarDocuments(inputTitle);
     }
 
-    public List<DocumentData> searchSimilarDocuments(String inputTitle) throws IOException {
+    public List<DocumentData> searchSimilarDocuments(String inputTitlePre) throws IOException {
+        String inputTitle = Util.processTitle(inputTitlePre).toLowerCase();
         List<DocumentData> similarDocuments = new ArrayList<>();
 
         Analyzer analyzer = new StandardAnalyzer();
         Directory directory = FSDirectory.open(Paths.get(Constant.INDEX_DIR));
         IndexSearcher indexSearcher = new IndexSearcher(DirectoryReader.open(directory));
 
-        QueryParser queryParser = new QueryParser("title", analyzer);
+        QueryParser queryParser = new QueryParser("titleSearch", analyzer);
         Query query;
         try {
             query = queryParser.parse(inputTitle.toLowerCase());
@@ -65,13 +67,18 @@ public class Doc2VecServiceImpl implements Doc2vecService {
             Document luceneDoc = indexSearcher.doc(scoreDoc.doc);
             String id = luceneDoc.get("id");
             String title = luceneDoc.get("title");
+            String titleSearch = luceneDoc.get("titleSearch");
             String url = luceneDoc.get("url");
 
-            double similarity = p2v.similarityTwoRawText(inputTitle, title);
-            if (similarity > Constant.similarityThreshold) {
+            System.err.println("title input: " + inputTitle);
+            if(!inputTitle.trim().equals("") && inputTitle.split(" ").length>1){
+                double similarity = p2v.similarityTwoRawText(inputTitle, titleSearch);
                 System.out.println("stored title: " + title);
-                System.out.println("title input: " + inputTitle + "\n" + "Similar: " + similarity);
-                similarDocuments.add(new DocumentData(id, title, url));
+                System.out.println("stored analyze title: " + titleSearch);
+                System.out.println("Similar: " + similarity);
+                if (similarity > Constant.similarityThreshold) {
+                    similarDocuments.add(new DocumentData(id, title, url));
+                }
             }
         }
         return similarDocuments;
