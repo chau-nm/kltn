@@ -1,10 +1,10 @@
-import { Col, Form, Row, Table, Typography } from "antd";
-import ModalCommon from "./common/ModalCommon";
+import { Col, Row, Table, Typography } from "antd";
+import { type SetStateAction } from "react";
 import ButtonCommon from "./common/ButtonCommon";
-import { SetStateAction } from "react";
+import ModalCommon from "./common/ModalCommon";
 
 type ProtectionDetailViewProps = {
-  protectionRating: ProtectionRatingModel;
+  protectionRating?: ProtectionRatingModel;
   isOpen: boolean;
   setIsOpen: React.Dispatch<SetStateAction<boolean>>;
 };
@@ -14,12 +14,12 @@ const ProtectionDetailView = ({
   isOpen,
   setIsOpen,
 }: ProtectionDetailViewProps): JSX.Element => {
-  const colLayout = {
-    span: 5,
-    offset: 1,
-  };
+  // const colLayout = {
+  //   span: 5,
+  //   offset: 1,
+  // };
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setIsOpen(false);
   };
 

@@ -13,12 +13,16 @@ const UserDropDown = (): JSX.Element => {
 
   const [openedPopover, setOpenedPopover] = useState(false);
 
+  const closePopover = (): void => {
+    setOpenedPopover(false);
+  };
+
   return (
     <Popover
       className="mt-7 mb-10"
       placement="bottomLeft"
       trigger="click"
-      content={UserDropDownContent}
+      content={<UserDropDownContent closePopover={closePopover} />}
       open={openedPopover}
       onOpenChange={setOpenedPopover}
     >
@@ -34,7 +38,9 @@ const UserDropDown = (): JSX.Element => {
             icon={<UserOutlined />}
           />
         </Col>
-        <Col flex={4} className="text-lg text-white mr-2">{user?.fname}</Col>
+        <Col flex={4} className="text-lg text-white mr-2">
+          {user?.fname}
+        </Col>
         <Col flex={1} className="text-white">
           {openedPopover ? <CaretUpOutlined /> : <CaretDownOutlined />}
         </Col>

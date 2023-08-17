@@ -1,13 +1,11 @@
-import { ToastContainer } from "react-toastify";
-import useRouteElements from "./hook/useRouteElements";
-import { AuthContextProvider } from "./contexts/AuthContext";
-import { Suspense } from "react";
-import LoadingPage from "./features/LoadingPage";
 import { QueryClient, QueryClientProvider } from "react-query";
-import UserModal from "./components/UserModal";
+import { ToastContainer } from "react-toastify";
+import { AuthContextProvider } from "./contexts/AuthContext";
 import { UserModalProvider } from "./contexts/UserModalContext";
+import useRouteElements from "./hook/useRouteElements";
+import "react-toastify/dist/ReactToastify.css";
 
-function App() {
+function App(): JSX.Element {
   const routeElements = useRouteElements();
   const queryClient = new QueryClient();
 

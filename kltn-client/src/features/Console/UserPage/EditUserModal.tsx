@@ -1,29 +1,23 @@
 import {
   Col,
   DatePicker,
-  Form,
   Input,
   Row,
   Select,
   Spin,
   Typography,
-  UploadFile,
   message,
 } from "antd";
-import { useForm } from "antd/es/form/Form";
+import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
-import { v4 } from "uuid";
+import { useMutation } from "react-query";
+import { toast } from "react-toastify";
+import { dateDisplay } from "~/common/util";
+import AuthConstants from "~/constants/authConstants";
 import { UserConsoleContext } from "~/contexts/UserConsoleContext";
 import * as UserService from "~/services/userServices";
 import ButtonCommon from "../../../components/common/ButtonCommon";
-import DraggerCommon from "../../../components/common/DraggerCommon";
 import ModalCommon from "../../../components/common/ModalCommon";
-import RichTextEditorCommon from "../../../components/common/RichTextEditorCommon";
-import { dateDisplay } from "~/common/util";
-import dayjs from "dayjs";
-import { useMutation } from "react-query";
-import { toast } from "react-toastify";
-import AuthConstants from "~/constants/authConstants";
 
 const { Option } = Select;
 const EditUserModal = (): JSX.Element => {
@@ -31,10 +25,10 @@ const EditUserModal = (): JSX.Element => {
     openEditUserModal,
     setOpenEditUserModal,
     isLoadingDetail,
-    UserDetail,
+    userDetail,
   } = useContext(UserConsoleContext);
 
-  const [user, setUser] = useState<UserModel>({} as UserModel);
+  const [user, setUser] = useState<UserModel>({} satisfies UserModel);
   const [editMode, setEditMode] = useState<boolean>(false);
   const getUserByIdMutation = useMutation(UserService.getUSerById, {
     onSuccess: (data) => {
@@ -49,32 +43,32 @@ const EditUserModal = (): JSX.Element => {
 
   const updateUserMuitation = useMutation(UserService.updateUser, {
     onSuccess: () => {
-      message.success("Cập nhật thành công");
+      void message.success("Cập nhật thành công");
     },
   });
   const resetPasswordMuitation = useMutation(UserService.resetPasswordUser, {
     onSuccess: () => {
-      message.success(
+      void message.success(
         "Đặt lại thành công, mật khẩu mới đã được gửi qua email người dùng"
       );
     },
   });
 
-  const resetPasswordUserHandle = (user: UserModel) => {
+  const resetPasswordUserHandle = (user: UserModel): void => {
     if (confirm("Bạn chắc chắn muốn đặt lại mật khẩu cho tài khoản này?")) {
       resetPasswordMuitation.mutate(user);
     }
   };
 
   useEffect(() => {
-    if (UserDetail) {
-      getUserByIdMutation.mutate(UserDetail!?.userId);
+    if (userDetail != null) {
+      userDetail?.userId && getUserByIdMutation.mutate(userDetail?.userId);
     }
-  }, [openEditUserModal, UserDetail]);
+  }, [openEditUserModal, userDetail]);
 
   useEffect(() => {
-    if (UserDetail) {
-      getUserByIdMutation.mutate(UserDetail!?.userId);
+    if (userDetail != null) {
+      userDetail?.userId && getUserByIdMutation.mutate(userDetail?.userId);
     }
   }, []);
 
@@ -98,13 +92,18 @@ const EditUserModal = (): JSX.Element => {
             }}
           />
         ) : (
-          <ButtonCommon value="Chỉnh sửa" onClick={() => setEditMode(true)} />
+          <ButtonCommon
+            value="Chỉnh sửa"
+            onClick={() => {
+              setEditMode(true);
+            }}
+          />
         )}
       </Row>
     );
   };
 
-  const handleCancel = () => {
+  const handleCancel = (): void => {
     setOpenEditUserModal(false);
     setEditMode(false);
   };
@@ -122,7 +121,7 @@ const EditUserModal = (): JSX.Element => {
             <Typography.Text strong>ID:</Typography.Text>
           </Col>
           <Col flex={1} className="border py-3 px-4">
-            <Typography.Text>{user!?.userId}</Typography.Text>
+            <Typography.Text>{user?.userId}</Typography.Text>
           </Col>
         </Row>
         <Row className="min-w-[800px]">
@@ -133,16 +132,16 @@ const EditUserModal = (): JSX.Element => {
             {editMode ? (
               <Input
                 type="text"
-                value={user!?.fname}
+                value={user?.fname}
                 onChange={(event) => {
                   setUser({
-                    ...user!,
+                    ...user,
                     fname: event.target.value,
-                  } as UserModel);
+                  } satisfies UserModel);
                 }}
               />
             ) : (
-              <Typography.Text>{user!?.fname}</Typography.Text>
+              <Typography.Text>{user?.fname}</Typography.Text>
             )}
           </Col>
         </Row>
@@ -155,16 +154,16 @@ const EditUserModal = (): JSX.Element => {
             {editMode ? (
               <Input
                 type="email"
-                value={user!?.email}
+                value={user?.email}
                 onChange={(event) => {
                   setUser({
-                    ...user!,
+                    ...user,
                     email: event.target.value,
-                  } as UserModel);
+                  } satisfies UserModel);
                 }}
               />
             ) : (
-              <Typography.Text>{user!?.email}</Typography.Text>
+              <Typography.Text>{user?.email}</Typography.Text>
             )}
           </Col>
         </Row>
@@ -176,22 +175,22 @@ const EditUserModal = (): JSX.Element => {
           <Col flex={1} className="border py-3 px-4">
             {editMode ? (
               <DatePicker
-                value={dayjs(user!?.birthday)}
+                value={dayjs(user?.birthday)}
                 onChange={(date) => {
-                  if (date) {
+                  if (date != null) {
                     setUser({
-                      ...user!,
+                      ...user,
                       birthday: date.toDate(),
-                    } as UserModel);
+                    } satisfies UserModel);
                   }
                 }}
               />
             ) : (
-              <Typography.Text>{dateDisplay(user!?.birthday)}</Typography.Text>
+              <Typography.Text>{dateDisplay(user?.birthday)}</Typography.Text>
             )}
           </Col>
         </Row>
-        {user!?.studentClass && (
+        {user?.studentClass && (
           <Row className="min-w-[800px]">
             <Col span={5} className="border py-2 px-4">
               <Typography.Text strong>Lớp:</Typography.Text>
@@ -200,16 +199,16 @@ const EditUserModal = (): JSX.Element => {
               {editMode ? (
                 <Input
                   type="text"
-                  value={user!?.studentClass}
+                  value={user?.studentClass}
                   onChange={(event) => {
                     setUser({
-                      ...user!,
+                      ...user,
                       studentClass: event.target.value,
-                    } as UserModel);
+                    } satisfies UserModel);
                   }}
                 />
               ) : (
-                <Typography.Text>{user!?.studentClass}</Typography.Text>
+                <Typography.Text>{user?.studentClass}</Typography.Text>
               )}
             </Col>
           </Row>
@@ -222,16 +221,16 @@ const EditUserModal = (): JSX.Element => {
             {editMode ? (
               <Input
                 type="text"
-                value={user!?.faculty}
+                value={user?.faculty}
                 onChange={(event) => {
                   setUser({
-                    ...user!,
+                    ...user,
                     faculty: event.target.value,
-                  } as UserModel);
+                  } satisfies UserModel);
                 }}
               />
             ) : (
-              <Typography.Text>{user!?.faculty}</Typography.Text>
+              <Typography.Text>{user?.faculty}</Typography.Text>
             )}
           </Col>
         </Row>
@@ -244,17 +243,18 @@ const EditUserModal = (): JSX.Element => {
               <Select
                 mode="multiple"
                 style={{ width: "100%" }}
-                value={user!.roles}
+                value={user.roles}
                 onChange={(selectedRoles) => {
                   setUser({
-                    ...user!,
+                    ...user,
                     roles: selectedRoles,
-                  } as UserModel);
+                  } satisfies UserModel);
                 }}
               >
                 {AuthConstants.AUTH_ROLES_NAME.map((role) => {
                   if (
-                    !user!?.roles.includes(role) &&
+                    user.roles &&
+                    user?.roles.includes(role) &&
                     role !== AuthConstants.AUTH_ROLES.ADMIN
                   )
                     return (
@@ -262,11 +262,12 @@ const EditUserModal = (): JSX.Element => {
                         {role}
                       </Option>
                     );
+                  return <></>;
                 })}
               </Select>
             ) : (
-              user!?.roles && (
-                <Typography.Text>{user!?.roles.join(", ")}</Typography.Text>
+              user?.roles && (
+                <Typography.Text>{user?.roles.join(", ")}</Typography.Text>
               )
             )}
           </Col>

@@ -1,4 +1,4 @@
-import { Card, CardProps } from "antd";
+import { Card, type CardProps } from "antd";
 
 type CardCommonProps = {
   children: React.ReactNode;

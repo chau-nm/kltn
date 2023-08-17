@@ -6,7 +6,7 @@ import {
   Row,
   Select,
   Spin,
-  UploadFile,
+  type UploadFile,
   message,
 } from "antd";
 import { useForm } from "antd/es/form/Form";
@@ -35,23 +35,23 @@ const AddEditThesisModal = (): JSX.Element => {
 
   const insertThesisMutation = useMutation(ThesisService.insert, {
     onSuccess: (data: ThesisModel | null) => {
-      if (data) {
-        message.success("Thêm thành công");
+      if (data != null) {
+        void message.success("Thêm thành công");
         setIsOpenAddEditThesisModal(false);
         resetModal();
       } else {
-        message.error("Thêm thất bại");
+        void message.error("Thêm thất bại");
       }
     },
   });
   const updateThesisMutation = useMutation(ThesisService.update, {
     onSuccess: (data: boolean) => {
       if (data) {
-        message.success("Cập nhật thành công");
+        void message.success("Cập nhật thành công");
         resetModal();
         setIsOpenAddEditThesisModal(false);
       } else {
-        message.error("Cập nhật thất bại");
+        void message.error("Cập nhật thất bại");
       }
     },
   });
@@ -68,13 +68,15 @@ const AddEditThesisModal = (): JSX.Element => {
     []
   );
 
-  const { data: students, isLoading: isLoadingStudents } = useQuery(
+  const { data: students } = useQuery(
     ["load-student-select"],
-    () => UserService.getUserByRole(AuthConstants.AUTH_ROLES.STUDENT)
+    async () =>
+      await UserService.getUserByRole(AuthConstants.AUTH_ROLES.STUDENT)
   );
-  const { data: teachers, isLoading: isLoadingTeachers } = useQuery(
+  const { data: teachers } = useQuery(
     ["load-teacher-select"],
-    () => UserService.getUserByRole(AuthConstants.AUTH_ROLES.TEACHER)
+    async () =>
+      await UserService.getUserByRole(AuthConstants.AUTH_ROLES.TEACHER)
   );
 
   const [form] = useForm();
@@ -90,8 +92,8 @@ const AddEditThesisModal = (): JSX.Element => {
   useEffect(() => {
     if (isEditModal) {
       form.setFieldsValue({
-        student1: thesis?.students![0]?.user?.userId,
-        student2: thesis?.students![1]?.user?.userId,
+        student1: thesis?.students?.[0]?.user?.userId,
+        student2: thesis?.students?.[1]?.user?.userId,
         teacher: thesis?.teacher?.user?.userId,
         topic: thesis?.topic,
         desciption: thesis?.description,
@@ -104,9 +106,9 @@ const AddEditThesisModal = (): JSX.Element => {
       thesis?.documentUrl &&
         setFile({
           uid: v4(),
-          name: thesis!?.documentUrl!.substring(
-            thesis!?.documentUrl!.lastIndexOf("/") + 1,
-            thesis!?.documentUrl!.indexOf("?")
+          name: thesis?.documentUrl.substring(
+            thesis?.documentUrl.lastIndexOf("/") + 1,
+            thesis?.documentUrl.indexOf("?")
           ),
           status: "done",
           url: thesis?.documentUrl,
@@ -115,19 +117,19 @@ const AddEditThesisModal = (): JSX.Element => {
     }
   }, [thesis]);
 
-  const handleSetDataStudentSelect = (data: UserModel[]) => {
+  const handleSetDataStudentSelect = (data: UserModel[]): void => {
     if (!data) return;
-    let students = data.filter((std) => std.userId != user?.userId);
+    const students = data.filter((std) => std.userId !== user?.userId);
     setStudentSelectOptions(students);
   };
 
-  const handleSetDataTeacherSelect = (data: UserModel[]) => {
+  const handleSetDataTeacherSelect = (data: UserModel[]): void => {
     if (!data) return;
-    let teachers = data.filter((teacher) => teacher.userId != user?.userId);
+    const teachers = data.filter((teacher) => teacher.userId !== user?.userId);
     setTeacherSelectOptions(teachers);
   };
 
-  const resetModal = () => {
+  const resetModal = (): void => {
     setFile(undefined);
     setIsEditModal(false);
     setDesciption(undefined);
@@ -137,7 +139,7 @@ const AddEditThesisModal = (): JSX.Element => {
 
   const title = isEditModal ? "Chỉnh sửa luận văn" : "Thêm luận văn";
 
-  const handleSave = () => {
+  const handleSave = (): void => {
     form.setFieldsValue({
       desciption,
       documentUrl,
@@ -147,6 +149,7 @@ const AddEditThesisModal = (): JSX.Element => {
         if (std.userId === form.getFieldValue("student1")) {
           return std.userId;
         }
+        return undefined;
       })
       .filter((std) => std);
     const student2Id = studentSelectOptions
@@ -154,6 +157,7 @@ const AddEditThesisModal = (): JSX.Element => {
         if (std.userId === form.getFieldValue("student2")) {
           return std.userId;
         }
+        return undefined;
       })
       .filter((std) => std);
     const studentIds: any[] = [];
@@ -165,10 +169,11 @@ const AddEditThesisModal = (): JSX.Element => {
         if (teacher.userId === form.getFieldValue("teacher")) {
           return teacher.userId;
         }
+        return undefined;
       })
       .filter((std) => std)[0];
-    form.validateFields().then(() => {
-      let thesisId = isEditModal ? thesis?.id : v4();
+    void form.validateFields().then(() => {
+      const thesisId = isEditModal ? thesis?.id : v4();
       const thesisReq: ThesisModel = {
         id: thesisId,
         ...form.getFieldsValue(),
@@ -183,7 +188,7 @@ const AddEditThesisModal = (): JSX.Element => {
             isDeleted: false,
             createdAt: new Date().getTime(),
             updatedAt: new Date().getTime(),
-          } as ThesisUserModel;
+          } satisfies ThesisUserModel;
         }),
         teacher: {
           id: v4(),
@@ -194,7 +199,7 @@ const AddEditThesisModal = (): JSX.Element => {
           isDeleted: false,
           createdAt: new Date().getTime(),
           updatedAt: new Date().getTime(),
-        } as ThesisUserModel,
+        } satisfies ThesisUserModel,
         status: 6,
         createdAt: new Date().getTime(),
         updatedAt: new Date().getTime(),
@@ -210,19 +215,19 @@ const AddEditThesisModal = (): JSX.Element => {
     });
   };
 
-  const handleUploadSuccess = (file: UploadFile) => {
+  const handleUploadSuccess = (file: UploadFile): void => {
     setDocumentUrl(file.response ?? undefined);
   };
-  const handleRemove = () => {
+  const handleRemove = (): void => {
     setDocumentUrl(undefined);
   };
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setIsOpenAddEditThesisModal(false);
     resetModal();
   };
 
-  const filterOptions = (input: string, option: any) => {
+  const filterOptions = (input: string, option: any): boolean => {
     return (option?.label?.toString().toLowerCase() ?? "").includes(
       input.toLowerCase()
     );
@@ -256,7 +261,7 @@ const AddEditThesisModal = (): JSX.Element => {
                     ...studentSelectOptions.map((std) => {
                       return {
                         value: std.userId,
-                        label: `${std.fname} - ${std.username}`,
+                        label: `${std.fname ?? ""} - ${std.username ?? ""}`,
                       };
                     }),
                   ]}
@@ -273,7 +278,7 @@ const AddEditThesisModal = (): JSX.Element => {
                     ...studentSelectOptions.map((std) => {
                       return {
                         value: std.userId,
-                        label: `${std.fname} - ${std.username}`,
+                        label: `${std.fname ?? ""} - ${std.username ?? ""}`,
                       };
                     }),
                   ]}
@@ -299,7 +304,7 @@ const AddEditThesisModal = (): JSX.Element => {
                 ...teacherSelectOptions.map((teacher) => {
                   return {
                     value: teacher.userId,
-                    label: `${teacher.fname} - ${teacher.username}`,
+                    label: `${teacher.fname ?? ""} - ${teacher.username ?? ""}`,
                   };
                 }),
               ]}

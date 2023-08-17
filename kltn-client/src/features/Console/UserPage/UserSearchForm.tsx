@@ -1,15 +1,15 @@
-import { Button, DatePicker, Form, Input, Row } from "antd";
+import { Button, Form, Input, Row } from "antd";
 import { useContext } from "react";
 import { UserConsoleContext } from "~/contexts/UserConsoleContext";
 
 const UserSearchForm = (): JSX.Element => {
   const { search, setSearchCondition } = useContext(UserConsoleContext);
 
-  const handleSearch = () => {
+  const handleSearch = (): void => {
     search();
   };
 
-  const handleValueChange = (value: any, allValues: any) => {
+  const handleValueChange = (value: any, allValues: any): void => {
     setSearchCondition({
       username: allValues.username && allValues.username,
       name: allValues.name && allValues.name,

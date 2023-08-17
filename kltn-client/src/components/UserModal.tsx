@@ -14,7 +14,7 @@ const UserModal = (): JSX.Element => {
   const { open, setOpen } = useContext(UserModalContext);
 
   const { user: userAuth } = useContext(AuthContext);
-  const [user, setUser] = useState<UserModel>({} as UserModel);
+  const [user, setUser] = useState<UserModel>({});
   const [editMode, setEditMode] = useState<boolean>(false);
 
   const getUserByIdMutation = useMutation(getUSerById, {
@@ -35,16 +35,16 @@ const UserModal = (): JSX.Element => {
   });
 
   useEffect(() => {
-    if (userAuth) {
-      getUserByIdMutation.mutate(userAuth.userId);
+    if (userAuth != null) {
+      userAuth.userId && getUserByIdMutation.mutate(userAuth.userId);
     }
-  }, [open])
+  }, [open]);
 
-  useEffect(() => {
-    if (userAuth) {
-      getUserByIdMutation.mutate(userAuth.userId);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (userAuth != null) {
+  //     getUserByIdMutation.mutate(userAuth.userId);
+  //   }
+  // }, [getUserByIdMutation, userAuth]);
 
   const ModalFooter = (): JSX.Element => {
     return (
@@ -59,13 +59,18 @@ const UserModal = (): JSX.Element => {
             }}
           />
         ) : (
-          <ButtonCommon value="Chỉnh sửa" onClick={() => setEditMode(true)} />
+          <ButtonCommon
+            value="Chỉnh sửa"
+            onClick={() => {
+              setEditMode(true);
+            }}
+          />
         )}
       </Row>
     );
   };
 
-  const handleCancel = () => {
+  const handleCancel = (): void => {
     setOpen(false);
     setEditMode(false);
   };
@@ -74,7 +79,7 @@ const UserModal = (): JSX.Element => {
     <ModalCommon
       title="Thông tin người dùng"
       open={open}
-      footer={[<ModalFooter key={"1"}/>]}
+      footer={[<ModalFooter key={"1"} />]}
       onCancel={handleCancel}
       maskCloseable={false}
     >
@@ -100,7 +105,7 @@ const UserModal = (): JSX.Element => {
                   setUser({
                     ...user,
                     fname: event.target.value,
-                  } as UserModel);
+                  } satisfies UserModel);
                 }}
               />
             ) : (
@@ -117,11 +122,11 @@ const UserModal = (): JSX.Element => {
               <DatePicker
                 value={dayjs(user.birthday)}
                 onChange={(date) => {
-                  if (date) {
+                  if (date != null) {
                     setUser({
                       ...user,
                       birthday: date.toDate(),
-                    } as UserModel);
+                    } satisfies UserModel);
                   }
                 }}
               />
@@ -144,7 +149,7 @@ const UserModal = (): JSX.Element => {
                     setUser({
                       ...user,
                       studentClass: event.target.value,
-                    } as UserModel);
+                    } satisfies UserModel);
                   }}
                 />
               ) : (
@@ -166,7 +171,7 @@ const UserModal = (): JSX.Element => {
                   setUser({
                     ...user,
                     faculty: event.target.value,
-                  } as UserModel);
+                  } satisfies UserModel);
                 }}
               />
             ) : (

@@ -1,5 +1,4 @@
-import ReactQuill from "react-quill";
-import HtmlParser from "react-html-parser";
+import parse from "html-react-parser";
 
 type ReactQuillPreviewCommonProps = {
   content: string;
@@ -8,7 +7,7 @@ type ReactQuillPreviewCommonProps = {
 const ReactQuillPreviewCommon = ({
   content,
 }: ReactQuillPreviewCommonProps): JSX.Element => {
-  return <div className="py-3">{HtmlParser(content)}</div>;
+  return <div className="py-3">{parse(content)}</div>;
 };
 
 export default ReactQuillPreviewCommon;

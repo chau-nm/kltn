@@ -1,16 +1,13 @@
-import { Row, Space, Spin, Typography, message } from "antd";
-import { ColumnType } from "antd/es/table";
+import { Row, Space, Spin, Typography } from "antd";
+import { type ColumnType } from "antd/es/table";
 import { useContext, useEffect } from "react";
-import { UserConsoleContext } from "~/contexts/UserConsoleContext";
-import { dateDisplay } from "~/common/util";
 import ButtonCommon from "~/components/common/ButtonCommon";
 import {
   DeleteIconCommon,
   EditIconCommon,
 } from "~/components/common/IconCommon";
 import TableCommon from "~/components/common/TableCommon";
-import { useMutation } from "react-query";
-import * as UserService from "~/services/userServices";
+import { UserConsoleContext } from "~/contexts/UserConsoleContext";
 
 const UserTableResult = (): JSX.Element => {
   const {
@@ -39,12 +36,12 @@ const UserTableResult = (): JSX.Element => {
     search();
   }, []);
 
-  const columns: ColumnType<UserModel>[] = [
+  const columns: Array<ColumnType<UserModel>> = [
     {
       title: "STT",
       render: (value, record, index) => {
-        let current = pagination.current;
-        let pageSize = pagination.pageSize;
+        const current = pagination.current;
+        const pageSize = pagination.pageSize;
         if (current && pageSize) {
           return pageSize * (current - 1) + index + 1;
         }
@@ -77,7 +74,11 @@ const UserTableResult = (): JSX.Element => {
       dataIndex: "roles",
       width: 100,
       render: (row, record) => {
-        return <Typography.Text>{record!?.roles.join(", ")}</Typography.Text>;
+        return (
+          <Typography.Text>
+            {record?.roles && record?.roles.join(", ")}
+          </Typography.Text>
+        );
       },
     },
     {
@@ -89,7 +90,7 @@ const UserTableResult = (): JSX.Element => {
           <Row justify={"center"}>
             <EditIconCommon
               onClick={() => {
-                searchDetail(record.userId);
+                record?.userId && searchDetail(record?.userId);
                 setOpenEditUserModal(true);
               }}
             />

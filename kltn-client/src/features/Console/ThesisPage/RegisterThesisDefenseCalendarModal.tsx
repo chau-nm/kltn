@@ -1,7 +1,5 @@
 const RegisterThesisDefenseCalendarModal = (): JSX.Element => {
-    return (
-        <></>
-    )
-}
+  return <></>;
+};
 
 export default RegisterThesisDefenseCalendarModal;

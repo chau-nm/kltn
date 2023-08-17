@@ -19,16 +19,16 @@ import AuthConstants from "~/constants/authConstants";
 import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 import * as ThesisReportCalendarService from "~/services/thesisReportCalendarService";
 import * as UserService from "~/services/userServices";
-import * as CriticalAssessmentService from "~/services/criticalAssessmentService";
+// import * as CriticalAssessmentService from "~/services/criticalAssessmentService";
 import { UserOutlined } from "@ant-design/icons";
 
 interface protectionDisplayModal {
-  id: string;
-  fname: string;
-  username: string;
+  id?: string;
+  fname?: string;
+  username?: string;
 }
 
-const ProtectionModal = () => {
+const ProtectionModal = (): JSX.Element => {
   const [isEditCAPersonMode, setIsEditCAPersonMode] = useState(false);
   const [isEditCACalendarMode, setIsEditCACalendarMode] = useState(false);
   const [caPerson, setCaPerson] = useState<protectionDisplayModal[]>([]);
@@ -42,13 +42,14 @@ const ProtectionModal = () => {
     setIsOpenProtectionDetailModal,
   } = useContext(ThesisConsoleContext);
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setIsOpenProtectionModal(false);
   };
 
-  const { data: teachers, isLoading: isLoadingTeachers } = useQuery(
+  const { data: teachers } = useQuery<UserModel[]>(
     ["load-teacher-select"],
-    () => UserService.getUserByRole(AuthConstants.AUTH_ROLES.TEACHER)
+    async () =>
+      await UserService.getUserByRole(AuthConstants.AUTH_ROLES.TEACHER)
   );
 
   const insertThesisReportCalendarMutation = useMutation(
@@ -56,26 +57,26 @@ const ProtectionModal = () => {
     {
       onSuccess: (data: ThesisReportCalendarModel) => {
         if (data) {
-          message.success("Cập nhật lịch phản biện thành công");
+          void message.success("Cập nhật lịch phản biện thành công");
         } else {
-          message.error("Cập nhật lịch phản biện thất bại");
+          void message.error("Cập nhật lịch phản biện thất bại");
         }
       },
     }
   );
 
-  const insertUserCriticalAssessment = useMutation(
-    CriticalAssessmentService.insertUser,
-    {
-      onSuccess: (data: ThesisReportCalendarModel) => {
-        if (data) {
-          message.success("Cập nhật người phản biện thành công");
-        } else {
-          message.error("Cập nhật người phản biện thất bại");
-        }
-      },
-    }
-  );
+  // const insertUserCriticalAssessment = useMutation(
+  //   CriticalAssessmentService.insertUser,
+  //   {
+  //     onSuccess: (data: ThesisReportCalendarModel) => {
+  //       if (data) {
+  //         message.success("Cập nhật người phản biện thành công");
+  //       } else {
+  //         message.error("Cập nhật người phản biện thất bại");
+  //       }
+  //     },
+  //   }
+  // );
 
   const columns = [
     {
@@ -92,11 +93,11 @@ const ProtectionModal = () => {
     },
   ];
 
-  const handleOnChangeCalendar = (value: any) => {
+  const handleOnChangeCalendar = (value: any): void => {
     setCACalendar(value.toDate().getTime());
   };
 
-  const handleSaveCACalendar = () => {
+  const handleSaveCACalendar = (): void => {
     if (!caCalendar) {
       return;
     }
@@ -113,7 +114,7 @@ const ProtectionModal = () => {
     setIsEditCACalendarMode(false);
   };
 
-  const handleSaveCriticalAssessmentPerson = () => {
+  const handleSaveCriticalAssessmentPerson = (): void => {
     if (!thesis?.id || !caPerson) {
       return;
     }
@@ -124,7 +125,7 @@ const ProtectionModal = () => {
     setIsEditCAPersonMode(false);
   };
 
-  const filterOptions = (input: string, option: any) => {
+  const filterOptions = (input: string, option: any): boolean => {
     return (option?.label?.toString().toLowerCase() ?? "").includes(
       input.toLowerCase()
     );
@@ -136,8 +137,8 @@ const ProtectionModal = () => {
       open={isOpenProtectionModal}
       onCancel={handleClose}
       footer={[
-        <ButtonCommon value="Đóng" />,
-        <ButtonCommon value="Thêm bảo vệ" />,
+        <ButtonCommon key={1} value="Đóng" />,
+        <ButtonCommon key={2} value="Thêm bảo vệ" />,
       ]}
     >
       <div className="min-w-[1000px]">
@@ -148,7 +149,9 @@ const ProtectionModal = () => {
           <Col>
             <span
               className="text-blue-400 select-none cursor-pointer hover:text-blue-500 duration-300"
-              onClick={() => setIsOpenThesisDetailModal(true)}
+              onClick={() => {
+                setIsOpenThesisDetailModal(true);
+              }}
             >
               Xem chi tiết
             </span>
@@ -171,7 +174,7 @@ const ProtectionModal = () => {
                 ></Input>
               </>
             ) : caCalendar ? (
-              dateTimeDisplay(new Date(caCalendar!))
+              dateTimeDisplay(new Date(caCalendar))
             ) : (
               "Chưa có lịch bảo vệ "
             )}
@@ -181,7 +184,9 @@ const ProtectionModal = () => {
               <>
                 <span
                   className="text-red-400 select-none cursor-pointer hover:text-red-500 duration-300 mx-3"
-                  onClick={() => setIsEditCACalendarMode(false)}
+                  onClick={() => {
+                    setIsEditCACalendarMode(false);
+                  }}
                 >
                   Hủy
                 </span>
@@ -195,7 +200,9 @@ const ProtectionModal = () => {
             ) : (
               <span
                 className="text-blue-400 select-none cursor-pointer hover:text-blue-500 duration-300"
-                onClick={() => setIsEditCACalendarMode(true)}
+                onClick={() => {
+                  setIsEditCACalendarMode(true);
+                }}
               >
                 Chỉnh sửa
               </span>
@@ -210,19 +217,19 @@ const ProtectionModal = () => {
                 mode="multiple"
                 style={{ width: 300 }}
                 showSearch
-                value={caPerson.map((person) => person.id)}
-                onChange={(value: Array<string>) => {
-                  if (teachers) {
-                    setCaPerson(
-                      teachers
-                        .filter((teacher) => value.includes(teacher.userId))
-                        .map((teacher) => ({
-                          id: teacher.userId,
-                          fname: teacher.fname,
-                          username: teacher.username,
-                        }))
-                    );
-                  }
+                value={caPerson.map((person) => person.id ?? "")}
+                onChange={(value: string[]) => {
+                  const caPerson: protectionDisplayModal[] = teachers!
+                    .filter(
+                      (teacher: UserModel) =>
+                        teacher?.userId && value.includes(teacher?.userId)
+                    )
+                    .map((teacher) => ({
+                      id: teacher.userId,
+                      fname: teacher.fname,
+                      username: teacher.username,
+                    }));
+                  setCaPerson(caPerson);
                 }}
                 placeholder="Nhập mã số giảng viên"
                 filterOption={filterOptions}
@@ -230,7 +237,9 @@ const ProtectionModal = () => {
                   ...teachers!.map((teacher) => {
                     return {
                       value: teacher.userId,
-                      label: `${teacher.fname} - ${teacher.username}`,
+                      label: `${teacher.fname ?? ""} - ${
+                        teacher.username ?? ""
+                      }`,
                     };
                   }),
                 ]}
@@ -246,7 +255,9 @@ const ProtectionModal = () => {
               <>
                 <span
                   className="text-red-400 select-none cursor-pointer hover:text-red-500 duration-300 mx-3"
-                  onClick={() => setIsEditCAPersonMode(false)}
+                  onClick={() => {
+                    setIsEditCAPersonMode(false);
+                  }}
                 >
                   Hủy
                 </span>
@@ -260,7 +271,9 @@ const ProtectionModal = () => {
             ) : (
               <span
                 className="text-blue-400 select-none cursor-pointer hover:text-blue-500 duration-300"
-                onClick={() => setIsEditCAPersonMode(true)}
+                onClick={() => {
+                  setIsEditCAPersonMode(true);
+                }}
               >
                 Chỉnh sửa
               </span>
@@ -292,7 +305,9 @@ const ProtectionModal = () => {
               <Col className="flex items-center">
                 <span
                   className="text-blue-400 select-none cursor-pointer hover:text-blue-500 duration-300"
-                  onClick={() => setIsOpenProtectionDetailModal(true)}
+                  onClick={() => {
+                    setIsOpenProtectionDetailModal(true);
+                  }}
                 >
                   Xem chi tiết
                 </span>

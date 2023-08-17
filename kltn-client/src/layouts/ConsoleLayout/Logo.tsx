@@ -1,4 +1,4 @@
-import { Col, Row, Space, Typography } from "antd";
+import { Col, Row } from "antd";
 import logo from "~/assets/images/logo.png";
 
 const Logo = (): JSX.Element => {

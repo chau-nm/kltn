@@ -1,20 +1,8 @@
-import { Row, Col, Button } from "antd";
-import { LogoutOutlined } from "@ant-design/icons";
+import { Col, Row } from "antd";
 import Logo from "./Logo";
-import { useContext } from "react";
-import { AuthContext } from "~/contexts/AuthContext";
 import UserMenu from "./UserMenu";
 
 const Header = (): JSX.Element => {
-  const { signOut } = useContext(AuthContext);
-
-  const handleLogout = (): void => {
-    signOut();
-  };
-
-  const handleOnClickUser = () => {
-  }
-
   return (
     <Row className="bg-white shadow" justify={"center"} align={"middle"}>
       <Row

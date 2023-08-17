@@ -12,8 +12,8 @@ const MyThesisPage = (): JSX.Element => {
   const { user } = useContext(AuthContext);
   const { data, isLoading } = useQuery<ThesisModel[]>(
     ["search-thesis-by-user"],
-    () => {
-      return user ? ThesisService.searchByUser(user?.userId) : [];
+    async () => {
+      return user?.userId ? await ThesisService.searchByUser(user?.userId) : [];
     },
     {
       onSuccess: () => {},
@@ -23,7 +23,7 @@ const MyThesisPage = (): JSX.Element => {
   return (
     <PageLayout pageTitle="Luận văn của tôi">
       <Spin spinning={isLoading}>
-        {data && data.length <= 0 && (
+        {data != null && data.length <= 0 && (
           <Typography.Text type="warning">
             Bạn chưa có tham gia luận văn nào
           </Typography.Text>
@@ -34,6 +34,7 @@ const MyThesisPage = (): JSX.Element => {
           if (thesis.status && thesis.status > 1) {
             return <ThesisDetail key={thesis.id} thesis={thesis} />;
           }
+          return <></>;
         })}
       </Spin>
     </PageLayout>

@@ -1,11 +1,9 @@
-import { PaginationProps, TablePaginationConfig } from "antd";
-import { PaginationType } from "antd/es/transfer/interface";
+import { type TablePaginationConfig } from "antd";
 import {
-  PropsWithChildren,
-  SetStateAction,
   createContext,
-  useEffect,
   useState,
+  type PropsWithChildren,
+  type SetStateAction,
 } from "react";
 import { useMutation } from "react-query";
 import usePagination from "~/hook/usePagination";
@@ -17,7 +15,7 @@ interface UserConsoleContextInterface {
 
   users: UserModel[];
   setUsers: React.Dispatch<SetStateAction<UserModel[]>>;
-  UserDetail: UserModel | null;
+  userDetail: UserModel | null;
   setUserDetail: React.Dispatch<SetStateAction<UserModel | null>>;
 
   openAddNewUserModal: boolean;
@@ -41,7 +39,7 @@ const initUserConsoleContext: UserConsoleContextInterface = {
 
   users: [],
   setUsers: () => null,
-  UserDetail: null,
+  userDetail: null,
   setUserDetail: () => null,
 
   openAddNewUserModal: false,
@@ -64,7 +62,7 @@ export const UserConsoleProvider = ({
   children,
 }: PropsWithChildren): JSX.Element => {
   const [users, setUsers] = useState<UserModel[]>([]);
-  const [UserDetail, setUserDetail] = useState<UserModel | null>(null);
+  const [userDetail, setUserDetail] = useState<UserModel | null>(null);
   const [openAddNewUserModal, setOpenAddNewUserModal] =
     useState<boolean>(false);
   const [openEditUserModal, setOpenEditUserModal] = useState<boolean>(false);
@@ -91,7 +89,7 @@ export const UserConsoleProvider = ({
    */
   const searchDetailMutation = useMutation(UserService.getUSerById, {
     onSuccess: (data: UserModel | null) => {
-      if (data) {
+      if (data != null) {
         setUserDetail(data);
       }
     },
@@ -102,10 +100,10 @@ export const UserConsoleProvider = ({
   const [pagination, setPagination, handleChange] =
     usePagination<UserSearchConditionModel>(
       searchMutaion.mutate,
-      searchCondition as UserSearchConditionModel
+      searchCondition
     );
 
-  const search = () => {
+  const search = (): void => {
     searchMutaion.mutate({
       page: 1,
       pageSize: pagination.pageSize,
@@ -113,7 +111,7 @@ export const UserConsoleProvider = ({
     });
   };
 
-  const searchDetail = (id: string) => {
+  const searchDetail = (id: string): void => {
     searchDetailMutation.mutate(id);
   };
 
@@ -124,7 +122,7 @@ export const UserConsoleProvider = ({
         isLoadingDetail: searchDetailMutation.isLoading,
 
         users,
-        UserDetail,
+        userDetail,
         setUserDetail,
 
         setUsers,

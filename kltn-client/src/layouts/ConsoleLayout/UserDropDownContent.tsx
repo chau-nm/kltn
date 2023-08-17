@@ -11,21 +11,30 @@ import path from "~/constants/path";
 import UserDropDownItem from "./UserDropDownItem";
 import { UserModalContext } from "~/contexts/UserModalContext";
 
-const UserDropDownContent = (): JSX.Element => {
+type UserDropDownContentProps = {
+  closePopover?: () => void;
+};
+
+const UserDropDownContent = ({
+  closePopover,
+}: UserDropDownContentProps): JSX.Element => {
   const { signOut } = useContext(AuthContext);
   const { setOpen: setOpenUserModal } = useContext(UserModalContext);
 
   const navigate = useNavigate();
 
-  const handleNavigateConsole = () => {
+  const handleNavigateConsole = (): void => {
+    closePopover?.();
     navigate(path.DASHBOARD);
   };
 
-  const handleNavigateProfile = () => {
+  const handleNavigateProfile = (): void => {
+    closePopover?.();
     setOpenUserModal(true);
   };
 
-  const handleLogout = () => {
+  const handleLogout = (): void => {
+    closePopover?.();
     signOut();
   };
 

@@ -1,5 +1,5 @@
 import { Row, Space, Spin, message } from "antd";
-import { ColumnType } from "antd/es/table";
+import { type ColumnType } from "antd/es/table";
 import { useContext, useEffect } from "react";
 import { NotificationConsoleContext } from "~/contexts/NotificationConsoleContext";
 import { dateDisplay } from "~/common/util";
@@ -30,7 +30,7 @@ const NotificationTableResult = (): JSX.Element => {
         message.destroy("Xóa thành công");
         search();
       } else {
-        message.error("Xóa thất bại");
+        void message.error("Xóa thất bại");
       }
     },
   });
@@ -39,12 +39,12 @@ const NotificationTableResult = (): JSX.Element => {
     search();
   }, []);
 
-  const columns: ColumnType<NotificationModel>[] = [
+  const columns: Array<ColumnType<NotificationModel>> = [
     {
       title: "STT",
       render: (value, record, index) => {
-        let current = pagination.current;
-        let pageSize = pagination.pageSize;
+        const current = pagination.current;
+        const pageSize = pagination.pageSize;
         if (current && pageSize) {
           return pageSize * (current - 1) + index + 1;
         }
@@ -90,14 +90,6 @@ const NotificationTableResult = (): JSX.Element => {
           </Row>
         );
       },
-    },
-  ];
-
-  const dataSource: NotificationModel[] = [
-    {
-      id: "1",
-      title: "Thông báo về việc đăng ký luận văn",
-      content: "Abc",
     },
   ];
 

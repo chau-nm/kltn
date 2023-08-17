@@ -1,4 +1,4 @@
-import { SetStateAction, createContext, useState } from "react";
+import { type SetStateAction, createContext, useState } from "react";
 
 interface CriticalAssessmentDashboardContextInterface {
   isOpenCriticalAssessmentFormModal: boolean;
@@ -24,7 +24,7 @@ const initCriticalAssessmentDashboardContext: CriticalAssessmentDashboardContext
   };
 
 export const CriticalAssessmentDashboardContext = createContext(
-  initCriticalAssessmentDashboardContext
+  initCriticalAssessmentDashboardContext,
 );
 
 export const CriticalAssessmentDashboardProvider = ({

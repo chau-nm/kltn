@@ -1,4 +1,4 @@
-import { Suspense, lazy, useContext } from "react";
+import { lazy, useContext } from "react";
 import { Navigate, Outlet, useRoutes } from "react-router-dom";
 import AuthConstants from "~/constants/authConstants";
 import path from "~/constants/path";
@@ -14,34 +14,38 @@ import ThesisConsoleProvider from "~/contexts/ThesisConsoleContext";
 import { CriticalAssessmentDashboardProvider } from "~/contexts/CriticalAssessmentDashboardContext";
 
 /** IMPORT PAGE START */
-const LoginPage = lazy(() => import("~/features/LoginPage"));
+const LoginPage = lazy(async () => await import("~/features/LoginPage"));
 
-//Dashboard
-const DashboardPage = lazy(() => import("~/features/Dashboard"));
+// Dashboard
+const DashboardPage = lazy(async () => await import("~/features/Dashboard"));
 const NotificationDetailPage = lazy(
-  () => import("~/features/Dashboard/NotificationDetailPage")
+  async () => await import("~/features/Dashboard/NotificationDetailPage")
 );
 const DashboardThesisRegisterPage = lazy(
-  () => import("~/features/Dashboard/RegisterThesisPage")
+  async () => await import("~/features/Dashboard/RegisterThesisPage")
 );
-const MyThesisPage = lazy(() => import("~/features/Dashboard/MyThesisPage"));
+const MyThesisPage = lazy(
+  async () => await import("~/features/Dashboard/MyThesisPage")
+);
 const OutlineReviewPage = lazy(
-  () => import("~/features/Dashboard/OutlineReviewPage")
+  async () => await import("~/features/Dashboard/OutlineReviewPage")
 );
 const CriticalAssessmentPage = lazy(
-  () => import("~/features/Dashboard/CriticalAssessmentPage")
+  async () => await import("~/features/Dashboard/CriticalAssessmentPage")
 );
 const ProtectionPage = lazy(
-  () => import("~/features/Dashboard/ProtectionPage")
+  async () => await import("~/features/Dashboard/ProtectionPage")
 );
 
-//Console
+// Console
 const NotificationConsolePage = lazy(
-  () => import("~/features/Console/NotificationPage")
+  async () => await import("~/features/Console/NotificationPage")
 );
-const ConsolePage = lazy(() => import("~/features/Console"));
-const ThesisConsolePage = lazy(() => import("~/features/Console/ThesisPage"));
-const UserPage = lazy(() => import("~/features/Console/UserPage"));
+const ConsolePage = lazy(async () => await import("~/features/Console"));
+const ThesisConsolePage = lazy(
+  async () => await import("~/features/Console/ThesisPage")
+);
+const UserPage = lazy(async () => await import("~/features/Console/UserPage"));
 
 /** IMPORT PAGE END */
 
@@ -54,8 +58,9 @@ type AuthenticatedRouteProps = {
  *
  * @returns
  */
-const RejectedRoute = () => {
+const RejectedRoute = (): JSX.Element => {
   const { isAuthenticated } = useContext(AuthContext);
+
   return !isAuthenticated ? (
     <Navigate to={path.LOGIN} />
   ) : (
@@ -66,13 +71,16 @@ const RejectedRoute = () => {
 /**
  * Route for Authenticated
  */
-const AuthenticatedRoute = ({ roles }: AuthenticatedRouteProps) => {
+const AuthenticatedRoute = ({
+  roles,
+}: AuthenticatedRouteProps): JSX.Element => {
   const { isAuthenticated, user } = useContext(AuthContext);
-  const userRoles = user?.roles ? user.roles : [];
-  let hasRole = hasCommonValue(roles, userRoles);
+  const userRoles = user?.roles != null ? user.roles : [];
+  const hasRole = hasCommonValue(roles, userRoles);
   if (isAuthenticated && hasRole) {
     return <Outlet />;
   } else {
+    console.log("ádas");
     return <Navigate to={path.LOGIN} />;
   }
 };
@@ -81,7 +89,7 @@ const AuthenticatedRoute = ({ roles }: AuthenticatedRouteProps) => {
  * Routes
  * @returns
  */
-const useRouteElements = () => {
+const useRouteElements = (): React.ReactElement | null => {
   const routerElements = useRoutes([
     {
       path: "",
@@ -199,7 +207,7 @@ const useRouteElements = () => {
     {
       path: "",
       element: (
-        <AuthenticatedRoute roles={[AuthConstants.AUTH_ROLES.COUNCIL]} />
+        <AuthenticatedRoute roles={[AuthConstants.AUTH_ROLES.TEACHER]} />
       ),
       children: [
         {

@@ -1,16 +1,20 @@
 import { Table } from "antd";
-import { ColumnType, TablePaginationConfig, TableProps } from "antd/es/table";
+import {
+  type ColumnType,
+  type TablePaginationConfig,
+  type TableProps,
+} from "antd/es/table";
 import "~/assets/styles/TableCommon.scss";
 
 interface TableCommonProps<T> {
-  columns?: ColumnType<T>[];
+  columns?: Array<ColumnType<T>>;
   dataSource?: T[];
   className?: string;
   pagination?: TablePaginationConfig;
   handleOnChange?: (pagination: TablePaginationConfig) => void;
 }
 
-const TableCommon = <T extends {}>({
+const TableCommon = <T extends object>({
   columns,
   dataSource,
   className,

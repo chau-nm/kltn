@@ -1,5 +1,5 @@
-class LoginPageConstants{
-    public static readonly TITLE = 'Đăng nhập'
+class LoginPageConstants {
+  public static readonly TITLE = "Đăng nhập";
 }
 
-export default LoginPageConstants
+export default LoginPageConstants;

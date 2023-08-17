@@ -1,5 +1,5 @@
 import { Table } from "antd";
-import { ColumnType } from "antd/es/table";
+import { type ColumnType } from "antd/es/table";
 import { useContext, useEffect } from "react";
 import { useQuery } from "react-query";
 import PageLayout from "~/components/common/PageLayout";
@@ -20,15 +20,20 @@ const CriticalAssessmentPage = (): JSX.Element => {
     isOpenThesisDetail,
   } = useContext(CriticalAssessmentDashboardContext);
 
-  const { data: thesisList } = useQuery(["search-thesis-ca-by-user-id"], () =>
-    ThesisService.searchThesisCAByUserId(user?.userId!)
+  const { data: thesisList } = useQuery(
+    ["search-thesis-ca-by-user-id"],
+    async () => {
+      if (user?.userId) {
+        return await ThesisService.searchThesisCAByUserId(user?.userId);
+      }
+    }
   );
 
   useEffect(() => {
     console.log(thesisList);
   }, [thesisList]);
 
-  const columns: ColumnType<ThesisModel>[] = [
+  const columns: Array<ColumnType<ThesisModel>> = [
     {
       title: "STT",
       render: (value, record, index) => {
@@ -69,7 +74,7 @@ const CriticalAssessmentPage = (): JSX.Element => {
     <PageLayout pageTitle="Phản biện">
       <Table columns={columns} dataSource={thesisList} />
       <CriticalAssessmentFormModal />
-      {thesis && (
+      {thesis != null && (
         <ThesisDetailView
           thesis={thesis}
           isOpen={isOpenThesisDetail}

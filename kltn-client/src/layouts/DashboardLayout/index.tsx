@@ -4,7 +4,9 @@ import Header from "~/layouts/DashboardLayout/Header";
 import VerticalNavigation from "./VerticalNavigation";
 import LoadingPage from "~/features/LoadingPage";
 
-const DashboardLayout = ({ children }: React.PropsWithChildren) => {
+const DashboardLayout = ({
+  children,
+}: React.PropsWithChildren): JSX.Element => {
   return (
     <>
       <Header />

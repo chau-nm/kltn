@@ -1,11 +1,9 @@
-import { PaginationProps, TablePaginationConfig } from "antd";
-import { PaginationType } from "antd/es/transfer/interface";
+import { type TablePaginationConfig } from "antd";
 import {
-  PropsWithChildren,
-  SetStateAction,
   createContext,
-  useEffect,
   useState,
+  type PropsWithChildren,
+  type SetStateAction,
 } from "react";
 import { useMutation } from "react-query";
 import usePagination from "~/hook/usePagination";
@@ -18,15 +16,17 @@ interface NotificationConsoleContextInterface {
   notifications: NotificationModel[];
   setNotifications: React.Dispatch<SetStateAction<NotificationModel[]>>;
   notificationDetail: NotificationModel | null;
-  setNotificationDetail: React.Dispatch<SetStateAction<NotificationModel | null>>;
-  
+  setNotificationDetail: React.Dispatch<
+    SetStateAction<NotificationModel | null>
+  >;
+
   openAddNewNotificationModal: boolean;
   setOpenAddNewNotificationModal: React.Dispatch<SetStateAction<boolean>>;
   openEditNotificationModal: boolean;
   setOpenEditNotificationModal: React.Dispatch<SetStateAction<boolean>>;
 
   search: (searchCondition?: NotificationSearchConditionModel) => void;
-  searchDetail: (id : string) => void;
+  searchDetail: (id: string) => void;
 
   searchCondition: NotificationSearchConditionModel;
   setSearchCondition: React.Dispatch<
@@ -35,7 +35,6 @@ interface NotificationConsoleContextInterface {
   pagination: TablePaginationConfig;
   setPagination: React.Dispatch<SetStateAction<TablePaginationConfig>>;
   handleChange: (pagination: TablePaginationConfig) => void;
-
 }
 
 const initNotificationConsoleContext: NotificationConsoleContextInterface = {
@@ -46,7 +45,7 @@ const initNotificationConsoleContext: NotificationConsoleContextInterface = {
   setNotifications: () => null,
   notificationDetail: null,
   setNotificationDetail: () => null,
-  
+
   openAddNewNotificationModal: false,
   setOpenAddNewNotificationModal: () => null,
   openEditNotificationModal: false,
@@ -69,7 +68,8 @@ export const NotificationConsoleProvider = ({
   children,
 }: PropsWithChildren): JSX.Element => {
   const [notifications, setNotifications] = useState<NotificationModel[]>([]);
-  const [notificationDetail, setNotificationDetail] = useState<NotificationModel | null>(null);
+  const [notificationDetail, setNotificationDetail] =
+    useState<NotificationModel | null>(null);
   const [openAddNewNotificationModal, setOpenAddNewNotificationModal] =
     useState<boolean>(false);
   const [openEditNotificationModal, setOpenEditNotificationModal] =
@@ -84,8 +84,8 @@ export const NotificationConsoleProvider = ({
         setNotifications(data.data as NotificationModel[]);
         setPagination((pagination) => {
           return {
-              ...pagination,
-              total: data.total
+            ...pagination,
+            total: data.total,
           };
         });
       }
@@ -96,11 +96,11 @@ export const NotificationConsoleProvider = ({
    * search notification detail mutation
    */
   const searchDetailMutation = useMutation(NotificationService.searchDetail, {
-    onSuccess: (data : NotificationModel) => {
-      if  (data) {
+    onSuccess: (data: NotificationModel) => {
+      if (data) {
         setNotificationDetail(data);
       }
-    }
+    },
   });
 
   const [searchCondition, setSearchCondition] =
@@ -108,10 +108,10 @@ export const NotificationConsoleProvider = ({
   const [pagination, setPagination, handleChange] =
     usePagination<NotificationSearchConditionModel>(
       searchMutaion.mutate,
-      searchCondition as NotificationSearchConditionModel
+      searchCondition
     );
 
-  const search = () => {
+  const search = (): void => {
     searchMutaion.mutate({
       page: 1,
       pageSize: pagination.pageSize,
@@ -119,26 +119,26 @@ export const NotificationConsoleProvider = ({
     });
   };
 
-  const searchDetail = (id : string) => {
+  const searchDetail = (id: string): void => {
     searchDetailMutation.mutate(id);
-  }
+  };
 
   return (
     <NotificationConsoleContext.Provider
       value={{
         isLoadingList: searchMutaion.isLoading,
         isLoadingDetail: searchDetailMutation.isLoading,
-        
+
         notifications,
         notificationDetail,
         setNotificationDetail,
-        
+
         setNotifications,
         openAddNewNotificationModal,
         setOpenAddNewNotificationModal,
         openEditNotificationModal,
         setOpenEditNotificationModal,
-        
+
         search,
         searchDetail,
 

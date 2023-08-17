@@ -1,10 +1,10 @@
 import { InboxOutlined } from "@ant-design/icons";
-import { UploadFile } from "antd";
-import Dragger, { DraggerProps } from "antd/es/upload/Dragger";
-import { SetStateAction, useState } from "react";
+import { type UploadFile } from "antd";
+import Dragger, { type DraggerProps } from "antd/es/upload/Dragger";
+import { type SetStateAction } from "react";
 import { uploadFileToFirebase } from "~/common/firebase";
 
-type DraggerSingleCommon = {
+type DraggerSingleCommonProps = {
   handleSuccess?: (file: UploadFile) => void;
   handleFailure?: (file: UploadFile) => void;
   handleRemove?: () => void;
@@ -18,10 +18,8 @@ const DraggerSingleCommon = ({
   handleRemove,
   file,
   setFile,
-}: DraggerSingleCommon): JSX.Element => {
-  // const [file, setFile] = useState<UploadFile>();
-
-  const commonUploadRequest = async (options: any) => {
+}: DraggerSingleCommonProps): JSX.Element => {
+  const commonUploadRequest = async (options: any): Promise<void> => {
     const { onSuccess, onError, file } = options;
     try {
       const downloadURL = await uploadFileToFirebase(file);
@@ -31,9 +29,9 @@ const DraggerSingleCommon = ({
     }
   };
 
-  const remove = () => {
+  const remove = (): void => {
     setFile(undefined);
-    handleRemove && handleRemove();
+    handleRemove?.();
   };
 
   const draggerConfig: DraggerProps = {
@@ -45,16 +43,17 @@ const DraggerSingleCommon = ({
         setFile(file);
       }
       if (file.status === "done") {
-        handleSuccess && handleSuccess(file);
+        handleSuccess?.(file);
       } else if (file.status === "error") {
-        handleFailure && handleFailure(file.response);
+        handleFailure?.(file.response);
       }
     },
   };
 
   return (
     <Dragger
-      fileList={file ? [file] : []}
+      fileList={file != null ? [file] : []}
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       customRequest={commonUploadRequest}
       {...draggerConfig}
     >

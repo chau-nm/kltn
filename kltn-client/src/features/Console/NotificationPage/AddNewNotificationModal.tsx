@@ -1,14 +1,14 @@
-import { Form, Input, Row, Spin, UploadFile, message } from "antd";
-import { useContext, useEffect, useState } from "react";
+import { Form, Input, Row, Spin, message, type UploadFile } from "antd";
+import { useForm } from "antd/es/form/Form";
+import { useContext, useState } from "react";
+import { useMutation } from "react-query";
+import { v4 } from "uuid";
 import { NotificationConsoleContext } from "~/contexts/NotificationConsoleContext";
+import * as NotificationService from "~/services/notificationServices";
 import ButtonCommon from "../../../components/common/ButtonCommon";
 import DraggerCommon from "../../../components/common/DraggerCommon";
 import ModalCommon from "../../../components/common/ModalCommon";
 import RichTextEditorCommon from "../../../components/common/RichTextEditorCommon";
-import { v4 } from "uuid";
-import { useForm } from "antd/es/form/Form";
-import * as NotificationService from "~/services/notificationServices";
-import { useMutation } from "react-query";
 
 const AddNewNotificationModal = (): JSX.Element => {
   const {
@@ -25,8 +25,8 @@ const AddNewNotificationModal = (): JSX.Element => {
 
   const insertNotificationMutation = useMutation(NotificationService.insert, {
     onSuccess: (data: NotificationModel | null) => {
-      if (data) {
-        message.success("Thêm thành công");
+      if (data != null) {
+        void message.success("Thêm thành công");
         setOpenAddNewNotificationModal(false);
         clearData();
         setSearchCondition(() => {
@@ -34,34 +34,34 @@ const AddNewNotificationModal = (): JSX.Element => {
         });
         search();
       } else {
-        message.error("Thêm thất bại");
+        void message.error("Thêm thất bại");
       }
     },
   });
 
-  const handleUploadSuccess = (response: string) => {
+  const handleUploadSuccess = (response: string): void => {
     const updateAttachment = attachments.concat(response);
     setAttachments(updateAttachment);
   };
 
-  const handleUploadFailure = () => {};
+  const handleUploadFailure = (): void => {};
 
-  const handleRemove = (file: UploadFile) => {
+  const handleRemove = (file: UploadFile): void => {
     const updateAttachment = attachments.filter(
       (attachment) => attachment !== file.response
     );
     setAttachments(updateAttachment);
   };
 
-  const clearData = () => {
+  const clearData = (): void => {
     setEditorHtml("");
     setAttachments([]);
     form.resetFields();
   };
 
-  const handleSave = async () => {
+  const handleSave = (): void => {
     form.setFieldValue("content", editorHtml);
-    form.validateFields().then(() => {
+    void form.validateFields().then(() => {
       const notification: NotificationModel = {
         id: v4(),
         title: form.getFieldValue("title"),
@@ -75,7 +75,7 @@ const AddNewNotificationModal = (): JSX.Element => {
     });
   };
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     clearData();
     setOpenAddNewNotificationModal(false);
   };

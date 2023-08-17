@@ -1,6 +1,6 @@
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useRef } from "react";
-import Slider, { Settings } from "react-slick";
+import Slider, { type Settings } from "react-slick";
 
 type SlickCommonProps = {
   children: React.ReactNode;
@@ -19,7 +19,7 @@ const SlickPreviousButton = ({
 }: SlickButtonProps): JSX.Element => {
   return (
     <div className={className} style={{ ...style }} onClick={onClick}>
-      <LeftOutlined/>
+      <LeftOutlined />
     </div>
   );
 };

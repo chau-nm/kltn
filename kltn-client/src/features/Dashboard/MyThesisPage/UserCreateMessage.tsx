@@ -14,26 +14,24 @@ const UserCreatedMessage = ({ data }: UserCreatedMessageProps): JSX.Element => {
     return thesis.createdBy === user?.userId;
   });
 
-  const handleOk = () => {};
+  const handleOk = (): void => {};
 
   return (
     <>
       {myThesis?.map((thesis) => {
-        let students: ThesisUserModel[] = thesis.students ?? [];
-        let thesisUsers: ThesisUserModel[] = [
+        const students: ThesisUserModel[] = thesis.students ?? [];
+        const thesisUsers: ThesisUserModel[] = [
           ...students,
           thesis.teacher as ThesisUserModel,
         ];
-        let thesisUsersAccepted = thesisUsers.filter((tu) => tu.status === 1);
-        let thesisUsersDecline = thesisUsers.filter((tu) => tu.status === 2);
-        console.log(thesisUsers.length);
-        console.log(thesisUsersAccepted.length);
+        const thesisUsersAccepted = thesisUsers.filter((tu) => tu.status === 1);
+        const thesisUsersDecline = thesisUsers.filter((tu) => tu.status === 2);
         if (
           thesisUsersDecline.length === 0 &&
           thesisUsersAccepted.length < thesisUsers.length
         ) {
           return (
-            <Typography.Text>
+            <Typography.Text key={1}>
               Luận văn của bạn đang đợi người khác đồng ý
             </Typography.Text>
           );
@@ -42,6 +40,7 @@ const UserCreatedMessage = ({ data }: UserCreatedMessageProps): JSX.Element => {
         if (thesisUsersDecline.length > 0) {
           return (
             <Alert
+              key={2}
               className="my-2"
               message={
                 <span>Luận văn của bạn đã có người từ chối và sẽ bị hủy.</span>
@@ -62,6 +61,7 @@ const UserCreatedMessage = ({ data }: UserCreatedMessageProps): JSX.Element => {
             />
           );
         }
+        return <></>;
       })}
     </>
   );

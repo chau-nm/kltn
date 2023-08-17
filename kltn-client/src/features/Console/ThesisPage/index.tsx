@@ -1,23 +1,20 @@
 import { Space } from "antd";
-import {
-  ThesisConsoleContext,
-  ThesisConsoleProvider,
-} from "~/contexts/ThesisConsoleContext";
+import { useContext } from "react";
+import ThesisDetailView from "~/components/ThesisDetailView";
+import ProtectionDetailView from "~/components/protectionDetailView";
+import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
+import AddCommentMinistryModal from "./AddCommentMinistryModal";
 import AddCouncilModal from "./AddCouncilModal";
+import AddEditThesisModal from "./AddEditThesisModal";
 import ButtonsComponent from "./ButtonsComponent";
+import CriticalAssessmentModal from "./CriticalAssessmentModal";
 import HeaderMessage from "./HeaderMessage";
 import OpenThesisRegisterModal from "./OpenThesisRegisterModal";
+import ProtectionModal from "./ProtectionModal";
 import ThesisSearchForm from "./ThesisSearchForm";
 import ThesisTableResult from "./ThesisTableResult";
-import AddEditThesisModal from "./AddEditThesisModal";
-import ThesisDetailView from "~/components/ThesisDetailView";
-import { useContext } from "react";
-import AddCommentMinistryModal from "./AddCommentMinistryModal";
-import CriticalAssessmentModal from "./CriticalAssessmentModal";
-import ProtectionModal from "./ProtectionModal";
-import ProtectionDetailView from "~/components/protectionDetailView";
 
-const ThesisPage = () => {
+const ThesisPage = (): JSX.Element => {
   const {
     thesis,
     isOpenThesisDetailModal,
@@ -38,7 +35,7 @@ const ThesisPage = () => {
       <AddEditThesisModal />
       <CriticalAssessmentModal />
       <ProtectionModal />
-      {thesis && (
+      {thesis != null && (
         <ThesisDetailView
           thesis={thesis}
           isOpen={isOpenThesisDetailModal}
@@ -47,7 +44,6 @@ const ThesisPage = () => {
       )}
 
       <ProtectionDetailView
-        protectionRating={{} as ProtectionRatingModel}
         isOpen={isOpenProtectionDetailModal}
         setIsOpen={setIsOpenProtectionDetailModal}
       />

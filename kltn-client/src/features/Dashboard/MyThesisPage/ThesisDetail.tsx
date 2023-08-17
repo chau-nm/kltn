@@ -1,8 +1,7 @@
-import { PaperClipOutlined, UserOutlined } from "@ant-design/icons";
-import { Avatar, Col, Row, Space, Typography } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import { Avatar, Col, Row, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
-import { getFileNameFromUrl } from "~/common/util";
 import ButtonCommon from "~/components/common/ButtonCommon";
 import ReactQuillPreviewCommon from "~/components/common/ReactQuillPreviewCommon";
 import * as OutlineReviewServices from "~/services/OutlineReviewServices";
@@ -30,12 +29,12 @@ const ThesisDetail = ({ thesis }: ThesisDetailProps): JSX.Element => {
     }
   );
 
-  const searchListComment = (idThesis: string) => {
+  const searchListComment = (idThesis: string): void => {
     searchCommentMutaion.mutate(idThesis);
   };
 
   useEffect(() => {
-    thesis!?.id && searchListComment(thesis!?.id);
+    thesis?.id && searchListComment(thesis?.id);
   }, [thesis]);
 
   const thesisStudents = thesis.students;
@@ -46,6 +45,7 @@ const ThesisDetail = ({ thesis }: ThesisDetailProps): JSX.Element => {
       {thesisStudents?.map((tu, index) => {
         const student = tu.user;
         return (
+          // eslint-disable-next-line react/jsx-key
           <div>
             <Typography.Text className="block font-bold">
               Thông tin sinh viên {index + 1}
@@ -103,7 +103,8 @@ const ThesisDetail = ({ thesis }: ThesisDetailProps): JSX.Element => {
         </Typography.Text>
         {listCommentOfCouncil.map((comment, index) => {
           return (
-            !comment!?.user!?.roles.includes("MINISTRY") && (
+            comment?.user?.roles &&
+            comment?.user?.roles.includes("MINISTRY") && (
               <Row
                 className="p-3 border rounded-lg max-w-[1000px] mb-3"
                 key={index}
@@ -119,10 +120,10 @@ const ThesisDetail = ({ thesis }: ThesisDetailProps): JSX.Element => {
                   <Col span={18} className="comment-content">
                     <Typography.Text>
                       <strong className="commenter-name">
-                        {comment!?.user!?.fname}
+                        {comment?.user?.fname}
                       </strong>
                       <ReactQuillPreviewCommon
-                        content={comment!?.comment as string}
+                        content={comment?.comment as string}
                       ></ReactQuillPreviewCommon>
                     </Typography.Text>
                   </Col>
@@ -136,7 +137,7 @@ const ThesisDetail = ({ thesis }: ThesisDetailProps): JSX.Element => {
         <Typography.Text className="font-bold">
           Tài liệu bảo vệ:
         </Typography.Text>
-        {/**Têm preview tại đây*/}
+        {/** Têm preview tại đây */}
       </div>
       <div>
         <Typography.Text className="font-bold">

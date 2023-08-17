@@ -1,26 +1,13 @@
-import {
-  Button,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  Radio,
-  Row,
-  Select,
-  Spin,
-  Typography,
-  message,
-} from "antd";
-import { Fragment, useContext, useEffect, useState } from "react";
-import ButtonCommon from "../../../components/common/ButtonCommon";
-import ModalCommon from "../../../components/common/ModalCommon";
+import { Col, Form, Row, Select, Spin, Typography, message } from "antd";
 import { useForm } from "antd/es/form/Form";
-import * as UserService from "~/services/userServices";
-import * as OutlineCommentService from "~/services/OutlineReviewServices";
-import { v4 } from "uuid";
-import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
+import { useContext, useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import AuthConstants from "~/constants/authConstants";
+import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
+import * as OutlineCommentService from "~/services/OutlineReviewServices";
+import * as UserService from "~/services/userServices";
+import ButtonCommon from "../../../components/common/ButtonCommon";
+import ModalCommon from "../../../components/common/ModalCommon";
 
 const AddCouncilModal = (): JSX.Element => {
   const {
@@ -28,8 +15,6 @@ const AddCouncilModal = (): JSX.Element => {
     setOpenAddCouncilModal,
     listThesisSelected,
     listThesis,
-    setSearchCondition,
-    search,
   } = useContext(ThesisConsoleContext);
 
   const [teacherSelectOptions, setTeacherSelectOptions] = useState<UserModel[]>(
@@ -38,37 +23,41 @@ const AddCouncilModal = (): JSX.Element => {
 
   const { data: teachers, isLoading: isLoadingTeachers } = useQuery(
     ["load-teacher-select"],
-    () => UserService.getUserByRole(AuthConstants.AUTH_ROLES.TEACHER)
+    async () =>
+      await UserService.getUserByRole(AuthConstants.AUTH_ROLES.TEACHER)
   );
 
   useEffect(() => {
     handleSetDataTeacherSelect(teachers as UserModel[]);
   }, [teachers, isLoadingTeachers, listThesis]);
 
-  const handleSetDataTeacherSelect = (data: UserModel[]) => {
-    let idAllTeacherHaveThesis: string[] = [];
-    listThesis.map((thesis) =>
-      idAllTeacherHaveThesis.push(thesis.teacher!?.user!?.userId)
+  const handleSetDataTeacherSelect = (data: UserModel[]): void => {
+    const idAllTeacherHaveThesis: string[] = [];
+    listThesis.map(
+      (thesis) =>
+        thesis?.teacher?.user?.userId &&
+        idAllTeacherHaveThesis.push(thesis?.teacher?.user?.userId)
     );
     if (!data) return;
-    let teachersHaveNoThesis = data.filter(
-      (teacher) => idAllTeacherHaveThesis.indexOf(teacher.userId) < 0
+    const teachersHaveNoThesis = data.filter(
+      (teacher) =>
+        teacher.userId && idAllTeacherHaveThesis.includes(teacher.userId)
     );
     setTeacherSelectOptions(teachersHaveNoThesis);
   };
 
   const [form] = useForm();
 
-  const clearData = () => {
-    form.resetFields();
-  };
+  // const clearData = () => {
+  //   form.resetFields();
+  // };
 
   const insertOulineCommentMutation = useMutation(
     OutlineCommentService.insert,
     {
       onSuccess: (data: OutlineCommentModel | null) => {
-        if (data) {
-          message.success("Thêm thành công");
+        if (data != null) {
+          void message.success("Thêm thành công");
           // setOpenAddCouncilModal(false);
           // clearData();
           // setSearchCondition(() => {
@@ -76,7 +65,7 @@ const AddCouncilModal = (): JSX.Element => {
           // });
           // search();
         } else {
-          message.error("Thêm thất bại");
+          void message.error("Thêm thất bại");
         }
       },
     }
@@ -96,15 +85,15 @@ const AddCouncilModal = (): JSX.Element => {
     }
   );
 
-  const handleSave = async () => {
-    form.validateFields().then(() => {
+  const handleSave = (): void => {
+    void form.validateFields().then(() => {
       const outlineCommentsModel: OutlineCommentModel[] = [];
       const listIdTeacher: string[] = form.getFieldValue("coucil");
       for (let i = 0; i < listThesisSelected.length; i++) {
-        const thesisId = listThesisSelected[i].id;
+        const thesisId = listThesisSelected[i].id ?? "";
         removeOulineCommentMutation.mutate(thesisId);
         for (let j = 0; j < listIdTeacher.length; j++) {
-          let oulineComment: OutlineCommentModel = {
+          const oulineComment: OutlineCommentModel = {
             thesisId,
             userId: listIdTeacher[j],
             order: 1,
@@ -112,14 +101,14 @@ const AddCouncilModal = (): JSX.Element => {
           outlineCommentsModel.push(oulineComment);
         }
       }
-      console.log(outlineCommentsModel);
+      // eslint-disable-next-line array-callback-return
       outlineCommentsModel.map((item) => {
         insertOulineCommentMutation.mutate(item);
       });
     });
   };
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     // clearData();
     setOpenAddCouncilModal(false);
   };

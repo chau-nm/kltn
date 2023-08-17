@@ -11,21 +11,28 @@ import { useNavigate } from "react-router-dom";
 import path from "~/constants/path";
 import { UserModalContext } from "~/contexts/UserModalContext";
 
-const UserSubMenu = (): JSX.Element => {
+type UserSubMenuProps = {
+  handleClosePopover?: () => void;
+};
+
+const UserSubMenu = ({ handleClosePopover }: UserSubMenuProps): JSX.Element => {
   const { signOut } = useContext(AuthContext);
   const { setOpen: setUserModalOpen } = useContext(UserModalContext);
 
   const navigate = useNavigate();
 
-  const handleNavigateConsole = () => {
+  const handleNavigateConsole = (): void => {
+    handleClosePopover?.();
     navigate(path.CONSOLE);
   };
 
-  const handleNavigateProfile = () => {
+  const handleNavigateProfile = (): void => {
+    handleClosePopover?.();
     setUserModalOpen(true);
   };
 
-  const handleLogout = () => {
+  const handleLogout = (): void => {
+    handleClosePopover?.();
     signOut();
   };
 

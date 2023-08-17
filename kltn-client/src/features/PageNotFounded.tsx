@@ -11,7 +11,7 @@ const PageNotFounded = (): JSX.Element => {
       title="404"
       subTitle="Xin lỗi, trang bạn muốn vào không tồn tại!"
       extra={
-        <Button type="default" onClick={() => navigate(path.DASHBOARD)}>
+        <Button type="default" onClick={() => { navigate(path.DASHBOARD); }}>
           Trở về
         </Button>
       }

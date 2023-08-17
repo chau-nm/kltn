@@ -16,17 +16,19 @@ import web.nl.kltn.mapper.UserCusMapper;
 import web.nl.kltn.model.dto.UserDTO;
 
 @Service
-public class UserDetailCusService implements UserDetailsService{
-	
+public class UserDetailCusService implements UserDetailsService {
+
 	@Autowired
 	private UserCusMapper userCusMapper;
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserDTO userCus = userCusMapper.findByUsername(username);
-		List<GrantedAuthority> authorities = userCus.getRoles()
-												.stream().map(r -> new SimpleGrantedAuthority(r))
-												.collect(Collectors.toList());
+		if (userCus == null) {
+			return null;
+		}
+		List<GrantedAuthority> authorities = userCus.getRoles().stream().map(r -> new SimpleGrantedAuthority(r))
+				.collect(Collectors.toList());
 		return new User(userCus.getUsername(), userCus.getPassword(), authorities);
 	}
 

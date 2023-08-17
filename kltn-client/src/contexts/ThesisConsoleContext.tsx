@@ -1,10 +1,10 @@
-import { TablePaginationConfig } from "antd";
-import { SetStateAction, createContext, useEffect, useState } from "react";
-import { useMutation, useQuery } from "react-query";
+import { type TablePaginationConfig } from "antd";
+import { createContext, useEffect, useState, type SetStateAction } from "react";
+import { useMutation } from "react-query";
 import usePagination from "~/hook/usePagination";
+import * as OutlineReviewServices from "~/services/OutlineReviewServices";
 import * as ThesisRegisterCalendarService from "~/services/thesisRegisterCalendarService";
 import * as ThesisService from "~/services/thesisService";
-import * as OutlineReviewServices from "~/services/OutlineReviewServices";
 
 interface ThesisConsoleContextInterface {
   isLoadingTableResults: boolean;
@@ -179,7 +179,7 @@ export const ThesisConsoleProvider = ({
     ThesisRegisterCalendarService.view
   );
 
-  const loadThesisRegisterCalendar = () => {
+  const loadThesisRegisterCalendar = (): void => {
     viewThesisRegisterCalendarMutation.mutate();
   };
 
@@ -210,7 +210,7 @@ export const ThesisConsoleProvider = ({
 
   const searchDetailMutation = useMutation(ThesisService.getThesisById, {
     onSuccess: (data: ThesisModel | null) => {
-      if (data) {
+      if (data != null) {
         setThesis(data);
       }
     },
@@ -219,14 +219,14 @@ export const ThesisConsoleProvider = ({
   const [pagination, setPagination, handleChange] =
     usePagination<ThesisSearchConditionModel>(
       searchMutaion.mutate,
-      searchCondition as ThesisSearchConditionModel
+      searchCondition
     );
 
   useEffect(() => {
     viewThesisRegisterCalendarMutation.mutate();
   }, []);
 
-  const search = () => {
+  const search = (): void => {
     searchMutaion.mutate({
       page: 1,
       pageSize: pagination.pageSize,
@@ -234,11 +234,11 @@ export const ThesisConsoleProvider = ({
     });
   };
 
-  const searchDetail = (id: string) => {
+  const searchDetail = (id: string): void => {
     searchDetailMutation.mutate(id);
   };
 
-  const searchListComment = (idThesis: string) => {
+  const searchListComment = (idThesis: string): void => {
     searchCommentMutaion.mutate(idThesis);
   };
 

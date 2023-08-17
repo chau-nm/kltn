@@ -1,14 +1,13 @@
+import { SendOutlined } from "@ant-design/icons";
+import { Col, Row, Typography } from "antd";
 import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
+import { dateTimeDisplay } from "~/common/util";
+import CardCommon from "~/components/common/CardCommon";
+import path from "~/constants/path";
 import * as NotificationService from "~/services/notificationServices";
 import LoadingPage from "../LoadingPage";
 import PageNotFounded from "../PageNotFounded";
-import { useEffect } from "react";
-import CardCommon from "~/components/common/CardCommon";
-import { Col, Row, Space, Typography } from "antd";
-import { LineOutlined, SendOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import path from "~/constants/path";
-import { dateTimeDisplay } from "~/common/util";
 
 const DashboardPage = (): JSX.Element => {
   const { data, isLoading, isError } = useQuery(["notifications"], async () => {
@@ -25,10 +24,8 @@ const DashboardPage = (): JSX.Element => {
   }
 
   return (
-    <CardCommon
-        title= "Thông báo"
-    >
-      {data?.data &&
+    <CardCommon title="Thông báo">
+      {data?.data != null &&
         data.data.map((notify, index) => {
           return (
             <Link
@@ -42,7 +39,10 @@ const DashboardPage = (): JSX.Element => {
                   {notify.title}
                 </Col>
                 <Col>
-                  <Typography.Text>Cập nhật: {dateTimeDisplay(new Date(notify.updatedAt as number))}</Typography.Text>
+                  <Typography.Text>
+                    Cập nhật:{" "}
+                    {dateTimeDisplay(new Date(notify.updatedAt as number))}
+                  </Typography.Text>
                 </Col>
               </Row>
             </Link>

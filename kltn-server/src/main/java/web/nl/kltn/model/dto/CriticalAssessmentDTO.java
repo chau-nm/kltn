@@ -9,7 +9,7 @@ import web.nl.kltn.model.generator.User;
 public class CriticalAssessmentDTO extends CriticalAssessment {
 
 	private List<CriticalAssessmentScoreDTO> critialAssessmentScores;
-	private List<CriticalAssessmentQuestion> criticalAssessmentQuestions;
+	private List<String> criticalAssessmentQuestions;
 	private User userMaker;
 
 	public User getUserMaker() {
@@ -28,11 +28,11 @@ public class CriticalAssessmentDTO extends CriticalAssessment {
 		this.critialAssessmentScores = critialAssessmentScores;
 	}
 
-	public List<CriticalAssessmentQuestion> getCriticalAssessmentQuestions() {
+	public List<String> getCriticalAssessmentQuestions() {
 		return criticalAssessmentQuestions;
 	}
 
-	public void setCriticalAssessmentQuestions(List<CriticalAssessmentQuestion> criticalAssessmentQuestions) {
+	public void setCriticalAssessmentQuestions(List<String> criticalAssessmentQuestions) {
 		this.criticalAssessmentQuestions = criticalAssessmentQuestions;
 	}
 

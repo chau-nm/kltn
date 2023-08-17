@@ -8,21 +8,20 @@ const firebaseConfig = {
   storageBucket: "kltn-4d455.appspot.com",
   messagingSenderId: "354018432220",
   appId: "1:354018432220:web:c8e32f3c9396fe0faa9019",
-  measurementId: "G-96XKSDS8ZM"
+  measurementId: "G-96XKSDS8ZM",
 };
 
 const app = initializeApp(firebaseConfig);
 
 export const storage = getStorage(app);
 
-
-export const uploadFileToFirebase = async (file: File): Promise<string> => {
+export const uploadFileToFirebase = async (file: File): Promise<string | null> => {
   try {
-    const storageRef = ref(storage, `${Date.now()}`);
+    const storageRef = ref(storage, `${Date.now()}-${file.name}`);
     await uploadBytes(storageRef, file);
     const downloadURL = await getDownloadURL(storageRef);
     return downloadURL;
   } catch (error) {
-    throw error;
+    return null;
   }
 };

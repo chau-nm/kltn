@@ -1,38 +1,24 @@
+import { UserOutlined } from "@ant-design/icons";
+import { Avatar, Col, Form, Row, Spin, Typography, message } from "antd";
+import { useForm } from "antd/es/form/Form";
 import {
-  Avatar,
-  Button,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  Radio,
-  Row,
-  Select,
-  Spin,
-  Typography,
-  message,
-} from "antd";
-import {
-  Dispatch,
-  Fragment,
-  SetStateAction,
   useContext,
   useEffect,
   useState,
+  type Dispatch,
+  type SetStateAction,
 } from "react";
-import ButtonCommon from "../../../components/common/ButtonCommon";
-import ModalCommon from "../../../components/common/ModalCommon";
-import { useForm } from "antd/es/form/Form";
-import * as OutlineCommentService from "~/services/OutlineReviewServices";
-import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
-import { useMutation, useQuery } from "react-query";
-import RichTextEditorCommon from "~/components/common/RichTextEditorCommon";
+import { useMutation } from "react-query";
+import { dateTimeDisplay } from "~/common/util";
 import ReactQuillPreviewCommon from "~/components/common/ReactQuillPreviewCommon";
-import { UserOutlined } from "@ant-design/icons";
+import RichTextEditorCommon from "~/components/common/RichTextEditorCommon";
+import { AuthContext } from "~/contexts/AuthContext";
+import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
+// import * as OutlineCommentService from "~/services/OutlineReviewServices";
 import * as OutlineReviewServices from "~/services/OutlineReviewServices";
 import * as ThesisService from "~/services/thesisService";
-import { AuthContext } from "~/contexts/AuthContext";
-import { dateTimeDisplay } from "~/common/util";
+import ButtonCommon from "../../../components/common/ButtonCommon";
+import ModalCommon from "../../../components/common/ModalCommon";
 
 const AddCommentMinistryModal = (): JSX.Element => {
   const {
@@ -51,7 +37,7 @@ const AddCommentMinistryModal = (): JSX.Element => {
     setShouldUpdate(false);
     for (let index = 0; index < listCommentOfCouncil.length; index++) {
       const element = listCommentOfCouncil[index];
-      if (element.user?.roles.includes("MINISTRY")) {
+      if (element.user?.roles?.includes("MINISTRY")) {
         setShouldUpdate(true);
         break;
       }
@@ -61,46 +47,42 @@ const AddCommentMinistryModal = (): JSX.Element => {
   const [editorHtml, setEditorHtml] = useState<string>("");
   const [form] = useForm();
 
-  const clearData = () => {
+  const clearData = (): void => {
     form.resetFields();
     setEditorHtml("");
   };
 
   useEffect(() => {
-    listThesisSelected[0]!?.id &&
-      searchListComment(listThesisSelected[0]!?.id as string);
+    listThesisSelected[0]?.id && searchListComment(listThesisSelected[0]?.id);
   }, [listThesisSelected]);
 
-  const handleSave = async () => {
+  const handleSave = (): void => {
     form.setFieldValue("description", editorHtml);
-    form.validateFields().then(() => {
+    void form.validateFields().then(() => {
       const outlineCommentModel: OutlineCommentModel = {
-        thesisId: listThesisSelected[0]!?.id ? listThesisSelected[0]!?.id : "",
+        thesisId: listThesisSelected[0]?.id ? listThesisSelected[0]?.id : "",
         userId: user?.userId ? user?.userId : "",
         comment: form.getFieldValue("description"),
         order: 1,
       };
-
       if (shouldUpdate) {
-        console.log("UPDATE");
         updateOutlineReviewMutation.mutate(outlineCommentModel);
       } else {
-        console.log("INSERT");
         insertOulineCommentMutation.mutate(outlineCommentModel);
       }
     });
   };
 
   const insertOulineCommentMutation = useMutation(
-    OutlineCommentService.insert,
+    OutlineReviewServices.insert,
     {
       onSuccess: (data: OutlineCommentModel | null) => {
-        if (data) {
-          message.success("Thêm thành công");
+        if (data != null) {
+          void message.success("Thêm thành công");
           setOpenAddCommentMinistryModal(false);
           clearData();
         } else {
-          message.error("Thêm thất bại");
+          void message.error("Thêm thất bại");
         }
       },
     }
@@ -110,32 +92,32 @@ const AddCommentMinistryModal = (): JSX.Element => {
     {
       onSuccess: (data: boolean) => {
         if (data) {
-          message.success("Thêm thành công");
+          void message.success("Thêm thành công");
           setOpenAddCommentMinistryModal(false);
           clearData();
         } else {
-          message.error("Thêm thất bại");
+          void message.error("Thêm thất bại");
         }
       },
     }
   );
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setOpenAddCommentMinistryModal(false);
     clearData();
   };
-  const updateStatusThesis = async () => {
+  const updateStatusThesis = async (): Promise<void> => {
     const data = await ThesisService.updateStatus(
-      listThesisSelected[0]!?.id as string,
+      listThesisSelected[0]?.id as string,
       3
     );
     if (data) {
-      message.success("Phê duyệt thành công");
+      void message.success("Phê duyệt thành công");
       setOpenAddCommentMinistryModal(false);
       clearData();
       search();
     } else {
-      message.error("Phê duyệt thất bại");
+      void message.error("Phê duyệt thất bại");
     }
   };
 
@@ -143,7 +125,7 @@ const AddCommentMinistryModal = (): JSX.Element => {
     return (
       <Row justify={"end"}>
         <ButtonCommon value="Đóng" onClick={handleClose} />
-        {listThesisSelected[0].status == 2 && (
+        {listThesisSelected[0].status === 2 && (
           <ButtonCommon value="Duyệt đề cương" onClick={updateStatusThesis} />
         )}
         <ButtonCommon color="blue" value={"Lưu"} onClick={handleSave} />
@@ -156,7 +138,9 @@ const AddCommentMinistryModal = (): JSX.Element => {
       title="Tổng hợp đánh giá luận văn"
       open={openAddCommentMinistryModal}
       footer={[<ButtonFooter key={"1"} />]}
-      onCancel={() => handleClose()}
+      onCancel={() => {
+        handleClose();
+      }}
       maskCloseable={true}
     >
       <Spin spinning={false}>
@@ -196,7 +180,7 @@ const AddCommentMinistryModal = (): JSX.Element => {
 
         {listCommentOfCouncil.map((comment, index) => {
           return (
-            !comment!?.user!?.roles.includes("MINISTRY") && (
+            !comment?.user?.roles?.includes("MINISTRY") && (
               <>
                 <Row
                   className="p-3 border rounded-lg max-w-[1000px] mb-3"
@@ -212,15 +196,15 @@ const AddCommentMinistryModal = (): JSX.Element => {
                   <Col span={18} className="comment-content">
                     <Typography.Text>
                       <strong className="commenter-name">
-                        {comment!?.user!?.fname}
+                        {comment?.user?.fname}
                       </strong>
                       <Row>
                         {dateTimeDisplay(
-                          new Date(comment!?.updatedAt as number)
+                          new Date(comment?.updatedAt as number)
                         )}
                       </Row>
                       <ReactQuillPreviewCommon
-                        content={comment!?.comment as string}
+                        content={comment?.comment as string}
                       ></ReactQuillPreviewCommon>
                     </Typography.Text>
                   </Col>

@@ -1,3 +1,4 @@
+import { PaperClipOutlined } from "@ant-design/icons";
 import {
   Form,
   Input,
@@ -6,33 +7,29 @@ import {
   Space,
   Spin,
   Typography,
-  UploadFile,
   message,
+  type UploadFile,
 } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useContext, useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { v4 } from "uuid";
+import { getFileNameFromUrl } from "~/common/util";
 import ButtonCommon from "~/components/common/ButtonCommon";
-import CardCommon from "~/components/common/CardCommon";
-import DraggerCommon from "~/components/common/DraggerCommon";
+import DraggerSingleCommon from "~/components/common/DraggerSingleCommon";
 import ReactQuillPreviewCommon from "~/components/common/ReactQuillPreviewCommon";
 import RichTextEditorCommon from "~/components/common/RichTextEditorCommon";
 import AuthConstants from "~/constants/authConstants";
 import { AuthContext } from "~/contexts/AuthContext";
-import * as UserService from "~/services/userServices";
-import * as ThesisService from "~/services/thesisService";
 import * as Doc2VecServices from "~/services/doc2vecService";
-import { PaperClipOutlined } from "@ant-design/icons";
-import { getFileNameFromUrl } from "~/common/util";
-import { now } from "moment";
-import DraggerSingleCommon from "~/components/common/DraggerSingleCommon";
+import * as ThesisService from "~/services/thesisService";
+import * as UserService from "~/services/userServices";
 
 const RegisterThesisForm = (): JSX.Element => {
   const [thesisName, setThesisName] = useState(""); // State to store the thesis name input value
   const [documentList, setDocumentList] = useState<Doc2VecModel[]>([]); // State to store the list of documents
 
-  const handleThesisNameChange = async (value: string) => {
+  const handleThesisNameChange = async (value: string): Promise<void> => {
     setThesisName(value);
     form.setFieldValue("topic", value);
     // Clear any existing timeout to prevent the API call from being made immediately
@@ -45,7 +42,7 @@ const RegisterThesisForm = (): JSX.Element => {
     setDocumentList(data);
   };
 
-  const handleUploadFailed = () => {};
+  // const handleUploadFailed = (): void => {};
   const [studentSelectOptions, setStudentSelectOptions] = useState<UserModel[]>(
     []
   );
@@ -59,21 +56,23 @@ const RegisterThesisForm = (): JSX.Element => {
   const { user } = useContext(AuthContext);
   const [form] = useForm();
 
-  const { data: students, isLoading: isLoadingStudents } = useQuery(
+  const { data: students } = useQuery(
     ["load-student-select"],
-    () => UserService.getUserByRole(AuthConstants.AUTH_ROLES.STUDENT)
+    async () =>
+      await UserService.getUserByRole(AuthConstants.AUTH_ROLES.STUDENT)
   );
-  const { data: teachers, isLoading: isLoadingTeachers } = useQuery(
+  const { data: teachers } = useQuery(
     ["load-teacher-select"],
-    () => UserService.getUserByRole(AuthConstants.AUTH_ROLES.TEACHER)
+    async () =>
+      await UserService.getUserByRole(AuthConstants.AUTH_ROLES.TEACHER)
   );
 
   const insertThesisMutation = useMutation(ThesisService.insert, {
     onSuccess: (data: ThesisModel | null) => {
-      if (data) {
-        message.success("Đăng ký thành công");
+      if (data != null) {
+        void message.success("Đăng ký thành công");
       } else {
-        message.error("Đăng ký thất bại");
+        void message.error("Đăng ký thất bại");
       }
     },
   });
@@ -94,55 +93,57 @@ const RegisterThesisForm = (): JSX.Element => {
     form.setFieldValue("outline", outlineDocument);
   }, [outlineDocument]);
 
-  const handleSetDataStudentSelect = (data: UserModel[]) => {
+  const handleSetDataStudentSelect = (data: UserModel[]): void => {
     if (!data) return;
-    let students = data.filter((std) => std.userId != user?.userId);
+    const students = data.filter((std) => std.userId !== user?.userId);
     setStudentSelectOptions(students);
   };
 
-  const handleSetDataTeacherSelect = (data: UserModel[]) => {
+  const handleSetDataTeacherSelect = (data: UserModel[]): void => {
     if (!data) return;
-    let teachers = data.filter((teacher) => teacher.userId != user?.userId);
+    const teachers = data.filter((teacher) => teacher.userId !== user?.userId);
     setTeacherSelectOptions(teachers);
   };
 
-  const handleUploadFailure = () => {};
+  const handleUploadFailure = (): void => {};
 
-  const handleUploadSuccess = (file: UploadFile) => {
+  const handleUploadSuccess = (file: UploadFile): void => {
     setOutlineDocument(file.response);
   };
 
-  const handleRemove = (file: UploadFile) => {
-    setOutlineDocument(undefined);
-  };
+  // const handleRemove = (file: UploadFile) => {
+  //   setOutlineDocument(undefined);
+  // };
 
-  const handleSetEditorHtml = (value: string) => {
-    setEditorHtml(value);
-    form.setFieldValue("description", value);
-  };
+  // const handleSetEditorHtml = (value: string) => {
+  //   setEditorHtml(value);
+  //   form.setFieldValue("description", value);
+  // };
 
-  const handleFinish = () => {
-    let studentIds = [
+  const handleFinish = (): void => {
+    const studentIds = [
       user?.userId,
       ...studentSelectOptions
         .map((std) => {
           if (std.userId === form.getFieldValue("student2")) {
             return std.userId;
           }
+          return undefined;
         })
         .filter((std) => std),
     ];
 
-    let teacherId = teacherSelectOptions
+    const teacherId = teacherSelectOptions
       .map((teacher) => {
         if (teacher.userId === form.getFieldValue("teacher")) {
           return teacher.userId;
         }
+        return undefined;
       })
       .filter((std) => std)[0];
 
-    form.validateFields().then(() => {
-      let thesisId = v4();
+    void form.validateFields().then(() => {
+      const thesisId = v4();
       const thesis: ThesisModel = {
         id: thesisId,
         topic: form.getFieldValue("topic"),
@@ -160,7 +161,7 @@ const RegisterThesisForm = (): JSX.Element => {
             isDeleted: false,
             createdAt: new Date().getTime(),
             updatedAt: new Date().getTime(),
-          } as ThesisUserModel;
+          } satisfies ThesisUserModel;
         }),
         teacher: {
           id: v4(),
@@ -171,7 +172,7 @@ const RegisterThesisForm = (): JSX.Element => {
           isDeleted: false,
           createdAt: new Date().getTime(),
           updatedAt: new Date().getTime(),
-        } as ThesisUserModel,
+        } satisfies ThesisUserModel,
         userCreated: user ?? undefined,
         outlineUrl: outlineDocument,
         isDeleted: false,
@@ -191,9 +192,9 @@ const RegisterThesisForm = (): JSX.Element => {
           <Select>
             {studentSelectOptions.map((std) => {
               return (
-                <Select.Option
-                  key={std.userId}
-                >{`${std.fname} - ${std.username}`}</Select.Option>
+                <Select.Option key={std.userId}>{`${std.fname ?? ""} - ${
+                  std.username ?? ""
+                }`}</Select.Option>
               );
             })}
           </Select>
@@ -231,13 +232,18 @@ const RegisterThesisForm = (): JSX.Element => {
           <Input
             type="text"
             value={thesisName}
-            onChange={(e) => handleThesisNameChange(e.target.value)}
+            onChange={async (e) => {
+              await handleThesisNameChange(e.target.value);
+            }}
           />
         </Form.Item>
         {documentList.length > 0 &&
-          documentList.map((data) => {
+          documentList.map((data, index) => {
             return (
-              <div className="border-2 border-slate-200 rounded-sm p-1 mb-1">
+              <div
+                key={index}
+                className="border-2 border-slate-200 rounded-sm p-1 mb-1"
+              >
                 <ReactQuillPreviewCommon content={data?.title as string} />
                 {data?.url && (
                   <div className="border-t py-3">

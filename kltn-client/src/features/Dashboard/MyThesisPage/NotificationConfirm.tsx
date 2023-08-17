@@ -1,4 +1,4 @@
-import { Alert, Col, Row, Space, message } from "antd";
+import { Alert, Col, Row, message } from "antd";
 import { useContext } from "react";
 import { useMutation } from "react-query";
 import ButtonCommon from "~/components/common/ButtonCommon";
@@ -17,42 +17,42 @@ const NotificationConfirm = ({
   const updateThesisMutation = useMutation(ThesisService.update, {
     onSuccess: (data: boolean) => {
       if (data) {
-        message.success("Thay đổi dữ liệu thành công");
+        void message.success("Thay đổi dữ liệu thành công");
       } else {
-        message.error("Đã có lỗi xảy ra");
+        void message.error("Đã có lỗi xảy ra");
       }
-    }
+    },
   });
 
   const userInvite = thesis.students?.filter(
-    (std) => std.userId != user?.userId
+    (std) => std.userId !== user?.userId
   )[0];
 
-  const handleAccept = () => {
+  const handleAccept = (): void => {
     const newThesis: ThesisModel = {
       ...thesis,
-      status: 2
-    }
+      status: 2,
+    };
 
     updateThesisMutation.mutate(newThesis);
-  }
+  };
 
-  const handleDecline = () => {
-    const newThesis: ThesisModel = {
-      ...thesis,
-      status: 0
-    }
-  }
+  const handleDecline = (): void => {
+    // const newThesis: ThesisModel = {
+    //   ...thesis,
+    //   status: 0,
+    // };
+  };
 
-  if (!userInvite) return <></>;
+  if (userInvite == null) return <></>;
 
   return (
     <Alert
       className="my-2"
       message={
         <span>
-          <strong>{userInvite.user?.fname}</strong> mời bạn tham gia luận văn! <br />{" "}
-          Bạn có đồng ý tham gia không?
+          <strong>{userInvite.user?.fname}</strong> mời bạn tham gia luận văn!{" "}
+          <br /> Bạn có đồng ý tham gia không?
         </span>
       }
       type="info"
@@ -60,10 +60,14 @@ const NotificationConfirm = ({
       action={
         <Row>
           <Col className="ml-5">
-            <ButtonCommon color="green" value="Chấp nhận" onClick={handleAccept} />
+            <ButtonCommon
+              color="green"
+              value="Chấp nhận"
+              onClick={handleAccept}
+            />
           </Col>
           <Col className="ml-5">
-            <ButtonCommon color="red" value="Từ chối" onClick={handleDecline}/>
+            <ButtonCommon color="red" value="Từ chối" onClick={handleDecline} />
           </Col>
         </Row>
       }

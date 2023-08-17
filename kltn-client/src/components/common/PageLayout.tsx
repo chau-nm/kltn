@@ -6,7 +6,7 @@ type PageLayoutProps = {
   children: React.ReactNode;
 };
 
-const PageLayout = ({ pageTitle, children }: PageLayoutProps) => {
+const PageLayout = ({ pageTitle, children }: PageLayoutProps): JSX.Element => {
   return (
     <Layout className="bg-white mt-2 p-3 shadow rounded">
       <PageHeader title={pageTitle} />

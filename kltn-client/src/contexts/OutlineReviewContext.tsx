@@ -1,17 +1,14 @@
-import { PaginationProps, TablePaginationConfig } from "antd";
-import { PaginationType } from "antd/es/transfer/interface";
+import { type TablePaginationConfig } from "antd";
 import {
-  PropsWithChildren,
-  SetStateAction,
   createContext,
   useContext,
-  useEffect,
   useState,
+  type PropsWithChildren,
+  type SetStateAction,
 } from "react";
 import { useMutation } from "react-query";
 import usePagination from "~/hook/usePagination";
 import * as ThesisService from "~/services/thesisService";
-import * as OutlineReviewService from "~/services/OutlineReviewServices";
 import { AuthContext } from "./AuthContext";
 
 interface OutlineReviewContextInterface {
@@ -99,7 +96,7 @@ export const OutlineReviewProvider = ({
    */
   const searchDetailMutation = useMutation(ThesisService.getThesisById, {
     onSuccess: (data: ThesisModel | null) => {
-      if (data) {
+      if (data != null) {
         setThesisDetail(data);
       }
     },
@@ -110,10 +107,10 @@ export const OutlineReviewProvider = ({
   const [pagination, setPagination, handleChange] =
     usePagination<OutlineReviewSearchConditionModel>(
       searchMutaion.mutate,
-      searchCondition as OutlineReviewSearchConditionModel
+      searchCondition
     );
 
-  const search = () => {
+  const search = (): void => {
     searchMutaion.mutate({
       page: 1,
       pageSize: pagination.pageSize,
@@ -121,7 +118,7 @@ export const OutlineReviewProvider = ({
     });
   };
 
-  const searchDetail = (id: string) => {
+  const searchDetail = (id: string): void => {
     searchDetailMutation.mutate(id);
   };
 

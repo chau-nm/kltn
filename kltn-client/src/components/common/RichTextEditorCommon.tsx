@@ -1,5 +1,5 @@
-import { SetStateAction, useState } from "react";
-import ReactQuill, { ReactQuillProps } from "react-quill";
+import { type SetStateAction } from "react";
+import ReactQuill, { type ReactQuillProps } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 type RichTextEditorCommonProps = {

@@ -1,22 +1,20 @@
-import { SetStateAction, createContext, useEffect, useState } from "react";
-import { useMutation, useQuery } from "react-query";
-import { useLocation, useNavigate } from "react-router-dom";
-import path from "~/constants/path";
+import { createContext, useEffect, useState, type SetStateAction } from "react";
+import { useMutation } from "react-query";
 import LoadingPage from "~/features/LoadingPage";
 import { getUsuerByToken } from "~/services/userServices";
 
 interface AuthContextInterface {
   isAuthenticated: boolean;
   setAuthenticated: React.Dispatch<SetStateAction<boolean>>;
-  user: UserModel | null;
-  setUser: React.Dispatch<SetStateAction<UserModel | null>>;
+  user: UserModel | undefined;
+  setUser: React.Dispatch<SetStateAction<UserModel | undefined>>;
   signOut: () => void;
 }
 
 const initAuthContext: AuthContextInterface = {
   isAuthenticated: false,
   setAuthenticated: () => null,
-  user: null,
+  user: undefined,
   setUser: () => null,
   signOut: () => null,
 };
@@ -27,22 +25,10 @@ export const AuthContextProvider = ({
   children,
 }: React.PropsWithChildren): JSX.Element => {
   const [isAuthenticated, setAuthenticated] = useState<boolean>(() => {
-    let isAuthSession = localStorage.getItem("isAuthenticated");
+    const isAuthSession = localStorage.getItem("isAuthenticated");
     return isAuthSession ? JSON.parse(isAuthSession) : false;
   });
-  const [user, setUser] = useState<UserModel | null>(() => {
-    let userSession = localStorage.getItem('user');
-    return userSession ? JSON.parse(userSession) : null;
-  });
-
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem('user', JSON.stringify({
-        ...user,
-        password: 'Protected'
-      }));
-    }
-  }, [user])
+  const [user, setUser] = useState<UserModel>();
 
   useEffect(() => {
     localStorage.setItem("isAuthenticated", JSON.stringify(isAuthenticated));
@@ -59,19 +45,19 @@ export const AuthContextProvider = ({
     },
   });
 
-  const handleLogged = (user: UserModel) => {
+  const handleLogged = (user: UserModel): void => {
     setAuthenticated(true);
     setUser(user);
   };
 
-  const signOut = () => {
+  const signOut = (): void => {
     setAuthenticated(false);
-    setUser(null);
+    setUser(undefined);
     localStorage.clear();
   };
 
   useEffect(() => {
-    let accsessToken = localStorage.getItem("access_token");
+    const accsessToken = localStorage.getItem("access_token");
     if (accsessToken) {
       checkLogged.mutate({
         accessToken: accsessToken,

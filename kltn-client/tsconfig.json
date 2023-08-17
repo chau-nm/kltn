@@ -20,6 +20,6 @@
       "~/*": ["./src/*"]
     }
   },
-  "include": ["src", "setupProxy.ts"],
+  "include": ["src", "setupProxy.ts", "postcss.config.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

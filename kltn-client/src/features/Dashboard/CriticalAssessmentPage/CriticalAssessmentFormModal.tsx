@@ -10,7 +10,7 @@ const CriticalAssessmentFormModal = (): JSX.Element => {
     setIsOpenThesisDetail,
   } = useContext(CriticalAssessmentDashboardContext);
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setIsOpenCriticalAssessmentFormModal(false);
   };
 
@@ -23,12 +23,14 @@ const CriticalAssessmentFormModal = (): JSX.Element => {
       {/* <div className="min-w-[800px]"> */}
       <Row justify={"space-between"}>
         <Col className="text-base">
-          <strong> Đề tài:</strong> ""
+          <strong> Đề tài:</strong>
         </Col>
         <Col>
           <span
             className="text-blue-400 select-none cursor-pointer hover:text-blue-500 duration-300"
-            onClick={() => setIsOpenThesisDetail(true)}
+            onClick={() => {
+              setIsOpenThesisDetail(true);
+            }}
           >
             Xem chi tiết
           </span>

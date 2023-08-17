@@ -1,7 +1,5 @@
 import { Space } from "antd";
-import {
-  NotificationConsoleProvider
-} from "~/contexts/NotificationConsoleContext";
+import { NotificationConsoleProvider } from "~/contexts/NotificationConsoleContext";
 import AddNewNotificationModal from "./AddNewNotificationModal";
 import NotificationSearchForm from "./NotificationSearchForm";
 import NotificationTableResult from "./NotificationTableResult";

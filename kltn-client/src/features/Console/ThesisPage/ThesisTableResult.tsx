@@ -1,7 +1,6 @@
-import { EyeOutlined, FileProtectOutlined } from "@ant-design/icons";
-import { Button, Row, Spin, Tooltip } from "antd";
-import { ColumnType } from "antd/es/table";
-import { TableRowSelection } from "antd/es/table/interface";
+import { Row, Spin, Tooltip } from "antd";
+import { type ColumnType } from "antd/es/table";
+import { type TableRowSelection } from "antd/es/table/interface";
 import { useContext, useEffect, useState } from "react";
 import { dateDisplay } from "~/common/util";
 import {
@@ -37,13 +36,13 @@ const ThesisTableResult = (): JSX.Element => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
-  const handleOnChangeRowSelection = async (
+  const handleOnChangeRowSelection = (
     newSelectedRowKeys: React.Key[]
-  ) => {
+  ): void => {
     // console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
-    const temp: ThesisModel[] = listThesis.filter(
-      (thesis) => newSelectedRowKeys.indexOf(thesis.id!) > -1
+    const temp: ThesisModel[] = listThesis.filter((thesis) =>
+      newSelectedRowKeys.includes(thesis.id!)
     );
     // console.log("temp: ", temp);
     setlistThesisSelected(temp);
@@ -64,7 +63,7 @@ const ThesisTableResult = (): JSX.Element => {
     search();
   }, []);
 
-  const getColorStatus = (status: number) => {
+  const getColorStatus = (status: number): string => {
     switch (status) {
       case -1:
         return "text-red-500";
@@ -79,12 +78,12 @@ const ThesisTableResult = (): JSX.Element => {
     }
   };
 
-  const columns: ColumnType<ThesisModel>[] = [
+  const columns: Array<ColumnType<ThesisModel>> = [
     {
       title: "STT",
       render: (value, record, index) => {
-        let current = pagination.current;
-        let pageSize = pagination.pageSize;
+        const current = pagination.current;
+        const pageSize = pagination.pageSize;
         if (current && pageSize) {
           return pageSize * (current - 1) + index + 1;
         }

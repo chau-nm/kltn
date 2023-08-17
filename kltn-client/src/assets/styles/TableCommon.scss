@@ -1,12 +1,12 @@
 .ant-table {
-    border: 1px solid #000c66;
+  border: 1px solid #000c66;
 
-    .ant-table-thead .ant-table-cell{
-        background-color: #000c66 !important;
-        color: white;
+  .ant-table-thead .ant-table-cell {
+    background-color: #000c66 !important;
+    color: white;
 
-        &::before{
-            content: none !important;
-        }
+    &::before {
+      content: none !important;
     }
+  }
 }

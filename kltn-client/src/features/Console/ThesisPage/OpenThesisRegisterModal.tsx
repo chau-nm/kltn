@@ -1,6 +1,5 @@
 import { DatePicker, Form, Row, Spin, message } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { now } from "moment";
 import { useContext, useEffect } from "react";
 import { useMutation } from "react-query";
 import { v4 } from "uuid";
@@ -9,7 +8,7 @@ import ModalCommon from "~/components/common/ModalCommon";
 import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 import * as ThesisRegisterCalendarService from "~/services/thesisRegisterCalendarService";
 
-const OpenThesisRegisterModal = ({}): JSX.Element => {
+const OpenThesisRegisterModal = (): JSX.Element => {
   useEffect(() => {}, [open]);
 
   const [form] = useForm();
@@ -21,9 +20,9 @@ const OpenThesisRegisterModal = ({}): JSX.Element => {
     {
       onSuccess: (data: ThesisRegisterCalendarModel) => {
         if (data == null) {
-          message.error("Thêm thất bại");
+          void message.error("Thêm thất bại");
         } else {
-          message.success("Thêm thành công");
+          void message.success("Thêm thành công");
           form.resetFields();
           setIsOpenRegisterThesisModal(false);
         }
@@ -31,11 +30,11 @@ const OpenThesisRegisterModal = ({}): JSX.Element => {
     }
   );
 
-  const handleSave = () => {
-    form.validateFields().then((values) => {
-      let timeRange = values["time_range"];
-      let startAt = timeRange[0].toDate().getTime();
-      let endAt = timeRange[1].toDate().getTime();
+  const handleSave = (): void => {
+    void form.validateFields().then((values) => {
+      const timeRange = values.time_range;
+      const startAt = timeRange[0].toDate().getTime();
+      const endAt = timeRange[1].toDate().getTime();
 
       const thesisRegisterCalendarModelRequest: ThesisRegisterCalendarModel = {
         startAt,
@@ -52,7 +51,7 @@ const OpenThesisRegisterModal = ({}): JSX.Element => {
     });
   };
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setIsOpenRegisterThesisModal(false);
   };
 
@@ -78,7 +77,9 @@ const OpenThesisRegisterModal = ({}): JSX.Element => {
     <ModalCommon
       title="Mở đăng ký khóa luận"
       open={isOpenRegisterThesisModal}
-      onCancel={() => setIsOpenRegisterThesisModal(false)}
+      onCancel={() => {
+        setIsOpenRegisterThesisModal(false);
+      }}
       maskCloseable={false}
       footer={[<ButtonFooter key={v4()} />]}
     >

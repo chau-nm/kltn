@@ -1,7 +1,7 @@
 import { InboxOutlined } from "@ant-design/icons";
-import { UploadFile } from "antd";
-import Dragger, { DraggerProps } from "antd/es/upload/Dragger";
-import { SetStateAction } from "react";
+import { type UploadFile } from "antd";
+import Dragger, { type DraggerProps } from "antd/es/upload/Dragger";
+import { type SetStateAction } from "react";
 import { uploadFileToFirebase } from "~/common/firebase";
 
 type DraggerCommonProps = {
@@ -20,7 +20,7 @@ const DraggerCommon = ({
   setFileList,
   ...rest
 }: DraggerCommonProps & DraggerProps): JSX.Element => {
-  const commonUploadRequest = async (options: any) => {
+  const commonUploadRequest = async (options: any): Promise<void> => {
     const { onSuccess, onError, file } = options;
     try {
       const downloadURL = await uploadFileToFirebase(file);
@@ -30,18 +30,18 @@ const DraggerCommon = ({
     }
   };
 
-  const handleOnChange = ({ file }: any) => {
-    if (fileList) {
+  const handleOnChange = ({ file }: any): void => {
+    if (fileList != null) {
       if (file.status === "uploading") {
-        let newFileList: UploadFile[] = fileList?.concat(file) as UploadFile[];
-        if (setFileList) {
+        const newFileList: UploadFile[] = fileList?.concat(file);
+        if (setFileList != null) {
           setFileList(newFileList);
         }
       } else if (file.status === "removed") {
-        let newFileList: UploadFile[] = fileList?.filter(
+        const newFileList: UploadFile[] = fileList?.filter(
           (f) => f.uid !== file.uid
-        ) as UploadFile[];
-        if (setFileList) {
+        );
+        if (setFileList != null) {
           setFileList(newFileList);
         }
       } else {
@@ -53,7 +53,7 @@ const DraggerCommon = ({
           }
           return f;
         });
-        if (files && setFileList) {
+        if (files && setFileList != null) {
           setFileList(files);
         }
       }
@@ -69,6 +69,7 @@ const DraggerCommon = ({
     <Dragger
       {...rest}
       fileList={fileList}
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       customRequest={commonUploadRequest}
       onChange={handleOnChange}
       onRemove={handleRemove}

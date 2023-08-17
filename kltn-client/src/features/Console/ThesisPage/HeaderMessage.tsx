@@ -6,7 +6,7 @@ import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 const HeaderMessage = (): JSX.Element => {
   const { thesisRegisterCalendar } = useContext(ThesisConsoleContext);
 
-  if (thesisRegisterCalendar) {
+  if (thesisRegisterCalendar != null) {
     return (
       <Typography.Text type="secondary" className="italic">
         Đang mở đăng ký khóa luận:{" "}

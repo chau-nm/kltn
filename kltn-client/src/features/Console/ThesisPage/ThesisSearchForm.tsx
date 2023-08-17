@@ -6,11 +6,11 @@ import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 const ThesisSearchForm = (): JSX.Element => {
   const { search, setSearchCondition } = useContext(ThesisConsoleContext);
 
-  const handleFinish = () => {
+  const handleFinish = (): void => {
     search();
   };
 
-  const handleChangeValues = (value: any, allValues: any) => {
+  const handleChangeValues = (value: any, allValues: any): void => {
     setSearchCondition({
       topic: allValues.topic,
       status: allValues.status,

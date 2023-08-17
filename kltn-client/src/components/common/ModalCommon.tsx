@@ -1,6 +1,6 @@
-import { Modal, ModalProps } from "antd";
-import { ReactNode } from "react";
-import "~/assets/styles/ModalCommon.scss"
+import { Modal, type ModalProps } from "antd";
+import { type ReactNode } from "react";
+import "~/assets/styles/ModalCommon.scss";
 
 type ModalCommonProps = {
   title?: string;
@@ -25,15 +25,16 @@ const ModalCommon = ({
   ...rest
 }: ModalCommonProps & ModalProps): JSX.Element => {
   return (
-    <Modal 
+    <Modal
       {...rest}
-      title={title} 
-      open={open} 
+      title={title}
+      open={open}
       footer={footer}
       onCancel={onCancel}
       onOk={onOk}
       maskClosable={maskCloseable}
-      className={`${className} min-w-[500px]`}>
+      className={`${className ?? ""} min-w-[500px]`}
+    >
       {children}
     </Modal>
   );

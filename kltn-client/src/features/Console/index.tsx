@@ -1,7 +1,6 @@
-import { HomeOutlined, NotificationOutlined } from "@ant-design/icons";
-import { Row, Space } from "antd";
-import NavLink from "./NavLink";
+import { Row } from "antd";
 import ConsoleLayoutConstants from "~/constants/consoleLayoutConstants";
+import NavLink from "./NavLink";
 
 const ConsolePage = (): JSX.Element => {
   return (

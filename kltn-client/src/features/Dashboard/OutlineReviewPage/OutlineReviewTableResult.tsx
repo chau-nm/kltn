@@ -1,5 +1,5 @@
 import { Row, Space, Spin } from "antd";
-import { ColumnType } from "antd/es/table";
+import { type ColumnType } from "antd/es/table";
 import { useContext, useEffect } from "react";
 import { OutlineReviewContext } from "~/contexts/OutlineReviewContext";
 
@@ -21,12 +21,12 @@ const OutlineReviewTableResult = (): JSX.Element => {
     search();
   }, []);
 
-  const columns: ColumnType<ThesisModel>[] = [
+  const columns: Array<ColumnType<ThesisModel>> = [
     {
       title: "STT",
       render: (value, record, index) => {
-        let current = pagination.current;
-        let pageSize = pagination.pageSize;
+        const current = pagination.current;
+        const pageSize = pagination.pageSize;
         if (current && pageSize) {
           return pageSize * (current - 1) + index + 1;
         }
@@ -66,7 +66,7 @@ const OutlineReviewTableResult = (): JSX.Element => {
           <Row justify={"center"}>
             <EditIconCommon
               onClick={() => {
-                searchDetail(record!?.id);
+                record?.id && searchDetail(record?.id);
                 setOpenEditOutlineReviewModal(true);
               }}
             />

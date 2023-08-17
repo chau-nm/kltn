@@ -10,10 +10,11 @@ import { useLocation } from "react-router-dom";
 import ConsoleLayoutConstants from "~/constants/consoleLayoutConstants";
 
 const ConsoleLayout = ({ children }: React.PropsWithChildren): JSX.Element => {
-
   const location = useLocation();
 
-  const title = ConsoleLayoutConstants.MENU_LIST.filter(menu => menu.to === location.pathname);
+  const title = ConsoleLayoutConstants.MENU_LIST.filter(
+    (menu) => menu.to === location.pathname,
+  );
 
   return (
     <Layout>
@@ -22,7 +23,9 @@ const ConsoleLayout = ({ children }: React.PropsWithChildren): JSX.Element => {
       </Sider>
       <Layout>
         <Header className={styles.header}>
-          <Typography.Text className={styles.title}>{title[0].title}</Typography.Text>
+          <Typography.Text className={styles.title}>
+            {title[0].title}
+          </Typography.Text>
           <Logo />
         </Header>
         <Content>

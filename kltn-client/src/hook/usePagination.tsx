@@ -1,20 +1,20 @@
-import { TablePaginationConfig } from "antd";
-import { SetStateAction, useEffect, useState } from "react";
+import { type TablePaginationConfig } from "antd";
+import { useState, type SetStateAction } from "react";
 
-const usePagination = <T extends {}>(
+const usePagination = <T extends object>(
   search: (mutationParam: MutationParamsModel<T>) => void,
   condition: T
 ): [
   TablePaginationConfig,
   React.Dispatch<SetStateAction<TablePaginationConfig>>,
-  (paginationP: TablePaginationConfig) => void
+  (paginationP: TablePaginationConfig) => void,
 ] => {
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     pageSize: 2,
     current: 1,
   });
 
-  const handleChange = (pagination: TablePaginationConfig) => {
+  const handleChange = (pagination: TablePaginationConfig): void => {
     setPagination(pagination);
     search({
       page: pagination.current as number,

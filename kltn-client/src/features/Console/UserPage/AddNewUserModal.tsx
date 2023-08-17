@@ -1,5 +1,4 @@
 import {
-  Button,
   Col,
   DatePicker,
   Form,
@@ -10,13 +9,13 @@ import {
   Typography,
   message,
 } from "antd";
-import { useContext, useState } from "react";
+import { useForm } from "antd/es/form/Form";
+import { useContext } from "react";
+import { v4 } from "uuid";
 import { UserConsoleContext } from "~/contexts/UserConsoleContext";
+import * as UserService from "~/services/userServices";
 import ButtonCommon from "../../../components/common/ButtonCommon";
 import ModalCommon from "../../../components/common/ModalCommon";
-import { useForm } from "antd/es/form/Form";
-import * as UserService from "~/services/userServices";
-import { v4 } from "uuid";
 
 const AddNewUserModal = (): JSX.Element => {
   const {
@@ -28,12 +27,12 @@ const AddNewUserModal = (): JSX.Element => {
 
   const [form] = useForm();
 
-  const clearData = () => {
+  const clearData = (): void => {
     form.resetFields();
   };
 
-  const handleSave = async () => {
-    form.validateFields().then(async () => {
+  const handleSave = async (): Promise<void> => {
+    void form.validateFields().then(async () => {
       const user: UserModel = {
         userId: v4(),
         username: form.getFieldValue("username"),
@@ -46,10 +45,9 @@ const AddNewUserModal = (): JSX.Element => {
         faculty: form.getFieldValue("faculty"),
         studentClass: form.getFieldValue("studentClass"),
       };
-      console.log(user);
       const UserResponse: UserModel | null = await UserService.insert(user);
       if (UserResponse) {
-        message.success("Lưu thành công");
+        void message.success("Lưu thành công");
         setOpenAddNewUserModal(false);
         clearData();
         setSearchCondition(() => {
@@ -57,12 +55,12 @@ const AddNewUserModal = (): JSX.Element => {
         });
         search();
       } else {
-        message.error("Lưu thất bại");
+        void message.error("Lưu thất bại");
       }
     });
   };
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     // clearData();
     setOpenAddNewUserModal(false);
   };

@@ -1,4 +1,4 @@
-import React, { SetStateAction, createContext, useState } from "react";
+import React, { type SetStateAction, createContext, useState } from "react";
 import UserModal from "~/components/UserModal";
 
 interface UserModalContextInterface {
@@ -16,16 +16,17 @@ export const UserModalContext = createContext(initUserModalContext);
 export const UserModalProvider = ({
   children,
 }: React.PropsWithChildren): JSX.Element => {
-
-    const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   return (
-    <UserModalContext.Provider value={{
+    <UserModalContext.Provider
+      value={{
         open,
-        setOpen
-    }}>
-        {children}
-        <UserModal />
+        setOpen,
+      }}
+    >
+      {children}
+      <UserModal />
     </UserModalContext.Provider>
   );
 };

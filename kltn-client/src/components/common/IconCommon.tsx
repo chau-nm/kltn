@@ -1,14 +1,13 @@
 import {
-  FormOutlined,
+  CommentOutlined,
   DeleteOutlined,
   EyeOutlined,
-  UserOutlined,
   FileProtectOutlined,
-  CommentOutlined,
   FileSyncOutlined,
+  FormOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-import { Button } from "antd";
-import { MouseEventHandler } from "react";
+import { type MouseEventHandler } from "react";
 
 type IconCommonType = {
   onClick?: MouseEventHandler;
@@ -16,7 +15,7 @@ type IconCommonType = {
 
 const iconTextClass = "text-xl mx-2 cursor-pointer duration-300";
 
-export const EditIconCommon = ({ onClick }: IconCommonType) => {
+export const EditIconCommon = ({ onClick }: IconCommonType): JSX.Element => {
   return (
     <FormOutlined
       className={`text-yellow-700 mt-2 hover:text-yellow-500 ${iconTextClass}`}
@@ -25,7 +24,7 @@ export const EditIconCommon = ({ onClick }: IconCommonType) => {
   );
 };
 
-export const DeleteIconCommon = ({ onClick }: IconCommonType) => {
+export const DeleteIconCommon = ({ onClick }: IconCommonType): JSX.Element => {
   return (
     <DeleteOutlined
       className={`text-red-700 mt-2 hover:text-red-500 ${iconTextClass}`}
@@ -34,7 +33,7 @@ export const DeleteIconCommon = ({ onClick }: IconCommonType) => {
   );
 };
 
-export const SeeIconCommon = ({ onClick }: IconCommonType) => {
+export const SeeIconCommon = ({ onClick }: IconCommonType): JSX.Element => {
   return (
     <EyeOutlined
       className={`text-blue-700 mt-2 hover:text-red-500 ${iconTextClass}`}
@@ -43,7 +42,7 @@ export const SeeIconCommon = ({ onClick }: IconCommonType) => {
   );
 };
 
-export const UserIconCommon = ({ onClick }: IconCommonType) => {
+export const UserIconCommon = ({ onClick }: IconCommonType): JSX.Element => {
   return (
     <UserOutlined
       className={`text-blue-700 mt-2 hover:text-red-500 ${iconTextClass}`}
@@ -52,7 +51,9 @@ export const UserIconCommon = ({ onClick }: IconCommonType) => {
   );
 };
 
-export const CriticalAssessmentIconCommon = ({ onClick }: IconCommonType) => {
+export const CriticalAssessmentIconCommon = ({
+  onClick,
+}: IconCommonType): JSX.Element => {
   return (
     <FileSyncOutlined
       className={`text-blue-700 mt-2 hover:text-red-500 ${iconTextClass}`}
@@ -61,7 +62,9 @@ export const CriticalAssessmentIconCommon = ({ onClick }: IconCommonType) => {
   );
 };
 
-export const ProtectedIconCommon = ({ onClick }: IconCommonType) => {
+export const ProtectedIconCommon = ({
+  onClick,
+}: IconCommonType): JSX.Element => {
   return (
     <FileProtectOutlined
       className={`text-blue-700 mt-2 hover:text-red-500 ${iconTextClass}`}
@@ -70,7 +73,7 @@ export const ProtectedIconCommon = ({ onClick }: IconCommonType) => {
   );
 };
 
-export const CommentIconCommon = ({ onClick }: IconCommonType) => {
+export const CommentIconCommon = ({ onClick }: IconCommonType): JSX.Element => {
   return (
     <CommentOutlined
       className={`text-blue-700 hover:text-red-500 ${iconTextClass}`}

@@ -4,14 +4,15 @@ import { useNavigate } from "react-router-dom";
 import LoginPageConstants from "~/constants/loginPageConstants";
 import path from "~/constants/path";
 import { AuthContext } from "~/contexts/AuthContext";
-import { login} from "~/services/userServices";
-import {useMutation} from 'react-query';
+import { login } from "~/services/userServices";
+import { useMutation } from "react-query";
 
 const LoginPage = (): JSX.Element => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const { isAuthenticated, setAuthenticated, setUser } = useContext(AuthContext);
+  const { isAuthenticated, setAuthenticated, setUser } =
+    useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -19,11 +20,11 @@ const LoginPage = (): JSX.Element => {
     onSuccess: (data) => {
       const user: UserModel | null = data as UserModel;
       if (user == null) {
-        alert('Login failed');
-      }else{
+        alert("Login failed");
+      } else {
         handleLoginSuccess(user);
       }
-    }
+    },
   });
 
   useEffect(() => {
@@ -32,23 +33,23 @@ const LoginPage = (): JSX.Element => {
     }
   }, [isAuthenticated]);
 
-  const handleLogin = async () => {
+  const handleLogin = (): void => {
     const loginCondition: LoginConditionModel = {
-      username: username,
-      password: password,
+      username,
+      password,
     };
     loginMutation.mutate(loginCondition);
   };
 
-  const handleLoginSuccess = (user: UserModel) => {
-    let accessToken = user.accessToken;
-    let refeshToken = user.refreshToken;
+  const handleLoginSuccess = (user: UserModel): void => {
+    const accessToken = user.accessToken ?? "";
+    const refeshToken = user.refreshToken ?? "";
 
-    localStorage.setItem('access_token', accessToken);
-    localStorage.setItem('refresh_token', refeshToken);
+    localStorage.setItem("access_token", accessToken);
+    localStorage.setItem("refresh_token", refeshToken);
 
     setAuthenticated(true);
-    setUser(user);    
+    setUser(user);
   };
 
   return (
@@ -64,7 +65,9 @@ const LoginPage = (): JSX.Element => {
               placeholder="Tên đăng nhập"
               autoComplete="username"
               value={username}
-              onChange={(event) => setUsername(event.target.value)}
+              onChange={(event) => {
+                setUsername(event.target.value);
+              }}
             />
           </Form.Item>
 
@@ -77,7 +80,9 @@ const LoginPage = (): JSX.Element => {
               placeholder="Mật khẩu"
               autoComplete="current-password"
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) => {
+                setPassword(event.target.value);
+              }}
             />
           </Form.Item>
 

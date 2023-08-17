@@ -11,7 +11,7 @@ import * as ThesisReportCalendarService from "~/services/thesisReportCalendarSer
 import * as UserService from "~/services/userServices";
 import * as CriticalAssessmentService from "~/services/criticalAssessmentService";
 
-const CriticalAssessmentModal = () => {
+const CriticalAssessmentModal = (): JSX.Element => {
   const [isEditCAPersonMode, setIsEditCAPersonMode] = useState(false);
   const [isEditCACalendarMode, setIsEditCACalendarMode] = useState(false);
   const [caPerson, setCaPerson] = useState<string>();
@@ -24,13 +24,14 @@ const CriticalAssessmentModal = () => {
     setIsOpenThesisDetailModal,
   } = useContext(ThesisConsoleContext);
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setIsOpenCriticalAssessmentModal(false);
   };
 
-  const { data: teachers, isLoading: isLoadingTeachers } = useQuery(
+  const { data: teachers } = useQuery(
     ["load-teacher-select"],
-    () => UserService.getUserByRole(AuthConstants.AUTH_ROLES.TEACHER)
+    async () =>
+      await UserService.getUserByRole(AuthConstants.AUTH_ROLES.TEACHER)
   );
 
   const insertThesisReportCalendarMutation = useMutation(
@@ -38,9 +39,9 @@ const CriticalAssessmentModal = () => {
     {
       onSuccess: (data: ThesisReportCalendarModel) => {
         if (data) {
-          message.success("Cập nhật lịch phản biện thành công");
+          void message.success("Cập nhật lịch phản biện thành công");
         } else {
-          message.error("Cập nhật lịch phản biện thất bại");
+          void message.error("Cập nhật lịch phản biện thất bại");
         }
       },
     }
@@ -51,9 +52,9 @@ const CriticalAssessmentModal = () => {
     {
       onSuccess: (data: ThesisReportCalendarModel) => {
         if (data) {
-          message.success("Cập nhật người phản biện thành công");
+          void message.success("Cập nhật người phản biện thành công");
         } else {
-          message.error("Cập nhật người phản biện thất bại");
+          void message.error("Cập nhật người phản biện thất bại");
         }
       },
     }
@@ -74,11 +75,11 @@ const CriticalAssessmentModal = () => {
     },
   ];
 
-  const handleOnChangeCalendar = (value: any) => {
+  const handleOnChangeCalendar = (value: any): void => {
     setCACalendar(value.toDate().getTime());
   };
 
-  const handleSaveCACalendar = () => {
+  const handleSaveCACalendar = (): void => {
     if (!caCalendar) {
       return;
     }
@@ -95,7 +96,7 @@ const CriticalAssessmentModal = () => {
     setIsEditCACalendarMode(false);
   };
 
-  const handleSaveCriticalAssessmentPerson = () => {
+  const handleSaveCriticalAssessmentPerson = (): void => {
     if (!thesis?.id || !caPerson) {
       return;
     }
@@ -106,7 +107,7 @@ const CriticalAssessmentModal = () => {
     setIsEditCAPersonMode(false);
   };
 
-  const filterOptions = (input: string, option: any) => {
+  const filterOptions = (input: string, option: any): boolean => {
     return (option?.label?.toString().toLowerCase() ?? "").includes(
       input.toLowerCase()
     );
@@ -118,8 +119,8 @@ const CriticalAssessmentModal = () => {
       open={isOpenCriticalAssessmentModal}
       onCancel={handleClose}
       footer={[
-        <ButtonCommon value="Đóng" />,
-        <ButtonCommon value="Thêm phản biện" />,
+        <ButtonCommon key={1} value="Đóng" />,
+        <ButtonCommon key={2} value="Thêm phản biện" />,
       ]}
     >
       <div className="min-w-[1000px]">
@@ -130,7 +131,9 @@ const CriticalAssessmentModal = () => {
           <Col>
             <span
               className="text-blue-400 select-none cursor-pointer hover:text-blue-500 duration-300"
-              onClick={() => setIsOpenThesisDetailModal(true)}
+              onClick={() => {
+                setIsOpenThesisDetailModal(true);
+              }}
             >
               Xem chi tiết
             </span>
@@ -146,7 +149,7 @@ const CriticalAssessmentModal = () => {
                 onChange={handleOnChangeCalendar}
               />
             ) : caCalendar ? (
-              dateTimeDisplay(new Date(caCalendar!))
+              dateTimeDisplay(new Date(caCalendar))
             ) : (
               "Chưa có lịch phản biện "
             )}
@@ -156,7 +159,9 @@ const CriticalAssessmentModal = () => {
               <>
                 <span
                   className="text-red-400 select-none cursor-pointer hover:text-red-500 duration-300 mx-3"
-                  onClick={() => setIsEditCACalendarMode(false)}
+                  onClick={() => {
+                    setIsEditCACalendarMode(false);
+                  }}
                 >
                   Hủy
                 </span>
@@ -170,7 +175,9 @@ const CriticalAssessmentModal = () => {
             ) : (
               <span
                 className="text-blue-400 select-none cursor-pointer hover:text-blue-500 duration-300"
-                onClick={() => setIsEditCACalendarMode(true)}
+                onClick={() => {
+                  setIsEditCACalendarMode(true);
+                }}
               >
                 Chỉnh sửa
               </span>
@@ -184,22 +191,24 @@ const CriticalAssessmentModal = () => {
               <Select
                 style={{ width: 300 }}
                 showSearch
-                onChange={(value) => setCaPerson(value)}
+                onChange={(value) => {
+                  setCaPerson(value);
+                }}
                 placeholder="Nhập mã số giảng viên"
                 filterOption={filterOptions}
                 options={[
-                  ...teachers!.map((teacher) => {
+                  ...(teachers?.map((teacher) => {
                     return {
                       value: teacher.userId,
-                      label: `${teacher.fname} - ${teacher.username}`,
+                      label: `${teacher.fname ?? ""} - ${
+                        teacher.username ?? ""
+                      }`,
                     };
-                  }),
+                  }) ?? []),
                 ]}
               />
-            ) : caPerson ? (
-              caPerson
             ) : (
-              "Chưa thêm phản biện"
+              caPerson ?? "Chưa thêm phản biện"
             )}
           </Col>
           <Col>
@@ -207,7 +216,9 @@ const CriticalAssessmentModal = () => {
               <>
                 <span
                   className="text-red-400 select-none cursor-pointer hover:text-red-500 duration-300 mx-3"
-                  onClick={() => setIsEditCAPersonMode(false)}
+                  onClick={() => {
+                    setIsEditCAPersonMode(false);
+                  }}
                 >
                   Hủy
                 </span>
@@ -221,7 +232,9 @@ const CriticalAssessmentModal = () => {
             ) : (
               <span
                 className="text-blue-400 select-none cursor-pointer hover:text-blue-500 duration-300"
-                onClick={() => setIsEditCAPersonMode(true)}
+                onClick={() => {
+                  setIsEditCAPersonMode(true);
+                }}
               >
                 Chỉnh sửa
               </span>

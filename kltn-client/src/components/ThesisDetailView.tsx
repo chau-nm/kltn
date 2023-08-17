@@ -1,9 +1,9 @@
-import { Col, Form, Row, Typography } from "antd";
+import { Col, Row, Typography } from "antd";
+import { type SetStateAction } from "react";
+import CommonConstants from "~/constants/commonConstants";
+import ButtonCommon from "./common/ButtonCommon";
 import ModalCommon from "./common/ModalCommon";
 import ReactQuillPreviewCommon from "./common/ReactQuillPreviewCommon";
-import ButtonCommon from "./common/ButtonCommon";
-import { SetStateAction } from "react";
-import CommonConstants from "~/constants/commonConstants";
 
 type ThesisDetailViewProps = {
   thesis: ThesisModel;
@@ -21,7 +21,7 @@ const ThesisDetailView = ({
     offset: 1,
   };
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setIsOpen(false);
   };
 
@@ -36,6 +36,7 @@ const ThesisDetailView = ({
         {thesis?.students?.map((tu, index) => {
           const student = tu.user;
           return (
+            // eslint-disable-next-line react/jsx-key
             <div className="mb-4">
               <Typography.Text className="block ml-[10px] font-bold text-lg">
                 Thông tin sinh viên {index + 1}
@@ -93,7 +94,7 @@ const ThesisDetailView = ({
               <Col {...colLayout} span={23}>
                 <Typography.Text className="text-lg">Mô tả:</Typography.Text>
                 <div className="w-full border-2 p-2">
-                  <ReactQuillPreviewCommon content={thesis.description!} />
+                  <ReactQuillPreviewCommon content={thesis.description} />
                 </div>
               </Col>
             </Row>

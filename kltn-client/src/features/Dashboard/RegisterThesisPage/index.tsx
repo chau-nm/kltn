@@ -15,12 +15,12 @@ const RegisterThesisPage = (): JSX.Element => {
     isLoading: isLoadingViewThesisRegisterCalendar,
   } = useQuery(
     ["view-thesis-register-calendar"],
-    ThesisRegisterCalendarService.view
+    ThesisRegisterCalendarService.view,
   );
 
   const { data: myThesis, isLoading: isLoadingThesis } = useQuery(
     ["load-my-thesis"],
-    () => ThesisService.searchByUser(user?.userId ?? "")
+    async () => await ThesisService.searchByUser(user?.userId ?? ""),
   );
 
   const thesisCreatedByMe =
@@ -29,7 +29,7 @@ const RegisterThesisPage = (): JSX.Element => {
   return (
     <PageLayout pageTitle="Đăng ký khóa luận tốt nghiệp">
       <Spin spinning={isLoadingViewThesisRegisterCalendar || isLoadingThesis}>
-        {!thesisRegisterCalendar ? (
+        {(thesisRegisterCalendar == null) ? (
           <Typography.Text>Chưa tới thời gian đăng ký</Typography.Text>
         ) : thesisCreatedByMe.length > 0 ? (
           <Typography.Text>Bạn đã đăng ký luận văn rồi.</Typography.Text>

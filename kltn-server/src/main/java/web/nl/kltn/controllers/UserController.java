@@ -36,145 +36,145 @@ import static web.nl.kltn.common.Util.generateRandomString;
 @RequestMapping("/api/user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+	@Autowired
+	private UserService userService;
 
-    @Autowired
-    private JWTTokenUtil jwtTokenUtil;
+	@Autowired
+	private JWTTokenUtil jwtTokenUtil;
 
-    @Autowired
-    private RefreshTokenService refreshTokenService;
+	@Autowired
+	private RefreshTokenService refreshTokenService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
-    @PostMapping("/login")
-    public ResponseModel<UserDTO> login(@RequestBody RequestModel<LoginCondition> loginCoditionRequest) {
+	@PostMapping("/login")
+	public ResponseModel<UserDTO> login(@RequestBody RequestModel<LoginCondition> loginCoditionRequest) {
 
-        LoginCondition loginCondition = loginCoditionRequest.getData();
+		LoginCondition loginCondition = loginCoditionRequest.getData();
 
-        ResponseModel<UserDTO> responseModel = new ResponseModel<>();
+		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginCondition.getUsername(), loginCondition.getPassword()));
+		try {
+			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+					loginCondition.getUsername(), loginCondition.getPassword()));
 
-        if (!authentication.isAuthenticated()) {
-            return responseModel;
-        } else {
-            UserDTO userCus = userService.findByUsername(loginCondition.getUsername());
-            String accessToken = jwtTokenUtil.generateToken(userCus.getUsername());
-            RefreshToken refreshToken = refreshTokenService.generateRefreshToken();
-            refreshToken.setUserId(userCus.getUserId());
-            userCus.setAccessToken(accessToken);
-            userCus.setRefreshToken(refreshToken.getToken());
-            refreshTokenService.saveRefreshToken(refreshToken);
+			if (!authentication.isAuthenticated()) {
+				return responseModel;
+			} else {
+				UserDTO userCus = userService.findByUsername(loginCondition.getUsername());
+				String accessToken = jwtTokenUtil.generateToken(userCus.getUsername());
+				RefreshToken refreshToken = refreshTokenService.findAvailabilityByUserId(userCus.getUserId());
+				if (refreshToken == null) {
+					refreshToken = refreshTokenService.generateRefreshToken();
+					refreshToken.setUserId(userCus.getUserId());
+					refreshTokenService.saveRefreshToken(refreshToken);
+				}
+				userCus.setAccessToken(accessToken);
+				userCus.setRefreshToken(refreshToken.getToken());
 
-            responseModel.setData(userCus);
-        }
+				responseModel.setData(userCus);
+			}
+		} catch (AuthenticationException e) {
+			responseModel.setMessage("Tài khoản hoặc mật khẩu không đúng");
+			responseModel.setStatus(1);
+		}
+		return responseModel;
+	}
 
-        return responseModel;
-    }
+	@GetMapping("/get-user-with-role")
+	public ResponseModel<List<UserDTO>> getUserWithRole(@RequestParam String role) {
+		ResponseModel<List<UserDTO>> responseModel = new ResponseModel<>();
+		if (role == null) {
+			return responseModel;
+		}
+		List<UserDTO> userDTOs = userService.findByRole(role);
+		responseModel.setData(userDTOs);
+		return responseModel;
+	}
 
-    @GetMapping("/get-user-with-role")
-    public ResponseModel<List<UserDTO>> getUserWithRole(@RequestParam String role) {
-        ResponseModel<List<UserDTO>> responseModel = new ResponseModel<>();
-        if (role == null) {
-            return responseModel;
-        }
-        List<UserDTO> userDTOs = userService.findByRole(role);
-        responseModel.setData(userDTOs);
-        return responseModel;
-    }
+	@PostMapping("/get-user-with-token")
+	public ResponseModel<UserDTO> getUserWithToken(@RequestBody RequestModel<AccessTokenRequest> accessTokenRequest) {
+		String accessToken = accessTokenRequest.getData().getAccessToken();
+		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
+		String username = jwtTokenUtil.getUserIdFromToken(accessToken);
+		if (username != null) {
+			UserDTO userCus = userService.findByUsername(username);
+			responseModel.setData(userCus);
+		}
+		return responseModel;
+	}
 
-    @PostMapping("/get-user-with-token")
-    public ResponseModel<UserDTO> getUserWithToken(@RequestBody RequestModel<AccessTokenRequest> accessTokenRequest) {
-        String accessToken = accessTokenRequest.getData().getAccessToken();
-        ResponseModel<UserDTO> responseModel = new ResponseModel<>();
-        String username = jwtTokenUtil.getUserIdFromToken(accessToken);
-        if (username != null) {
-            UserDTO userCus = userService.findByUsername(username);
-            responseModel.setData(userCus);
-        }
-        return responseModel;
-    }
+	@PostMapping("/refresh-token")
+	public ResponseModel<UserDTO> refresToken(@RequestBody RequestModel<RefreshTokenRequest> refreshTokenRequest) {
+		String refreshTokenClient = refreshTokenRequest.getData().getRefreshToken();
+		RefreshToken refreshTokenDb = refreshTokenService.findRefreshToken(refreshTokenClient);
+		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
+		if (refreshTokenDb == null) {
+			return responseModel;
+		}
+		UserDTO userCus = userService.findByUserId(refreshTokenDb.getUserId());
+		if (userCus != null) {
+			String newAccessToken = jwtTokenUtil.generateToken(userCus.getUsername());
+			userCus.setAccessToken(newAccessToken);
+			userCus.setRefreshToken(refreshTokenDb.getToken());
+			responseModel.setData(userCus);
+		}
 
-    @PostMapping("/refresh-token")
-    public ResponseModel<UserDTO> refresToken(@RequestBody RequestModel<RefreshTokenRequest> refreshTokenRequest) {
-        String refreshTokenClient = refreshTokenRequest.getData().getRefreshToken();
-        RefreshToken refreshTokenDb = refreshTokenService.findRefreshToken(refreshTokenClient);
+		return responseModel;
+	}
 
-        ResponseModel<UserDTO> responseModel = new ResponseModel<>();
-        if (refreshTokenDb == null) {
-            return responseModel;
-        }
-        UserDTO userCus = userService.findByUserId(refreshTokenDb.getUserId());
-        if (userCus != null) {
-            String newAccessToken = jwtTokenUtil.generateToken(userCus.getUsername());
-            userCus.setAccessToken(newAccessToken);
-            userCus.setRefreshToken(refreshTokenDb.getToken());
-            responseModel.setData(userCus);
-        }
+	@GetMapping("/{id}")
+	public ResponseModel<UserDTO> findUserById(@PathVariable String id) {
+		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
+		responseModel.setData(userService.findByUserId(id));
+		return responseModel;
+	}
 
-        return responseModel;
-    }
+	@PostMapping("/search/{page}")
+	public ResponseModel<SearchResponse<List<UserDTO>>> search(@PathVariable int page,
+			@RequestParam(defaultValue = "1") int pageSize,
+			@RequestBody(required = false) RequestModel<UserSearchCondition> searchConditionRequest) {
+		UserSearchCondition searchCondition = searchConditionRequest.getData();
+		List<UserDTO> users = userService.search(page, pageSize, searchCondition);
+		ResponseModel<SearchResponse<List<UserDTO>>> responseModel = new ResponseModel<>();
+		SearchResponse<List<UserDTO>> userSearchResponse = new SearchResponse<>();
+		userSearchResponse.setData(users);
+		userSearchResponse.setTotal(userService.getTotal(searchCondition));
+		responseModel.setData(userSearchResponse);
+		return responseModel;
+	}
 
-    @GetMapping("/{id}")
-    public ResponseModel<UserDTO> findUserById(@PathVariable String id) {
-        ResponseModel<UserDTO> responseModel = new ResponseModel<>();
-        responseModel.setData(userService.findByUserId(id));
-        return responseModel;
-    }
+	@PostMapping("/reset/{idUserRequest}")
+	public ResponseModel<String> resetPassword(@PathVariable(required = true) String idUserRequest) {
+		String idUser = idUserRequest;
+		String newPasswordGenerate = generateRandomString(10);
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		String newPasswordEncode = encoder.encode(newPasswordGenerate);
+		UserDTO userDto = userService.updatePassword(idUser, newPasswordEncode);
 
-    @PostMapping("/search/{page}")
-    public ResponseModel<SearchResponse<List<UserDTO>>> search(
-            @PathVariable int page,
-            @RequestParam(defaultValue = "1") int pageSize,
-            @RequestBody(required = false) RequestModel<UserSearchCondition> searchConditionRequest
-    ) {
-        UserSearchCondition searchCondition = searchConditionRequest.getData();
-        List<UserDTO> users = userService.search(page, pageSize, searchCondition);
-        ResponseModel<SearchResponse<List<UserDTO>>> responseModel = new ResponseModel<>();
-        SearchResponse<List<UserDTO>> userSearchResponse = new SearchResponse<>();
-        userSearchResponse.setData(users);
-        userSearchResponse.setTotal(userService.getTotal(searchCondition));
-        responseModel.setData(userSearchResponse);
-        return responseModel;
-    }
-
-    @PostMapping("/reset/{idUserRequest}")
-    public ResponseModel<String> resetPassword(
-            @PathVariable(required = true) String idUserRequest
-    ) {
-        String idUser = idUserRequest;
-        String newPasswordGenerate = generateRandomString(10);
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
-        String newPasswordEncode = encoder.encode(newPasswordGenerate);
-        UserDTO userDto = userService.updatePassword(idUser,newPasswordEncode);
-
-        ResponseModel<String> responseModel = new ResponseModel<>();
+		ResponseModel<String> responseModel = new ResponseModel<>();
 //        responseModel.setData(userDto);
-        responseModel.setData(newPasswordGenerate);
-        return responseModel;
-    }
+		responseModel.setData(newPasswordGenerate);
+		return responseModel;
+	}
 
-    @PutMapping("/update")
-    public ResponseModel<UserDTO> refeshToken(@RequestBody RequestModel<UserDTO> userUpdateRequest) {
-        UserDTO newUser = userUpdateRequest.getData();
-        ResponseModel<UserDTO> responseModel = new ResponseModel<>();
-        responseModel.setData(userService.updateUser(newUser));
-        return responseModel;
-    }
+	@PutMapping("/update")
+	public ResponseModel<UserDTO> refeshToken(@RequestBody RequestModel<UserDTO> userUpdateRequest) {
+		UserDTO newUser = userUpdateRequest.getData();
+		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
+		responseModel.setData(userService.updateUser(newUser));
+		return responseModel;
+	}
 
-    @PostMapping("/insert")
-    public ResponseModel<UserDTO> insert(
-            @RequestBody RequestModel<UserDTO> userRequest
-    ) {
-        ResponseModel<UserDTO> responseModel = new ResponseModel<>();
-        UserDTO userDTO = userRequest.getData();
-        UserDTO userResponse = userService.insert(userDTO);
-        if (userResponse != null) {
-            responseModel.setData(userResponse);
-        }
-        return responseModel;
-    }
+	@PostMapping("/insert")
+	public ResponseModel<UserDTO> insert(@RequestBody RequestModel<UserDTO> userRequest) {
+		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
+		UserDTO userDTO = userRequest.getData();
+		UserDTO userResponse = userService.insert(userDTO);
+		if (userResponse != null) {
+			responseModel.setData(userResponse);
+		}
+		return responseModel;
+	}
 }

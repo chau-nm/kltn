@@ -1,6 +1,6 @@
 import { Button } from "antd";
-import { ButtonProps } from "antd/es/button/button";
-import { MouseEventHandler } from "react";
+import { type ButtonProps } from "antd/es/button/button";
+import { type MouseEventHandler } from "react";
 
 const ButtonColorType = {
   yellow: "bg-yellow-500",
@@ -10,14 +10,14 @@ const ButtonColorType = {
   gray: "bg-gray-700 text-white",
 };
 
-interface ButtonCommonProps extends Omit<ButtonProps, 'type'> {
+interface ButtonCommonProps extends Omit<ButtonProps, "type"> {
   value: string;
   color?: "yellow" | "green" | "blue" | "red" | "gray";
   className?: string;
   onClick?: MouseEventHandler;
   disabled?: boolean;
-  type?: 'link' | 'text' | 'ghost' | 'default' | 'primary' | 'dashed';
-};
+  type?: "link" | "text" | "ghost" | "default" | "primary" | "dashed";
+}
 
 const ButtonCommon = ({
   value,
@@ -30,8 +30,8 @@ const ButtonCommon = ({
   return (
     <Button
       {...rest}
-      className={`py-5 flex text-base items-center ${className} ${
-        color && ButtonColorType[color]
+      className={`py-5 flex text-base items-center ${className ?? ""} ${
+        (color && ButtonColorType[color]) ?? ""
       }`}
       onClick={onClick}
       disabled={disabled}
