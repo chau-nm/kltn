@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import web.nl.kltn.mapper.ThesisCusMapper;
 import web.nl.kltn.mapper.ThesisUserCusMapper;
+import web.nl.kltn.mapper.generator.ThesisMapper;
 import web.nl.kltn.mapper.generator.ThesisUserMapper;
+import web.nl.kltn.model.generator.Thesis;
 import web.nl.kltn.model.generator.ThesisUser;
 import web.nl.kltn.model.generator.User;
 import web.nl.kltn.service.ThesisUserService;
@@ -21,6 +24,12 @@ public class ThesisUserServiceImpl implements ThesisUserService {
 
 	@Autowired
 	private ThesisUserCusMapper thesisUserCusMapper;
+	
+	@Autowired
+	private ThesisMapper thesisMapper;
+	
+	@Autowired
+	private ThesisCusMapper thesisCusMapper;
 
 	@Override
 	public ThesisUser view(String id) {
@@ -49,6 +58,13 @@ public class ThesisUserServiceImpl implements ThesisUserService {
 	@Override
 	public void update(ThesisUser thesisUser) {
 		thesisUserMapper.updateByPrimaryKey(thesisUser);
+		List<ThesisUser> thesisUsers = thesisUserCusMapper.searchByThesis(thesisUser.getThesisId());
+		List<ThesisUser> thesisUserDontAccept = thesisUsers.stream().filter(tu -> tu.getStatus() != 1).toList();
+		if (thesisUserDontAccept.size() == 0) {
+			Thesis thesis = thesisMapper.selectByPrimaryKey(thesisUser.getThesisId());
+			thesis.setStatus(2);
+			thesisMapper.updateByPrimaryKey(thesis);
+		}
 	}
 
 	@Override

@@ -9,6 +9,7 @@
     	<result column="user_id" property="userId" jdbcType="VARCHAR"/>
     	<result column="type" property="type" jdbcType="INTEGER"/>
     	<result column="status" property="status" jdbcType="INTEGER"/>
+    	<result column="is_deleted" property="isDeleted" jdbcType="BIT"/>
     	<result column="created_at" property="createdAt" jdbcType="BIGINT"/>
     	<result column="updated_at" property="updatedAt" jdbcType="BIGINT"/>
     </resultMap>
@@ -24,6 +25,7 @@
 			tu.user_id,
 			tu.type,
 			tu.status,
+			tu.is_deleted,
 			tu.created_at,
 			tu.updated_at
 		FROM
@@ -39,13 +41,14 @@
 		</where>
 	</select>
 	
-	<select id="searchByThesis">
+	<select id="searchByThesis" resultMap="ThesisUser">
 		SELECT
 			id,
 			thesis_id,
 			user_id,
 			type,
 			status,
+			is_deleted,
 			created_at,
 			updated_at
 		FROM

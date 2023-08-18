@@ -10,13 +10,15 @@ import { AuthContext } from "~/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import path from "~/constants/path";
 import { UserModalContext } from "~/contexts/UserModalContext";
+import AuthConstants from "~/constants/authConstants";
+import { hasCommonValue } from "~/common/util";
 
 type UserSubMenuProps = {
   handleClosePopover?: () => void;
 };
 
 const UserSubMenu = ({ handleClosePopover }: UserSubMenuProps): JSX.Element => {
-  const { signOut } = useContext(AuthContext);
+  const { user, signOut } = useContext(AuthContext);
   const { setOpen: setUserModalOpen } = useContext(UserModalContext);
 
   const navigate = useNavigate();
@@ -38,11 +40,16 @@ const UserSubMenu = ({ handleClosePopover }: UserSubMenuProps): JSX.Element => {
 
   return (
     <Space direction="vertical">
-      <UserSubMenuItem
-        icon={<ProjectOutlined />}
-        title="Trang quản lý"
-        handleOnClick={handleNavigateConsole}
-      />
+      {hasCommonValue(user?.roles ?? [], [
+        AuthConstants.AUTH_ROLES.ADMIN,
+        AuthConstants.AUTH_ROLES.MINISTRY,
+      ]) && (
+        <UserSubMenuItem
+          icon={<ProjectOutlined />}
+          title="Trang quản lý"
+          handleOnClick={handleNavigateConsole}
+        />
+      )}
       <UserSubMenuItem
         icon={<UserOutlined />}
         title="Thông tin người dùng"

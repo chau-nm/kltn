@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -171,9 +172,27 @@ public class UserController {
 	public ResponseModel<UserDTO> insert(@RequestBody RequestModel<UserDTO> userRequest) {
 		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
 		UserDTO userDTO = userRequest.getData();
-		UserDTO userResponse = userService.insert(userDTO);
-		if (userResponse != null) {
+		UserDTO userResponse;
+		try {
+			userResponse = userService.insert(userDTO);
 			responseModel.setData(userResponse);
+		} catch (Exception e) {
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
+		}
+		return responseModel;
+	}
+
+	@PutMapping("/change-password")
+	public ResponseModel<User> changpassword(@RequestBody RequestModel<ChangpasswordPayload> changePasswordPayload) {
+		ChangpasswordPayload payload = changePasswordPayload.getData();
+		ResponseModel<User> responseModel = new ResponseModel<>();
+		try {
+			User user = userService.changpassword(payload);
+			responseModel.setData(user);
+		} catch (Exception e) {
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
 		}
 		return responseModel;
 	}

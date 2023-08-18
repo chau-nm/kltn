@@ -111,3 +111,11 @@ export const getUserByRole = async (role: string): Promise<UserModel[]> => {
   );
   return response.data ? response.data : [];
 };
+
+export const changePassword = async (changePasswordPayload: ChangePasswordPayload): Promise<UserModel | null> => {
+  const requestModel: RequestModel<ChangePasswordPayload> = {
+    data: changePasswordPayload
+  }
+  const responseModel: ResponseModel<UserModel | null> = await http.put(ApiUrlConstants.CHANGE_PASSWORD, requestModel);
+  return responseModel.data;
+}

@@ -11,6 +11,7 @@ export class ApiUrlConstants {
   public static readonly INSERT_USER = "/user/insert";
   public static readonly RESET_PASSWORD_USER = "/user/reset";
   public static readonly REFRESH_TOKEN = "/user/refresh-token";
+  public static readonly CHANGE_PASSWORD = "/user/change-password";
 
   /** NOTIFICATION */
   public static readonly INSERT_NOTIFICATION = "/notification/insert";
@@ -68,7 +69,7 @@ export class ApiUrlConstants {
   public static readonly FIND_THESIS_USER_BY_THESIS =
     "/thesis-user/find-by-thesis";
 
-  public static readonly UPDATE_THESIS_USER = "/thesis-user/find-by-thesis";
+  public static readonly UPDATE_THESIS_USER = "/thesis-user/update";
 
   /** CRITICAL ASSESSMENT */
   public static readonly INSERT_USER_CRITICAL_ASSESSMENT =

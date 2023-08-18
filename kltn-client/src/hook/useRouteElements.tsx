@@ -77,10 +77,10 @@ const AuthenticatedRoute = ({
   const { isAuthenticated, user } = useContext(AuthContext);
   const userRoles = user?.roles != null ? user.roles : [];
   const hasRole = hasCommonValue(roles, userRoles);
+
   if (isAuthenticated && hasRole) {
     return <Outlet />;
   } else {
-    console.log("ádas");
     return <Navigate to={path.LOGIN} />;
   }
 };

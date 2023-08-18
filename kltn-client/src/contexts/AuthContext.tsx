@@ -28,11 +28,21 @@ export const AuthContextProvider = ({
     const isAuthSession = localStorage.getItem("isAuthenticated");
     return isAuthSession ? JSON.parse(isAuthSession) : false;
   });
-  const [user, setUser] = useState<UserModel>();
+  const [user, setUser] = useState<UserModel | undefined>(() => {
+    const userSession = localStorage.getItem("user");
+    return userSession ? JSON.parse(userSession) : undefined;
+  });
 
   useEffect(() => {
     localStorage.setItem("isAuthenticated", JSON.stringify(isAuthenticated));
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "user",
+      JSON.stringify({ ...user, password: undefined })
+    );
+  }, [user]);
 
   const checkLogged = useMutation(getUsuerByToken, {
     onSuccess: (data) => {

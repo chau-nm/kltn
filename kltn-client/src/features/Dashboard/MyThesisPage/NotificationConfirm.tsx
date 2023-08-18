@@ -2,8 +2,9 @@ import { Alert, Col, Row, message } from "antd";
 import { useContext } from "react";
 import { useMutation } from "react-query";
 import ButtonCommon from "~/components/common/ButtonCommon";
+import AuthConstants from "~/constants/authConstants";
 import { AuthContext } from "~/contexts/AuthContext";
-import * as ThesisService from "~/services/thesisService";
+import * as ThesisUserService from "~/services/thesisUserService";
 
 type NotificationConfirmProps = {
   thesis: ThesisModel;
@@ -14,13 +15,9 @@ const NotificationConfirm = ({
 }: NotificationConfirmProps): JSX.Element => {
   const { user } = useContext(AuthContext);
 
-  const updateThesisMutation = useMutation(ThesisService.update, {
+  const updateThesisUserService = useMutation(ThesisUserService.update, {
     onSuccess: (data: boolean) => {
-      if (data) {
-        void message.success("Thay đổi dữ liệu thành công");
-      } else {
-        void message.error("Đã có lỗi xảy ra");
-      }
+      void (data && message.success("Bạn đã đồng ý tham gia luận văn."));
     },
   });
 
@@ -29,12 +26,22 @@ const NotificationConfirm = ({
   )[0];
 
   const handleAccept = (): void => {
-    const newThesis: ThesisModel = {
-      ...thesis,
-      status: 2,
+    let thesisUser;
+    if (user?.roles?.includes(AuthConstants.AUTH_ROLES.STUDENT)) {
+      thesisUser = thesis.students?.filter(
+        (std) => std.userId === user?.userId
+      )[0];
+    }
+    if (user?.roles?.includes(AuthConstants.AUTH_ROLES.TEACHER)) {
+      thesisUser =
+        thesis.teacher?.userId === user.userId ? thesis.teacher : undefined;
+    }
+    const newThesisUser = {
+      ...thesisUser,
+      status: 1,
     };
 
-    updateThesisMutation.mutate(newThesis);
+    updateThesisUserService.mutate(newThesisUser);
   };
 
   const handleDecline = (): void => {

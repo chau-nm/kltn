@@ -97,10 +97,11 @@ const AddNewUserModal = (): JSX.Element => {
             rules={[
               {
                 required: true,
+                message: "Vui lòng nhập tên đăng nhập.",
               },
             ]}
           >
-            <Input type="text" />
+            <Input type="text" placeholder="Tên đăng nhập" />
           </Form.Item>
           <Form.Item
             {...layoutConfig}
@@ -110,23 +111,35 @@ const AddNewUserModal = (): JSX.Element => {
             rules={[
               {
                 required: true,
+                message: "Vui lòng nhập mật khẩu",
               },
             ]}
           >
-            <Input type="password" />
+            <Input.Password placeholder="Mật khẩu" />
           </Form.Item>
           <Form.Item
             {...layoutConfig}
             labelAlign="left"
             label="Nhập lại mật khẩu"
-            name="conformPassword"
+            name="confirmPassword"
+            dependencies={["password"]}
             rules={[
               {
                 required: true,
+                message: "Vui lòng nhập lại mật khẩu",
               },
+              ({ getFieldValue }) => ({
+                async validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    await Promise.resolve();
+                    return;
+                  }
+                  return await Promise.reject(new Error("Mật khẩu không khớp"));
+                },
+              }),
             ]}
           >
-            <Input type="password" />
+            <Input.Password placeholder="Nhập lại mật khẩu" />
           </Form.Item>
           <Form.Item
             {...layoutConfig}
@@ -136,10 +149,11 @@ const AddNewUserModal = (): JSX.Element => {
             rules={[
               {
                 required: true,
+                message: "Vui lòng nhập họ và tên",
               },
             ]}
           >
-            <Input type="text" />
+            <Input type="text" placeholder="Họ và tên" />
           </Form.Item>
 
           <Form.Item
@@ -150,17 +164,23 @@ const AddNewUserModal = (): JSX.Element => {
             rules={[
               {
                 required: true,
+                message: "Vui lòng nhập địa chỉ email",
               },
             ]}
           >
-            <Input type="email" />
+            <Input type="email" placeholder="Email" />
           </Form.Item>
           <Form.Item
             {...layoutConfig}
             labelAlign="left"
             label="Giới tính"
             name="gender"
-            required
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng chọn giới tính",
+              },
+            ]}
           >
             <Radio.Group>
               <Radio value="male">Nam</Radio>
@@ -172,9 +192,14 @@ const AddNewUserModal = (): JSX.Element => {
             labelAlign="left"
             label="Ngày sinh"
             name="birthday"
-            required
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng nhập ngày sinh",
+              },
+            ]}
           >
-            <DatePicker />
+            <DatePicker style={{ width: 300 }} />
           </Form.Item>
           <Form.Item
             {...layoutConfig}
@@ -182,7 +207,7 @@ const AddNewUserModal = (): JSX.Element => {
             label="Khoa"
             name="faculty"
           >
-            <Input type="text" />
+            <Input type="text" placeholder="Khoa" />
           </Form.Item>
           <Form.Item
             {...layoutConfig}
@@ -190,7 +215,7 @@ const AddNewUserModal = (): JSX.Element => {
             label="Lớp"
             name="studentClass"
           >
-            <Input type="text" />
+            <Input type="text" placeholder="Lớp" />
           </Form.Item>
           <Form.Item
             {...layoutConfig}
@@ -200,11 +225,13 @@ const AddNewUserModal = (): JSX.Element => {
             rules={[
               {
                 required: true,
+                message: "Vui lòng chọn quyền cho tài khoản",
               },
             ]}
           >
             <Select
               mode="multiple"
+              placeholder="Quyền tài khoản"
               options={Object.values(AuthConstants.AUTH_ROLES).map((role) => ({
                 value: role,
                 label: role,

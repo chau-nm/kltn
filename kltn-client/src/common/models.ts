@@ -63,6 +63,12 @@ interface UserSearchConditionModel {
   studentClass?: string;
 }
 
+interface ChangePasswordPayload {
+  userId?: string;
+  oldPassword?: string;
+  newPassword?: string;
+}
+
 /** Notification */
 interface NotificationModel {
   id: string;

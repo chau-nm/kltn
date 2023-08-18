@@ -11,7 +11,8 @@ import ButtonCommon from "./common/ButtonCommon";
 import ModalCommon from "./common/ModalCommon";
 
 const UserModal = (): JSX.Element => {
-  const { open, setOpen } = useContext(UserModalContext);
+  const { open, setOpen, setIsOpenChangePasswordModal } =
+    useContext(UserModalContext);
 
   const { user: userAuth } = useContext(AuthContext);
   const [user, setUser] = useState<UserModel>({});
@@ -50,6 +51,12 @@ const UserModal = (): JSX.Element => {
     return (
       <Row justify={"end"}>
         <ButtonCommon value="Đóng" onClick={handleCancel} />
+        <ButtonCommon
+          value="Thay đổi mật khẩu"
+          onClick={() => {
+            setIsOpenChangePasswordModal(true);
+          }}
+        />
         {editMode ? (
           <ButtonCommon
             value="Lưu"

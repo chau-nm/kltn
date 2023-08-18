@@ -14,7 +14,7 @@ export const update = async (thesisUser: ThesisUserModel): Promise<boolean> => {
   const requestModel: RequestModel<ThesisUserModel> = {
     data: thesisUser,
   };
-  const responseModel: ResponseModel<boolean> = await http.post(
+  const responseModel: ResponseModel<boolean> = await http.put(
     ApiUrlConstants.UPDATE_THESIS_USER,
     requestModel,
   );
