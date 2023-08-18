@@ -1,12 +1,11 @@
 import {
-  Col,
   DatePicker,
   Form,
   Input,
   Radio,
   Row,
+  Select,
   Spin,
-  Typography,
   message,
 } from "antd";
 import { useForm } from "antd/es/form/Form";
@@ -16,6 +15,7 @@ import { UserConsoleContext } from "~/contexts/UserConsoleContext";
 import * as UserService from "~/services/userServices";
 import ButtonCommon from "../../../components/common/ButtonCommon";
 import ModalCommon from "../../../components/common/ModalCommon";
+import AuthConstants from "~/constants/authConstants";
 
 const AddNewUserModal = (): JSX.Element => {
   const {
@@ -41,7 +41,7 @@ const AddNewUserModal = (): JSX.Element => {
         fname: form.getFieldValue("fname"),
         gender: form.getFieldValue("gender"),
         birthday: form.getFieldValue("birthday"),
-        roles: [],
+        roles: form.getFieldValue("roles"),
         faculty: form.getFieldValue("faculty"),
         studentClass: form.getFieldValue("studentClass"),
       };
@@ -65,6 +65,11 @@ const AddNewUserModal = (): JSX.Element => {
     setOpenAddNewUserModal(false);
   };
 
+  const layoutConfig = {
+    labelCol: { span: 4 },
+    wrapperCol: { offset: 2 },
+  };
+
   const ButtonFooter = (): JSX.Element => {
     return (
       <Row justify={"end"}>
@@ -83,92 +88,129 @@ const AddNewUserModal = (): JSX.Element => {
       maskCloseable={false}
     >
       <Spin spinning={false}>
-        <Form layout="horizontal" className="w-[600px]" form={form}>
-          <Row className="min-w-[400px]">
-            <Col span={5} className="border py-3 px-4">
-              <Typography.Text strong>Tên tài khoản</Typography.Text>
-            </Col>
-            <Col flex={1} className="border py-3 px-4">
-              <Form.Item name="username" required>
-                <Input type="text" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row className="min-w-[400px]">
-            <Col span={5} className="border py-3 px-4">
-              <Typography.Text strong>Mật khẩu</Typography.Text>
-            </Col>
-            <Col flex={1} className="border py-3 px-4">
-              <Form.Item name="password" required>
-                <Input type="password" />
-              </Form.Item>
-            </Col>
-          </Row>
+        <Form layout="horizontal" className="w-[1000px] p-4" form={form}>
+          <Form.Item
+            {...layoutConfig}
+            labelAlign="left"
+            label="Tên đăng nhập"
+            name="username"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input type="text" />
+          </Form.Item>
+          <Form.Item
+            {...layoutConfig}
+            labelAlign="left"
+            label="Mật khẩu"
+            name="password"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input type="password" />
+          </Form.Item>
+          <Form.Item
+            {...layoutConfig}
+            labelAlign="left"
+            label="Nhập lại mật khẩu"
+            name="conformPassword"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input type="password" />
+          </Form.Item>
+          <Form.Item
+            {...layoutConfig}
+            labelAlign="left"
+            label="Họ và tên"
+            name="fname"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input type="text" />
+          </Form.Item>
 
-          <Row className="min-w-[400px]">
-            <Col span={5} className="border py-3 px-4">
-              <Typography.Text strong>Email</Typography.Text>
-            </Col>
-            <Col flex={1} className="border py-3 px-4">
-              <Form.Item name="email" required>
-                <Input type="email" />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row className="min-w-[400px]">
-            <Col span={5} className="border py-3 px-4">
-              <Typography.Text strong>Họ và tên:</Typography.Text>
-            </Col>
-            <Col flex={1} className="border py-3 px-4">
-              <Form.Item name="fname" required>
-                <Input type="text" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row className="min-w-[400px]">
-            <Col span={5} className="border py-3 px-4">
-              <Typography.Text strong>Giới tính:</Typography.Text>
-            </Col>
-            <Col flex={1} className="border py-3 px-4">
-              <Form.Item name="gender" required>
-                <Radio.Group>
-                  <Radio value="male">Nam</Radio>
-                  <Radio value="female">Nữ</Radio>
-                </Radio.Group>
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row className="min-w-[400px]">
-            <Col span={5} className="border py-3 px-4">
-              <Typography.Text strong>Ngày sinh:</Typography.Text>
-            </Col>
-            <Col flex={1} className="border py-3 px-4">
-              <Form.Item name="birthday" required>
-                <DatePicker />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row className="min-w-[400px]">
-            <Col span={5} className="border py-2 px-4">
-              <Typography.Text strong>Khoa:</Typography.Text>
-            </Col>
-            <Col flex={1} className="border py-2 px-4">
-              <Form.Item name="faculty">
-                <Input type="text" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row className="min-w-[400px]">
-            <Col span={5} className="border py-2 px-4">
-              <Typography.Text strong>Lớp:</Typography.Text>
-            </Col>
-            <Col flex={1} className="border py-2 px-4">
-              <Form.Item name="studentClass">
-                <Input type="text" />
-              </Form.Item>
-            </Col>
-          </Row>
+          <Form.Item
+            {...layoutConfig}
+            labelAlign="left"
+            label="Email"
+            name="email"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input type="email" />
+          </Form.Item>
+          <Form.Item
+            {...layoutConfig}
+            labelAlign="left"
+            label="Giới tính"
+            name="gender"
+            required
+          >
+            <Radio.Group>
+              <Radio value="male">Nam</Radio>
+              <Radio value="female">Nữ</Radio>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item
+            {...layoutConfig}
+            labelAlign="left"
+            label="Ngày sinh"
+            name="birthday"
+            required
+          >
+            <DatePicker />
+          </Form.Item>
+          <Form.Item
+            {...layoutConfig}
+            labelAlign="left"
+            label="Khoa"
+            name="faculty"
+          >
+            <Input type="text" />
+          </Form.Item>
+          <Form.Item
+            {...layoutConfig}
+            labelAlign="left"
+            label="Lớp"
+            name="studentClass"
+          >
+            <Input type="text" />
+          </Form.Item>
+          <Form.Item
+            {...layoutConfig}
+            labelAlign="left"
+            label="Quyền hạn"
+            name="roles"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Select
+              mode="multiple"
+              options={Object.values(AuthConstants.AUTH_ROLES).map((role) => ({
+                value: role,
+                label: role,
+              }))}
+            />
+          </Form.Item>
         </Form>
       </Spin>
     </ModalCommon>
