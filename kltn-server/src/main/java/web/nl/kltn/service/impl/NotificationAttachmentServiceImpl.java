@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import web.nl.kltn.mapper.NotificationAttachmentCusMapper;
 import web.nl.kltn.mapper.generator.NotificationAttachmentMapper;
@@ -31,12 +32,13 @@ public class NotificationAttachmentServiceImpl implements NotificationAttachment
 		try {
 			for (NotificationAttachment attachment : notificationAttachments) {
 				if (notificationAttachmentMapper.insert(attachment) <= 0) {
-					throw new RuntimeException();
+					throw new RuntimeException("Thêm file đính kèm thất bại");
 				}
 			}
 			return notificationAttachments;
 		} catch (Exception e) {
-			return null;
+			TransactionAspectSupport.currentTransactionStatus().isRollbackOnly();
+			throw e;
 		}
 	}
 

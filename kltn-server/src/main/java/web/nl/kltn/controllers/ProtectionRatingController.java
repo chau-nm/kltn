@@ -21,25 +21,26 @@ import web.nl.kltn.service.ProtectionRatingService;
 @RestController
 @RequestMapping("/api/protection-rating")
 public class ProtectionRatingController {
-	
+
 	@Autowired
 	private ProtectionRatingService protectionRatingService;
-	
+
 	@GetMapping("/search-by-thesis-id")
 	public ResponseModel<List<ProtectionRatingDTO>> searchByThesisId(@RequestParam String thesisId) {
 		ResponseModel<List<ProtectionRatingDTO>> responseModel = new ResponseModel<>();
 		responseModel.setData(protectionRatingService.searchByThesisId(thesisId));
 		return responseModel;
 	}
-	
+
 	@PostMapping("/insert")
-	public ResponseModel<ProtectionRatingDTO> insert(@RequestBody RequestModel<ProtectionRatingDTO> protectionRatingRequest) {
+	public ResponseModel<ProtectionRatingDTO> insert(
+			@RequestBody RequestModel<ProtectionRatingDTO> protectionRatingRequest) {
 		ResponseModel<ProtectionRatingDTO> responseModel = new ResponseModel<>();
 		ProtectionRatingDTO protectionRatingDTO = protectionRatingRequest.getData();
 		responseModel.setData(protectionRatingService.insert(protectionRatingDTO));
 		return responseModel;
 	}
-	
+
 	@PutMapping("/update")
 	public ResponseModel<Boolean> update(@RequestBody RequestModel<ProtectionRatingDTO> protectionRatingRequest) {
 		ResponseModel<Boolean> responseModel = new ResponseModel<>();
@@ -48,7 +49,7 @@ public class ProtectionRatingController {
 		responseModel.setData(true);
 		return responseModel;
 	}
-	
+
 	@Delete("/delete/{id}")
 	public ResponseModel<Boolean> delete(@PathVariable String id) {
 		ResponseModel<Boolean> responseModel = new ResponseModel<>();

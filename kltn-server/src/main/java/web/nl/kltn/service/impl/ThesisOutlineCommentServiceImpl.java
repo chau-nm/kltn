@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import web.nl.kltn.mapper.ThesisOutlineCommentCusMapper;
 import web.nl.kltn.mapper.UserCusMapper;
@@ -56,12 +57,20 @@ public class ThesisOutlineCommentServiceImpl implements ThesisOutlineCommentServ
     }
 
     @Override
-    public ThesisOutlineComment insert(ThesisOutlineComment thesisOutlineComment) {
-        thesisOutlineComment.setId(String.valueOf(UUID.randomUUID()));
-        thesisOutlineComment.setCreatedAt(new Date().getTime());
-        thesisOutlineComment.setIsDeleted(false);
-        thesisOutlineComment.setUpdatedAt(new Date().getTime());
-        return thesisOutlineCommentMapper.insert(thesisOutlineComment) > 0 ? thesisOutlineComment : null;
+    public ThesisOutlineComment insert(ThesisOutlineComment thesisOutlineComment) throws Exception {
+    	try {
+    		thesisOutlineComment.setId(String.valueOf(UUID.randomUUID()));
+            thesisOutlineComment.setCreatedAt(new Date().getTime());
+            thesisOutlineComment.setIsDeleted(false);
+            thesisOutlineComment.setUpdatedAt(new Date().getTime());
+            if (thesisOutlineCommentMapper.insert(thesisOutlineComment) <= 0) {
+            	throw new Exception("Thêm đề cương thất bại");
+            }
+            return thesisOutlineComment;
+    	} catch (Exception e) {
+    		TransactionAspectSupport.currentTransactionStatus().isRollbackOnly();
+    		throw e;
+    	}
     }
 
     @Override

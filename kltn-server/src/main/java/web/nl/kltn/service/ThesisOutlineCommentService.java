@@ -11,16 +11,16 @@ public interface ThesisOutlineCommentService {
 
 	void update(ThesisOutlineComment thesisOutlineComment);
 
-	ThesisOutlineComment insert(ThesisOutlineComment thesisOutlineComment);
+	ThesisOutlineComment insert(ThesisOutlineComment thesisOutlineComment)  throws Exception ;
 
 	ThesisOutlineComment searchByUserId(String userId);
 
 	List<ThesisOutlineComment> searchByThesisId(String thesisId);
 
 	List<ThesisOutlineCommentDTO> searchCommentByThesisId(String thesisId);
-	ThesisOutlineComment searchByThesisIdAndCouncilId(String thesisId,String userId);
+
+	ThesisOutlineComment searchByThesisIdAndCouncilId(String thesisId, String userId);
 
 	void deletedByThesis(String id);
-
 
 }

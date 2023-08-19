@@ -9,9 +9,9 @@ public interface CriticalAssessmentService {
 
 	void delete(String id);
 
-	void update(CriticalAssessmentDTO criticalAssessmentDTO);
+	void update(CriticalAssessmentDTO criticalAssessmentDTO) throws Exception;
 
-	CriticalAssessmentDTO insert(CriticalAssessmentDTO criticalAssessmentDTO);
+	CriticalAssessmentDTO insert(CriticalAssessmentDTO criticalAssessmentDTO) throws Exception;
 
 	CriticalAssessmentDTO searchByMarker(String userId);
 

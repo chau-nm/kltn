@@ -1,16 +1,16 @@
 package web.nl.kltn.controllers;
 
+import static web.nl.kltn.common.Util.generateRandomString;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,19 +19,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.annotation.SessionScope;
 
 import web.nl.kltn.common.JWTTokenUtil;
 import web.nl.kltn.common.RequestModel;
 import web.nl.kltn.common.ResponseModel;
-import web.nl.kltn.model.*;
+import web.nl.kltn.model.AccessTokenRequest;
+import web.nl.kltn.model.ChangpasswordPayload;
+import web.nl.kltn.model.LoginCondition;
+import web.nl.kltn.model.RefreshTokenRequest;
+import web.nl.kltn.model.SearchResponse;
+import web.nl.kltn.model.UserSearchCondition;
 import web.nl.kltn.model.dto.UserDTO;
 import web.nl.kltn.model.generator.RefreshToken;
 import web.nl.kltn.model.generator.User;
 import web.nl.kltn.service.RefreshTokenService;
 import web.nl.kltn.service.UserService;
-
-import static web.nl.kltn.common.Util.generateRandomString;
 
 @RestController
 @RequestMapping("/api/user")
@@ -164,7 +166,12 @@ public class UserController {
 	public ResponseModel<UserDTO> refeshToken(@RequestBody RequestModel<UserDTO> userUpdateRequest) {
 		UserDTO newUser = userUpdateRequest.getData();
 		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
-		responseModel.setData(userService.updateUser(newUser));
+		try {
+			responseModel.setData(userService.updateUser(newUser));
+		} catch (Exception e) {
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
+		}
 		return responseModel;
 	}
 

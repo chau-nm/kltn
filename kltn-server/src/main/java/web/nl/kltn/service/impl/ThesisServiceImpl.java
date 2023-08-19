@@ -1,6 +1,5 @@
 package web.nl.kltn.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -8,11 +7,11 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import web.nl.kltn.common.Constant;
 import web.nl.kltn.mapper.ThesisCusMapper;
 import web.nl.kltn.mapper.ThesisDocumentCusMapper;
-import web.nl.kltn.mapper.ThesisOutlineCommentCusMapper;
 import web.nl.kltn.mapper.ThesisUserCusMapper;
 import web.nl.kltn.mapper.generator.ThesisDocumentMapper;
 import web.nl.kltn.mapper.generator.ThesisMapper;
@@ -25,7 +24,6 @@ import web.nl.kltn.model.dto.ThesisUserDTO;
 import web.nl.kltn.model.generator.Thesis;
 import web.nl.kltn.model.generator.ThesisDocument;
 import web.nl.kltn.model.generator.ThesisUser;
-import web.nl.kltn.model.generator.User;
 import web.nl.kltn.service.ThesisService;
 
 @Service
@@ -83,103 +81,111 @@ public class ThesisServiceImpl implements ThesisService {
         return thesisDTOList;
     }
 
-    @Transactional(rollbackFor = Throwable.class)
     @Override
     public ThesisDTO insert(ThesisDTO thesisDTO) throws Exception {
-        if (thesisDTO == null) {
-            return null;
-        }
-        if (thesisMapper.insert(thesisDTO) <= 0) {
-            throw new Exception("Thêm thất bại");
-        }
-        List<ThesisUserDTO> students = thesisDTO.getStudents();
-        for (ThesisUser thesisUser : students) {
+    	try {
+    		if (thesisDTO == null) {
+                return null;
+            }
+            if (thesisMapper.insert(thesisDTO) <= 0) {
+                throw new Exception("Thêm thất bại");
+            }
+            List<ThesisUserDTO> students = thesisDTO.getStudents();
+            for (ThesisUser thesisUser : students) {
+                if (thesisUserMapper.insert(thesisUser) <= 0) {
+                    throw new Exception("Thêm thất bại");
+                }
+            }
+            ThesisUserDTO thesisUser = thesisDTO.getTeacher();
             if (thesisUserMapper.insert(thesisUser) <= 0) {
                 throw new Exception("Thêm thất bại");
             }
-        }
-        ThesisUserDTO thesisUser = thesisDTO.getTeacher();
-        if (thesisUserMapper.insert(thesisUser) <= 0) {
-            throw new Exception("Thêm thất bại");
-        }
 
-        //doc2vec index only when import not when create
-        if (thesisDTO.getDocumentUrl() != null) {
-            DocumentData doc;
-            doc = new DocumentData(thesisDTO.getId(), thesisDTO.getTopic(), thesisDTO.getDocumentUrl());
-            System.err.println(thesisDTO.getId() + " " + thesisDTO.getTopic() + " " + thesisDTO.getDocumentUrl());
-            luceneService.indexDocument(doc);
-        }
-
-        String outlineUrl = thesisDTO.getOutlineUrl();
-        if (outlineUrl != null) {
-            ThesisDocument document = new ThesisDocument();
-            document.setId(String.valueOf(UUID.randomUUID()));
-            document.setFileUrl(outlineUrl);
-            document.setType(Constant.THESIS_DOCUMENT_TYPE_OUTLINE);
-            document.setThesisId(thesisDTO.getId());
-            document.setIsDeleted(false);
-            document.setCreatedAt(new Date().getTime());
-            document.setUpdatedAt(new Date().getTime());
-            if (thesisDocumentMapper.insert(document) <= 0) {
-                throw new Exception("Thêm thất bại");
-            }
-        }
-        String thesisDocumentUrl = thesisDTO.getDocumentUrl();
-        if (thesisDocumentUrl != null) {
-            ThesisDocument document = new ThesisDocument();
-            document.setId(String.valueOf(UUID.randomUUID()));
-            document.setFileUrl(thesisDocumentUrl);
-            document.setType(Constant.THESIS_DOCUMENT_TYPE_DOCUMENT);
-            document.setThesisId(thesisDTO.getId());
-            document.setIsDeleted(false);
-            document.setCreatedAt(new Date().getTime());
-            document.setUpdatedAt(new Date().getTime());
-            if (thesisDocumentMapper.insert(document) <= 0) {
-                throw new Exception("Thêm thất bại");
+            //doc2vec index only when import not when create
+            if (thesisDTO.getDocumentUrl() != null) {
+                DocumentData doc;
+                doc = new DocumentData(thesisDTO.getId(), thesisDTO.getTopic(), thesisDTO.getDocumentUrl());
+                System.err.println(thesisDTO.getId() + " " + thesisDTO.getTopic() + " " + thesisDTO.getDocumentUrl());
+                luceneService.indexDocument(doc);
             }
 
-        }
+            String outlineUrl = thesisDTO.getOutlineUrl();
+            if (outlineUrl != null) {
+                ThesisDocument document = new ThesisDocument();
+                document.setId(String.valueOf(UUID.randomUUID()));
+                document.setFileUrl(outlineUrl);
+                document.setType(Constant.THESIS_DOCUMENT_TYPE_OUTLINE);
+                document.setThesisId(thesisDTO.getId());
+                document.setIsDeleted(false);
+                document.setCreatedAt(new Date().getTime());
+                document.setUpdatedAt(new Date().getTime());
+                if (thesisDocumentMapper.insert(document) <= 0) {
+                    throw new Exception("Thêm thất bại");
+                }
+            }
+            String thesisDocumentUrl = thesisDTO.getDocumentUrl();
+            if (thesisDocumentUrl != null) {
+                ThesisDocument document = new ThesisDocument();
+                document.setId(String.valueOf(UUID.randomUUID()));
+                document.setFileUrl(thesisDocumentUrl);
+                document.setType(Constant.THESIS_DOCUMENT_TYPE_DOCUMENT);
+                document.setThesisId(thesisDTO.getId());
+                document.setIsDeleted(false);
+                document.setCreatedAt(new Date().getTime());
+                document.setUpdatedAt(new Date().getTime());
+                if (thesisDocumentMapper.insert(document) <= 0) {
+                    throw new Exception("Thêm thất bại");
+                }
 
-        return thesisDTO;
+            }
+
+            return thesisDTO;
+    	} catch (Exception e) {
+    		TransactionAspectSupport.currentTransactionStatus().isRollbackOnly();
+    		throw e;
+    	}
     }
 
-    @Transactional(rollbackFor = Throwable.class)
     @Override
     public void update(ThesisDTO thesisDTO) throws Exception {
-
-        if (thesisDTO == null) {
-            thesisMapper.updateByPrimaryKey(thesisDTO);
-        }
-        List<ThesisUserDTO> students = thesisDTO.getStudents();
-        thesisUserCusMapper.deleteByTheisId(thesisDTO.getId());
-        for (ThesisUser thesisUser : students) {
+    	try {
+    		if (thesisDTO == null) {
+                thesisMapper.updateByPrimaryKey(thesisDTO);
+            }
+            List<ThesisUserDTO> students = thesisDTO.getStudents();
+            thesisUserCusMapper.deleteByTheisId(thesisDTO.getId());
+            for (ThesisUser thesisUser : students) {
+                thesisUser.setIsDeleted(false);
+                System.err.println(thesisUser.getIsDeleted());
+                if (thesisUserMapper.insert(thesisUser) <= 0) {
+                    throw new Exception("Cập nhật thất bại");
+                }
+            }
+            ThesisUserDTO thesisUser = thesisDTO.getTeacher();
             thesisUser.setIsDeleted(false);
-            System.err.println(thesisUser.getIsDeleted());
             if (thesisUserMapper.insert(thesisUser) <= 0) {
                 throw new Exception("Cập nhật thất bại");
             }
-        }
-        ThesisUserDTO thesisUser = thesisDTO.getTeacher();
-        thesisUser.setIsDeleted(false);
-        if (thesisUserMapper.insert(thesisUser) <= 0) {
-            throw new Exception("Cập nhật thất bại");
-        }
-        thesisDocumentCusMapper.deteleByThesisId(thesisDTO.getId(), 2);
-        String thesisDocumentUrl = thesisDTO.getDocumentUrl();
-        if (thesisDocumentUrl != null) {
-            ThesisDocument document = new ThesisDocument();
-            document.setId(String.valueOf(UUID.randomUUID()));
-            document.setFileUrl(thesisDocumentUrl);
-            document.setType(Constant.THESIS_DOCUMENT_TYPE_DOCUMENT);
-            document.setThesisId(thesisDTO.getId());
-            document.setIsDeleted(false);
-            document.setCreatedAt(new Date().getTime());
-            document.setUpdatedAt(new Date().getTime());
-            if (thesisDocumentMapper.insert(document) <= 0) {
-                throw new Exception("Cập nhật thất bại");
+            thesisDocumentCusMapper.deteleByThesisId(thesisDTO.getId(), 2);
+            String thesisDocumentUrl = thesisDTO.getDocumentUrl();
+            if (thesisDocumentUrl != null) {
+                ThesisDocument document = new ThesisDocument();
+                document.setId(String.valueOf(UUID.randomUUID()));
+                document.setFileUrl(thesisDocumentUrl);
+                document.setType(Constant.THESIS_DOCUMENT_TYPE_DOCUMENT);
+                document.setThesisId(thesisDTO.getId());
+                document.setIsDeleted(false);
+                document.setCreatedAt(new Date().getTime());
+                document.setUpdatedAt(new Date().getTime());
+                if (thesisDocumentMapper.insert(document) <= 0) {
+                    throw new Exception("Cập nhật thất bại");
+                }
             }
-        }
+    	} catch (Exception e) {
+    		TransactionAspectSupport.currentTransactionStatus().isRollbackOnly();
+    		throw e;
+    	}
+        
     }
 
     @Override

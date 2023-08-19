@@ -3,6 +3,7 @@ package web.nl.kltn.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import web.nl.kltn.mapper.ThesisRegisterCalendarCusMapper;
 import web.nl.kltn.mapper.generator.ThesisRegisterCalendarMapper;
@@ -25,8 +26,16 @@ public class ThesisRegisterCalendarServiceImpl implements ThesisRegisterCalendar
 	}
 	
 	@Override
-	public ThesisRegisterCalendar insert(ThesisRegisterCalendar thesisRegisterCalendar) {
-		return thesisRegisterCalendarMapper.insert(thesisRegisterCalendar) > 0 ? thesisRegisterCalendar : null;
+	public ThesisRegisterCalendar insert(ThesisRegisterCalendar thesisRegisterCalendar) throws Exception {
+		try {
+			if (thesisRegisterCalendarMapper.insert(thesisRegisterCalendar) <= 0) {
+				throw new Exception("Thêm lịch đăng ký thất bại");
+			}
+			return thesisRegisterCalendar;
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().isRollbackOnly();
+			throw e;
+		}
 	}
 	
 	@Override

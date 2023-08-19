@@ -7,11 +7,11 @@ import web.nl.kltn.model.dto.NotificationDTO;
 import web.nl.kltn.model.generator.Notification;
 
 public interface NotificationService {
-	public List<Notification> search(int page, int pageSize, NotificationSearchCondition searchCondition);
+	List<Notification> search(int page, int pageSize, NotificationSearchCondition searchCondition);
 
-	public Notification insert(Notification notification);
+	Notification insert(Notification notification) throws Exception;
 
-	void update(NotificationDTO notificationDTO);
+	void update(NotificationDTO notificationDTO) throws Exception;
 
 	void delete(String notificationId);
 
@@ -19,5 +19,5 @@ public interface NotificationService {
 
 	NotificationDTO getDetail(String notificationId);
 
-	NotificationDTO insert(NotificationDTO notificationDTO);
+	NotificationDTO insert(NotificationDTO notificationDTO) throws Exception;
 }

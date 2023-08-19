@@ -10,15 +10,15 @@ import web.nl.kltn.model.generator.User;
 
 public interface UserService {
 
-	public UserDTO login(LoginCondition loginCondition);
+	UserDTO login(LoginCondition loginCondition);
 
 	UserDTO insert(UserDTO userDTO) throws Exception;
 
-	public UserDTO findByUserId(String userId);
+	UserDTO findByUserId(String userId);
 
-	public UserDTO findByUsername(String username);
+	UserDTO findByUsername(String username);
 
-	UserDTO updateUser(UserDTO newUser);
+	UserDTO updateUser(UserDTO newUser) throws Exception;
 
 	List<UserDTO> findByRole(String role);
 

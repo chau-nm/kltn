@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import web.nl.kltn.mapper.CriticalAssessmentCusMapper;
 import web.nl.kltn.mapper.CriticalAssessmentScoreCusMapper;
@@ -16,11 +17,10 @@ import web.nl.kltn.mapper.generator.UserMapper;
 import web.nl.kltn.model.dto.CriticalAssessmentDTO;
 import web.nl.kltn.model.dto.CriticalAssessmentScoreDTO;
 import web.nl.kltn.model.generator.CriticalAssessment;
-import web.nl.kltn.model.generator.CriticalAssessmentScore;
 import web.nl.kltn.service.CriticalAssessmentService;
 
 @Service
-@Transactional(rollbackFor = Throwable.class)
+@Transactional(rollbackFor = {Exception.class, Throwable.class})
 public class CriticalAssessmentServiceImpl implements CriticalAssessmentService{
 
 	@Autowired
@@ -38,6 +38,12 @@ public class CriticalAssessmentServiceImpl implements CriticalAssessmentService{
 	@Autowired
 	private UserMapper userMapper;
 	
+	/**
+	 * Map CriticalAssessment -> DTO
+	 * 
+	 * @param ca
+	 * @return
+	 */
 	private CriticalAssessmentDTO mapCAEntityToDTO(CriticalAssessment ca) {
 		CriticalAssessmentDTO criticalAssessmentDTO = new CriticalAssessmentDTO();
 		criticalAssessmentDTO.load(ca);
@@ -56,21 +62,35 @@ public class CriticalAssessmentServiceImpl implements CriticalAssessmentService{
 		return criticalAssessmentDTO;
 	}
 
+	/**
+	 * Insert user for critical assessment
+	 */
 	@Override
 	public CriticalAssessment insertUser(String thesisId, String userId) throws Exception {
-		CriticalAssessment criticalAssessment = new CriticalAssessment();
-		criticalAssessment.setId(String.valueOf(UUID.randomUUID()));
-		criticalAssessment.setThesisId(thesisId);
-		criticalAssessment.setMarker(userId);
-		criticalAssessment.setCreatedAt(new Date().getTime());
-		criticalAssessment.setUpdatedAt(new Date().getTime());
-		criticalAssessment.setIsDeleted(false);
-		if (criticalAssessmentMapper.insert(criticalAssessment) <= 0) {
-			throw new Exception("Thêm phản biện thất bại");
+		try {
+			CriticalAssessment criticalAssessment = new CriticalAssessment();
+			criticalAssessment.setId(String.valueOf(UUID.randomUUID()));
+			criticalAssessment.setThesisId(thesisId);
+			criticalAssessment.setMarker(userId);
+			criticalAssessment.setCreatedAt(new Date().getTime());
+			criticalAssessment.setUpdatedAt(new Date().getTime());
+			criticalAssessment.setIsDeleted(false);
+			if (criticalAssessmentMapper.insert(criticalAssessment) <= 0) {
+				throw new Exception("Thêm phản biện thất bại");
+			}
+			return criticalAssessment;
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().isRollbackOnly();
+			throw e;
 		}
-		return criticalAssessment;
 	}
 	
+	/**
+	 * search critical assessment by thesis id
+	 * 
+	 * @param thesisId
+	 * @return 
+	 */
 	@Override
 	public List<CriticalAssessmentDTO> searchByThesisId(String thesisId) {
 		List<CriticalAssessmentDTO> criticalAssessments 
@@ -84,13 +104,19 @@ public class CriticalAssessmentServiceImpl implements CriticalAssessmentService{
 		return criticalAssessments;
 	}
 
+	/**
+	 * search critical assessment by marker
+	 * 
+	 * @param marker
+	 * @return
+	 */
 	@Override
 	public CriticalAssessmentDTO searchByMarker(String marker) {
 		return mapCAEntityToDTO(criticalAssessmentCusMapper.searchByMarker(marker));
 	}
 
 	@Override
-	public CriticalAssessmentDTO insert(CriticalAssessmentDTO criticalAssessmentDTO) {
+	public CriticalAssessmentDTO insert(CriticalAssessmentDTO criticalAssessmentDTO) throws Exception {
 		try {
 			int rowInsertCA = criticalAssessmentMapper.insert(criticalAssessmentDTO);
 			if (rowInsertCA <= 0) {
@@ -105,21 +131,26 @@ public class CriticalAssessmentServiceImpl implements CriticalAssessmentService{
 			}
 			return criticalAssessmentDTO;
 		} catch (Exception e) {
-			return null;
+			TransactionAspectSupport.currentTransactionStatus().isRollbackOnly();
+			throw e;
 		}
 	}
 
 	@Override
-	public void update(CriticalAssessmentDTO criticalAssessmentDTO) {
-		criticalAssessmentMapper.updateByPrimaryKey(criticalAssessmentDTO);
-		
-		criticalAssessmentScoreCusMapper.deleteByCAId(criticalAssessmentDTO.getId());
-		for (CriticalAssessmentScoreDTO criticalAssessmentScoreDTO : 
-			criticalAssessmentDTO.getCritialAssessmentScores()) {
-			int rowInsertCAScore = criticalAssessmentScoreMapper.insert(criticalAssessmentScoreDTO);
-			if (rowInsertCAScore <= 0) {
-				throw new RuntimeException();
+	public void update(CriticalAssessmentDTO criticalAssessmentDTO) throws Exception {
+		try {
+			criticalAssessmentMapper.updateByPrimaryKey(criticalAssessmentDTO);
+			criticalAssessmentScoreCusMapper.deleteByCAId(criticalAssessmentDTO.getId());
+			for (CriticalAssessmentScoreDTO criticalAssessmentScoreDTO : 
+				criticalAssessmentDTO.getCritialAssessmentScores()) {
+				int rowInsertCAScore = criticalAssessmentScoreMapper.insert(criticalAssessmentScoreDTO);
+				if (rowInsertCAScore <= 0) {
+					throw new RuntimeException();
+				}
 			}
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().isRollbackOnly();
+			throw e;
 		}
 	}
 

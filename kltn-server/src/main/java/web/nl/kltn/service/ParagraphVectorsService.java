@@ -8,10 +8,13 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ParagraphVectorsService {
-    ParagraphVectors create();
-    double similarityTwoRawText(String text1, String text2);
-    INDArray meanArrayOf(List<String> tokens);
-    void trainNewFile(int docId, File inputTxt, String label) throws IOException;
+	ParagraphVectors create();
 
-    void createModel(File inputTxt, String labelsource);
+	double similarityTwoRawText(String text1, String text2);
+
+	INDArray meanArrayOf(List<String> tokens);
+
+	void trainNewFile(int docId, File inputTxt, String label) throws IOException;
+
+	void createModel(File inputTxt, String labelsource);
 }

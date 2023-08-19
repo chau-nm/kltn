@@ -32,7 +32,12 @@ public class ThesisRegisterCalendarController {
 			@RequestBody RequestModel<ThesisRegisterCalendar> theisRegisterCalendarRequest) {
 		ResponseModel<ThesisRegisterCalendar> responseModel = new ResponseModel<>();
 		ThesisRegisterCalendar thesisRegisterCalendar = theisRegisterCalendarRequest.getData();
-		responseModel.setData(thesisRegisterCalendarService.insert(thesisRegisterCalendar));
+		try {
+			responseModel.setData(thesisRegisterCalendarService.insert(thesisRegisterCalendar));
+		} catch (Exception e) {
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
+		}
 		return responseModel;
 	}
 

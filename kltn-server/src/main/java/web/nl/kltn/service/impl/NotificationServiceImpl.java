@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import web.nl.kltn.mapper.NotificationAttachmentCusMapper;
 import web.nl.kltn.mapper.NotificationCusMapper;
@@ -39,7 +40,7 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 	
 	@Override
-	public NotificationDTO insert(NotificationDTO notificationDTO) {
+	public NotificationDTO insert(NotificationDTO notificationDTO) throws Exception {
 		try {
 			Notification notification = notificationDTO;
 			notification.setIsDeleted(false);
@@ -51,8 +52,9 @@ public class NotificationServiceImpl implements NotificationService {
 				attachmentMapper.insert(attachment);
 			});
 			return notificationDTO;
-		}catch(RuntimeException e) {
-			return null;
+		}catch(Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().isRollbackOnly();
+			throw e;
 		}
 	}
 	
@@ -64,15 +66,22 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 	
 	@Override
-	public void update(NotificationDTO notificationDTO) {
-		System.out.println(notificationDTO.getId());
-		Notification notification = notificationDTO;
-		notificationMapper.updateByPrimaryKey(notification);
-		attachmentCusMapper.delete(notification.getId());
-		List<NotificationAttachment> attachments = notificationDTO.createAttachments();
-		attachments.forEach(attachment -> {
-			attachmentMapper.insert(attachment);
-		});
+	public void update(NotificationDTO notificationDTO) throws Exception {
+		try {
+			Notification notification = notificationDTO;
+			notificationMapper.updateByPrimaryKey(notification);
+			attachmentCusMapper.delete(notification.getId());
+			List<NotificationAttachment> attachments = notificationDTO.createAttachments();
+			for (NotificationAttachment attachment: attachments) {
+				if (attachmentMapper.insert(attachment) <= 0) {
+					throw new Exception("Cập nhật attachment thất bại");
+				}
+			}
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().isRollbackOnly();
+			throw e;
+		}
+		
 	}
 
 	@Override

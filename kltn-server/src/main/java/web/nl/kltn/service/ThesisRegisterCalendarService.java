@@ -10,6 +10,6 @@ public interface ThesisRegisterCalendarService {
 
 	void update(ThesisRegisterCalendar thesisRegisterCalendar);
 
-	ThesisRegisterCalendar insert(ThesisRegisterCalendar thesisRegisterCalendar);
+	ThesisRegisterCalendar insert(ThesisRegisterCalendar thesisRegisterCalendar) throws Exception;
 
 }

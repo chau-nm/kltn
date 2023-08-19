@@ -4,11 +4,11 @@ import web.nl.kltn.model.generator.RefreshToken;
 
 public interface RefreshTokenService {
 
-	public RefreshToken generateRefreshToken();
+	RefreshToken generateRefreshToken();
 	
-	public RefreshToken findAvailabilityByUserId(String userId);
+	RefreshToken findAvailabilityByUserId(String userId);
 	
-	public RefreshToken saveRefreshToken(RefreshToken refreshToken);
+	RefreshToken saveRefreshToken(RefreshToken refreshToken);
 
-	public RefreshToken findRefreshToken(String refreshToken);
+	RefreshToken findRefreshToken(String refreshToken);
 }

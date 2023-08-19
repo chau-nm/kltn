@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.security.auth.message.callback.PrivateKeyCallback.Request;
 import web.nl.kltn.common.RequestModel;
 import web.nl.kltn.common.ResponseModel;
 import web.nl.kltn.model.generator.ThesisUser;
@@ -41,8 +40,13 @@ public class ThesisUserController {
 	@PutMapping("/update")
 	public ResponseModel<Boolean> update(@RequestBody RequestModel<ThesisUser> thesisUser) {
 		ResponseModel<Boolean> responseModel = new ResponseModel<>();
-		thesisUserService.update(thesisUser.getData());
-		responseModel.setData(true);
+		try {
+			thesisUserService.update(thesisUser.getData());
+			responseModel.setData(true);
+		} catch (Exception e) {
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
+		}
 		return responseModel;
 	}
 

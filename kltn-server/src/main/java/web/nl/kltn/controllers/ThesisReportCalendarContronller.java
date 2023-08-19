@@ -19,27 +19,32 @@ import web.nl.kltn.service.ThesisReportCalendarService;
 @RestController
 @RequestMapping("api/thesis-report-calendar")
 public class ThesisReportCalendarContronller {
-	
+
 	@Autowired
 	private ThesisReportCalendarService thesisReportCalendarService;
 
 	@GetMapping("/view")
-	public ResponseModel<ThesisReportCalendar> view(
-			@RequestParam(required = true) String thesisId, 
+	public ResponseModel<ThesisReportCalendar> view(@RequestParam(required = true) String thesisId,
 			@RequestParam(required = true) int type) {
 		ResponseModel<ThesisReportCalendar> responseModel = new ResponseModel<>();
 		responseModel.setData(thesisReportCalendarService.search(thesisId, type));
 		return responseModel;
 	}
-	
+
 	@PostMapping("/insert")
-	public ResponseModel<ThesisReportCalendar> insert(@RequestBody RequestModel<ThesisReportCalendar> thesisReportCalendarRequest) {
+	public ResponseModel<ThesisReportCalendar> insert(
+			@RequestBody RequestModel<ThesisReportCalendar> thesisReportCalendarRequest) {
 		ThesisReportCalendar thesisReportCalendar = thesisReportCalendarRequest.getData();
 		ResponseModel<ThesisReportCalendar> responseModel = new ResponseModel<>();
-		responseModel.setData(thesisReportCalendarService.insert(thesisReportCalendar)); 
+		try {
+			responseModel.setData(thesisReportCalendarService.insert(thesisReportCalendar));
+		} catch (Exception e) {
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
+		}
 		return responseModel;
 	}
-	
+
 	@PutMapping("/update")
 	public ResponseModel<Boolean> update(@RequestBody RequestModel<ThesisReportCalendar> thesisReportCalendarRequest) {
 		ResponseModel<Boolean> responseModel = new ResponseModel<>();
@@ -47,23 +52,23 @@ public class ThesisReportCalendarContronller {
 			ThesisReportCalendar thesisReportCalendar = new ThesisReportCalendar();
 			thesisReportCalendarService.update(thesisReportCalendar);
 			responseModel.setData(true);
-			return responseModel;
-		}catch(Exception exception) {
-			responseModel.setData(false);
-			return responseModel;
+		} catch (Exception exception) {
+			responseModel.setMessage(exception.getMessage());
+			responseModel.setStatus(1);
 		}
+		return responseModel;
 	}
-	
+
 	@DeleteMapping("/delete/{id}")
 	public ResponseModel<Boolean> update(@PathVariable String id) {
 		ResponseModel<Boolean> responseModel = new ResponseModel<>();
 		try {
 			thesisReportCalendarService.delete(id);
 			responseModel.setData(true);
-			return responseModel;
-		}catch(Exception exception) {
-			responseModel.setData(false);
-			return responseModel;
+		} catch (Exception exception) {
+			responseModel.setMessage(exception.getMessage());
+			responseModel.setStatus(1);
 		}
+		return responseModel;
 	}
 }

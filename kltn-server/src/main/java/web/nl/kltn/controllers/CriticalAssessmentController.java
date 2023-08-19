@@ -39,11 +39,11 @@ public class CriticalAssessmentController {
 		responseModel.setData(criticalAssessmentService.searchByMarker(userId));
 		return responseModel;
 	}
-	
+
 	@PostMapping("/insert-user")
 	public ResponseModel<CriticalAssessment> insertCriticalAssessmentUser(@RequestParam String thesisId,
 			@RequestParam String userId) {
-		
+
 		ResponseModel<CriticalAssessment> responseModel = new ResponseModel<>();
 		try {
 			responseModel.setData(criticalAssessmentService.insertUser(thesisId, userId));
@@ -59,7 +59,12 @@ public class CriticalAssessmentController {
 			@RequestBody RequestModel<CriticalAssessmentDTO> criticalAssessmentRequest) {
 		ResponseModel<CriticalAssessmentDTO> responseModel = new ResponseModel<>();
 		CriticalAssessmentDTO criticalAssessmentDTO = criticalAssessmentRequest.getData();
-		responseModel.setData(criticalAssessmentService.insert(criticalAssessmentDTO));
+		try {
+			responseModel.setData(criticalAssessmentService.insert(criticalAssessmentDTO));
+		} catch (Exception e) {
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
+		}
 		return responseModel;
 	}
 
@@ -71,7 +76,8 @@ public class CriticalAssessmentController {
 			criticalAssessmentService.update(criticalAssessmentDTO);
 			responseModel.setData(true);
 		} catch (Exception exception) {
-			responseModel.setData(false);
+			responseModel.setMessage(exception.getMessage());
+			responseModel.setStatus(1);
 		}
 		return responseModel;
 	}
@@ -83,7 +89,8 @@ public class CriticalAssessmentController {
 			criticalAssessmentService.delete(id);
 			responseModel.setData(true);
 		} catch (Exception exception) {
-			responseModel.setData(false);
+			responseModel.setMessage(exception.getMessage());
+			responseModel.setStatus(1);
 		}
 		return responseModel;
 	}

@@ -16,60 +16,51 @@ import web.nl.kltn.mapper.generator.UserMapper;
 import web.nl.kltn.model.dto.ProtectionRatingDTO;
 import web.nl.kltn.model.dto.ProtectionRatingScoreDTO;
 import web.nl.kltn.model.generator.ProtectionRating;
-import web.nl.kltn.model.generator.ProtectionRatingQuestion;
-import web.nl.kltn.model.generator.ProtectionRatingScore;
 import web.nl.kltn.service.ProtectionRatingService;
 
 @Service
 @Transactional(rollbackFor = Throwable.class)
-public class ProtectionRatingServiceImpl implements ProtectionRatingService{
+public class ProtectionRatingServiceImpl implements ProtectionRatingService {
 
 	@Autowired
 	private UserMapper userMapper;
-	
+
 	@Autowired
 	private ProtectionRatingMapper protectionRatingMapper;
-	
+
 	@Autowired
 	private ProtectionRatingCusMapper protectionRatingCusMapper;
-	
+
 	@Autowired
 	private ProtectionRatingQuestionMapper protectionRatingQuestionMapper;
-	
+
 	@Autowired
 	private ProtectionRatingQuestionCusMapper protectionRatingQuestionCusMapper;
-	
+
 	@Autowired
 	private ProtectionRatingScoreMapper protectionRatingScoreMapper;
-	
+
 	@Autowired
 	private ProtectionRatingScoreCusMapper protectionRatingScoreCusMapper;
-	
+
 	private ProtectionRatingDTO mapPrEntityToDTO(ProtectionRating pr) {
 		ProtectionRatingDTO protectionRatingDTO = new ProtectionRatingDTO();
 		protectionRatingDTO.load(pr);
 		protectionRatingDTO.setUserMaker(userMapper.selectByPrimaryKey(pr.getMarker()));
-		List<ProtectionRatingScoreDTO> protectionRatingScoreDTOs
-			= protectionRatingScoreCusMapper.searchByPrId(pr.getId())
-				.stream()
-				.map(prs -> {
-					ProtectionRatingScoreDTO protectionRatingScoreDTO
-						= new ProtectionRatingScoreDTO();
+		List<ProtectionRatingScoreDTO> protectionRatingScoreDTOs = protectionRatingScoreCusMapper
+				.searchByPrId(pr.getId()).stream().map(prs -> {
+					ProtectionRatingScoreDTO protectionRatingScoreDTO = new ProtectionRatingScoreDTO();
 					protectionRatingScoreDTO.load(prs);
 					protectionRatingScoreDTO.setStudent(userMapper.selectByPrimaryKey(prs.getStudentId()));
 					return new ProtectionRatingScoreDTO();
-				})
-				.toList();
+				}).toList();
 		return protectionRatingDTO;
 	}
-	
+
 	private List<ProtectionRatingDTO> mapPrEntitiesToDTOs(List<ProtectionRating> prs) {
-		return prs
-				.stream()
-				.map(pr -> {
-					return mapPrEntityToDTO(pr);
-				})
-				.toList();
+		return prs.stream().map(pr -> {
+			return mapPrEntityToDTO(pr);
+		}).toList();
 	}
 
 	@Override

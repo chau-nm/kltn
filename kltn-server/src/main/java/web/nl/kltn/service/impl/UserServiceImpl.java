@@ -20,14 +20,13 @@ import web.nl.kltn.mapper.generator.UserMapper;
 import web.nl.kltn.model.ChangpasswordPayload;
 import web.nl.kltn.model.LoginCondition;
 import web.nl.kltn.model.UserSearchCondition;
-import web.nl.kltn.model.dto.RoleUserDTO;
 import web.nl.kltn.model.dto.UserDTO;
 import web.nl.kltn.model.generator.RoleUser;
 import web.nl.kltn.model.generator.User;
 import web.nl.kltn.service.UserService;
 
 @Service
-@Transactional(rollbackFor = {Exception.class, Throwable.class})
+@Transactional(rollbackFor = { Exception.class, Throwable.class })
 public class UserServiceImpl implements UserService {
 
 	@Autowired
@@ -123,28 +122,36 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO updateUser(UserDTO newUser) {
-		User user = userMapper.selectByPrimaryKey(newUser.getUserId());
-		user.setEmail(newUser.getEmail());
-		user.setFname(newUser.getFname());
-		user.setBirthday(newUser.getBirthday());
-		user.setFaculty(newUser.getFaculty());
-		user.setStudentClass(newUser.getStudentClass());
-		user.setUpdatedAt(new Date().getTime());
-		roleUserCusMapper.deleteByIdUser(newUser.getUserId());
-		RoleUser roleUser;
-		for (int i = 0; i < newUser.getRoles().size(); i++) {
-			roleUser = new RoleUser();
-			roleUser.setId(String.valueOf(UUID.randomUUID()));
-			roleUser.setRoleId(roleUserCusMapper.findIdRoleByName(newUser.getRoles().get(i)));
-			roleUser.setUserId(newUser.getUserId());
-			roleUser.setIsDeleted(false);
-			roleUser.setCreatedAt(new Date().getTime());
-			roleUser.setUpdatedAt(new Date().getTime());
-			roleUserMapper.insert(roleUser);
+	public UserDTO updateUser(UserDTO newUser) throws Exception {
+		try {
+			User user = userMapper.selectByPrimaryKey(newUser.getUserId());
+			user.setEmail(newUser.getEmail());
+			user.setFname(newUser.getFname());
+			user.setBirthday(newUser.getBirthday());
+			user.setFaculty(newUser.getFaculty());
+			user.setStudentClass(newUser.getStudentClass());
+			user.setUpdatedAt(new Date().getTime());
+			roleUserCusMapper.deleteByIdUser(newUser.getUserId());
+			RoleUser roleUser;
+			for (int i = 0; i < newUser.getRoles().size(); i++) {
+				roleUser = new RoleUser();
+				roleUser.setId(String.valueOf(UUID.randomUUID()));
+				roleUser.setRoleId(roleUserCusMapper.findIdRoleByName(newUser.getRoles().get(i)));
+				roleUser.setUserId(newUser.getUserId());
+				roleUser.setIsDeleted(false);
+				roleUser.setCreatedAt(new Date().getTime());
+				roleUser.setUpdatedAt(new Date().getTime());
+				;
+				if (roleUserMapper.insert(roleUser) <= 0) {
+					throw new Exception("Cập nhật thất bại");
+				}
+			}
+			userMapper.updateByPrimaryKey(user);
+			return newUser;
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			throw e;
 		}
-		int updateRow = userMapper.updateByPrimaryKey(user);
-		return updateRow > 0 ? newUser : null;
 	}
 
 	@Override

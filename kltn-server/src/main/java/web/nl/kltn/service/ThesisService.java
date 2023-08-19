@@ -4,7 +4,6 @@ import java.util.List;
 
 import web.nl.kltn.model.ThesisSearchCondition;
 import web.nl.kltn.model.dto.ThesisDTO;
-import web.nl.kltn.model.generator.Thesis;
 
 public interface ThesisService {
 
@@ -20,11 +19,15 @@ public interface ThesisService {
 
 	ThesisDTO findById(String id);
 
-	public ThesisDTO findDetailById(String id) ;
-  
+	ThesisDTO findDetailById(String id);
+
 	List<ThesisDTO> findByUser(String userId);
+
 	List<ThesisDTO> findByCouncil(int page, int pageSize, ThesisSearchCondition thesisSearchCondition);
+
 	int getTotalByCouncilId(ThesisSearchCondition searchCondition);
+
 	boolean updateStatus(String id, int status);
+
 	List<ThesisDTO> searchThesisCAByUserId(String userId);
 }

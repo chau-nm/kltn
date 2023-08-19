@@ -24,24 +24,22 @@ import web.nl.kltn.service.NotificationService;
 @RestController
 @RequestMapping("/api/notification")
 public class NotificationController {
-	
+
 	@Autowired
 	private NotificationService notificationService;
-	
+
 	@GetMapping("/{id}")
-	public ResponseModel<NotificationDTO> viewDetail(@PathVariable(required = true) String id){
+	public ResponseModel<NotificationDTO> viewDetail(@PathVariable(required = true) String id) {
 		NotificationDTO notificationDTO = notificationService.getDetail(id);
 		ResponseModel<NotificationDTO> responseModel = new ResponseModel<>();
 		responseModel.setData(notificationDTO);
 		return responseModel;
 	}
-	
+
 	@PostMapping("/search/{page}")
-	public ResponseModel<SearchResponse<List<Notification>>> search(
-			@PathVariable int page, 
-			@RequestParam(defaultValue = "1") int pageSize, 
-			@RequestBody(required = false) RequestModel<NotificationSearchCondition> searchConditionRequest
-	){
+	public ResponseModel<SearchResponse<List<Notification>>> search(@PathVariable int page,
+			@RequestParam(defaultValue = "1") int pageSize,
+			@RequestBody(required = false) RequestModel<NotificationSearchCondition> searchConditionRequest) {
 		NotificationSearchCondition searchCondition = searchConditionRequest.getData();
 		List<Notification> notifications = notificationService.search(page, pageSize, searchCondition);
 		ResponseModel<SearchResponse<List<Notification>>> responseModel = new ResponseModel<>();
@@ -51,33 +49,38 @@ public class NotificationController {
 		responseModel.setData(notificationSearchResponse);
 		return responseModel;
 	}
-	
+
 	@PostMapping("/insert")
-	public ResponseModel<NotificationDTO> insert(
-			@RequestBody RequestModel<NotificationDTO> notificationRequest
-	){
+	public ResponseModel<NotificationDTO> insert(@RequestBody RequestModel<NotificationDTO> notificationRequest) {
 		ResponseModel<NotificationDTO> responseModel = new ResponseModel<>();
 		NotificationDTO notificationDTO = notificationRequest.getData();
-		NotificationDTO notificationResponse = notificationService.insert(notificationDTO);
-		if (notificationResponse != null) {
+		NotificationDTO notificationResponse;
+		try {
+			notificationResponse = notificationService.insert(notificationDTO);
 			responseModel.setData(notificationResponse);
+		} catch (Exception e) {
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
 		}
 		return responseModel;
 	}
-	
+
 	@PutMapping("/update")
-	public ResponseModel<Boolean> update(
-			@RequestBody RequestModel<NotificationDTO> notificationRequest
-	){
+	public ResponseModel<Boolean> update(@RequestBody RequestModel<NotificationDTO> notificationRequest) {
 		ResponseModel<Boolean> responseModel = new ResponseModel<>();
 		NotificationDTO notification = notificationRequest.getData();
-		notificationService.update(notification);
-		responseModel.setData(true);
+		try {
+			notificationService.update(notification);
+			responseModel.setData(true);
+		} catch (Exception e) {
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
+		}
 		return responseModel;
 	}
-	
+
 	@DeleteMapping("/delete/{notificationId}")
-	public ResponseModel<Boolean> delete(@PathVariable(required = true) String notificationId){
+	public ResponseModel<Boolean> delete(@PathVariable(required = true) String notificationId) {
 		ResponseModel<Boolean> responseModel = new ResponseModel<>();
 		notificationService.delete(notificationId);
 		responseModel.setData(true);
