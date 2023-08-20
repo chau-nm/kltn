@@ -13,6 +13,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import web.nl.kltn.mapper.ThesisOutlineCommentCusMapper;
 import web.nl.kltn.mapper.UserCusMapper;
 import web.nl.kltn.mapper.generator.ThesisOutlineCommentMapper;
+import web.nl.kltn.model.InsertThesisCouncilPayload;
 import web.nl.kltn.model.dto.ThesisOutlineCommentDTO;
 import web.nl.kltn.model.dto.UserDTO;
 import web.nl.kltn.model.generator.ThesisOutlineComment;
@@ -91,6 +92,31 @@ public class ThesisOutlineCommentServiceImpl implements ThesisOutlineCommentServ
     @Override
     public ThesisOutlineComment searchByThesisIdAndCouncilId(String thesisId, String userId) {
         return thesisOutlineCommentCusMapper.searchByThesisIdAndUserId(thesisId, userId);
+    }
+    
+    @Override
+	public List<ThesisOutlineComment> insertCouncils(InsertThesisCouncilPayload insertThesisCouncilPayload) throws Exception {
+    	try {
+    		thesisOutlineCommentCusMapper.deleteByThesis(insertThesisCouncilPayload.getThesisId());
+    		List<String> councils = insertThesisCouncilPayload.getCouncils();
+    		for (String council: councils) {
+    			ThesisOutlineComment thesisOutlineComment = new ThesisOutlineComment();
+    			thesisOutlineComment.setId(UUID.randomUUID().toString());
+    			thesisOutlineComment.setThesisId(insertThesisCouncilPayload.getThesisId());
+    			thesisOutlineComment.setUserId(council);
+    			thesisOutlineComment.setIsDeleted(false);
+    			thesisOutlineComment.setCreatedAt(new Date().getTime());
+    			thesisOutlineComment.setUpdatedAt(new Date().getTime());
+    			
+    			if (thesisOutlineCommentMapper.insert(thesisOutlineComment) <= 0) {
+    				throw new Exception("Thêm hội đồng thất bại");
+    			}
+    		}
+    		return thesisOutlineCommentCusMapper.searchByThesisId(insertThesisCouncilPayload.getThesisId());
+    	} catch (Exception e) {
+    		TransactionAspectSupport.currentTransactionStatus().isRollbackOnly();
+    		throw e;
+    	}
     }
 
 }

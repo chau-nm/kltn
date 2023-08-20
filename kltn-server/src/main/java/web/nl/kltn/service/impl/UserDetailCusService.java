@@ -25,7 +25,7 @@ public class UserDetailCusService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserDTO userCus = userCusMapper.findByUsername(username);
 		if (userCus == null) {
-			return null;
+			throw new UsernameNotFoundException("Không tìm thấy username");
 		}
 		List<GrantedAuthority> authorities = userCus.getRoles().stream().map(r -> new SimpleGrantedAuthority(r))
 				.collect(Collectors.toList());

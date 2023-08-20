@@ -19,9 +19,7 @@ const LoginPage = (): JSX.Element => {
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
       const user: UserModel | null = data as UserModel;
-      if (user == null) {
-        alert("Login failed");
-      } else {
+      if (user) {
         handleLoginSuccess(user);
       }
     },

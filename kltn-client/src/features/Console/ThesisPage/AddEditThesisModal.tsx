@@ -200,7 +200,7 @@ const AddEditThesisModal = (): JSX.Element => {
           createdAt: new Date().getTime(),
           updatedAt: new Date().getTime(),
         } satisfies ThesisUserModel,
-        status: 6,
+        status: 7,
         createdAt: new Date().getTime(),
         updatedAt: new Date().getTime(),
         userCreated: user,

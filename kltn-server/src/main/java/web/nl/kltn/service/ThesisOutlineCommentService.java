@@ -2,6 +2,7 @@ package web.nl.kltn.service;
 
 import java.util.List;
 
+import web.nl.kltn.model.InsertThesisCouncilPayload;
 import web.nl.kltn.model.dto.ThesisOutlineCommentDTO;
 import web.nl.kltn.model.generator.ThesisOutlineComment;
 
@@ -22,5 +23,7 @@ public interface ThesisOutlineCommentService {
 	ThesisOutlineComment searchByThesisIdAndCouncilId(String thesisId, String userId);
 
 	void deletedByThesis(String id);
+
+	List<ThesisOutlineComment> insertCouncils(InsertThesisCouncilPayload insertThesisCouncilPayload) throws Exception;
 
 }

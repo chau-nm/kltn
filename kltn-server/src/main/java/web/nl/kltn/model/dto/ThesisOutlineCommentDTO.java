@@ -11,7 +11,6 @@ public class ThesisOutlineCommentDTO extends ThesisOutlineComment{
 		setThesisId(thesisOutlineComment.getThesisId());
 		setUserId(thesisOutlineComment.getUserId());
 		setComment(thesisOutlineComment.getComment());
-		setOrder(thesisOutlineComment.getOrder());
 		setCreatedAt(thesisOutlineComment.getCreatedAt());
 		setIsDeleted(thesisOutlineComment.getIsDeleted());
 		setUpdatedAt(thesisOutlineComment.getUpdatedAt());

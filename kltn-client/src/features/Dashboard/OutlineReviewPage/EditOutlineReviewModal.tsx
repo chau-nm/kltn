@@ -1,4 +1,4 @@
-import { Col, Form, Row, Space, Spin, Typography, message } from "antd";
+import { Col, Form, Radio, Row, Space, Spin, Typography, message } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { OutlineReviewContext } from "~/contexts/OutlineReviewContext";
 import * as ThesisService from "~/services/thesisService";
@@ -12,7 +12,7 @@ import ReactQuillPreviewCommon from "~/components/common/ReactQuillPreviewCommon
 import RichTextEditorCommon from "~/components/common/RichTextEditorCommon";
 import { useForm } from "antd/es/form/Form";
 import * as Doc2VecServices from "~/services/doc2vecService";
-import * as OutlineReviewServices from "~/services/OutlineReviewServices";
+import * as OutlineReviewServices from "~/services/thesisOutlineCommentService";
 import { AuthContext } from "~/contexts/AuthContext";
 
 const EditOutlineReviewModal = (): JSX.Element => {
@@ -107,6 +107,8 @@ const EditOutlineReviewModal = (): JSX.Element => {
       const outlineCommentModel: OutlineCommentModel = {
         thesisId: thesisDetail?.id ? thesisDetail?.id : "",
         userId: user?.userId ? user?.userId : "",
+        isGeneral: false,
+        result: form.getFieldValue("result"),
         comment: form.getFieldValue("description"),
       };
 
@@ -207,8 +209,8 @@ const EditOutlineReviewModal = (): JSX.Element => {
             className="py-3 px-4 w-full flex items-center justify-center"
           >
             <ReactQuillPreviewCommon
-              content={thesisDetail?.description as string}
-            ></ReactQuillPreviewCommon>
+              content={thesisDetail?.description ?? ""}
+            />
           </Col>
         </Row>
         <Row>
@@ -265,6 +267,17 @@ const EditOutlineReviewModal = (): JSX.Element => {
           <Form layout="vertical" onFinish={handleSave} form={form}>
             <Form.Item
               label="Đánh giá"
+              name="result"
+              rules={[{ required: true }]}
+            >
+              <Radio.Group>
+                <Radio value={1}>Đạt</Radio>
+                <Radio value={2}>Cần chỉnh sửa</Radio>
+                <Radio value={3}>Không đạt</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item
+              label="Nhận xét"
               name="description"
               rules={[{ required: true }]}
             >
@@ -273,6 +286,7 @@ const EditOutlineReviewModal = (): JSX.Element => {
                   editorHtml={editorHtml}
                   setEditorHtml={setEditorHtml}
                   style={{ height: 270 }}
+                  placeholder="Nhập nhận xét"
                 />
               </div>
             </Form.Item>

@@ -7,7 +7,6 @@
 		<result column="thesis_id" jdbcType="VARCHAR" property="thesisId" />
 		<result column="user_id" jdbcType="VARCHAR" property="userId" />
 		<result column="comment" jdbcType="VARCHAR" property="comment" />
-		<result column="order" jdbcType="INTEGER" property="order" />
 		<result column="is_deleted" jdbcType="BIT" property="isDeleted" />
 		<result column="created_at" jdbcType="BIGINT" property="createdAt" />
 		<result column="updated_at" jdbcType="BIGINT" property="updatedAt" />
@@ -19,7 +18,6 @@
 			toc.thesis_id,
 			toc.user_id,
 			toc.comment,
-			toc.order,
 			toc.is_deleted,
 			toc.created_at,
 			toc.updated_at
@@ -28,7 +26,6 @@
 		WHERE
 			toc.thesis_id = #{thesisId}
 			AND toc.is_deleted = 0
-		ORDER BY toc.order
 	</select>
 	
 	<select id="searchByUserId"  resultMap="ThesisOutlineComment">
@@ -37,7 +34,6 @@
 		toc.thesis_id,
 		toc.user_id,
 		toc.comment,
-		toc.order,
 		toc.is_deleted,
 		toc.created_at,
 		toc.updated_at
@@ -46,7 +42,6 @@
 		WHERE
 		toc.user_id = #{user_id}
 			AND toc.is_deleted = 0
-		ORDER BY toc.order
 	</select>
 
 	<select id="findCouncilByOutlineComment" resultType="java.lang.String">
@@ -69,7 +64,6 @@
 		toc.thesis_id,
 		toc.user_id,
 		toc.comment,
-		toc.order,
 		toc.is_deleted,
 		toc.created_at,
 		toc.updated_at
@@ -79,7 +73,6 @@
 		toc.thesis_id = #{thesisId}
 		AND toc.user_id = #{userId}
 		AND toc.is_deleted = 0
-		ORDER BY toc.order
 	</select>
 
 </mapper>

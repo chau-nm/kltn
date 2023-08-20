@@ -2,7 +2,7 @@ import { type TablePaginationConfig } from "antd";
 import { createContext, useEffect, useState, type SetStateAction } from "react";
 import { useMutation } from "react-query";
 import usePagination from "~/hook/usePagination";
-import * as OutlineReviewServices from "~/services/OutlineReviewServices";
+import * as OutlineReviewServices from "~/services/thesisOutlineCommentService";
 import * as ThesisRegisterCalendarService from "~/services/thesisRegisterCalendarService";
 import * as ThesisService from "~/services/thesisService";
 

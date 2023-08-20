@@ -116,14 +116,20 @@ interface ThesisSearchConditionModel {
 interface OutlineReviewSearchConditionModel { }
 
 interface OutlineCommentModel {
-  thesisId: string;
-  userId: string;
+  thesisId?: string;
+  userId?: string;
   comment?: string;
-  order?: number;
+  isGeneral?: boolean;
+  result?: number;
   isDeleted?: boolean;
   createdAt?: number;
   updatedAt?: number;
   user?: UserModel;
+}
+
+interface InsertThesisCouncilPayload {
+  thesisId?: string;
+  councils?: string[];
 }
 
 interface ThesisRegisterCalendarModel {

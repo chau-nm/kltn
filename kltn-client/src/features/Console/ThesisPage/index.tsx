@@ -29,12 +29,12 @@ const ThesisPage = (): JSX.Element => {
       <ThesisSearchForm />
       <ButtonsComponent />
       <ThesisTableResult />
-      <AddCouncilModal />
       <AddCommentMinistryModal />
       <OpenThesisRegisterModal />
       <AddEditThesisModal />
       <CriticalAssessmentModal />
       <ProtectionModal />
+      <AddCouncilModal />
       {thesis != null && (
         <ThesisDetailView
           thesis={thesis}

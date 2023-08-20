@@ -71,8 +71,7 @@ const RegisterThesisForm = (): JSX.Element => {
     onSuccess: (data: ThesisModel | null) => {
       if (data != null) {
         void message.success("Đăng ký thành công");
-      } else {
-        void message.error("Đăng ký thất bại");
+        location.reload();
       }
     },
   });
@@ -185,19 +184,29 @@ const RegisterThesisForm = (): JSX.Element => {
     });
   };
 
+  const filterOptions = (input: string, option: any): boolean => {
+    return (option?.label?.toString().toLowerCase() ?? "").includes(
+      input.toLowerCase()
+    );
+  };
+
   return (
     <Spin spinning={insertThesisMutation.isLoading}>
       <Form layout="vertical" onFinish={handleFinish} form={form}>
-        <Form.Item label="Sinh viên 2" name="student2">
-          <Select>
-            {studentSelectOptions.map((std) => {
-              return (
-                <Select.Option key={std.userId}>{`${std.fname ?? ""} - ${
-                  std.username ?? ""
-                }`}</Select.Option>
-              );
-            })}
-          </Select>
+        <Form.Item label="Sinh viên cùng tham gia" name="student2">
+          <Select
+            placeholder="Chọn sinh viên tham gia luận văn cùng bạn"
+            showSearch
+            filterOption={filterOptions}
+            options={[
+              ...studentSelectOptions.map((std) => {
+                return {
+                  value: std.userId,
+                  label: `${std.fname ?? ""} - ${std.username ?? ""}`,
+                };
+              }),
+            ]}
+          />
         </Form.Item>
         <Form.Item
           label="Giảng viên hướng dẫn"
@@ -209,15 +218,19 @@ const RegisterThesisForm = (): JSX.Element => {
             },
           ]}
         >
-          <Select>
-            {teacherSelectOptions.map((teacher) => {
-              return (
-                <Select.Option key={teacher.userId}>
-                  {teacher.fname}
-                </Select.Option>
-              );
-            })}
-          </Select>
+          <Select
+            placeholder="Chọn giảng viên hướng dẫn"
+            showSearch
+            filterOption={filterOptions}
+            options={[
+              ...teacherSelectOptions.map((std) => {
+                return {
+                  value: std.userId,
+                  label: `${std.fname ?? ""} - ${std.username ?? ""}`,
+                };
+              }),
+            ]}
+          />
         </Form.Item>
         <Form.Item
           label="Tên đề tài"
@@ -232,6 +245,7 @@ const RegisterThesisForm = (): JSX.Element => {
           <Input
             type="text"
             value={thesisName}
+            placeholder="Nhập tên đề tài"
             onChange={async (e) => {
               await handleThesisNameChange(e.target.value);
             }}
@@ -286,6 +300,7 @@ const RegisterThesisForm = (): JSX.Element => {
               editorHtml={editorHtml}
               setEditorHtml={setEditorHtml}
               style={{ height: 270 }}
+              placeholder="Nhập mô tả"
             />
           </div>
         </Form.Item>

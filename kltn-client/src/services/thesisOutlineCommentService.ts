@@ -65,3 +65,13 @@ export const remove = async (id: string): Promise<boolean> => {
   );
   return responseModel ? responseModel.data : false;
 };
+
+export const insertCouncils = async (insertThesisCouncilPayload: InsertThesisCouncilPayload): Promise<OutlineCommentModel[]> => {
+  const requestModel: RequestModel<InsertThesisCouncilPayload> = {
+    data: insertThesisCouncilPayload
+  }
+
+  const responseModel: ResponseModel<OutlineCommentModel[]> = await http.post(ApiUrlConstants.INSERT_COUNCILS, requestModel);
+
+  return responseModel.data;
+}

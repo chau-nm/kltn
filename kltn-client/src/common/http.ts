@@ -36,6 +36,9 @@ class HttpService {
   private configResponseInterceptor(): void {
     this.axiosInstance.interceptors.response.use(
       (response: AxiosResponse) => {
+        if (response.data?.status === 1) {
+          void message.error(response.data?.message);
+        }
         return response;
       },
       async (error: any) => {
@@ -48,7 +51,6 @@ class HttpService {
               const accessToken = localStorage.getItem("access_token");
               if (accessToken) {
                 const refreshedToken = await this.refreshToken();
-                console.log(refreshedToken);
                 if (!refreshedToken) {
                   localStorage.clear();
                   void message.error("Hết phiên đăng nhập");
@@ -56,6 +58,7 @@ class HttpService {
               }
               break;
             default:
+              void message.error(error.message);
               // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
               throw new Error("Error: " + error.message);
           }
@@ -63,6 +66,7 @@ class HttpService {
           // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
           throw new Error("No response received:" + error.request);
         } else {
+          void message.error(error.message);
           // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
           throw new Error("Error: " + error.message);
         }

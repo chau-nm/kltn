@@ -1,48 +1,32 @@
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Col, Form, Row, Spin, Typography, message } from "antd";
+import { Avatar, Col, Form, Radio, Row, Spin, Typography } from "antd";
 import { useForm } from "antd/es/form/Form";
 import {
   useContext,
-  useEffect,
+  // useEffect,
   useState,
   type Dispatch,
   type SetStateAction,
 } from "react";
-import { useMutation } from "react-query";
 import { dateTimeDisplay } from "~/common/util";
 import ReactQuillPreviewCommon from "~/components/common/ReactQuillPreviewCommon";
 import RichTextEditorCommon from "~/components/common/RichTextEditorCommon";
 import { AuthContext } from "~/contexts/AuthContext";
 import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 // import * as OutlineCommentService from "~/services/OutlineReviewServices";
-import * as OutlineReviewServices from "~/services/OutlineReviewServices";
-import * as ThesisService from "~/services/thesisService";
 import ButtonCommon from "../../../components/common/ButtonCommon";
 import ModalCommon from "../../../components/common/ModalCommon";
 
 const AddCommentMinistryModal = (): JSX.Element => {
   const {
-    listThesisSelected,
     openAddCommentMinistryModal,
     setOpenAddCommentMinistryModal,
     listCommentOfCouncil,
-    searchListComment,
-    search,
+    setIsOpenThesisDetailModal,
+    thesis,
+    setOpenAddCouncilModal,
   } = useContext(ThesisConsoleContext);
   const { user } = useContext(AuthContext);
-
-  const [shouldUpdate, setShouldUpdate] = useState<boolean>(false);
-
-  useEffect(() => {
-    setShouldUpdate(false);
-    for (let index = 0; index < listCommentOfCouncil.length; index++) {
-      const element = listCommentOfCouncil[index];
-      if (element.user?.roles?.includes("MINISTRY")) {
-        setShouldUpdate(true);
-        break;
-      }
-    }
-  }, [listCommentOfCouncil]);
 
   const [editorHtml, setEditorHtml] = useState<string>("");
   const [form] = useForm();
@@ -52,82 +36,67 @@ const AddCommentMinistryModal = (): JSX.Element => {
     setEditorHtml("");
   };
 
-  useEffect(() => {
-    listThesisSelected[0]?.id && searchListComment(listThesisSelected[0]?.id);
-  }, [listThesisSelected]);
-
   const handleSave = (): void => {
     form.setFieldValue("description", editorHtml);
     void form.validateFields().then(() => {
-      const outlineCommentModel: OutlineCommentModel = {
-        thesisId: listThesisSelected[0]?.id ? listThesisSelected[0]?.id : "",
-        userId: user?.userId ? user?.userId : "",
-        comment: form.getFieldValue("description"),
-        order: 1,
-      };
-      if (shouldUpdate) {
-        updateOutlineReviewMutation.mutate(outlineCommentModel);
-      } else {
-        insertOulineCommentMutation.mutate(outlineCommentModel);
-      }
+      // const outlineCommentModel: OutlineCommentModel = {
+      //   thesisId: thesis?.id ?? "",
+      //   userId: user?.userId ?? "",
+      //   comment: form.getFieldValue("description"),
+      //   order: 1,
+      // };
+      // if (shouldUpdate) {
+      //   updateOutlineReviewMutation.mutate(outlineCommentModel);
+      // } else {
+      //   insertOulineCommentMutation.mutate(outlineCommentModel);
+      // }
     });
   };
 
-  const insertOulineCommentMutation = useMutation(
-    OutlineReviewServices.insert,
-    {
-      onSuccess: (data: OutlineCommentModel | null) => {
-        if (data != null) {
-          void message.success("Thêm thành công");
-          setOpenAddCommentMinistryModal(false);
-          clearData();
-        } else {
-          void message.error("Thêm thất bại");
-        }
-      },
-    }
-  );
-  const updateOutlineReviewMutation = useMutation(
-    OutlineReviewServices.updateComment,
-    {
-      onSuccess: (data: boolean) => {
-        if (data) {
-          void message.success("Thêm thành công");
-          setOpenAddCommentMinistryModal(false);
-          clearData();
-        } else {
-          void message.error("Thêm thất bại");
-        }
-      },
-    }
-  );
+  // const insertOulineCommentMutation = useMutation(
+  //   OutlineReviewServices.insert,
+  //   {
+  //     onSuccess: (data: OutlineCommentModel | null) => {
+  //       if (data != null) {
+  //         void message.success("Thêm thành công");
+  //         setOpenAddCommentMinistryModal(false);
+  //         clearData();
+  //       } else {
+  //         void message.error("Thêm thất bại");
+  //       }
+  //     },
+  //   }
+  // );
+  // const updateOutlineReviewMutation = useMutation(
+  //   OutlineReviewServices.updateComment,
+  //   {
+  //     onSuccess: (data: boolean) => {
+  //       if (data) {
+  //         void message.success("Thêm thành công");
+  //         setOpenAddCommentMinistryModal(false);
+  //         clearData();
+  //       } else {
+  //         void message.error("Thêm thất bại");
+  //       }
+  //     },
+  //   }
+  // );
 
   const handleClose = (): void => {
     setOpenAddCommentMinistryModal(false);
     clearData();
-  };
-  const updateStatusThesis = async (): Promise<void> => {
-    const data = await ThesisService.updateStatus(
-      listThesisSelected[0]?.id as string,
-      3
-    );
-    if (data) {
-      void message.success("Phê duyệt thành công");
-      setOpenAddCommentMinistryModal(false);
-      clearData();
-      search();
-    } else {
-      void message.error("Phê duyệt thất bại");
-    }
   };
 
   const ButtonFooter = (): JSX.Element => {
     return (
       <Row justify={"end"}>
         <ButtonCommon value="Đóng" onClick={handleClose} />
-        {listThesisSelected[0].status === 2 && (
-          <ButtonCommon value="Duyệt đề cương" onClick={updateStatusThesis} />
-        )}
+        <ButtonCommon
+          value="Thêm hội đồng đánh giá"
+          onClick={() => {
+            setOpenAddCouncilModal(true);
+          }}
+        />
         <ButtonCommon color="blue" value={"Lưu"} onClick={handleSave} />
       </Row>
     );
@@ -144,32 +113,21 @@ const AddCommentMinistryModal = (): JSX.Element => {
       maskCloseable={true}
     >
       <Spin spinning={false}>
-        <Row>
-          <>
-            <Col span={15} className="py-3 px-4">
-              <Typography.Text strong>Tên luận văn</Typography.Text>
-            </Col>
-            <Col flex={1} className=" py-3 px-4">
-              <Typography.Text strong>Giảng viên hướng dẫn</Typography.Text>
-            </Col>
-          </>
+        <Row justify={"space-between"}>
+          <Col className="text-base">
+            <strong> Đề tài:</strong> {thesis?.topic}
+          </Col>
+          <Col>
+            <span
+              className="text-blue-400 select-none cursor-pointer hover:text-blue-500 duration-300"
+              onClick={() => {
+                setIsOpenThesisDetailModal(true);
+              }}
+            >
+              Xem chi tiết
+            </span>
+          </Col>
         </Row>
-        {listThesisSelected.map((thesis, index) => {
-          return (
-            <Row className="border rounded-lg" key={index}>
-              <>
-                <Col span={15} className="py-3 px-4">
-                  <Typography.Text>{thesis.topic}</Typography.Text>
-                </Col>
-                <Col flex={1} className=" py-3 px-4">
-                  <Typography.Text>
-                    {thesis.teacher?.user?.fname}
-                  </Typography.Text>
-                </Col>
-              </>
-            </Row>
-          );
-        })}
         <Row className="min-w-[400px]">
           <Col className=" py-3 px-4">
             <Typography.Text strong>
@@ -222,6 +180,17 @@ const AddCommentMinistryModal = (): JSX.Element => {
           >
             <Form.Item
               label="Đánh giá"
+              name="result"
+              rules={[{ required: true }]}
+            >
+              <Radio.Group>
+                <Radio value={1}>Đạt</Radio>
+                <Radio value={2}>Cần chỉnh sửa</Radio>
+                <Radio value={3}>Không đạt</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item
+              label="Nhận xét"
               name="description"
               rules={[{ required: true }]}
             >

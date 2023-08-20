@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import ButtonCommon from "~/components/common/ButtonCommon";
 import ReactQuillPreviewCommon from "~/components/common/ReactQuillPreviewCommon";
-import * as OutlineReviewServices from "~/services/OutlineReviewServices";
+import * as OutlineReviewServices from "~/services/thesisOutlineCommentService";
 
 type ThesisDetailProps = {
   thesis: ThesisModel;

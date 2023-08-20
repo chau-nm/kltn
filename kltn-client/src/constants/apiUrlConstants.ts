@@ -61,6 +61,9 @@ export class ApiUrlConstants {
   public static readonly GET_OULINE_COMMENT_BY_THESIS_ID =
     "/thesis-outline-comment/search-comment-by-thesisId";
 
+  public static readonly INSERT_COUNCILS =
+    "/thesis-outline-comment/insert-councils";
+
   /** THESIS OUTLINE REVIEW */
   public static readonly SEARCH_OURLINE_REVIEW =
     "/thesis-outline-review/search";

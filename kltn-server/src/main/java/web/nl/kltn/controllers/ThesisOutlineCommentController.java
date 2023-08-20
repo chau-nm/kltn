@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import web.nl.kltn.common.RequestModel;
 import web.nl.kltn.common.ResponseModel;
+import web.nl.kltn.model.InsertThesisCouncilPayload;
 import web.nl.kltn.model.dto.ThesisOutlineCommentDTO;
 import web.nl.kltn.model.generator.ThesisOutlineComment;
 import web.nl.kltn.service.ThesisOutlineCommentService;
@@ -56,7 +57,6 @@ public class ThesisOutlineCommentController {
 		ThesisOutlineComment result = thesisOutlineCommentService
 				.searchByThesisIdAndCouncilId(thesisOutlineComment.getThesisId(), thesisOutlineComment.getUserId());
 		thesisOutlineComment.setId(result.getId());
-		thesisOutlineComment.setOrder(1);
 		thesisOutlineComment.setCreatedAt(result.getCreatedAt());
 		thesisOutlineComment.setIsDeleted(false);
 		thesisOutlineComment.setUpdatedAt(new Date().getTime());
@@ -114,6 +114,20 @@ public class ThesisOutlineCommentController {
 			responseModel.setData(true);
 		} catch (Exception exception) {
 			responseModel.setData(false);
+		}
+		return responseModel;
+	}
+	
+	@PostMapping("/insert-councils")
+	public ResponseModel<List<ThesisOutlineComment>> inseartThesisCouncil(@RequestBody RequestModel<InsertThesisCouncilPayload> insertThesisCouncilPayloadRequest) {
+		InsertThesisCouncilPayload insertThesisCouncilPayload 
+			= insertThesisCouncilPayloadRequest.getData();
+		ResponseModel<List<ThesisOutlineComment>> responseModel = new ResponseModel<>();
+		try {
+			responseModel.setData(thesisOutlineCommentService.insertCouncils(insertThesisCouncilPayload));
+		} catch (Exception e) {
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
 		}
 		return responseModel;
 	}

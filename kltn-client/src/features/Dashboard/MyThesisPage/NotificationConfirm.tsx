@@ -42,6 +42,7 @@ const NotificationConfirm = ({
     };
 
     updateThesisUserService.mutate(newThesisUser);
+    location.reload();
   };
 
   const handleDecline = (): void => {
