@@ -2,6 +2,7 @@ package web.nl.kltn.controllers;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,15 +55,25 @@ public class ThesisOutlineCommentController {
 			@RequestBody RequestModel<ThesisOutlineComment> thesisOutlineCommentRequest) {
 		ResponseModel<Boolean> responseModel = new ResponseModel<>();
 		ThesisOutlineComment thesisOutlineComment = thesisOutlineCommentRequest.getData();
+
 		ThesisOutlineComment result = thesisOutlineCommentService
 				.searchByThesisIdAndCouncilId(thesisOutlineComment.getThesisId(), thesisOutlineComment.getUserId());
-		thesisOutlineComment.setId(result.getId());
-		thesisOutlineComment.setCreatedAt(result.getCreatedAt());
-		thesisOutlineComment.setIsDeleted(false);
-		thesisOutlineComment.setUpdatedAt(new Date().getTime());
-		thesisOutlineCommentService.update(thesisOutlineComment);
-		responseModel.setData(true);
-
+		if (result != null) {
+			thesisOutlineComment.setId(result.getId());
+			thesisOutlineComment.setCreatedAt(result.getCreatedAt());
+			thesisOutlineComment.setIsDeleted(false);
+			thesisOutlineComment.setUpdatedAt(new Date().getTime());
+			thesisOutlineCommentService.update(thesisOutlineComment);
+			responseModel.setData(true);
+		} else {
+			try {
+				thesisOutlineCommentService.insert(thesisOutlineComment);
+				responseModel.setData(true);
+			} catch (Exception e) {
+				responseModel.setMessage(e.getMessage());
+				responseModel.setStatus(1);
+			}
+		}
 		return responseModel;
 	}
 
@@ -117,11 +128,11 @@ public class ThesisOutlineCommentController {
 		}
 		return responseModel;
 	}
-	
+
 	@PostMapping("/insert-councils")
-	public ResponseModel<List<ThesisOutlineComment>> inseartThesisCouncil(@RequestBody RequestModel<InsertThesisCouncilPayload> insertThesisCouncilPayloadRequest) {
-		InsertThesisCouncilPayload insertThesisCouncilPayload 
-			= insertThesisCouncilPayloadRequest.getData();
+	public ResponseModel<List<ThesisOutlineComment>> inseartThesisCouncil(
+			@RequestBody RequestModel<InsertThesisCouncilPayload> insertThesisCouncilPayloadRequest) {
+		InsertThesisCouncilPayload insertThesisCouncilPayload = insertThesisCouncilPayloadRequest.getData();
 		ResponseModel<List<ThesisOutlineComment>> responseModel = new ResponseModel<>();
 		try {
 			responseModel.setData(thesisOutlineCommentService.insertCouncils(insertThesisCouncilPayload));

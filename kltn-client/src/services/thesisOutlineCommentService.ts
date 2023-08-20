@@ -3,16 +3,14 @@ import http from "~/common/http";
 
 export const getCommentByThesisId = async (
   thesisId: string,
-): Promise<OutlineCommentModel[] | []> => {
-  const response: ResponseModel<OutlineCommentModel[] | []> = await http
+): Promise<OutlineCommentModel[]> => {
+  const response: ResponseModel<OutlineCommentModel[]> = await http
     .get<ResponseModel<OutlineCommentModel[]>>(
       `${ApiUrlConstants.GET_OULINE_COMMENT_BY_THESIS_ID}?thesisId=${thesisId}`,
     )
-    .then((response) => response)
-    .catch(async (error) => await Promise.reject(error));
-  const user: OutlineCommentModel[] | [] =
-    response.data as OutlineCommentModel[];
-  return user || [];
+  const user: OutlineCommentModel[] =
+    response.data;
+  return user;
 };
 
 export const search = async (

@@ -144,34 +144,14 @@ const AddEditThesisModal = (): JSX.Element => {
       desciption,
       documentUrl,
     });
-    const student1Id = studentSelectOptions
-      .map((std) => {
-        if (std.userId === form.getFieldValue("student1")) {
-          return std.userId;
-        }
-        return undefined;
-      })
-      .filter((std) => std);
-    const student2Id = studentSelectOptions
-      .map((std) => {
-        if (std.userId === form.getFieldValue("student2")) {
-          return std.userId;
-        }
-        return undefined;
-      })
-      .filter((std) => std);
-    const studentIds: any[] = [];
-    student1Id && studentIds.concat(student1Id);
-    student2Id && studentIds.concat(student2Id);
+    const student1Id = form.getFieldValue("student1");
+    const student2Id = form.getFieldValue("student2");
+    const studentIds: string[] = [];
+    student1Id && studentIds.push(student1Id);
+    student2Id && studentIds.push(student2Id);
 
-    const teacherId = teacherSelectOptions
-      .map((teacher) => {
-        if (teacher.userId === form.getFieldValue("teacher")) {
-          return teacher.userId;
-        }
-        return undefined;
-      })
-      .filter((std) => std)[0];
+    const teacherId = form.getFieldValue("teacher");
+
     void form.validateFields().then(() => {
       const thesisId = isEditModal ? thesis?.id : v4();
       const thesisReq: ThesisModel = {
@@ -200,7 +180,7 @@ const AddEditThesisModal = (): JSX.Element => {
           createdAt: new Date().getTime(),
           updatedAt: new Date().getTime(),
         } satisfies ThesisUserModel,
-        status: 7,
+        status: 8,
         createdAt: new Date().getTime(),
         updatedAt: new Date().getTime(),
         userCreated: user,
