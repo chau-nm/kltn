@@ -106,6 +106,8 @@ public class ThesisDTO extends Thesis {
 		if (userMapper != null) {
 			this.setUserCreated(userMapper.selectByPrimaryKey(this.getCreatedBy()));
 		}
-//		if ()
+		if (thesisStudentMapper != null) {
+			
+		}
 	}
 }
