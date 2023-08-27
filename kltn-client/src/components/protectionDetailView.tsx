@@ -4,7 +4,7 @@ import ButtonCommon from "./common/ButtonCommon";
 import ModalCommon from "./common/ModalCommon";
 
 type ProtectionDetailViewProps = {
-  protectionRating?: ProtectionRatingModel;
+  protectionRating?: DefenseRatingModel;
   isOpen: boolean;
   setIsOpen: React.Dispatch<SetStateAction<boolean>>;
 };

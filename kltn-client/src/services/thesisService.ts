@@ -29,21 +29,21 @@ export const search = async (
     responseModel.data;
   return notificationsSearchResponse;
 };
-export const searchByCouncilId = async (
-  mutationParams: MutationParamsModel<ThesisSearchConditionModel>,
-): Promise<SearchResponseModel<ThesisModel[]>> => {
-  const requestModel: RequestModel<ThesisSearchConditionModel> = {
-    data: mutationParams.searchCondition,
-  };
-  const responseModel: ResponseModel<SearchResponseModel<ThesisModel[]>> =
-    await http.post(
-      `${ApiUrlConstants.SEARCH_BY_COUNCIL_ID}${mutationParams.page}?pageSize=${mutationParams.pageSize ?? 20}`,
-      requestModel,
-    );
-  const notificationsSearchResponse: SearchResponseModel<ThesisModel[]> =
-    responseModel.data;
-  return notificationsSearchResponse;
-};
+// export const searchByCouncilId = async (
+//   mutationParams: MutationParamsModel<ThesisSearchConditionModel>,
+// ): Promise<SearchResponseModel<ThesisModel[]>> => {
+//   const requestModel: RequestModel<ThesisSearchConditionModel> = {
+//     data: mutationParams.searchCondition,
+//   };
+//   const responseModel: ResponseModel<SearchResponseModel<ThesisModel[]>> =
+//     await http.post(
+//       `${ApiUrlConstants.SEARCH_BY_COUNCIL_ID}${mutationParams.page}?pageSize=${mutationParams.pageSize ?? 20}`,
+//       requestModel,
+//     );
+//   const notificationsSearchResponse: SearchResponseModel<ThesisModel[]> =
+//     responseModel.data;
+//   return notificationsSearchResponse;
+// };
 
 export const getThesisById = async (
   thesisId: string,
@@ -79,18 +79,18 @@ export const updateStatus = async (
   return thesisResponse.data;
 };
 
-export const searchByUser = async (userId: string): Promise<ThesisModel[]> => {
-  const thesisLiseResponse: ResponseModel<ThesisModel[]> = await http.get(
-    `${ApiUrlConstants.SEARCH_THESIS_BY_USER}?userId=${userId}`,
-  );
-  return thesisLiseResponse.data ?? [];
-};
+// export const searchByUser = async (userId: string): Promise<ThesisModel[]> => {
+//   const thesisLiseResponse: ResponseModel<ThesisModel[]> = await http.get(
+//     `${ApiUrlConstants.SEARCH_THESIS_BY_USER}?userId=${userId}`,
+//   );
+//   return thesisLiseResponse.data ?? [];
+// };
 
-export const searchThesisCAByUserId = async (
-  userId: string,
-): Promise<ThesisModel[]> => {
-  const thesisLiseResponse: ResponseModel<ThesisModel[]> = await http.get(
-    `${ApiUrlConstants.SEARCH_THESIS_CA_BY_USER_ID}?userId=${userId}`,
-  );
-  return thesisLiseResponse.data ?? [];
-};
+// export const searchThesisCAByUserId = async (
+//   userId: string,
+// ): Promise<ThesisModel[]> => {
+//   const thesisLiseResponse: ResponseModel<ThesisModel[]> = await http.get(
+//     `${ApiUrlConstants.SEARCH_THESIS_CA_BY_USER_ID}?userId=${userId}`,
+//   );
+//   return thesisLiseResponse.data ?? [];
+// };

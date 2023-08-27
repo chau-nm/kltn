@@ -26,7 +26,7 @@ const ThesisTableResult = (): JSX.Element => {
     handleChange,
     setIsOpenAddEditThesisModal,
     setIsEditModal,
-    searchDetail,
+    // searchDetail,
     setIsOpenThesisDetailModal,
     setIsOpenCriticalAssessmentModal,
     setIsOpenProtectionModal,
@@ -144,33 +144,33 @@ const ThesisTableResult = (): JSX.Element => {
             <Tooltip title="Chi tiết luận văn" placement="top">
               <SeeIconCommon
                 onClick={() => {
-                  searchDetail(record.id!);
+                  // searchDetail(record.id!);
                   setIsOpenThesisDetailModal(true);
                 }}
               />
             </Tooltip>
             <EditIconCommon
               onClick={() => {
-                searchDetail(record.id!);
+                // searchDetail(record.id!);
                 setIsEditModal(() => true);
                 setIsOpenAddEditThesisModal(true);
               }}
             />
             <CommentIconCommon
               onClick={() => {
-                searchDetail(record.id!);
+                // searchDetail(record.id!);
                 setOpenAddCommentMinistryModal(true);
               }}
             />
             <CriticalAssessmentIconCommon
               onClick={() => {
-                searchDetail(record.id!);
+                // searchDetail(record.id!);
                 setIsOpenCriticalAssessmentModal(true);
               }}
             />
             <ProtectedIconCommon
               onClick={() => {
-                searchDetail(record.id!);
+                // searchDetail(record.id!);
                 setIsOpenProtectionModal(true);
               }}
             />
