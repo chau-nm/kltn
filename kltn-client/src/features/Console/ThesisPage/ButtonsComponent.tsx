@@ -15,6 +15,7 @@ const ButtonsComponent = (): JSX.Element => {
     setIsEditModal,
     setIsOpenAddEditThesisModal,
     setIsOpenRegisterThesisPreviewCalendarModal,
+    setIsOpenRegisterThesisDefenseCalendarModal,
   } = useContext(ThesisConsoleContext);
 
   const disableThesisRegisterCalendar = useMutation(
@@ -79,7 +80,13 @@ const ButtonsComponent = (): JSX.Element => {
         />
       </Col>
       <Col>
-        <ButtonCommon color="blue" value="Đặt lịch bảo vệ" />
+        <ButtonCommon
+          color="blue"
+          value="Đặt lịch bảo vệ"
+          onClick={() => {
+            setIsOpenRegisterThesisDefenseCalendarModal(true);
+          }}
+        />
       </Col>
       <Col>
         <ButtonCommon

@@ -20,6 +20,11 @@ interface ThesisConsoleContextInterface {
   listThesisSelected: ThesisModel[];
   setlistThesisSelected: React.Dispatch<SetStateAction<ThesisModel[]>>;
 
+  listThesisSelectedForPreview: ThesisModel[];
+  setlistThesisSelectedForPreview: React.Dispatch<
+    SetStateAction<ThesisModel[]>
+  >;
+
   isOpenRegisterThesisModal: boolean;
   setIsOpenRegisterThesisModal: React.Dispatch<SetStateAction<boolean>>;
 
@@ -48,6 +53,11 @@ interface ThesisConsoleContextInterface {
 
   isOpenRegisterThesisPreviewCalendarModal: boolean;
   setIsOpenRegisterThesisPreviewCalendarModal: React.Dispatch<
+    SetStateAction<boolean>
+  >;
+
+  isOpenRegisterThesisDefenseCalendarModal: boolean;
+  setIsOpenRegisterThesisDefenseCalendarModal: React.Dispatch<
     SetStateAction<boolean>
   >;
 
@@ -86,6 +96,9 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
   listThesisSelected: [],
   setlistThesisSelected: () => null,
 
+  listThesisSelectedForPreview: [],
+  setlistThesisSelectedForPreview: () => null,
+
   isOpenRegisterThesisModal: false,
   setIsOpenRegisterThesisModal: () => null,
 
@@ -112,6 +125,9 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
 
   isOpenRegisterThesisPreviewCalendarModal: false,
   setIsOpenRegisterThesisPreviewCalendarModal: () => null,
+
+  isOpenRegisterThesisDefenseCalendarModal: false,
+  setIsOpenRegisterThesisDefenseCalendarModal: () => null,
 
   openAddCouncilModal: false,
   setOpenAddCouncilModal: () => null,
@@ -149,6 +165,9 @@ export const ThesisConsoleProvider = ({
   const [listThesisSelected, setlistThesisSelected] = useState<ThesisModel[]>(
     []
   );
+
+  const [listThesisSelectedForPreview, setlistThesisSelectedForPreview] =
+    useState<ThesisModel[]>([]);
   const [searchCondition, setSearchCondition] =
     useState<ThesisSearchConditionModel>({});
 
@@ -170,6 +189,11 @@ export const ThesisConsoleProvider = ({
   const [
     isOpenRegisterThesisPreviewCalendarModal,
     setIsOpenRegisterThesisPreviewCalendarModal,
+  ] = useState<boolean>(false);
+
+  const [
+    isOpenRegisterThesisDefenseCalendarModal,
+    setIsOpenRegisterThesisDefenseCalendarModal,
   ] = useState<boolean>(false);
 
   const [isOpenProtectionModal, setIsOpenProtectionModal] =
@@ -267,6 +291,9 @@ export const ThesisConsoleProvider = ({
         listThesisSelected,
         setlistThesisSelected,
 
+        listThesisSelectedForPreview,
+        setlistThesisSelectedForPreview,
+
         isLoadingTableResults: searchMutaion.isLoading,
 
         openAddCouncilModal,
@@ -298,6 +325,9 @@ export const ThesisConsoleProvider = ({
 
         isOpenRegisterThesisPreviewCalendarModal,
         setIsOpenRegisterThesisPreviewCalendarModal,
+
+        isOpenRegisterThesisDefenseCalendarModal,
+        setIsOpenRegisterThesisDefenseCalendarModal,
 
         openAddCommentMinistryModal,
         setOpenAddCommentMinistryModal,
