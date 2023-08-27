@@ -54,6 +54,13 @@ class MainLayouConstants {
       icon: DiffOutlined,
       roles: [AuthConstants.AUTH_ROLES.TEACHER]
     },
+    {
+      menuId: 6,
+      menuName: "Tham khảo luận văn",
+      menuPath: path.REFERENCE_THESIS,
+      icon: DiffOutlined,
+      roles: [AuthConstants.AUTH_ROLES.STUDENT]
+    },
   ];
 }
 
