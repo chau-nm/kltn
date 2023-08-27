@@ -88,7 +88,7 @@ const ThesisDetail = ({ thesis }: ThesisDetailProps): JSX.Element => {
         </Row>
         <div className="ml-[41.125px]">
           <Typography.Text>Mô tả:</Typography.Text>
-          <ReactQuillPreviewCommon content={thesis.description!} />
+          <ReactQuillPreviewCommon content={thesis.description ?? ""} />
         </div>
       </div>
       <div>

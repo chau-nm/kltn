@@ -23,29 +23,29 @@ const AddCouncilModal = (): JSX.Element => {
       await UserService.getUserByRole(AuthConstants.AUTH_ROLES.TEACHER)
   );
 
-  const { data: thesisOutlines } = useQuery(
-    ["load-councils"],
-    async () =>
-      await ThesisOutlineCommentService.getCommentByThesisId(thesis?.id ?? "")
-  );
+  // const { data: thesisOutlines } = useQuery(
+  //   ["load-councils"],
+  //   async () =>
+  //     await ThesisOutlineCommentService.getCommentByThesisId(thesis?.id ?? "")
+  // );
 
-  const insertCouncils = useMutation(
-    ThesisOutlineCommentService.insertCouncils,
-    {
-      onSuccess: (data: OutlineCommentModel[]) => {
-        if (data) {
-          void message.success("Thêm hội đồng thành công");
-        }
-      },
-    }
-  );
+  // const insertCouncils = useMutation(
+  //   ThesisOutlineCommentService.insertCouncils,
+  //   {
+  //     onSuccess: (data: OutlineCommentModel[]) => {
+  //       if (data) {
+  //         void message.success("Thêm hội đồng thành công");
+  //       }
+  //     },
+  //   }
+  // );
 
-  useEffect(() => {
-    if (thesisOutlines) {
-      const councils = thesisOutlines.map((to) => to.userId);
-      form.setFieldValue("councils", councils);
-    }
-  }, [thesisOutlines]);
+  // useEffect(() => {
+  //   if (thesisOutlines) {
+  //     const councils = thesisOutlines.map((to) => to.userId);
+  //     form.setFieldValue("councils", councils);
+  //   }
+  // }, [thesisOutlines]);
 
   useEffect(() => {
     handleSetDataTeacherSelect(teachers as UserModel[]);
@@ -60,13 +60,13 @@ const AddCouncilModal = (): JSX.Element => {
   const [form] = useForm();
 
   const handleSave = (): void => {
-    void form.validateFields().then(() => {
-      const insertCouncilsPayload: InsertThesisCouncilPayload = {
-        thesisId: thesis?.id,
-        councils: form.getFieldValue("councils"),
-      };
-      insertCouncils.mutate(insertCouncilsPayload);
-    });
+    // void form.validateFields().then(() => {
+    //   const insertCouncilsPayload: InsertThesisCouncilPayload = {
+    //     thesisId: thesis?.id,
+    //     councils: form.getFieldValue("councils"),
+    //   };
+    //   insertCouncils.mutate(insertCouncilsPayload);
+    // });
   };
 
   const handleClose = (): void => {

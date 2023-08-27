@@ -61,7 +61,6 @@ public class UserController {
 		try {
 			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 					loginCondition.getUsername(), loginCondition.getPassword()));
-
 			if (!authentication.isAuthenticated()) {
 				return responseModel;
 			} else {
@@ -79,6 +78,7 @@ public class UserController {
 				responseModel.setData(userCus);
 			}
 		} catch (AuthenticationException e) {
+			System.err.println(e);
 			responseModel.setMessage("Tài khoản hoặc mật khẩu không đúng");
 			responseModel.setStatus(1);
 		}

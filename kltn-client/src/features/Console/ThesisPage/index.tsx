@@ -13,6 +13,8 @@ import OpenThesisRegisterModal from "./OpenThesisRegisterModal";
 import ProtectionModal from "./ProtectionModal";
 import ThesisSearchForm from "./ThesisSearchForm";
 import ThesisTableResult from "./ThesisTableResult";
+import RegisterThesisPreviewCalendarModal from "./RegisterThesisPreviewCalendarModal";
+import RegisterThesisDefenseCalendarModal from "./RegisterThesisDefenseCalendarModal";
 
 const ThesisPage = (): JSX.Element => {
   const {
@@ -31,6 +33,8 @@ const ThesisPage = (): JSX.Element => {
       <ThesisTableResult />
       <AddCommentMinistryModal />
       <OpenThesisRegisterModal />
+      <RegisterThesisPreviewCalendarModal />
+      <RegisterThesisDefenseCalendarModal />
       <AddEditThesisModal />
       <CriticalAssessmentModal />
       <ProtectionModal />

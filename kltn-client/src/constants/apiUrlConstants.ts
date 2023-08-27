@@ -13,6 +13,12 @@ export class ApiUrlConstants {
   public static readonly REFRESH_TOKEN = "/user/refresh-token";
   public static readonly CHANGE_PASSWORD = "/user/change-password";
 
+  /** STUDENT */
+  public static readonly INSERT_STUDENT = "/student/insert";
+
+  /** LETURER */
+  public static readonly INSERT_LETURER = "/leturer/insert";
+
   /** NOTIFICATION */
   public static readonly INSERT_NOTIFICATION = "/notification/insert";
   public static readonly UPDATE_NOTIFICATION = "/notification/update";
@@ -77,6 +83,12 @@ export class ApiUrlConstants {
   /** CRITICAL ASSESSMENT */
   public static readonly INSERT_USER_CRITICAL_ASSESSMENT =
     "/critical-assessment/insert-user";
+
+  public static readonly SEARCH_CRITICAL_ASSESSMENT_BY_THESIS_ID_AND_MARKER =
+    "/critical-assessment/search-by-thesis-id-and-masker";
+
+  public static readonly UPDATE_CRITICAL_ASSESSMENT =
+    "/critical-assessment/update";
 
   /** Email */
   public static readonly EMAIL_PUBLIC_KEY = "zYF2rOMgmyBuMxfwX";

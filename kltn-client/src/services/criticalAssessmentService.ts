@@ -14,3 +14,18 @@ export const insertUser = async ({
   );
   return responseModel.data;
 };
+
+export const searchByThesisIdAndMarker = async ({ thesisId,
+  userId }: InsertUserParams): Promise<CriticalAssessmentModel> => {
+  const responseModel: ResponseModel<CriticalAssessmentModel> = await http.get(
+    `${ApiUrlConstants.SEARCH_CRITICAL_ASSESSMENT_BY_THESIS_ID_AND_MARKER}?thesisId=${thesisId}&userId=${userId}`,
+  );
+  return responseModel.data;
+}
+
+export const update = async (ca: CriticalAssessmentModel): Promise<boolean> => {
+  const responseModel: ResponseModel<boolean> = await http.put(
+    ApiUrlConstants.UPDATE_CRITICAL_ASSESSMENT, ca
+  );
+  return responseModel.data;
+}

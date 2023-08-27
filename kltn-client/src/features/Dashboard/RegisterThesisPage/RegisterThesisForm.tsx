@@ -120,22 +120,22 @@ const RegisterThesisForm = (): JSX.Element => {
   // };
 
   const handleFinish = (): void => {
-    const studentIds = [
-      user?.userId,
+    const students = [
+      user,
       ...studentSelectOptions
         .map((std) => {
           if (std.userId === form.getFieldValue("student2")) {
-            return std.userId;
+            return std;
           }
           return undefined;
         })
         .filter((std) => std),
     ];
 
-    const teacherId = teacherSelectOptions
+    const teacher = teacherSelectOptions
       .map((teacher) => {
         if (teacher.userId === form.getFieldValue("teacher")) {
-          return teacher.userId;
+          return teacher;
         }
         return undefined;
       })
@@ -147,33 +147,23 @@ const RegisterThesisForm = (): JSX.Element => {
         id: thesisId,
         topic: form.getFieldValue("topic"),
         description: form.getFieldValue("description"),
-        year: new Date().getFullYear(),
+        schoolYear: new Date().getFullYear(),
         semester: 1,
         status: 1,
-        students: studentIds.map((stdId) => {
-          return {
+        students: students as StudentModel[],
+        teachers: [teacher] as LeturerModel[],
+        userCreated: user ?? undefined,
+        fileAttachments: [
+          {
             id: v4(),
             thesisId,
-            userId: stdId,
-            type: 1,
-            status: stdId === user?.userId ? 1 : 0,
-            isDeleted: false,
+            fileUrl: outlineDocument,
             createdAt: new Date().getTime(),
+            isDeleted: false,
+            type: 1,
             updatedAt: new Date().getTime(),
-          } satisfies ThesisUserModel;
-        }),
-        teacher: {
-          id: v4(),
-          thesisId,
-          userId: teacherId,
-          type: 2,
-          status: 0,
-          isDeleted: false,
-          createdAt: new Date().getTime(),
-          updatedAt: new Date().getTime(),
-        } satisfies ThesisUserModel,
-        userCreated: user ?? undefined,
-        outlineUrl: outlineDocument,
+          },
+        ],
         isDeleted: false,
         createdBy: user?.userId ?? undefined,
         createdAt: new Date().getTime(),

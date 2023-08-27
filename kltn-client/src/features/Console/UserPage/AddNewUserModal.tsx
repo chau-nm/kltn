@@ -9,13 +9,18 @@ import {
   message,
 } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { useMutation } from "react-query";
 import { v4 } from "uuid";
+import AuthConstants from "~/constants/authConstants";
 import { UserConsoleContext } from "~/contexts/UserConsoleContext";
-import * as UserService from "~/services/userServices";
+import * as LeturerService from "~/services/leturerService";
+import * as StudentService from "~/services/studentService";
 import ButtonCommon from "../../../components/common/ButtonCommon";
 import ModalCommon from "../../../components/common/ModalCommon";
-import AuthConstants from "~/constants/authConstants";
+
+const STUDENT_MODE = 1;
+const TEACHER_MODE = 2;
 
 const AddNewUserModal = (): JSX.Element => {
   const {
@@ -25,13 +30,35 @@ const AddNewUserModal = (): JSX.Element => {
     search,
   } = useContext(UserConsoleContext);
 
+  const [accountMode, setAccountMode] = useState(1);
+
   const [form] = useForm();
+
+  const insertStudentMutation = useMutation(StudentService.insert, {
+    onSuccess: (data: StudentModel) => {
+      if (data) {
+        void message.success("Thêm tài khoản sinh viên thành công");
+        clearData();
+      }
+    },
+  });
+
+  const insertLeturerMutation = useMutation(LeturerService.insert, {
+    onSuccess: (data: LeturerModel) => {
+      if (data) {
+        void message.success("Thêm tài khoản giảng viên thành công");
+        clearData();
+      }
+    },
+  });
 
   const clearData = (): void => {
     form.resetFields();
+    setSearchCondition({});
+    search();
   };
 
-  const handleSave = async (): Promise<void> => {
+  const handleSave = (): void => {
     void form.validateFields().then(async () => {
       const user: UserModel = {
         userId: v4(),
@@ -43,19 +70,27 @@ const AddNewUserModal = (): JSX.Element => {
         birthday: form.getFieldValue("birthday"),
         roles: form.getFieldValue("roles"),
         faculty: form.getFieldValue("faculty"),
-        studentClass: form.getFieldValue("studentClass"),
+        isStudent: false,
+        isTeacher: false,
       };
-      const UserResponse: UserModel | null = await UserService.insert(user);
-      if (UserResponse) {
-        void message.success("Lưu thành công");
-        setOpenAddNewUserModal(false);
-        clearData();
-        setSearchCondition(() => {
-          return {};
-        });
-        search();
-      } else {
-        void message.error("Lưu thất bại");
+
+      if (accountMode === STUDENT_MODE) {
+        const student: StudentModel = {
+          ...user,
+          isStudent: true,
+          studentClass: form.getFieldValue("studentClass"),
+        };
+        insertStudentMutation.mutate(student);
+      }
+
+      if (accountMode === TEACHER_MODE) {
+        const leturer: LeturerModel = {
+          ...user,
+          isTeacher: true,
+          degree: form.getFieldValue("degree"),
+          title: form.getFieldValue("title"),
+        };
+        insertLeturerMutation.mutate(leturer);
       }
     });
   };
@@ -212,11 +247,66 @@ const AddNewUserModal = (): JSX.Element => {
           <Form.Item
             {...layoutConfig}
             labelAlign="left"
-            label="Lớp"
-            name="studentClass"
+            label="Sinh viên/ Giảng viên"
           >
-            <Input type="text" placeholder="Lớp" />
+            <Radio.Group
+              onChange={(value) => {
+                setAccountMode(value.target.value);
+              }}
+              defaultValue={STUDENT_MODE}
+            >
+              <Radio value={STUDENT_MODE}>Sinh viên</Radio>
+              <Radio value={TEACHER_MODE}>Giảng viên</Radio>
+            </Radio.Group>
           </Form.Item>
+
+          {accountMode === STUDENT_MODE && (
+            <Form.Item
+              {...layoutConfig}
+              labelAlign="left"
+              label="Lớp"
+              name="studentClass"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
+              <Input type="text" placeholder="Lớp" />
+            </Form.Item>
+          )}
+
+          {accountMode === TEACHER_MODE && (
+            <>
+              <Form.Item
+                {...layoutConfig}
+                labelAlign="left"
+                label="Ngạnh bậc"
+                name="degree"
+                rules={[
+                  {
+                    required: true,
+                  },
+                ]}
+              >
+                <Input type="text" placeholder="Ngạnh bậc" />
+              </Form.Item>
+              <Form.Item
+                {...layoutConfig}
+                labelAlign="left"
+                label="Tiêu đề"
+                name="title"
+                rules={[
+                  {
+                    required: true,
+                  },
+                ]}
+              >
+                <Input type="text" placeholder="Tiêu đề" />
+              </Form.Item>
+            </>
+          )}
+
           <Form.Item
             {...layoutConfig}
             labelAlign="left"

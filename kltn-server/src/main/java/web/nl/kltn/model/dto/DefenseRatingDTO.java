@@ -2,13 +2,13 @@ package web.nl.kltn.model.dto;
 
 import java.util.List;
 
+import web.nl.kltn.model.generator.DefenseRating;
 import web.nl.kltn.model.generator.ProtectionRating;
-import web.nl.kltn.model.generator.ProtectionRatingQuestion;
 import web.nl.kltn.model.generator.User;
 
-public class ProtectionRatingDTO extends ProtectionRating {
+public class DefenseRatingDTO extends DefenseRating{
 	private User userMaker;
-	private List<ProtectionRatingScoreDTO> scores;
+	private List<DefenseRatingScoreDTO> scores;
 
 	public User getUserMaker() {
 		return userMaker;
@@ -18,11 +18,11 @@ public class ProtectionRatingDTO extends ProtectionRating {
 		this.userMaker = userMaker;
 	}
 
-	public List<ProtectionRatingScoreDTO> getScores() {
+	public List<DefenseRatingScoreDTO> getScores() {
 		return scores;
 	}
 
-	public void setScores(List<ProtectionRatingScoreDTO> scores) {
+	public void setScores(List<DefenseRatingScoreDTO> scores) {
 		this.scores = scores;
 	}
 	

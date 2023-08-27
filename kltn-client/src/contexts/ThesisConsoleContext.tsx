@@ -2,7 +2,7 @@ import { type TablePaginationConfig } from "antd";
 import { createContext, useEffect, useState, type SetStateAction } from "react";
 import { useMutation } from "react-query";
 import usePagination from "~/hook/usePagination";
-import * as OutlineReviewServices from "~/services/thesisOutlineCommentService";
+// import * as OutlineReviewServices from "~/services/thesisOutlineCommentService";
 import * as ThesisRegisterCalendarService from "~/services/thesisRegisterCalendarService";
 import * as ThesisService from "~/services/thesisService";
 
@@ -12,10 +12,10 @@ interface ThesisConsoleContextInterface {
   listThesis: ThesisModel[];
   thesis: ThesisModel | undefined;
 
-  listCommentOfCouncil: OutlineCommentModel[];
-  setListCommentOfCouncil: React.Dispatch<
-    SetStateAction<OutlineCommentModel[]>
-  >;
+  // listCommentOfCouncil: OutlineCommentModel[];
+  // setListCommentOfCouncil: React.Dispatch<
+  //   SetStateAction<OutlineCommentModel[]>
+  // >;
 
   listThesisSelected: ThesisModel[];
   setlistThesisSelected: React.Dispatch<SetStateAction<ThesisModel[]>>;
@@ -46,6 +46,11 @@ interface ThesisConsoleContextInterface {
   isOpenThesisDetailModal: boolean;
   setIsOpenThesisDetailModal: React.Dispatch<SetStateAction<boolean>>;
 
+  isOpenRegisterThesisPreviewCalendarModal: boolean;
+  setIsOpenRegisterThesisPreviewCalendarModal: React.Dispatch<
+    SetStateAction<boolean>
+  >;
+
   openAddCouncilModal: boolean;
   setOpenAddCouncilModal: React.Dispatch<SetStateAction<boolean>>;
 
@@ -62,7 +67,7 @@ interface ThesisConsoleContextInterface {
   >;
 
   searchDetail: (thesisId: string) => void;
-  searchListComment: (thesisId: string) => void;
+  // searchListComment: (thesisId: string) => void;
 
   pagination: TablePaginationConfig;
   setPagination: React.Dispatch<SetStateAction<TablePaginationConfig>>;
@@ -75,8 +80,8 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
   listThesis: [],
   thesis: undefined,
 
-  listCommentOfCouncil: [],
-  setListCommentOfCouncil: () => null,
+  // listCommentOfCouncil: [],
+  // setListCommentOfCouncil: () => null,
 
   listThesisSelected: [],
   setlistThesisSelected: () => null,
@@ -105,6 +110,9 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
   isOpenProtectionDetailModal: false,
   setIsOpenProtectionDetailModal: () => null,
 
+  isOpenRegisterThesisPreviewCalendarModal: false,
+  setIsOpenRegisterThesisPreviewCalendarModal: () => null,
+
   openAddCouncilModal: false,
   setOpenAddCouncilModal: () => null,
 
@@ -119,7 +127,7 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
   setSearchCondition: () => null,
 
   searchDetail: () => {},
-  searchListComment: () => {},
+  // searchListComment: () => {},
 
   pagination: {},
   setPagination: () => null,
@@ -135,9 +143,9 @@ export const ThesisConsoleProvider = ({
 }: React.PropsWithChildren): JSX.Element => {
   const [listThesis, setlistThesis] = useState<ThesisModel[]>([]);
   const [thesis, setThesis] = useState<ThesisModel | undefined>();
-  const [listCommentOfCouncil, setListCommentOfCouncil] = useState<
-    OutlineCommentModel[]
-  >([]);
+  // const [listCommentOfCouncil, setListCommentOfCouncil] = useState<
+  //   OutlineCommentModel[]
+  // >([]);
   const [listThesisSelected, setlistThesisSelected] = useState<ThesisModel[]>(
     []
   );
@@ -158,6 +166,11 @@ export const ThesisConsoleProvider = ({
 
   const [isOpenCriticalAssessmentModal, setIsOpenCriticalAssessmentModal] =
     useState<boolean>(false);
+
+  const [
+    isOpenRegisterThesisPreviewCalendarModal,
+    setIsOpenRegisterThesisPreviewCalendarModal,
+  ] = useState<boolean>(false);
 
   const [isOpenProtectionModal, setIsOpenProtectionModal] =
     useState<boolean>(false);
@@ -197,16 +210,16 @@ export const ThesisConsoleProvider = ({
     },
   });
 
-  const searchCommentMutaion = useMutation(
-    OutlineReviewServices.getCommentByThesisId,
-    {
-      onSuccess: (data: OutlineCommentModel[] | []) => {
-        if (data) {
-          setListCommentOfCouncil(data as OutlineCommentModel[]);
-        }
-      },
-    }
-  );
+  // const searchCommentMutaion = useMutation(
+  //   OutlineReviewServices.getCommentByThesisId,
+  //   {
+  //     onSuccess: (data: OutlineCommentModel[] | []) => {
+  //       if (data) {
+  //         setListCommentOfCouncil(data as OutlineCommentModel[]);
+  //       }
+  //     },
+  //   }
+  // );
 
   const searchDetailMutation = useMutation(ThesisService.getThesisById, {
     onSuccess: (data: ThesisModel | null) => {
@@ -238,9 +251,9 @@ export const ThesisConsoleProvider = ({
     searchDetailMutation.mutate(id);
   };
 
-  const searchListComment = (idThesis: string): void => {
-    searchCommentMutaion.mutate(idThesis);
-  };
+  // const searchListComment = (idThesis: string): void => {
+  //   searchCommentMutaion.mutate(idThesis);
+  // };
 
   return (
     <ThesisConsoleContext.Provider
@@ -248,8 +261,8 @@ export const ThesisConsoleProvider = ({
         listThesis,
         thesis,
 
-        listCommentOfCouncil,
-        setListCommentOfCouncil,
+        // listCommentOfCouncil,
+        // setListCommentOfCouncil,
 
         listThesisSelected,
         setlistThesisSelected,
@@ -283,6 +296,9 @@ export const ThesisConsoleProvider = ({
         isOpenThesisDetailModal,
         setIsOpenThesisDetailModal,
 
+        isOpenRegisterThesisPreviewCalendarModal,
+        setIsOpenRegisterThesisPreviewCalendarModal,
+
         openAddCommentMinistryModal,
         setOpenAddCommentMinistryModal,
 
@@ -292,7 +308,7 @@ export const ThesisConsoleProvider = ({
         search,
         searchCondition,
         setSearchCondition,
-        searchListComment,
+        // searchListComment,
         pagination,
         setPagination,
         handleChange,

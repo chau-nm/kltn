@@ -81,7 +81,6 @@ public class UserServiceImpl implements UserService {
 			userDTO.setGender(user.getGender());
 			userDTO.setBirthday(user.getBirthday());
 			userDTO.setFaculty(user.getFaculty());
-			userDTO.setStudentClass(user.getStudentClass());
 			userDTO.setRoles(roleUserCusMapper.findRolesByUserId(user.getUserId()));
 			userDTO.setCreatedAt(user.getCreatedAt());
 			userDTO.setUpdatedAt(user.getUpdatedAt());
@@ -98,20 +97,19 @@ public class UserServiceImpl implements UserService {
 		List<UserDTO> userDTOs = new ArrayList<>();
 		UserDTO userDTO;
 		for (int i = 0; i < idUsers.size(); i++) {
-			User user = userMapper.selectByPrimaryKey(idUsers.get(i));
-			userDTO = new UserDTO();
-			userDTO.setUserId(user.getUserId());
-			userDTO.setUsername(user.getUsername());
-			userDTO.setEmail(user.getEmail());
-			userDTO.setFname(user.getFname());
-			userDTO.setGender(user.getGender());
-			userDTO.setBirthday(user.getBirthday());
-			userDTO.setFaculty(user.getFaculty());
-			userDTO.setStudentClass(user.getStudentClass());
-			userDTO.setCreatedAt(user.getCreatedAt());
-			userDTO.setUpdatedAt(user.getUpdatedAt());
-			userDTO.setIsDeleted(user.getIsDeleted());
-			userDTOs.add(userDTO);
+//			User user = userMapper.selectByPrimaryKey(idUsers.get(i));
+//			userDTO = new UserDTO();
+//			userDTO.setUserId(user.getUserId());
+//			userDTO.setUsername(user.getUsername());
+//			userDTO.setEmail(user.getEmail());
+//			userDTO.setFname(user.getFname());
+//			userDTO.setGender(user.getGender());
+//			userDTO.setBirthday(user.getBirthday());
+//			userDTO.setFaculty(user.getFaculty());
+//			userDTO.setCreatedAt(user.getCreatedAt());
+//			userDTO.setUpdatedAt(user.getUpdatedAt());
+//			userDTO.setIsDeleted(user.getIsDeleted());
+//			userDTOs.add(userDTO);
 		}
 		return userDTOs;
 	}
@@ -124,12 +122,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDTO updateUser(UserDTO newUser) throws Exception {
 		try {
-			User user = userMapper.selectByPrimaryKey(newUser.getUserId());
+			User user = null;
 			user.setEmail(newUser.getEmail());
 			user.setFname(newUser.getFname());
 			user.setBirthday(newUser.getBirthday());
 			user.setFaculty(newUser.getFaculty());
-			user.setStudentClass(newUser.getStudentClass());
 			user.setUpdatedAt(new Date().getTime());
 			roleUserCusMapper.deleteByIdUser(newUser.getUserId());
 			RoleUser roleUser;
@@ -156,22 +153,22 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO updatePassword(String userId, String newPassword) {
-		User user = userMapper.selectByPrimaryKey(userId);
-		user.setPassword(newPassword);
-		user.setUpdatedAt(new Date().getTime());
-
-		UserDTO userDTO = new UserDTO();
-		userDTO.setUserId(user.getUserId());
-		userDTO.setUsername(user.getUsername());
-		userDTO.setPassword(user.getPassword());
-		userDTO.setBirthday(user.getBirthday());
-		userDTO.setUpdatedAt(user.getUpdatedAt());
-		userDTO.setCreatedAt(user.getCreatedAt());
-		userDTO.setFaculty(user.getFaculty());
-		userDTO.setFname(user.getFname());
-
-		int updateRow = userMapper.updateByPrimaryKey(user);
-		return updateRow > 0 ? userDTO : null;
+//		User user = userMapper.selectByPrimaryKey(userId);
+//		user.setPassword(newPassword);
+//		user.setUpdatedAt(new Date().getTime());
+//
+//		UserDTO userDTO = new UserDTO();
+//		userDTO.setUserId(user.getUserId());
+//		userDTO.setUsername(user.getUsername());
+//		userDTO.setPassword(user.getPassword());
+//		userDTO.setBirthday(user.getBirthday());
+//		userDTO.setUpdatedAt(user.getUpdatedAt());
+//		userDTO.setCreatedAt(user.getCreatedAt());
+//		userDTO.setFaculty(user.getFaculty());
+//		userDTO.setFname(user.getFname());
+//
+//		int updateRow = userMapper.updateByPrimaryKey(user);
+		return null;
 	}
 
 	@Override
@@ -211,7 +208,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User changpassword(ChangpasswordPayload changpasswordPayload) throws Exception {
-		User user = userMapper.selectByPrimaryKey(changpasswordPayload.getUserId());
+		User user = null;
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		if (passwordEncoder.matches(changpasswordPayload.getOldPassword(), user.getPassword())) {
 			user.setPassword(passwordEncoder.encode(changpasswordPayload.getNewPassword()));

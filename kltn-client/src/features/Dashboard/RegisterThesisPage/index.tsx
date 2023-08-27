@@ -15,25 +15,26 @@ const RegisterThesisPage = (): JSX.Element => {
     isLoading: isLoadingViewThesisRegisterCalendar,
   } = useQuery(
     ["view-thesis-register-calendar"],
-    ThesisRegisterCalendarService.view,
+    ThesisRegisterCalendarService.view
   );
 
-  const { data: myThesis, isLoading: isLoadingThesis } = useQuery(
-    ["load-my-thesis"],
-    async () => await ThesisService.searchByUser(user?.userId ?? ""),
-  );
+  // const { data: myThesis, isLoading: isLoadingThesis } = useQuery(
+  //   ["load-my-thesis"],
+  //   async () => await ThesisService.searchByUser(user?.userId ?? ""),
+  // );
 
-  const thesisCreatedByMe =
-    myThesis?.filter((thesis) => thesis.createdBy === user?.userId) ?? [];
+  // const thesisCreatedByMe =
+  //   myThesis?.filter((thesis) => thesis.createdBy === user?.userId) ?? [];
 
   return (
     <PageLayout pageTitle="Đăng ký khóa luận tốt nghiệp">
-      <Spin spinning={isLoadingViewThesisRegisterCalendar || isLoadingThesis}>
-        {(thesisRegisterCalendar == null) ? (
+      <Spin spinning={isLoadingViewThesisRegisterCalendar}>
+        {thesisRegisterCalendar == null ? (
           <Typography.Text>Chưa tới thời gian đăng ký</Typography.Text>
-        ) : thesisCreatedByMe.length > 0 ? (
-          <Typography.Text>Bạn đã đăng ký luận văn rồi.</Typography.Text>
         ) : (
+          // : thesisCreatedByMe.length > 0 ? (
+          //   <Typography.Text>Bạn đã đăng ký luận văn rồi.</Typography.Text>
+          // )
           <RegisterThesisForm />
         )}
       </Spin>

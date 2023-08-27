@@ -3,41 +3,115 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="web.nl.kltn.mapper.CriticalAssessmentCusMapper">
 
-	<select id="searchByThesisId" resultType="web.nl.kltn.model.generator.CriticalAssessment">
+	<resultMap type="web.nl.kltn.model.generator.CriticalAssessment" id="CriticalAssessment">
+		<id column="id" property="id" jdbcType="VARCHAR"/>	
+		<result column="thesis_id" property="thesisId" jdbcType="VARCHAR"/>
+		<result column="marker" property="marker" jdbcType="VARCHAR"/>
+		<result column="page_number" property="pageNumber" jdbcType="INTEGER"/>
+		<result column="chapter_number" property="chapterNumber" jdbcType="INTEGER"/>
+		<result column="table_number" property="tableNumber" jdbcType="INTEGER"/>
+		<result column="chart_number" property="chartNumber" jdbcType="INTEGER"/>
+		<result column="drawing_board_number" property="drawingBoardNumber" jdbcType="INTEGER"/>
+		<result column="image_number" property="imageNumber" jdbcType="INTEGER"/>
+		<result column="document_number" property="documentNumber" jdbcType="INTEGER"/>
+		<result column="calculation_software_number" property="calculationSoftwareNumber" jdbcType="INTEGER"/>
+		<result column="layout" property="layout" jdbcType="VARCHAR"/>
+		<result column="writing" property="writing" jdbcType="VARCHAR"/>
+		<result column="technical_terms" property="technicalTerms" jdbcType="VARCHAR"/>
+		<result column="advantage" property="advantage" jdbcType="VARCHAR"/>
+		<result column="defect" property="defect" jdbcType="VARCHAR"/>
+		<result column="conclude" property="conclude" jdbcType="VARCHAR"/>
+		<result column="suggestion" property="suggestion" jdbcType="INTEGER"/>
+		<result column="is_deleted" property="isDeleted" jdbcType="BIT"/>
+		<result column="created_at" property="createdAt" jdbcType="BIGINT"/>
+		<result column="updated_at" property="updatedAt" jdbcType="BIGINT"/>
+	</resultMap>
+
+	<select id="searchByThesisId" resultMap="CriticalAssessment">
 		SELECT
 			id,
 			thesis_id,
-			content,
-			analysis_results,
-			feedback_lecturer_question,
-			council_question,
-			behavior,
 			marker,
+			page_number,
+			chapter_number,
+			table_number,
+			chart_number,
+			drawing_board_number,
+			image_number,
+			document_number,
+			calculation_software_number,
+			layout,
+			writing,
+			technical_terms,
+			advantage,
+			defect,
+			conclude,
+			suggestion,
 			is_deleted,
 			created_at,
-			update_at
+			updated_at
 		FROM critical_assessment
 		WHERE 
 			thesis_id = #{thesisId}
 			AND is_deleted = 0
 	</select>
 	
-	<select id="searchByMarker" resultType="web.nl.kltn.model.generator.CriticalAssessment">
+	<select id="searchByMarker" resultMap="CriticalAssessment">
 		SELECT
 			id,
 			thesis_id,
-			content,
-			analysis_results,
-			feedback_lecturer_question,
-			council_question,
-			behavior,
 			marker,
+			page_number,
+			chapter_number,
+			table_number,
+			chart_number,
+			drawing_board_number,
+			image_number,
+			document_number,
+			calculation_software_number,
+			layout,
+			writing,
+			technical_terms,
+			advantage,
+			defect,
+			conclude,
+			suggestion,
 			is_deleted,
 			created_at,
-			update_at
+			updated_at
 		FROM critical_assessment
 		WHERE 
 			marker = #{marker}
+			AND is_deleted = 0
+	</select>
+	
+	<select id="searchByThesisAndMarker" resultMap="CriticalAssessment">
+		SELECT
+			id,
+			thesis_id,
+			marker,
+			page_number,
+			chapter_number,
+			table_number,
+			chart_number,
+			drawing_board_number,
+			image_number,
+			document_number,
+			calculation_software_number,
+			layout,
+			writing,
+			technical_terms,
+			advantage,
+			defect,
+			conclude,
+			suggestion,
+			is_deleted,
+			created_at,
+			updated_at
+		FROM critical_assessment
+		WHERE 
+			marker = #{marker}
+			AND thesis_id = #{thesisId}
 			AND is_deleted = 0
 	</select>
 

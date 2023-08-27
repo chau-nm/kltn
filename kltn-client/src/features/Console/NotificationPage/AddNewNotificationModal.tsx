@@ -109,7 +109,7 @@ const AddNewNotificationModal = (): JSX.Element => {
               },
             ]}
           >
-            <Input />
+            <Input placeholder="Nhập tiêu đề" />
           </Form.Item>
           <Form.Item
             label="File đính kèm"
@@ -137,6 +137,7 @@ const AddNewNotificationModal = (): JSX.Element => {
                 editorHtml={editorHtml}
                 setEditorHtml={setEditorHtml}
                 style={{ height: 270 }}
+                placeholder="Nhập nội dung"
               />
             </div>
           </Form.Item>

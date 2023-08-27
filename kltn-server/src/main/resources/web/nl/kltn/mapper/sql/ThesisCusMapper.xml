@@ -10,7 +10,7 @@
 		<result column="topic" property="topic" jdbcType="VARCHAR" />
 		<result column="description" property="description"
 			jdbcType="VARCHAR" />
-		<result column="year" property="year" jdbcType="INTEGER" />
+		<result column="school_year" property="schoolYear" jdbcType="INTEGER" />
 		<result column="semester" property="semester"
 			jdbcType="INTEGER" />
 		<result column="status" property="status" jdbcType="INTEGER" />
@@ -27,7 +27,7 @@
 		<result column="topic" property="topic" jdbcType="VARCHAR" />
 		<result column="description" property="description"
 			jdbcType="VARCHAR" />
-		<result column="year" property="year" jdbcType="INTEGER" />
+		<result column="school_year" property="schoolYear" jdbcType="INTEGER" />
 		<result column="semester" property="semester"
 			jdbcType="INTEGER" />
 		<result column="created_by" property="createdBy"
@@ -46,7 +46,7 @@
 		id,
 		topic,
 		description,
-		year,
+		school_year,
 		semester,
 		status,
 		is_deleted,
@@ -59,7 +59,7 @@
 				AND topic LIKE CONCAT('%', #{searchCondition.topic}, '%')
 			</if>
 			<if test="searchCondition != null and searchCondition.year != 0">
-				AND year = #{searchCondition.year}
+				AND school_year = #{searchCondition.year}
 			</if>
 			<if
 				test="searchCondition != null and searchCondition.semester != 0">
@@ -80,7 +80,7 @@
 		t.id,
 		t.topic,
 		t.description,
-		t.year,
+		t.school_year,
 		t.semester,
 		t.status,
 		t.is_deleted,
@@ -108,7 +108,7 @@
 				AND topic LIKE CONCAT('%', #{topic}, '%')
 			</if>
 			<if test="year != 0">
-				AND year = #{year}
+				AND school_year = #{year}
 			</if>
 			<if test="semester != 0">
 				AND semester = #{semester}
@@ -132,7 +132,7 @@
 				AND t.topic LIKE CONCAT('%', #{topic}, '%')
 			</if>
 			<if test="year != 0">
-				AND t.year = #{year}
+				AND t.school_year = #{year}
 			</if>
 			<if test="semester != 0">
 				AND t.semester = #{semester}
@@ -154,7 +154,7 @@
 		t.id,
 		t.topic,
 		t.description,
-		t.year,
+		t.school_year,
 		t.semester,
 		t.status,
 		t.created_by,
@@ -178,7 +178,7 @@
 		t.id,
 		t.topic,
 		t.description,
-		t.year,
+		t.school_year,
 		t.semester,
 		t.status,
 		t.created_by,

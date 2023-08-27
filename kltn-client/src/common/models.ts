@@ -49,10 +49,20 @@ interface UserModel {
   fname?: string;
   birthday?: Date;
   faculty?: string;
-  studentClass?: string;
+  isStudent?: boolean;
+  isTeacher?: boolean;
   roles?: string[];
   accessToken?: string;
   refreshToken?: string;
+}
+
+interface StudentModel extends UserModel {
+  studentClass?: string;
+}
+
+interface LeturerModel extends UserModel {
+  degree?: string;
+  title?: string;
 }
 
 interface UserSearchConditionModel {
@@ -91,13 +101,13 @@ interface ThesisModel {
   id?: string;
   topic?: string;
   description?: string;
-  year?: number;
+  schoolYear?: number;
   semester?: number;
-  students?: ThesisUserModel[];
-  teacher?: ThesisUserModel;
-  outlineUrl?: string;
-  documentUrl?: string;
+  students?: StudentModel[];
+  teachers?: LeturerModel[];
   userCreated?: UserModel;
+  fileAttachments?: ThesisDocumentModel[];
+
   status?: number;
   isDeleted?: boolean;
   createdBy?: string;
@@ -113,9 +123,8 @@ interface ThesisSearchConditionModel {
   councilId?: string;
 }
 
-interface OutlineReviewSearchConditionModel { }
-
-interface OutlineCommentModel {
+interface ThesisPreviewerComment {
+  id?: string;
   thesisId?: string;
   userId?: string;
   comment?: string;
@@ -142,49 +151,80 @@ interface ThesisRegisterCalendarModel {
   updatedAt?: number;
 }
 
-interface ThesisUserModel {
+interface ThesisStudentModel {
   id?: string;
   thesisId?: string;
-  userId?: string;
-  user?: UserModel;
+  studentId?: string;
+  student?: StudentModel;
+  isActive?: boolean;
+  isDeleted?: boolean;
+  createdAt?: number;
+  updatedAt?: number;
+}
+
+interface ThesisLeturerModel {
+  id?: string;
+  thesisId?: string;
+  leturerId?: string;
+  leturer?: StudentModel;
+  isActive?: boolean;
+  isDeleted?: boolean;
+  createdAt?: number;
+  updatedAt?: number;
+}
+
+interface ThesisDocumentModel {
+  id?: string;
+  thesisId?: string;
+  fileUrl?: string;
   type?: number;
-  status?: number;
   isDeleted?: boolean;
   createdAt?: number;
   updatedAt?: number;
 }
 
 /** CRITICAL ASSESSMENT */
-interface CriticalAssessmentModel {
-  id: string;
-  thesisId: string;
-  marker: string;
-  pageNumber: number;
-  chapterNumber: number;
-  tableNumber: number;
-  chartNumber: number;
-  drawingBoardNumber: number;
-  imageNumber: number;
-  documentNumber: number;
-  calculationSoftwareNumber: number;
-  layout: string;
-  writing: string;
-  technicalTerms: string;
-  advantage: string;
-  defect: string;
-  conclude: string;
-  suggestion: string;
-  criticalAssessmentQuestions: string[];
-  isDeleted: boolean;
-  createdAt: number;
-  updatedAt: number;
+interface ReviewerModel {
+  id?: string;
+  thesisId?: string;
+  marker?: string;
+  pageNumber?: number;
+  chapterNumber?: number;
+  tableNumber?: number;
+  chartNumber?: number;
+  drawingBoardNumber?: number;
+  imageNumber?: number;
+  documentNumber?: number;
+  calculationSoftwareNumber?: number;
+  layout?: string;
+  writing?: string;
+  technicalTerms?: string;
+  advantage?: string;
+  defect?: string;
+  conclude?: string;
+  suggestion?: string;
+  criticalAssessmentQuestions?: string[];
+  critialAssessmentScores?: ReviewerScoreModel[];
+  leturerMaker?: LeturerModel;
+  isDeleted?: boolean;
+  createdAt?: number;
+  updatedAt?: number;
 }
 
-interface CriticalAssessmentScoreModel { }
+interface ReviewerScoreModel {
+  id?: string;
+  reviewerId?: string;
+  studentId?: string;
+  student?: StudentModel;
+  score?: number;
+  isDeleted?: boolean;
+  createdAt?: number;
+  updatedAt?: number;
+}
 
 /** PROTECTION RATTING */
-interface ProtectionRatingModel {
-  id: string;
+interface DefenseRatingModel {
+  id?: string;
   thesisId: string;
   marker: string;
   content: number;
@@ -197,12 +237,36 @@ interface ProtectionRatingModel {
   updatedAt: number;
 }
 
+interface DefenseRatingScoreModel {
+  id?: string;
+  drId?: string;
+  studentId?: string;
+  student?: StudentModel;
+  score1?: number;
+  score2?: number;
+  score3?: number;
+  totalScore?: number;
+  isDeleted?: boolean;
+  createdAt?: number;
+  updatedAt?: number;
+}
+
 /** THESIS REPORT CALENDAR */
-interface ThesisReportCalendarModel {
+interface ThesisDefenseCalendar {
   id?: string;
   thesisId?: string;
   timestamp?: number;
-  type?: number;
+  room?: string;
+  isDeleted?: boolean;
+  createdAt?: number;
+  updatedAt?: number;
+}
+
+interface ThesisReviewerCalendar {
+  id?: string;
+  thesisId?: string;
+  startAt?: number;
+  endAt?: number;
   isDeleted?: boolean;
   createdAt?: number;
   updatedAt?: number;
@@ -216,7 +280,6 @@ interface Doc2VecModel {
 }
 
 /** Email Template */
-
 interface TemplateResetModel {
   to_email: string;
   to_name: string;

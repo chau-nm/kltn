@@ -29,7 +29,7 @@ const NotificationSearchForm = (): JSX.Element => {
       onValuesChange={handleValueChange}
     >
       <Form.Item label="Tiêu đề" name="title">
-        <Input className="w-[300px]" />
+        <Input className="w-[300px]" placeholder="Nhập tiêu đề" />
       </Form.Item>
       <Form.Item label="Thời gian" name="dateRange">
         <DatePicker.RangePicker />

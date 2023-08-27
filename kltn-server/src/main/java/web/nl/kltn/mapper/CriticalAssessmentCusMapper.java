@@ -8,4 +8,6 @@ public interface CriticalAssessmentCusMapper {
 	public List<CriticalAssessment> searchByThesisId(String thesisId);
 	
 	public CriticalAssessment searchByMarker(String marker);
+	
+	public CriticalAssessment searchByThesisAndMarker(String thesisId, String marker);
 }

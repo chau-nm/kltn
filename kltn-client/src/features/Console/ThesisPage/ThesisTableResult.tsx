@@ -10,7 +10,6 @@ import {
   EditIconCommon,
   ProtectedIconCommon,
   SeeIconCommon,
-  UserIconCommon,
 } from "~/components/common/IconCommon";
 import TableCommon from "~/components/common/TableCommon";
 import CommonConstants from "~/constants/commonConstants";
@@ -22,7 +21,6 @@ const ThesisTableResult = (): JSX.Element => {
     search,
     setlistThesisSelected,
     isLoadingTableResults,
-    setOpenAddCouncilModal,
     setOpenAddCommentMinistryModal,
     pagination,
     handleChange,
@@ -39,12 +37,10 @@ const ThesisTableResult = (): JSX.Element => {
   const handleOnChangeRowSelection = (
     newSelectedRowKeys: React.Key[]
   ): void => {
-    // console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
     const temp: ThesisModel[] = listThesis.filter((thesis) =>
       newSelectedRowKeys.includes(thesis.id!)
     );
-    // console.log("temp: ", temp);
     setlistThesisSelected(temp);
   };
 
@@ -153,12 +149,6 @@ const ThesisTableResult = (): JSX.Element => {
                 }}
               />
             </Tooltip>
-            <UserIconCommon
-              onClick={() => {
-                handleOnChangeRowSelection([record.id!]);
-                setOpenAddCouncilModal(true);
-              }}
-            />
             <EditIconCommon
               onClick={() => {
                 searchDetail(record.id!);
