@@ -13,7 +13,8 @@ const MyThesisPage = (): JSX.Element => {
   const { data, isLoading } = useQuery<ThesisModel[]>(
     ["search-thesis-by-user"],
     async () => {
-      return user?.userId ? await ThesisService.searchByUser(user?.userId) : [];
+      return [];
+      // return user?.userId ? await ThesisService.searchByUser(user?.userId) : [];
     },
     {
       onSuccess: () => {},
