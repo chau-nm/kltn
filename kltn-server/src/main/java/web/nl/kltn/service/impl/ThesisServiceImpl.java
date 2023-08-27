@@ -10,9 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import web.nl.kltn.common.Constant;
+import web.nl.kltn.mapper.LeturerCusMapper;
+import web.nl.kltn.mapper.StudentCusMapper;
 import web.nl.kltn.mapper.ThesisCusMapper;
 import web.nl.kltn.mapper.ThesisDocumentCusMapper;
+import web.nl.kltn.mapper.ThesisLeturerCusMapper;
+import web.nl.kltn.mapper.ThesisStudentCusMapper;
 import web.nl.kltn.mapper.ThesisUserCusMapper;
+import web.nl.kltn.mapper.generator.LeturerMapper;
+import web.nl.kltn.mapper.generator.StudentMapper;
 import web.nl.kltn.mapper.generator.ThesisDocumentMapper;
 import web.nl.kltn.mapper.generator.ThesisLeturerMapper;
 import web.nl.kltn.mapper.generator.ThesisMapper;
@@ -36,20 +42,54 @@ import web.nl.kltn.service.ThesisService;
 @Transactional(rollbackFor = Throwable.class)
 public class ThesisServiceImpl implements ThesisService {
 
+	/**
+	 * Thesis
+	 */
     @Autowired
     private ThesisMapper thesisMapper;
 
     @Autowired
     private ThesisCusMapper thesisCusMapper;
 
+    /** 
+     * User
+     */
     @Autowired
     private UserMapper userMapper;
+    
+    /**
+     * Student
+     */
+    @Autowired
+    private StudentMapper studentMapper;
+    
+    @Autowired
+    private StudentCusMapper studentCusMapper;
+    
+    /**
+     * Leturer
+     */
+    @Autowired
+    private LeturerMapper leturerMapper;
+    @Autowired
+    private LeturerCusMapper leturerCusMapper;
 
+    /**
+     * Thesis Student
+     */
     @Autowired
     private ThesisStudentMapper thesisStudentMapper;
+    
+    @Autowired
+    private ThesisStudentCusMapper thesisStudentCusMapper;
 
+    /**
+     * Thesis Leturer
+     */
     @Autowired
     private ThesisLeturerMapper thesisLeturerMapper;
+    
+    private ThesisLeturerCusMapper thesisLeturerCusMapper;
 
     @Autowired
     private ThesisDocumentMapper thesisDocumentMapper;
@@ -119,7 +159,7 @@ public class ThesisServiceImpl implements ThesisService {
             	ThesisLeturer thesisLeturer = new ThesisLeturer();
             	thesisLeturer.setIsActive(false);
             	thesisLeturer.setThesisId(thesisDTO.getId());
-            	thesisLeturer.setLecturer(leturerDTO.getUserId());
+            	thesisLeturer.setLecturerId(leturerDTO.getUserId());
             	thesisLeturer.setIsDeleted(false);
             	thesisLeturer.setCreatedAt(new Date().getTime());
             	thesisLeturer.setUpdatedAt(new Date().getTime());
@@ -204,7 +244,7 @@ public class ThesisServiceImpl implements ThesisService {
         List<Thesis> thesisList = thesisCusMapper.search(page, pageSize, thesisSearchCondition);
         List<ThesisDTO> thesisDTOs = thesisList.stream().map(thesis -> {
             ThesisDTO thesisDTO = new ThesisDTO();
-            thesisDTO.load(thesis, null, userMapper, thesisDocumentCusMapper);
+            thesisDTO.load(thesis, thesisStudentCusMapper, thesisLeturerCusMapper, studentCusMapper, leturerCusMapper, userMapper);
             return thesisDTO;
         }).toList();
         return thesisDTOs;

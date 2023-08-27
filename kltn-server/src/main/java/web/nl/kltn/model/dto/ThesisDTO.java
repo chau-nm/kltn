@@ -2,11 +2,17 @@ package web.nl.kltn.model.dto;
 
 import java.util.List;
 
+import web.nl.kltn.mapper.LeturerCusMapper;
+import web.nl.kltn.mapper.StudentCusMapper;
 import web.nl.kltn.mapper.ThesisDocumentCusMapper;
-import web.nl.kltn.mapper.ThesisUserCusMapper;
-import web.nl.kltn.mapper.generator.ThesisStudentMapper;
+import web.nl.kltn.mapper.ThesisLeturerCusMapper;
+import web.nl.kltn.mapper.ThesisStudentCusMapper;
 import web.nl.kltn.mapper.generator.UserMapper;
-import web.nl.kltn.model.generator.*;
+import web.nl.kltn.model.generator.Thesis;
+import web.nl.kltn.model.generator.ThesisDefenseCalendar;
+import web.nl.kltn.model.generator.ThesisDocument;
+import web.nl.kltn.model.generator.ThesisReviewCalendar;
+import web.nl.kltn.model.generator.User;
 
 public class ThesisDTO extends Thesis {
 	private User userCreated;
@@ -91,8 +97,9 @@ public class ThesisDTO extends Thesis {
 		this.defenseCalendar = defenseCalendar;
 	}
 
-	public void load(Thesis thesis, ThesisStudentMapper thesisStudentMapper, UserMapper userMapper,
-			ThesisDocumentCusMapper thesisDocumentCusMapper) {
+	public void load(Thesis thesis, ThesisStudentCusMapper thesisStudentCusMapper,
+			ThesisLeturerCusMapper thesisLeturerCusMapper, StudentCusMapper studentCusMapper,
+			LeturerCusMapper leturerCusMapper, UserMapper userMapper) {
 		this.setId(thesis.getId());
 		this.setTopic(thesis.getTopic());
 		this.setDescription(thesis.getDescription());
@@ -106,8 +113,13 @@ public class ThesisDTO extends Thesis {
 		if (userMapper != null) {
 			this.setUserCreated(userMapper.selectByPrimaryKey(this.getCreatedBy()));
 		}
-		if (thesisStudentMapper != null) {
-			
+		if (thesisStudentCusMapper != null) {
+			this.setStudents(ThesisStudentDTO.getStudentDTOsByListThesisStudent(
+					thesisStudentCusMapper.getThesisStudentByThesisId(thesis.getId()), studentCusMapper));
+		}
+		if (thesisLeturerCusMapper != null) {
+			this.setTeacher(ThesisLeturerDTO.getStudentDTOsByListThesisStudent(
+					thesisLeturerCusMapper.getThesisLeturerByThesisId(thesis.getId()), leturerCusMapper));
 		}
 	}
 }

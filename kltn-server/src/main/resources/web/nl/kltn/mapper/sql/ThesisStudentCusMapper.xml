@@ -1,0 +1,31 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="web.nl.kltn.mapper.ThesisStudentCusMapper">
+
+    <resultMap type="web.nl.kltn.model.generator.ThesisStudent" id="ThesisStudent">
+    	<id column="id" property="id" jdbcType="VARCHAR"/>
+    	<result column="thesis_id" property="thesisId" jdbcType="VARCHAR"/>
+    	<result column="student_id" property="studentId" jdbcType="VARCHAR"/>
+    	<result column="is_active" property="isActive" jdbcType="BIT"/>
+    	<result column="is_deleted" property="isDeleted" jdbcType="BIT"/>
+    	<result column="created_at" property="createdAt" jdbcType="BIGINT"/>
+    	<result column="updated_at" property="updatedAt" jdbcType="BIGINT"/>
+    </resultMap>
+
+	<select id="getThesisStudentByThesisId" resultMap="ThesisStudent">
+		SELECT
+			id,
+			thesis_id,
+			student_id,
+			is_active,
+			is_deleted,
+			created_at,
+			updated_at
+		FROM
+			thesis_student
+		WHERE
+			thesis_id = #{thesisId}
+	</select>
+
+</mapper>

@@ -49,6 +49,7 @@
 		school_year,
 		semester,
 		status,
+		created_by,
 		is_deleted,
 		created_at,
 		updated_at
