@@ -27,6 +27,9 @@ const DashboardThesisRegisterPage = lazy(
 const MyThesisPage = lazy(
   async () => await import("~/features/Dashboard/MyThesisPage")
 );
+const ReferenceThesisPage = lazy(
+  async () => await import("~/features/Dashboard/ReferenceThesis")
+);
 const OutlineReviewPage = lazy(
   async () => await import("~/features/Dashboard/OutlineReviewPage")
 );
@@ -130,6 +133,14 @@ const useRouteElements = (): React.ReactElement | null => {
           element: (
             <DashboardLayout>
               <MyThesisPage />
+            </DashboardLayout>
+          ),
+        },
+        {
+          path: path.REFERENCE_THESIS,
+          element: (
+            <DashboardLayout>
+              <ReferenceThesisPage />
             </DashboardLayout>
           ),
         },
