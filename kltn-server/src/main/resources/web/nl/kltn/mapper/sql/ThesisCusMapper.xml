@@ -3,14 +3,14 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="web.nl.kltn.mapper.ThesisCusMapper">
 
-
 	<resultMap type="web.nl.kltn.model.dto.ThesisDTO"
 		id="ThesisDTO">
 		<id column="id" property="id" jdbcType="VARCHAR" />
 		<result column="topic" property="topic" jdbcType="VARCHAR" />
 		<result column="description" property="description"
 			jdbcType="VARCHAR" />
-		<result column="school_year" property="schoolYear" jdbcType="INTEGER" />
+		<result column="school_year" property="schoolYear"
+			jdbcType="INTEGER" />
 		<result column="semester" property="semester"
 			jdbcType="INTEGER" />
 		<result column="status" property="status" jdbcType="INTEGER" />
@@ -27,7 +27,8 @@
 		<result column="topic" property="topic" jdbcType="VARCHAR" />
 		<result column="description" property="description"
 			jdbcType="VARCHAR" />
-		<result column="school_year" property="schoolYear" jdbcType="INTEGER" />
+		<result column="school_year" property="schoolYear"
+			jdbcType="INTEGER" />
 		<result column="semester" property="semester"
 			jdbcType="INTEGER" />
 		<result column="created_by" property="createdBy"
@@ -72,6 +73,70 @@
 			AND is_deleted = 0
 		</where>
 		LIMIT #{pageSize} OFFSET #{offset}
+	</select>
+
+	<select id="findThesisStudentInvided" resultMap="Thesis">
+		SELECT
+		t.id,
+		t.topic,
+		t.description,
+		t.school_year,
+		t.semester,
+		t.status,
+		t.created_by,
+		t.is_deleted,
+		t.created_at,
+		t.updated_at
+		FROM thesis_student ts
+		LEFT JOIN thesis t
+		ON ts.thesis_id = t.id
+		<where>
+			ts.student_id = #{userId}
+			AND t.is_deleted = 0
+		</where>
+	</select>
+
+	<select id="findThesisLeturerInvided" resultMap="Thesis">
+		SELECT
+		t.id,
+		t.topic,
+		t.description,
+		t.school_year,
+		t.semester,
+		t.status,
+		t.created_by,
+		t.is_deleted,
+		t.created_at,
+		t.updated_at
+		FROM thesis_leturer tl
+		LEFT JOIN thesis t
+		ON tl.thesis_id = t.id
+		<where>
+			tl.leturer_id = #{userId}
+			AND t.is_deleted = 0
+		</where>
+	</select>
+
+	<select id="findMyThesis" resultMap="Thesis">
+		SELECT
+		id,
+		topic,
+		description,
+		school_year,
+		semester,
+		status,
+		created_by,
+		is_deleted,
+		created_at,
+		updated_at
+		FROM thesis_student ts
+		LEFT JOIN thesis t
+		ON ts.thesis_id = t.id
+		<where>
+			ts.student_id = #{userId}
+			AND ts.is_active = 1
+			AND t.is_deleted = 0
+		</where>
 	</select>
 
 

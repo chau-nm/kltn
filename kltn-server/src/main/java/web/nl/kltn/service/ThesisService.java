@@ -30,4 +30,6 @@ public interface ThesisService {
 	boolean updateStatus(String id, int status);
 
 	List<ThesisDTO> searchThesisCAByUserId(String userId);
+
+	List<ThesisDTO> findThesisInvited(String userId);
 }

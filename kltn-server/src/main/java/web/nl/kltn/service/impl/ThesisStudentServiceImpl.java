@@ -11,9 +11,4 @@ import web.nl.kltn.model.generator.ThesisStudent;
 @Transactional(rollbackFor = Throwable.class)
 public class ThesisStudentServiceImpl {
 
-	private ThesisStudentMapper thesisStudentMapper;
-	
-//	public ThesisStudent insert(ThesisStudent thesisStudent) {
-////		thesisStudent
-//	}
 }

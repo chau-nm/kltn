@@ -40,7 +40,6 @@ public class ThesisStudentDTO extends ThesisStudent {
 		this.setCreatedAt(thesisStudent.getCreatedAt());
 		this.setUpdatedAt(thesisStudent.getUpdatedAt());
 		if (studentCusMapper != null) {
-			System.out.println(thesisStudent.getStudentId());
 			this.setStudent(studentCusMapper.getStudentByUserId(thesisStudent.getStudentId()));
 		}
  	}

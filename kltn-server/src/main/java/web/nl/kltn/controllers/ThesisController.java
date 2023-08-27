@@ -18,13 +18,18 @@ import web.nl.kltn.common.ResponseModel;
 import web.nl.kltn.model.SearchResponse;
 import web.nl.kltn.model.ThesisSearchCondition;
 import web.nl.kltn.model.dto.ThesisDTO;
+import web.nl.kltn.model.generator.User;
 import web.nl.kltn.service.ThesisService;
+import web.nl.kltn.service.UserService;
 
 @RestController
 @RequestMapping("/api/thesis")
 public class ThesisController {
 	@Autowired
 	private ThesisService thesisService;
+	
+	@Autowired
+	private UserService userService;
 
 	@GetMapping("/{id}")
 	public ResponseModel<ThesisDTO> viewDetail(@PathVariable(required = true) String id) {
@@ -96,6 +101,13 @@ public class ThesisController {
 		ResponseModel<Boolean> responseModel = new ResponseModel<>();
 		thesisService.delete(id);
 		responseModel.setData(true);
+		return responseModel;
+	}
+	
+	@GetMapping("/invited")
+	public ResponseModel<List<ThesisDTO>> findThesisInvited(@RequestParam String userId) {
+		ResponseModel<List<ThesisDTO>> responseModel = new ResponseModel<>();
+		responseModel.setData(thesisService.findThesisInvited(userId));
 		return responseModel;
 	}
 

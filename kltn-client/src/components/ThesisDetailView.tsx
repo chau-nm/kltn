@@ -1,9 +1,11 @@
-import { Col, Row, Typography } from "antd";
+import { Col, Row, Space, Typography } from "antd";
 import { type SetStateAction } from "react";
 import CommonConstants from "~/constants/commonConstants";
 import ButtonCommon from "./common/ButtonCommon";
 import ModalCommon from "./common/ModalCommon";
 import ReactQuillPreviewCommon from "./common/ReactQuillPreviewCommon";
+import { PaperClipOutlined } from "@ant-design/icons";
+import { getFileNameFromUrl } from "~/common/util";
 
 type ThesisDetailViewProps = {
   thesis: ThesisModel;
@@ -33,8 +35,7 @@ const ThesisDetailView = ({
       open={isOpen}
     >
       <div className="min-w-[800px] p-4">
-        {thesis?.students?.map((tu, index) => {
-          const student = tu.user;
+        {thesis?.students?.map((student, index) => {
           return (
             // eslint-disable-next-line react/jsx-key
             <div className="mb-4">
@@ -62,23 +63,26 @@ const ThesisDetailView = ({
             </div>
           );
         })}
-        <div className="mb-4">
-          <Typography.Text className="block font-bold text-lg">
-            Thông tin giảng viên hướng dẫn
-          </Typography.Text>
-          <Row align={"middle"}>
-            <Col {...colLayout} className="text-lg">
-              Họ và tên:
-            </Col>
-            <Col className="text-base">{thesis?.teacher?.user?.fname}</Col>
-          </Row>
-          <Row align={"middle"}>
-            <Col {...colLayout} className="text-lg">
-              Mã số giảng viên:
-            </Col>
-            <Col className="text-base">{thesis?.teacher?.user?.username}</Col>
-          </Row>
-        </div>
+        {thesis?.teachers?.map((teacher, index) => (
+          <div key={index} className="mb-4">
+            <Typography.Text className="block font-bold text-lg">
+              Thông tin giảng viên hướng dẫn
+            </Typography.Text>
+            <Row align={"middle"}>
+              <Col {...colLayout} className="text-lg">
+                Họ và tên:
+              </Col>
+              <Col className="text-base">{teacher?.fname}</Col>
+            </Row>
+            <Row align={"middle"}>
+              <Col {...colLayout} className="text-lg">
+                Mã số giảng viên:
+              </Col>
+              <Col className="text-base">{teacher?.username}</Col>
+            </Row>
+          </div>
+        ))}
+
         <div className="mb-4">
           <Typography.Text className="block font-bold text-lg">
             Thông tin đề tài:
@@ -100,16 +104,20 @@ const ThesisDetailView = ({
             </Row>
           )}
         </div>
-        {thesis.documentUrl && (
-          <div className="mb-4">
-            <Typography.Text className="text-lg">
-              <strong>Tài liệu:</strong>
-              <a href={thesis.documentUrl} className="ml-2">
-                Tại đây
-              </a>
-            </Typography.Text>
-          </div>
-        )}
+        <div className="mb-4">
+          <Typography.Text className="text-lg">
+            <strong>Tài liệu:</strong>
+          </Typography.Text>
+          {thesis?.fileAttachments?.map((fa, index) => {
+            return (
+              <Space key={index} className="block">
+                <a href={fa.fileUrl}>
+                  <PaperClipOutlined /> {getFileNameFromUrl(fa.fileUrl ?? "")}
+                </a>
+              </Space>
+            );
+          })}
+        </div>
         <Row gutter={20} align={"middle"}>
           <Col>
             <Typography.Text className="font-bold text-lg">
