@@ -11,6 +11,7 @@ import { dateDisplay } from "~/common/util";
 
 import TableCommon from "../common/TableCommon";
 import { TableRowSelection } from "antd/es/table/interface";
+import ThesisSearchForm from "~/features/Console/ThesisPage/ThesisSearchForm";
 
 type ThesisTargetModalProps = {
   isOpen: boolean;
@@ -146,7 +147,7 @@ const ThesisTargetModal = ({
         />,
       ]}
     >
-      <SearchForm />
+      <ThesisSearchForm />
       <TableCommon
         rowSelection={{ ...rowSelection }}
         columns={columns}

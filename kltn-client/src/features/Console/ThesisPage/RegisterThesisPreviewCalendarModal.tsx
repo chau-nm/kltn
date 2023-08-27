@@ -2,28 +2,13 @@ import { DatePicker, Form, Row } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { ColumnType } from "antd/es/table";
 import { useContext, useState } from "react";
-import { dateDisplay } from "~/common/util";
+import { dateDisplay, getColorStatus } from "~/common/util";
 import ThesisTargetModal from "~/components/ThesisTargetModal";
 import ButtonCommon from "~/components/common/ButtonCommon";
 import ModalCommon from "~/components/common/ModalCommon";
 import TableCommon from "~/components/common/TableCommon";
 import CommonConstants from "~/constants/commonConstants";
 import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
-
-const getColorStatus = (status: number): string => {
-  switch (status) {
-    case -1:
-      return "text-red-500";
-    case 1:
-      return "text-yellow-500";
-    case 2 || 3 || 4 || 5:
-      return "text-blue-500";
-    case 6:
-      return "text-green-500";
-    default:
-      return "text-blue-500";
-  }
-};
 
 const RegisterThesisPreviewCalendarModal = (): JSX.Element => {
   const {

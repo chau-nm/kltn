@@ -56,6 +56,11 @@ interface ThesisConsoleContextInterface {
     SetStateAction<boolean>
   >;
 
+  isOpenRegisterThesisDefenseCalendarModal: boolean;
+  setIsOpenRegisterThesisDefenseCalendarModal: React.Dispatch<
+    SetStateAction<boolean>
+  >;
+
   openAddCouncilModal: boolean;
   setOpenAddCouncilModal: React.Dispatch<SetStateAction<boolean>>;
 
@@ -121,6 +126,9 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
   isOpenRegisterThesisPreviewCalendarModal: false,
   setIsOpenRegisterThesisPreviewCalendarModal: () => null,
 
+  isOpenRegisterThesisDefenseCalendarModal: false,
+  setIsOpenRegisterThesisDefenseCalendarModal: () => null,
+
   openAddCouncilModal: false,
   setOpenAddCouncilModal: () => null,
 
@@ -181,6 +189,11 @@ export const ThesisConsoleProvider = ({
   const [
     isOpenRegisterThesisPreviewCalendarModal,
     setIsOpenRegisterThesisPreviewCalendarModal,
+  ] = useState<boolean>(false);
+
+  const [
+    isOpenRegisterThesisDefenseCalendarModal,
+    setIsOpenRegisterThesisDefenseCalendarModal,
   ] = useState<boolean>(false);
 
   const [isOpenProtectionModal, setIsOpenProtectionModal] =
@@ -312,6 +325,9 @@ export const ThesisConsoleProvider = ({
 
         isOpenRegisterThesisPreviewCalendarModal,
         setIsOpenRegisterThesisPreviewCalendarModal,
+
+        isOpenRegisterThesisDefenseCalendarModal,
+        setIsOpenRegisterThesisDefenseCalendarModal,
 
         openAddCommentMinistryModal,
         setOpenAddCommentMinistryModal,

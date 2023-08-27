@@ -51,3 +51,19 @@ export const resetLocalStorage = (): void => {
 /**
  *
  */
+
+
+export const getColorStatus = (status: number): string => {
+  switch (status) {
+    case -1:
+      return "text-red-500";
+    case 1:
+      return "text-yellow-500";
+    case 2 || 3 || 4 || 5:
+      return "text-blue-500";
+    case 6:
+      return "text-green-500";
+    default:
+      return "text-blue-500";
+  }
+};
