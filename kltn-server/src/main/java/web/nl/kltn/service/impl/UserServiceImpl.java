@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import web.nl.kltn.mapper.RoleUserCusMapper;
-import web.nl.kltn.mapper.ThesisOutlineCommentCusMapper;
 import web.nl.kltn.mapper.UserCusMapper;
 import web.nl.kltn.mapper.generator.RoleUserMapper;
 import web.nl.kltn.mapper.generator.UserMapper;
@@ -40,9 +39,6 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private RoleUserCusMapper roleUserCusMapper;
-
-	@Autowired
-	private ThesisOutlineCommentCusMapper thesisOutlineCommentCusMapper;
 
 	@Override
 	public UserDTO login(LoginCondition loginCondition) {
@@ -87,29 +83,6 @@ public class UserServiceImpl implements UserService {
 			userDTO.setIsDeleted(user.getIsDeleted());
 
 			userDTOs.add(userDTO);
-		}
-		return userDTOs;
-	}
-
-	@Override
-	public List<UserDTO> findCouncilByOutlineComent(String thesisId) {
-		List<String> idUsers = thesisOutlineCommentCusMapper.findCouncilByOutlineComment(thesisId);
-		List<UserDTO> userDTOs = new ArrayList<>();
-		UserDTO userDTO;
-		for (int i = 0; i < idUsers.size(); i++) {
-//			User user = userMapper.selectByPrimaryKey(idUsers.get(i));
-//			userDTO = new UserDTO();
-//			userDTO.setUserId(user.getUserId());
-//			userDTO.setUsername(user.getUsername());
-//			userDTO.setEmail(user.getEmail());
-//			userDTO.setFname(user.getFname());
-//			userDTO.setGender(user.getGender());
-//			userDTO.setBirthday(user.getBirthday());
-//			userDTO.setFaculty(user.getFaculty());
-//			userDTO.setCreatedAt(user.getCreatedAt());
-//			userDTO.setUpdatedAt(user.getUpdatedAt());
-//			userDTO.setIsDeleted(user.getIsDeleted());
-//			userDTOs.add(userDTO);
 		}
 		return userDTOs;
 	}

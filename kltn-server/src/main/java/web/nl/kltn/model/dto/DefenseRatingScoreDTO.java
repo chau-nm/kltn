@@ -1,7 +1,6 @@
 package web.nl.kltn.model.dto;
 
 import web.nl.kltn.model.generator.DefenseRatingScore;
-import web.nl.kltn.model.generator.ProtectionRatingScore;
 import web.nl.kltn.model.generator.User;
 
 public class DefenseRatingScoreDTO extends DefenseRatingScore {
@@ -15,6 +14,4 @@ public class DefenseRatingScoreDTO extends DefenseRatingScore {
 		this.student = student;
 	}
 
-	public void load(ProtectionRatingScore protectionRatingScore) {
-	}
 }

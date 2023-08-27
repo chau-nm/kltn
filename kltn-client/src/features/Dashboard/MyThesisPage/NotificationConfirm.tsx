@@ -1,10 +1,9 @@
-import { Alert, Col, Row, message } from "antd";
+import { Alert, Col, Row, Typography } from "antd";
 import { useContext } from "react";
 import { useMutation } from "react-query";
 import ButtonCommon from "~/components/common/ButtonCommon";
-import AuthConstants from "~/constants/authConstants";
 import { AuthContext } from "~/contexts/AuthContext";
-import * as ThesisUserService from "~/services/thesisUserService";
+import * as ThesisService from "~/services/thesisService";
 
 type NotificationConfirmProps = {
   thesis: ThesisModel;
@@ -14,42 +13,24 @@ const NotificationConfirm = ({
   thesis,
 }: NotificationConfirmProps): JSX.Element => {
   const { user } = useContext(AuthContext);
+  const userInvite = thesis.userCreated;
 
-  const updateThesisUserService = useMutation(ThesisUserService.update, {
-    onSuccess: (data: boolean) => {
-      void (data && message.success("Bạn đã đồng ý tham gia luận văn."));
-    },
-  });
+  const acceptInviteMutation = useMutation(ThesisService.acceptInvite);
 
-  const userInvite = thesis.students?.filter(
-    (std) => std.userId !== user?.userId
-  )[0];
+  const declineInviteMutation = useMutation(ThesisService.declineInvite);
 
   const handleAccept = (): void => {
-    let thesisUser;
-    if (user?.roles?.includes(AuthConstants.AUTH_ROLES.STUDENT)) {
-      thesisUser = thesis.students?.filter(
-        (std) => std.userId === user?.userId
-      )[0];
-    }
-    if (user?.roles?.includes(AuthConstants.AUTH_ROLES.TEACHER)) {
-      thesisUser =
-        thesis.teacher?.userId === user.userId ? thesis.teacher : undefined;
-    }
-    const newThesisUser = {
-      ...thesisUser,
-      status: 1,
-    };
-
-    updateThesisUserService.mutate(newThesisUser);
-    location.reload();
+    acceptInviteMutation.mutate({
+      thesisId: thesis.id ?? "",
+      userId: user?.userId ?? "",
+    });
   };
 
   const handleDecline = (): void => {
-    // const newThesis: ThesisModel = {
-    //   ...thesis,
-    //   status: 0,
-    // };
+    declineInviteMutation.mutate({
+      thesisId: thesis.id ?? "",
+      userId: user?.userId ?? "",
+    });
   };
 
   if (userInvite == null) return <></>;
@@ -59,14 +40,17 @@ const NotificationConfirm = ({
       className="my-2"
       message={
         <span>
-          <strong>{userInvite.user?.fname}</strong> mời bạn tham gia luận văn!{" "}
-          <br /> Bạn có đồng ý tham gia không?
+          <strong>{userInvite.fname}</strong> mời bạn tham gia luận văn! <br />{" "}
+          Bạn có đồng ý tham gia không?
         </span>
       }
       type="info"
       showIcon
       action={
-        <Row>
+        <Row align={"middle"}>
+          <Col>
+            <Typography.Link>Xem chi tiết luận văn</Typography.Link>
+          </Col>
           <Col className="ml-5">
             <ButtonCommon
               color="green"

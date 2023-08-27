@@ -2,10 +2,10 @@ package web.nl.kltn.model.dto;
 
 import java.util.List;
 
-import web.nl.kltn.mapper.LeturerCusMapper;
+import web.nl.kltn.mapper.LecturerCusMapper;
 import web.nl.kltn.mapper.StudentCusMapper;
 import web.nl.kltn.mapper.ThesisDocumentCusMapper;
-import web.nl.kltn.mapper.ThesisLeturerCusMapper;
+import web.nl.kltn.mapper.ThesisLecturerCusMapper;
 import web.nl.kltn.mapper.ThesisStudentCusMapper;
 import web.nl.kltn.mapper.generator.UserMapper;
 import web.nl.kltn.model.generator.Thesis;
@@ -17,7 +17,7 @@ import web.nl.kltn.model.generator.User;
 public class ThesisDTO extends Thesis {
 	private User userCreated;
 	private List<StudentDTO> students;
-	private List<LeturerDTO> teachers;
+	private List<LecturerDTO> teachers;
 	private List<ThesisDocument> fileAttachments;
 	private List<ThesisReviewCommentDTO> thesisReviewerComments;
 	private List<ReviewerDTO> reviewerDTO;
@@ -41,11 +41,11 @@ public class ThesisDTO extends Thesis {
 		this.students = students;
 	}
 
-	public List<LeturerDTO> getTeachers() {
+	public List<LecturerDTO> getTeachers() {
 		return teachers;
 	}
 
-	public void setTeacher(List<LeturerDTO> teachers) {
+	public void setTeacher(List<LecturerDTO> teachers) {
 		this.teachers = teachers;
 	}
 
@@ -98,8 +98,8 @@ public class ThesisDTO extends Thesis {
 	}
 
 	public void load(Thesis thesis, ThesisStudentCusMapper thesisStudentCusMapper,
-			ThesisLeturerCusMapper thesisLeturerCusMapper, StudentCusMapper studentCusMapper,
-			LeturerCusMapper leturerCusMapper, UserMapper userMapper) {
+			ThesisLecturerCusMapper thesislecturerCusMapper, StudentCusMapper studentCusMapper,
+			LecturerCusMapper lecturerCusMapper, UserMapper userMapper) {
 		this.setId(thesis.getId());
 		this.setTopic(thesis.getTopic());
 		this.setDescription(thesis.getDescription());
@@ -117,9 +117,9 @@ public class ThesisDTO extends Thesis {
 			this.setStudents(ThesisStudentDTO.getStudentDTOsByListThesisStudent(
 					thesisStudentCusMapper.getThesisStudentByThesisId(thesis.getId()), studentCusMapper));
 		}
-		if (thesisLeturerCusMapper != null) {
-			this.setTeacher(ThesisLeturerDTO.getStudentDTOsByListThesisStudent(
-					thesisLeturerCusMapper.getThesisLeturerByThesisId(thesis.getId()), leturerCusMapper));
+		if (thesislecturerCusMapper != null) {
+			this.setTeacher(ThesisLecturerDTO.getStudentDTOsByListThesisStudent(
+					thesislecturerCusMapper.getThesisLecturerByThesisId(thesis.getId()), lecturerCusMapper));
 		}
 	}
 }

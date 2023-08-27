@@ -1,6 +1,5 @@
 package web.nl.kltn.model.dto;
 
-import web.nl.kltn.model.generator.ThesisOutlineComment;
 import web.nl.kltn.model.generator.ThesisReviewerComment;
 
 public class ThesisReviewCommentDTO extends ThesisReviewerComment {

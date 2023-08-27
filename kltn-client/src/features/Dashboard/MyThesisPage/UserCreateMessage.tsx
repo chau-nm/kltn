@@ -10,15 +10,11 @@ type UserCreatedMessageProps = {
 const UserCreatedMessage = ({ data }: UserCreatedMessageProps): JSX.Element => {
   const { user } = useContext(AuthContext);
 
-  const myThesis = data?.filter((thesis) => {
-    return thesis.createdBy === user?.userId;
-  });
-
   const handleOk = (): void => {};
 
   return (
     <>
-      {myThesis?.map((thesis) => {
+      {data?.map((thesis) => {
         const students: ThesisUserModel[] = thesis.students ?? [];
         const thesisUsers: ThesisUserModel[] = [
           ...students,

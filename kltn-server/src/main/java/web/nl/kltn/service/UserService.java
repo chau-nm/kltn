@@ -28,7 +28,5 @@ public interface UserService {
 
 	UserDTO updatePassword(String userId, String newPassword);
 
-	List<UserDTO> findCouncilByOutlineComent(String thesisId);
-
 	User changpassword(ChangpasswordPayload changpasswordPayload) throws Exception;
 }

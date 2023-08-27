@@ -1,6 +1,5 @@
 package web.nl.kltn.model.dto;
 
-import web.nl.kltn.model.generator.CriticalAssessmentScore;
 import web.nl.kltn.model.generator.ReviewerScore;
 import web.nl.kltn.model.generator.User;
 

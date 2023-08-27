@@ -3,7 +3,6 @@ package web.nl.kltn.model.dto;
 import java.util.List;
 
 import web.nl.kltn.model.generator.DefenseRating;
-import web.nl.kltn.model.generator.ProtectionRating;
 import web.nl.kltn.model.generator.User;
 
 public class DefenseRatingDTO extends DefenseRating{
@@ -26,6 +25,5 @@ public class DefenseRatingDTO extends DefenseRating{
 		this.scores = scores;
 	}
 	
-	public void load(ProtectionRating protectionRating) {
-	}
+	
 }

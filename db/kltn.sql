@@ -70,10 +70,10 @@ CREATE TABLE `defense_rating_score`  (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for leturer
+-- Table structure for lecturer
 -- ----------------------------
-DROP TABLE IF EXISTS `leturer`;
-CREATE TABLE `leturer`  (
+DROP TABLE IF EXISTS `lecturer`;
+CREATE TABLE `lecturer`  (
   `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `user_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `degree` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
@@ -82,9 +82,9 @@ CREATE TABLE `leturer`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of leturer
+-- Records of lecturer
 -- ----------------------------
-INSERT INTO `leturer` VALUES ('972c84dd-09c0-4366-a5b5-4cc85a30007c', 'dae755d0-8efd-416c-8c4c-e7a6dfe16709', 'A', 'A');
+INSERT INTO `lecturer` VALUES ('972c84dd-09c0-4366-a5b5-4cc85a30007c', 'dae755d0-8efd-416c-8c4c-e7a6dfe16709', 'A', 'A');
 
 -- ----------------------------
 -- Table structure for notification
@@ -350,10 +350,10 @@ CREATE TABLE `thesis_document`  (
 INSERT INTO `thesis_document` VALUES ('b8992c48-3d4f-418d-b185-31659734f4bd', '26c76325-d289-40a2-b96b-205c707c7ca1', 'https://firebasestorage.googleapis.com/v0/b/kltn-4d455.appspot.com/o/1693098580121-TB_Vv%20nop%20de%20cuong%20chi%20tiet%20KLTN_HK1_2023.2024.pdf?alt=media&token=e361c2b2-c4c2-4a71-a4fd-d5f8045f9a23', 1, b'0', 1693098585247, 1693098585247);
 
 -- ----------------------------
--- Table structure for thesis_leturer
+-- Table structure for thesis_lecturer
 -- ----------------------------
-DROP TABLE IF EXISTS `thesis_leturer`;
-CREATE TABLE `thesis_leturer`  (
+DROP TABLE IF EXISTS `thesis_lecturer`;
+CREATE TABLE `thesis_lecturer`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `thesis_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `lecturer` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
@@ -365,9 +365,9 @@ CREATE TABLE `thesis_leturer`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of thesis_leturer
+-- Records of thesis_lecturer
 -- ----------------------------
-INSERT INTO `thesis_leturer` VALUES (1, '26c76325-d289-40a2-b96b-205c707c7ca1', 'cb6307b7-a15a-4e20-9ae9-9a8c4ab34ad6', b'0', b'0', 1693098586911, 1693098586911);
+INSERT INTO `thesis_lecturer` VALUES (1, '26c76325-d289-40a2-b96b-205c707c7ca1', 'cb6307b7-a15a-4e20-9ae9-9a8c4ab34ad6', b'0', b'0', 1693098586911, 1693098586911);
 
 -- ----------------------------
 -- Table structure for thesis_register_calendar
@@ -483,6 +483,6 @@ CREATE TABLE `user`  (
 INSERT INTO `user` VALUES ('12345', '19130001', '$2a$10$U1IUwgSfyFYecbZ0H7VxwuyZGXJFVjhPchnyUy2UYKx8GBgSSQJpy', '', '', '', '2005-05-05', NULL, b'0', b'0', b'0', 0, 0);
 INSERT INTO `user` VALUES ('4d86b324-58a4-4267-87de-6d48edaf0b5b', '19130003', '$2a$10$NtXbAxQ/cZr0vB2ErNL63.tf1chIP.XH1SZMzLQfg/73KslyMuPS6', 'male', 'A', 'A', '2023-08-28', 'A', b'1', b'0', b'0', 1693089211610, 1693089211610);
 INSERT INTO `user` VALUES ('c26ad756-8a75-42e7-9b75-f987d621313e', '19130002', '$2a$10$4wF.Gn6CgmGWirjHN1VZs.ok8ios.sOWdJ7J5u2zViSC23zyDnM1K', 'male', 'A', 'T', '2023-08-20', 'CNTT', b'1', b'0', b'0', 1693089076474, 1693089076474);
-INSERT INTO `user` VALUES ('cb6307b7-a15a-4e20-9ae9-9a8c4ab34ad6', 'leturer1', '$2a$10$xxjAXsbvMy2uqNiWuWECAuV37BUMqydRTpd/YyJwYELufgtsnQHSC', 'male', 'A', 'A', '2023-08-28', 'A', b'1', b'0', b'0', 1693097507392, 1693097507392);
+INSERT INTO `user` VALUES ('cb6307b7-a15a-4e20-9ae9-9a8c4ab34ad6', 'lecturer1', '$2a$10$xxjAXsbvMy2uqNiWuWECAuV37BUMqydRTpd/YyJwYELufgtsnQHSC', 'male', 'A', 'A', '2023-08-28', 'A', b'1', b'0', b'0', 1693097507392, 1693097507392);
 
 SET FOREIGN_KEY_CHECKS = 1;

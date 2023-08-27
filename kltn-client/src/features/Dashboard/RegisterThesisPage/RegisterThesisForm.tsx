@@ -151,7 +151,7 @@ const RegisterThesisForm = (): JSX.Element => {
         semester: 1,
         status: 1,
         students: students as StudentModel[],
-        teachers: [teacher] as LeturerModel[],
+        teachers: [teacher] as LecturerModel[],
         userCreated: user ?? undefined,
         fileAttachments: [
           {

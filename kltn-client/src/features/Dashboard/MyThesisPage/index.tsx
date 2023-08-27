@@ -1,43 +1,58 @@
-import { Spin, Typography } from "antd";
+import { Typography } from "antd";
 import { useContext } from "react";
 import { useQuery } from "react-query";
 import PageLayout from "~/components/common/PageLayout";
 import { AuthContext } from "~/contexts/AuthContext";
+import LoadingPage from "~/features/LoadingPage";
 import * as ThesisService from "~/services/thesisService";
-import UserCreatedMessage from "./UserCreateMessage";
-import ThesisInvitedList from "./ThesisInvitedList";
 import ThesisDetail from "./ThesisDetail";
+import ThesisInvitedList from "./ThesisInvitedList";
 
 const MyThesisPage = (): JSX.Element => {
   const { user } = useContext(AuthContext);
-  const { data, isLoading } = useQuery<ThesisModel[]>(
-    ["search-thesis-by-user"],
-    async () => {
-      return [];
-      // return user?.userId ? await ThesisService.searchByUser(user?.userId) : [];
-    },
+  const { data: thesisInvited, isLoading: invitedLoading } = useQuery<
+    ThesisModel[]
+  >(
+    ["find-thesis-invited"],
+    async () => await ThesisService.findThesisInvited(user?.userId ?? ""),
     {
       onSuccess: () => {},
     }
   );
 
+  const { data: myThesis, isLoading: myThesisLoading } = useQuery<
+    ThesisModel[]
+  >(
+    ["find-my-thesis"],
+    async () => await ThesisService.findMyThesis(user?.userId ?? ""),
+    {
+      onSuccess: () => {},
+    }
+  );
+
+  if (invitedLoading || myThesisLoading) {
+    return <LoadingPage />;
+  }
+
+  if (myThesis != null && myThesis.length > 0) {
+    return (
+      <PageLayout pageTitle="Luận văn của tôi">
+        {myThesis?.map((thesis) => {
+          return <ThesisDetail key={thesis.id} thesis={thesis} />;
+        })}
+      </PageLayout>
+    );
+  }
+
+  if (thesisInvited != null && thesisInvited?.length > 0) {
+    return <ThesisInvitedList data={thesisInvited} />;
+  }
+
   return (
     <PageLayout pageTitle="Luận văn của tôi">
-      <Spin spinning={isLoading}>
-        {data != null && data.length <= 0 && (
-          <Typography.Text type="warning">
-            Bạn chưa có tham gia luận văn nào
-          </Typography.Text>
-        )}
-        <UserCreatedMessage data={data} />
-        <ThesisInvitedList data={data} />
-        {data?.map((thesis) => {
-          if (thesis.status && thesis.status > 1) {
-            return <ThesisDetail key={thesis.id} thesis={thesis} />;
-          }
-          return <></>;
-        })}
-      </Spin>
+      <Typography.Text>
+        Bạn chưa đăng ký luận văn hoặc đăng đợi người khác xác nhận
+      </Typography.Text>
     </PageLayout>
   );
 };

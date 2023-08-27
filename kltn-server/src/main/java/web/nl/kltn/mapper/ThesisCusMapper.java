@@ -23,5 +23,9 @@ public interface ThesisCusMapper {
 	
 	public List<Thesis> findThesisStudentInvided(String userId);
 	
-	public List<Thesis> findThesisLeturerInvided(String userId);
+	public List<Thesis> findThesisLecturerInvided(String userId);
+	
+	public List<Thesis> findStudentThesis(String userId);
+	
+	public List<Thesis> findLecturerThesis(String userId);
 }

@@ -32,4 +32,10 @@ public interface ThesisService {
 	List<ThesisDTO> searchThesisCAByUserId(String userId);
 
 	List<ThesisDTO> findThesisInvited(String userId);
+
+	List<ThesisDTO> findMyThesis(String userId);
+
+	void declineInvite(String thesisId, String userId) throws Exception;
+
+	void acceptInvite(String thesisId, String userId) throws Exception;
 }

@@ -110,6 +110,13 @@ public class ThesisController {
 		responseModel.setData(thesisService.findThesisInvited(userId));
 		return responseModel;
 	}
+	
+	@GetMapping("/my-thesis")
+	public ResponseModel<List<ThesisDTO>> findMyThesis(@RequestParam String userId) {
+		ResponseModel<List<ThesisDTO>> responseModel = new ResponseModel<>();
+		responseModel.setData(thesisService.findMyThesis(userId));
+		return responseModel;
+	}
 
 	@PostMapping("/find-by-council/{page}")
 	public ResponseModel<SearchResponse<List<ThesisDTO>>> findByCouncil(@PathVariable int page,
@@ -124,7 +131,34 @@ public class ThesisController {
 		responseModel.setData(searchResponse);
 		return responseModel;
 	}
-
+	
+	@PutMapping("/accept-invite")
+	public ResponseModel<Boolean> acceptInvite(@RequestParam String thesisId, @RequestParam String userId) {
+		ResponseModel<Boolean> responseModel = new ResponseModel<>();
+		try {
+			thesisService.acceptInvite(thesisId, userId);
+			responseModel.setData(true);
+		} catch (Exception e) {
+			System.out.println(e);
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
+		}
+		return responseModel;
+	}
+	
+	@PutMapping("/decline-invite")
+	public ResponseModel<Boolean> declineInvite(@RequestParam String thesisId, @RequestParam String userId) {
+		ResponseModel<Boolean> responseModel = new ResponseModel<>();
+		try {
+			thesisService.declineInvite(thesisId, userId);
+			responseModel.setData(true);
+		} catch (Exception e) {
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
+		}
+		return responseModel;
+	}
+	
 	@GetMapping("/search-thesis-ca-by-user-id")
 	public ResponseModel<List<ThesisDTO>> searchThesisCriticalAssessmentByUserId(@RequestParam String userId) {
 		ResponseModel<List<ThesisDTO>> responseModel = new ResponseModel<>();

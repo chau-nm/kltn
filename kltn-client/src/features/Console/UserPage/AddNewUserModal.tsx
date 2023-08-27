@@ -14,7 +14,7 @@ import { useMutation } from "react-query";
 import { v4 } from "uuid";
 import AuthConstants from "~/constants/authConstants";
 import { UserConsoleContext } from "~/contexts/UserConsoleContext";
-import * as LeturerService from "~/services/leturerService";
+import * as lecturerService from "~/services/lecturerService";
 import * as StudentService from "~/services/studentService";
 import ButtonCommon from "../../../components/common/ButtonCommon";
 import ModalCommon from "../../../components/common/ModalCommon";
@@ -43,8 +43,8 @@ const AddNewUserModal = (): JSX.Element => {
     },
   });
 
-  const insertLeturerMutation = useMutation(LeturerService.insert, {
-    onSuccess: (data: LeturerModel) => {
+  const insertlecturerMutation = useMutation(lecturerService.insert, {
+    onSuccess: (data: LecturerModel) => {
       if (data) {
         void message.success("Thêm tài khoản giảng viên thành công");
         clearData();
@@ -84,13 +84,13 @@ const AddNewUserModal = (): JSX.Element => {
       }
 
       if (accountMode === TEACHER_MODE) {
-        const leturer: LeturerModel = {
+        const lecturer: LecturerModel = {
           ...user,
           isTeacher: true,
           degree: form.getFieldValue("degree"),
           title: form.getFieldValue("title"),
         };
-        insertLeturerMutation.mutate(leturer);
+        insertlecturerMutation.mutate(lecturer);
       }
     });
   };

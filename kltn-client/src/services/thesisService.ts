@@ -79,6 +79,35 @@ export const updateStatus = async (
   return thesisResponse.data;
 };
 
+export const findThesisInvited = async (userId: string): Promise<ThesisModel[]> => {
+  const responseModel: ResponseModel<ThesisModel[]> = await http.get(`${ApiUrlConstants.FIND_THESIS_INVITED}?userId=${userId}`);
+  return responseModel.data;
+}
+
+export const findMyThesis = async (userId: string): Promise<ThesisModel[]> => {
+  const responseModel: ResponseModel<ThesisModel[]> = await http.get(`${ApiUrlConstants.FIND_MY_THESIS}?userId=${userId}`);
+  return responseModel.data;
+}
+
+type ThesisUserPayload = {
+  thesisId: string;
+  userId: string;
+}
+
+export const acceptInvite = async ({ thesisId, userId }: ThesisUserPayload): Promise<boolean> => {
+  const thesisResponse: ResponseModel<boolean> = await http.put(
+    `${ApiUrlConstants.ACCEPT_INVITE_THESIS}?thesisId=${thesisId}&userId=${userId}`,
+  );
+  return thesisResponse.data;
+}
+
+export const declineInvite = async ({ thesisId, userId }: ThesisUserPayload): Promise<boolean> => {
+  const thesisResponse: ResponseModel<boolean> = await http.put(
+    `${ApiUrlConstants.DECLINE_INVITE_THESIS}?thesisId=${thesisId}&userId=${userId}`,
+  );
+  return thesisResponse.data;
+}
+
 // export const searchByUser = async (userId: string): Promise<ThesisModel[]> => {
 //   const thesisLiseResponse: ResponseModel<ThesisModel[]> = await http.get(
 //     `${ApiUrlConstants.SEARCH_THESIS_BY_USER}?userId=${userId}`,

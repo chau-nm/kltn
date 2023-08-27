@@ -60,7 +60,7 @@ interface StudentModel extends UserModel {
   studentClass?: string;
 }
 
-interface LeturerModel extends UserModel {
+interface LecturerModel extends UserModel {
   degree?: string;
   title?: string;
 }
@@ -104,7 +104,7 @@ interface ThesisModel {
   schoolYear?: number;
   semester?: number;
   students?: StudentModel[];
-  teachers?: LeturerModel[];
+  teachers?: LecturerModel[];
   userCreated?: UserModel;
   fileAttachments?: ThesisDocumentModel[];
 
@@ -162,11 +162,11 @@ interface ThesisStudentModel {
   updatedAt?: number;
 }
 
-interface ThesisLeturerModel {
+interface ThesislecturerModel {
   id?: string;
   thesisId?: string;
-  leturerId?: string;
-  leturer?: StudentModel;
+  lecturerId?: string;
+  lecturer?: StudentModel;
   isActive?: boolean;
   isDeleted?: boolean;
   createdAt?: number;
@@ -205,7 +205,7 @@ interface ReviewerModel {
   suggestion?: string;
   criticalAssessmentQuestions?: string[];
   critialAssessmentScores?: ReviewerScoreModel[];
-  leturerMaker?: LeturerModel;
+  lecturerMaker?: LecturerModel;
   isDeleted?: boolean;
   createdAt?: number;
   updatedAt?: number;

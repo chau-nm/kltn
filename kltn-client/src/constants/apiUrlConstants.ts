@@ -16,8 +16,8 @@ export class ApiUrlConstants {
   /** STUDENT */
   public static readonly INSERT_STUDENT = "/student/insert";
 
-  /** LETURER */
-  public static readonly INSERT_LETURER = "/leturer/insert";
+  /** lecturer */
+  public static readonly INSERT_LECTURER = "/lecturer/insert";
 
   /** NOTIFICATION */
   public static readonly INSERT_NOTIFICATION = "/notification/insert";
@@ -49,6 +49,11 @@ export class ApiUrlConstants {
   public static readonly SEARCH_THESIS_BY_USER = "/thesis/find-by-user";
   public static readonly SEARCH_THESIS_CA_BY_USER_ID =
     "/thesis/search-thesis-ca-by-user-id";
+
+  public static readonly FIND_THESIS_INVITED = "/thesis/invited";
+  public static readonly FIND_MY_THESIS = "/thesis/my-thesis";
+  public static readonly ACCEPT_INVITE_THESIS = "/thesis/accept-invite";
+  public static readonly DECLINE_INVITE_THESIS = "/thesis/decline-invite";
 
   /** THESIS REPORT CALENDAR */
   public static readonly INSERT_THESIS_REPORT_CALENDAR =

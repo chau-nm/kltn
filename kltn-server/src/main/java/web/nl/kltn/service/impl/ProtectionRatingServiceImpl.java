@@ -1,19 +1,8 @@
 package web.nl.kltn.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import web.nl.kltn.mapper.ProtectionRatingCusMapper;
-import web.nl.kltn.mapper.ProtectionRatingQuestionCusMapper;
-import web.nl.kltn.mapper.ProtectionRatingScoreCusMapper;
-import web.nl.kltn.mapper.generator.ProtectionRatingMapper;
-import web.nl.kltn.mapper.generator.ProtectionRatingQuestionMapper;
-import web.nl.kltn.mapper.generator.ProtectionRatingScoreMapper;
-import web.nl.kltn.mapper.generator.UserMapper;
-import web.nl.kltn.model.generator.ProtectionRating;
 import web.nl.kltn.service.ProtectionRatingService;
 
 @Service

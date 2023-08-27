@@ -27,5 +27,14 @@
 		WHERE
 			thesis_id = #{thesisId}
 	</select>
+	
+	<update id="acceptInvite">
+		UPDATE thesis_student SET is_active = 1 WHERE thesis_id = #{thesisId} AND student_id = #{userId}
+	</update>
+	
+	<update id="declineInvite">
+		UPDATE thesis_student SET is_deleted = 1 WHERE thesis_id = #{thesisId} AND student_id = #{userId}
+	</update>
+	
 
 </mapper>

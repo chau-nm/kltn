@@ -9,7 +9,7 @@ public class ReviewerDTO extends Reviewer {
 
 	private List<String> questions;
 	
-	private LeturerDTO leturerMaker;
+	private LecturerDTO lecturerMaker;
 
 	public void setReviewerScores(List<ReviewerScoreDTO> reviewerScores) {
 		this.reviewerScores = reviewerScores;
@@ -27,11 +27,11 @@ public class ReviewerDTO extends Reviewer {
 		this.questions = questions;
 	}
 	
-	public LeturerDTO getLeturerMaker() {
-		return leturerMaker;
+	public LecturerDTO getlecturerMaker() {
+		return lecturerMaker;
 	}
 	
-	public void setLeturerMaker(LeturerDTO leturerMaker) {
-		this.leturerMaker = leturerMaker;
+	public void setlecturerMaker(LecturerDTO lecturerMaker) {
+		this.lecturerMaker = lecturerMaker;
 	}
 }

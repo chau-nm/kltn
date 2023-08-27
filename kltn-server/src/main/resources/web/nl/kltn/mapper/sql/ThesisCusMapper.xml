@@ -92,11 +92,12 @@
 		ON ts.thesis_id = t.id
 		<where>
 			ts.student_id = #{userId}
+			AND ts.is_active = 0
 			AND t.is_deleted = 0
 		</where>
 	</select>
 
-	<select id="findThesisLeturerInvided" resultMap="Thesis">
+	<select id="findThesislecturerInvided" resultMap="Thesis">
 		SELECT
 		t.id,
 		t.topic,
@@ -108,37 +109,61 @@
 		t.is_deleted,
 		t.created_at,
 		t.updated_at
-		FROM thesis_leturer tl
+		FROM thesis_lecturer tl
 		LEFT JOIN thesis t
 		ON tl.thesis_id = t.id
 		<where>
-			tl.leturer_id = #{userId}
+			tl.lecturer_id = #{userId}
+			AND tl.is_active = 0
 			AND t.is_deleted = 0
 		</where>
 	</select>
 
-	<select id="findMyThesis" resultMap="Thesis">
+	<select id="findStudentThesis" resultMap="Thesis">
 		SELECT
-		id,
-		topic,
-		description,
-		school_year,
-		semester,
-		status,
-		created_by,
-		is_deleted,
-		created_at,
-		updated_at
+			t.id,
+			t.topic,
+			t.description,
+			t.school_year,
+			t.semester,
+			t.status,
+			t.created_by,
+			t.is_deleted,
+			t.created_at,
+			t.updated_at
 		FROM thesis_student ts
 		LEFT JOIN thesis t
 		ON ts.thesis_id = t.id
 		<where>
 			ts.student_id = #{userId}
 			AND ts.is_active = 1
+			AND t.status >= 2
 			AND t.is_deleted = 0
 		</where>
 	</select>
-
+	
+	<select id="findlecturerThesis" resultMap="Thesis">
+		SELECT
+			t.id,
+			t.topic,
+			t.description,
+			t.school_year,
+			t.semester,
+			t.status,
+			t.created_by,
+			t.is_deleted,
+			t.created_at,
+			t.updated_at
+		FROM thesis_lecturer tl
+		LEFT JOIN thesis t
+		ON tl.thesis_id = t.id
+		<where>
+			tl.lecturer_id = #{userId}
+			AND ts.is_active = 1
+			AND t.status >= 2
+			AND t.is_deleted = 0
+		</where>
+	</select>
 
 	<select id="findByCouncilId" resultMap="ThesisDTO">
 		<bind name="offset" value="(page - 1) * pageSize" />
