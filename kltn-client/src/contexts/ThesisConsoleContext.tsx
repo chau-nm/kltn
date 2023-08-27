@@ -20,6 +20,11 @@ interface ThesisConsoleContextInterface {
   listThesisSelected: ThesisModel[];
   setlistThesisSelected: React.Dispatch<SetStateAction<ThesisModel[]>>;
 
+  listThesisSelectedForPreview: ThesisModel[];
+  setlistThesisSelectedForPreview: React.Dispatch<
+    SetStateAction<ThesisModel[]>
+  >;
+
   isOpenRegisterThesisModal: boolean;
   setIsOpenRegisterThesisModal: React.Dispatch<SetStateAction<boolean>>;
 
@@ -86,6 +91,9 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
   listThesisSelected: [],
   setlistThesisSelected: () => null,
 
+  listThesisSelectedForPreview: [],
+  setlistThesisSelectedForPreview: () => null,
+
   isOpenRegisterThesisModal: false,
   setIsOpenRegisterThesisModal: () => null,
 
@@ -149,6 +157,9 @@ export const ThesisConsoleProvider = ({
   const [listThesisSelected, setlistThesisSelected] = useState<ThesisModel[]>(
     []
   );
+
+  const [listThesisSelectedForPreview, setlistThesisSelectedForPreview] =
+    useState<ThesisModel[]>([]);
   const [searchCondition, setSearchCondition] =
     useState<ThesisSearchConditionModel>({});
 
@@ -266,6 +277,9 @@ export const ThesisConsoleProvider = ({
 
         listThesisSelected,
         setlistThesisSelected,
+
+        listThesisSelectedForPreview,
+        setlistThesisSelectedForPreview,
 
         isLoadingTableResults: searchMutaion.isLoading,
 
