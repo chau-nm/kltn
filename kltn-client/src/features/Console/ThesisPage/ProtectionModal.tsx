@@ -42,6 +42,9 @@ const ProtectionModal = (): JSX.Element => {
     setIsOpenProtectionDetailModal,
   } = useContext(ThesisConsoleContext);
 
+  const defenseCalendar = thesis?.defenseCalendar?.timestamp;
+  const defenseRoom = thesis?.defenseCalendar?.room;
+
   const handleClose = (): void => {
     setIsOpenProtectionModal(false);
   };
@@ -50,19 +53,6 @@ const ProtectionModal = (): JSX.Element => {
     ["load-teacher-select"],
     async () =>
       await UserService.getUserByRole(AuthConstants.AUTH_ROLES.TEACHER)
-  );
-
-  const insertThesisReportCalendarMutation = useMutation(
-    ThesisReportCalendarService.insert,
-    {
-      onSuccess: (data: ThesisReportCalendarModel) => {
-        if (data) {
-          void message.success("Cập nhật lịch phản biện thành công");
-        } else {
-          void message.error("Cập nhật lịch phản biện thất bại");
-        }
-      },
-    }
   );
 
   // const insertUserCriticalAssessment = useMutation(
@@ -95,23 +85,6 @@ const ProtectionModal = (): JSX.Element => {
 
   const handleOnChangeCalendar = (value: any): void => {
     setCACalendar(value.toDate().getTime());
-  };
-
-  const handleSaveCACalendar = (): void => {
-    if (!caCalendar) {
-      return;
-    }
-    const caCalendarRq: ThesisReportCalendarModel = {
-      id: v4(),
-      thesisId: thesis?.id,
-      timestamp: caCalendar,
-      type: 1,
-      createdAt: new Date().getTime(),
-      updatedAt: new Date().getTime(),
-      isDeleted: false,
-    };
-    insertThesisReportCalendarMutation.mutate(caCalendarRq);
-    setIsEditCACalendarMode(false);
   };
 
   const handleSaveCriticalAssessmentPerson = (): void => {
@@ -173,39 +146,13 @@ const ProtectionModal = (): JSX.Element => {
                   style={{ width: 300 }}
                 ></Input>
               </>
-            ) : caCalendar ? (
-              dateTimeDisplay(new Date(caCalendar))
+            ) : defenseCalendar && defenseRoom ? (
+              <Row gutter={30}>
+                <Col> {dateTimeDisplay(new Date(defenseCalendar))}</Col>
+                <Col>{defenseRoom}</Col>
+              </Row>
             ) : (
               "Chưa có lịch bảo vệ "
-            )}
-          </Col>
-          <Col>
-            {isEditCACalendarMode ? (
-              <>
-                <span
-                  className="text-red-400 select-none cursor-pointer hover:text-red-500 duration-300 mx-3"
-                  onClick={() => {
-                    setIsEditCACalendarMode(false);
-                  }}
-                >
-                  Hủy
-                </span>
-                <span
-                  className="text-green-700 select-none cursor-pointer hover:text-green-500 duration-300 mx-3"
-                  onClick={handleSaveCACalendar}
-                >
-                  Lưu
-                </span>
-              </>
-            ) : (
-              <span
-                className="text-blue-400 select-none cursor-pointer hover:text-blue-500 duration-300"
-                onClick={() => {
-                  setIsEditCACalendarMode(true);
-                }}
-              >
-                Chỉnh sửa
-              </span>
             )}
           </Col>
         </Row>
@@ -247,7 +194,7 @@ const ProtectionModal = (): JSX.Element => {
             ) : caPerson ? (
               caPerson.map((person) => person.fname).join(", ")
             ) : (
-              "Chưa thêm phản biện"
+              "Chưa thêm bảo vệ"
             )}
           </Col>
           <Col>
