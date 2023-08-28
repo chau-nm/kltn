@@ -31,12 +31,14 @@ const AddEditThesisModal = (): JSX.Element => {
     setIsOpenAddEditThesisModal,
     thesis,
     setIsEditModal,
+    search,
   } = useContext(ThesisConsoleContext);
 
   const insertThesisMutation = useMutation(ThesisService.insert, {
     onSuccess: (data: ThesisModel | null) => {
       if (data != null) {
         void message.success("Thêm thành công");
+        search();
         setIsOpenAddEditThesisModal(false);
         resetModal();
       } else {
@@ -48,6 +50,7 @@ const AddEditThesisModal = (): JSX.Element => {
     onSuccess: (data: boolean) => {
       if (data) {
         void message.success("Cập nhật thành công");
+        search();
         resetModal();
         setIsOpenAddEditThesisModal(false);
       } else {
@@ -100,7 +103,7 @@ const AddEditThesisModal = (): JSX.Element => {
         teacher: thesis?.teachers?.[0]?.userId,
         topic: thesis?.topic,
         desciption: thesis?.description,
-        year: moment(thesis?.schoolYear, "YYYY"),
+        schoolYear: moment(thesis?.schoolYear, "YYYY"),
         semester: thesis?.semester,
         documentUrl,
       });
@@ -163,7 +166,7 @@ const AddEditThesisModal = (): JSX.Element => {
       const thesisReq: ThesisModel = {
         id: thesisId,
         ...form.getFieldsValue(),
-        schoolYear: form.getFieldValue("year").year(),
+        schoolYear: form.getFieldValue("schoolYear").year(),
         fileAttachments: [
           {
             id: v4(),
@@ -306,7 +309,11 @@ const AddEditThesisModal = (): JSX.Element => {
           </Form.Item>
           <Row gutter={30}>
             <Col span={10}>
-              <Form.Item label="Năm" name="year" rules={[{ required: true }]}>
+              <Form.Item
+                label="Năm"
+                name="schoolYear"
+                rules={[{ required: true }]}
+              >
                 <DatePicker.YearPicker className="w-full" />
               </Form.Item>
             </Col>

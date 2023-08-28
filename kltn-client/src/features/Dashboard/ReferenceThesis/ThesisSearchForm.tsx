@@ -1,11 +1,19 @@
 import { Button, Col, DatePicker, Form, Input, Row, Select } from "antd";
-import { useContext } from "react";
-import CommonConstants from "~/constants/commonConstants";
-import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
+import { type SetStateAction } from "react";
 
-const ThesisSearchForm = (): JSX.Element => {
-  const { search, setSearchCondition } = useContext(ThesisConsoleContext);
+type SearchFormProps = {
+  searchCondition: ThesisSearchConditionModel;
+  setSearchCondition: React.Dispatch<
+    SetStateAction<ThesisSearchConditionModel>
+  >;
+  search: () => void;
+};
 
+const ThesisSearchForm = ({
+  searchCondition,
+  setSearchCondition,
+  search,
+}: SearchFormProps): JSX.Element => {
   const handleFinish = (): void => {
     search();
   };
@@ -13,7 +21,6 @@ const ThesisSearchForm = (): JSX.Element => {
   const handleChangeValues = (value: any, allValues: any): void => {
     setSearchCondition({
       topic: allValues.topic,
-      status: allValues.status,
       year: allValues.year?.year(),
       semester: allValues.semester,
     });

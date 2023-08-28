@@ -1,31 +1,31 @@
 import { Row, Spin, Tooltip } from "antd";
-import { type ColumnType } from "antd/es/table";
+import { type ColumnType, type TablePaginationConfig } from "antd/es/table";
 
-import { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState, type SetStateAction } from "react";
 
-import {
-  CommentIconCommon,
-  CriticalAssessmentIconCommon,
-  DeleteIconCommon,
-  EditIconCommon,
-  ProtectedIconCommon,
-  SeeIconCommon,
-} from "~/components/common/IconCommon";
+import { SeeIconCommon } from "~/components/common/IconCommon";
 import TableCommon from "~/components/common/TableCommon";
 import CommonConstants from "~/constants/commonConstants";
-import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 
-const ThesisTableResult = (): JSX.Element => {
-  const {
-    listThesis,
-    search,
-    isLoadingTableResults,
-    pagination,
-    handleChange,
-    searchDetail,
-    setIsOpenThesisDetailModal,
-  } = useContext(ThesisConsoleContext);
+type ThesisTableResultProps = {
+  listThesis: ThesisModel[];
+  search: () => void;
+  isLoadingTableResults: boolean;
+  pagination: TablePaginationConfig;
+  handleChange: (paginationP: TablePaginationConfig) => void;
+  setThesis: (thesis: ThesisModel) => void;
+  setIsOpenThesisDetailModal: React.Dispatch<SetStateAction<boolean>>;
+};
 
+const ThesisTableResult = ({
+  listThesis,
+  handleChange,
+  isLoadingTableResults,
+  pagination,
+  search,
+  setIsOpenThesisDetailModal,
+  setThesis,
+}: ThesisTableResultProps): JSX.Element => {
   const [thesisData, setThesisData] = useState<ThesisModel[]>([]);
   useEffect(() => {
     search();
@@ -33,7 +33,7 @@ const ThesisTableResult = (): JSX.Element => {
 
   useEffect(() => {
     const temp = listThesis.filter(
-      (thesis) => thesis.status == CommonConstants.THESIS_STATUS[9].value
+      (thesis) => thesis.status === CommonConstants.THESIS_STATUS[9].value
     );
     setThesisData(temp);
   }, [listThesis]);
@@ -85,7 +85,7 @@ const ThesisTableResult = (): JSX.Element => {
             <Tooltip title="Chi tiết luận văn" placement="top">
               <SeeIconCommon
                 onClick={() => {
-                  searchDetail(record.id!);
+                  setThesis(record);
                   setIsOpenThesisDetailModal(true);
                 }}
               />

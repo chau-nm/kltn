@@ -149,13 +149,16 @@ const ThesisTableResult = (): JSX.Element => {
                 }}
               />
             </Tooltip>
-            <EditIconCommon
-              onClick={() => {
-                searchDetail(record.id!);
-                setIsEditModal(() => true);
-                setIsOpenAddEditThesisModal(true);
-              }}
-            />
+            {record.status === 9 && (
+              <EditIconCommon
+                onClick={() => {
+                  searchDetail(record.id!);
+                  setIsEditModal(() => true);
+                  setIsOpenAddEditThesisModal(true);
+                }}
+              />
+            )}
+
             {record.status === 3 && (
               <CommentIconCommon
                 onClick={() => {
