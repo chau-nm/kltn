@@ -1,7 +1,8 @@
-import { DatePicker, Form, Row } from "antd";
+import { DatePicker, Form, Input, Row, message } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { ColumnType } from "antd/es/table";
+import { type ColumnType } from "antd/es/table";
 import { useContext, useState } from "react";
+import { useMutation } from "react-query";
 import { dateDisplay, getColorStatus } from "~/common/util";
 import ThesisTargetModal from "~/components/ThesisTargetModal";
 import ButtonCommon from "~/components/common/ButtonCommon";
@@ -9,15 +10,14 @@ import ModalCommon from "~/components/common/ModalCommon";
 import TableCommon from "~/components/common/TableCommon";
 import CommonConstants from "~/constants/commonConstants";
 import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
+import * as ThesisDefenseCalendarService from "~/services/thesisDefenseCalendar";
 
 const RegisterThesisDefenseCalendarModal = (): JSX.Element => {
   const {
-    // isOpenRegisterThesis,
     isOpenRegisterThesisDefenseCalendarModal,
     setIsOpenRegisterThesisDefenseCalendarModal,
-    listThesisSelectedForPreview,
-    setlistThesisSelectedForPreview,
   } = useContext(ThesisConsoleContext);
+  const [thesisList, setThesisList] = useState<ThesisModel[]>([]);
 
   const [form] = useForm();
 
@@ -73,23 +73,54 @@ const RegisterThesisDefenseCalendarModal = (): JSX.Element => {
     },
   ];
 
+  const handleFinish = (): void => {
+    void form.validateFields().then(() => {
+      const thesisReviewCalendar: ThesisDefenseCalendar[] = thesisList.map(
+        (thesis) => {
+          return {
+            thesisId: thesis.id,
+            timestamp: form.getFieldValue("time").toDate().getTime(),
+            createdAt: new Date().getTime(),
+            isDeleted: false,
+            updatedAt: new Date().getTime(),
+            ...form.getFieldsValue(),
+          };
+        }
+      );
+      insertDefenseCalendarList.mutate(thesisReviewCalendar);
+    });
+  };
+
+  const insertDefenseCalendarList = useMutation(
+    ThesisDefenseCalendarService.insertList,
+    {
+      onSuccess: (data) => {
+        if (data) {
+          void message.success("Thêm lịch bảo vệ thành công");
+          handleClose();
+        }
+      },
+    }
+  );
+
+  const handleClose = (): void => {
+    setThesisList([]);
+    setIsOpenRegisterThesisDefenseCalendarModal(false);
+  };
+
+  const layoutConfig = {
+    labelCol: { span: 1 },
+    wrapperCol: { offset: 2 },
+  };
+
   return (
     <ModalCommon
       title="Thêm lịch bảo vệ"
       open={isOpenRegisterThesisDefenseCalendarModal}
-      onCancel={() => {
-        setlistThesisSelectedForPreview([]);
-        setIsOpenRegisterThesisDefenseCalendarModal(false);
-      }}
+      onCancel={handleClose}
       footer={[
-        <ButtonCommon
-          key={1}
-          value="Đóng"
-          onClick={() => {
-            setIsOpenRegisterThesisDefenseCalendarModal(false);
-          }}
-        />,
-        <ButtonCommon key={2} value="Lưu" />,
+        <ButtonCommon key={1} value="Đóng" onClick={handleClose} />,
+        <ButtonCommon key={2} value="Lưu" onClick={handleFinish} />,
       ]}
     >
       <Form form={form}>
@@ -103,17 +134,33 @@ const RegisterThesisDefenseCalendarModal = (): JSX.Element => {
         </Form.Item>
         <TableCommon
           columns={columns}
-          dataSource={listThesisSelectedForPreview}
-          // handleOnChange={handleChange}
+          dataSource={thesisList}
           rowKey={(record) => record.id!}
         />
-        <Form.Item label="Lịch bảo vệ">
-          <DatePicker.RangePicker />
+        <Form.Item
+          className="mt-5"
+          {...layoutConfig}
+          label="Lịch bảo vệ"
+          name="time"
+          rules={[{ required: true }]}
+        >
+          <DatePicker />
+        </Form.Item>
+        <Form.Item
+          {...layoutConfig}
+          label="Phòng"
+          name="room"
+          rules={[{ required: true }]}
+        >
+          <Input className="w-[150px]" placeholder="Nhập phòng" />
         </Form.Item>
       </Form>
       <ThesisTargetModal
         isOpen={isOpenThesisTargetModal}
         setIsOpen={setIsOpenThesisTargetModal}
+        handleFinish={setThesisList}
+        isDefense={true}
+        isReview={false}
       />
     </ModalCommon>
   );

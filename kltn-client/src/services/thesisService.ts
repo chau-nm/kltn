@@ -29,21 +29,14 @@ export const search = async (
     responseModel.data;
   return notificationsSearchResponse;
 };
-// export const searchByCouncilId = async (
-//   mutationParams: MutationParamsModel<ThesisSearchConditionModel>,
-// ): Promise<SearchResponseModel<ThesisModel[]>> => {
-//   const requestModel: RequestModel<ThesisSearchConditionModel> = {
-//     data: mutationParams.searchCondition,
-//   };
-//   const responseModel: ResponseModel<SearchResponseModel<ThesisModel[]>> =
-//     await http.post(
-//       `${ApiUrlConstants.SEARCH_BY_COUNCIL_ID}${mutationParams.page}?pageSize=${mutationParams.pageSize ?? 20}`,
-//       requestModel,
-//     );
-//   const notificationsSearchResponse: SearchResponseModel<ThesisModel[]> =
-//     responseModel.data;
-//   return notificationsSearchResponse;
-// };
+
+export const searchByCouncilReviewerComment = async (userId: string): Promise<ThesisModel[]> => {
+  const responseModel: ResponseModel<ThesisModel[]> =
+    await http.get(
+      `${ApiUrlConstants.SEARCH_THESIS_BY_COUNCIL_PREVIEWER_COMMENT}?userId=${userId}`,
+    );
+  return responseModel.data;
+}
 
 export const getThesisById = async (
   thesisId: string,
@@ -106,6 +99,11 @@ export const declineInvite = async ({ thesisId, userId }: ThesisUserPayload): Pr
     `${ApiUrlConstants.DECLINE_INVITE_THESIS}?thesisId=${thesisId}&userId=${userId}`,
   );
   return thesisResponse.data;
+}
+
+export const findThesisByReviewerUser = async (userId: string): Promise<ThesisModel[]> => {
+  const responseModel: ResponseModel<ThesisModel[]> = await http.get(`${ApiUrlConstants.FIND_THESIS_BY_REVIEWER_USER}?userId=${userId}`);
+  return responseModel.data;
 }
 
 // export const searchByUser = async (userId: string): Promise<ThesisModel[]> => {

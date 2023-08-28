@@ -5,13 +5,17 @@ import { useMutation, useQuery } from "react-query";
 import AuthConstants from "~/constants/authConstants";
 import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 import * as UserService from "~/services/userServices";
-import * as ThesisOutlineCommentService from "~/services/thesisOutlineCommentService";
 import ButtonCommon from "../../../components/common/ButtonCommon";
 import ModalCommon from "../../../components/common/ModalCommon";
+import * as ThesisReviewerCommentService from "~/services/thesisReviewerCommentService";
 
 const AddCouncilModal = (): JSX.Element => {
-  const { openAddCouncilModal, setOpenAddCouncilModal, thesis } =
-    useContext(ThesisConsoleContext);
+  const {
+    openAddCouncilModal,
+    setOpenAddCouncilModal,
+    thesis,
+    setIsOpenThesisDetailModal,
+  } = useContext(ThesisConsoleContext);
 
   const [teacherSelectOptions, setTeacherSelectOptions] = useState<UserModel[]>(
     []
@@ -29,16 +33,16 @@ const AddCouncilModal = (): JSX.Element => {
   //     await ThesisOutlineCommentService.getCommentByThesisId(thesis?.id ?? "")
   // );
 
-  // const insertCouncils = useMutation(
-  //   ThesisOutlineCommentService.insertCouncils,
-  //   {
-  //     onSuccess: (data: OutlineCommentModel[]) => {
-  //       if (data) {
-  //         void message.success("Thêm hội đồng thành công");
-  //       }
-  //     },
-  //   }
-  // );
+  const insertReviewerMutation = useMutation(
+    ThesisReviewerCommentService.insertReviewer,
+    {
+      onSuccess: (data: ThesisReviewerComment[]) => {
+        if (data) {
+          void message.success("Thêm hội đồng đánh giá đề cương thành công");
+        }
+      },
+    }
+  );
 
   // useEffect(() => {
   //   if (thesisOutlines) {
@@ -60,13 +64,13 @@ const AddCouncilModal = (): JSX.Element => {
   const [form] = useForm();
 
   const handleSave = (): void => {
-    // void form.validateFields().then(() => {
-    //   const insertCouncilsPayload: InsertThesisCouncilPayload = {
-    //     thesisId: thesis?.id,
-    //     councils: form.getFieldValue("councils"),
-    //   };
-    //   insertCouncils.mutate(insertCouncilsPayload);
-    // });
+    void form.validateFields().then(() => {
+      const insertThesisUsersPayload = {
+        thesisId: thesis?.id ?? "",
+        userIds: form.getFieldValue("councils"),
+      };
+      insertReviewerMutation.mutate(insertThesisUsersPayload);
+    });
   };
 
   const handleClose = (): void => {
@@ -93,6 +97,21 @@ const AddCouncilModal = (): JSX.Element => {
     >
       <Spin spinning={false}>
         <Form layout="horizontal" className="w-[600px]" form={form}>
+          <Row justify={"space-between"}>
+            <Col className="text-base">
+              <strong> Đề tài:</strong> {thesis?.topic}
+            </Col>
+            <Col>
+              <span
+                className="text-blue-400 select-none cursor-pointer hover:text-blue-500 duration-300"
+                onClick={() => {
+                  setIsOpenThesisDetailModal(true);
+                }}
+              >
+                Xem chi tiết
+              </span>
+            </Col>
+          </Row>
           <Row className="min-w-[400px]">
             <Col span={5} className="border py-3 px-4">
               <Typography.Text strong>Chọn thành viên hội đồng</Typography.Text>

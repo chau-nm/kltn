@@ -156,15 +156,18 @@ const ThesisTableResult = (): JSX.Element => {
                 setIsOpenAddEditThesisModal(true);
               }}
             />
-            <CommentIconCommon
-              onClick={() => {
-                // searchDetail(record.id!);
-                setOpenAddCommentMinistryModal(true);
-              }}
-            />
+            {record.status === 3 && (
+              <CommentIconCommon
+                onClick={() => {
+                  searchDetail(record.id!);
+                  setOpenAddCommentMinistryModal(true);
+                }}
+              />
+            )}
+
             <CriticalAssessmentIconCommon
               onClick={() => {
-                // searchDetail(record.id!);
+                searchDetail(record.id!);
                 setIsOpenCriticalAssessmentModal(true);
               }}
             />

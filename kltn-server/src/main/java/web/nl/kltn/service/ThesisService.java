@@ -23,7 +23,7 @@ public interface ThesisService {
 
 	List<ThesisDTO> findByUser(String userId);
 
-	List<ThesisDTO> findByCouncil(int page, int pageSize, ThesisSearchCondition thesisSearchCondition);
+	public List<ThesisDTO> findByCouncilReviewerComment(String userId);
 
 	int getTotalByCouncilId(ThesisSearchCondition searchCondition);
 
@@ -38,4 +38,6 @@ public interface ThesisService {
 	void declineInvite(String thesisId, String userId) throws Exception;
 
 	void acceptInvite(String thesisId, String userId) throws Exception;
+
+	List<ThesisDTO> findByReviewerId(String userId);
 }

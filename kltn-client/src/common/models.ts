@@ -107,7 +107,9 @@ interface ThesisModel {
   teachers?: LecturerModel[];
   userCreated?: UserModel;
   fileAttachments?: ThesisDocumentModel[];
-
+  thesisReviewerComments?: ThesisReviewerComment[];
+  reviewCalendar?: ThesisReviewerCalendar;
+  reviewers?: ReviewerModel[];
   status?: number;
   isDeleted?: boolean;
   createdBy?: string;
@@ -123,7 +125,7 @@ interface ThesisSearchConditionModel {
   councilId?: string;
 }
 
-interface ThesisPreviewerComment {
+interface ThesisReviewerComment {
   id?: string;
   thesisId?: string;
   userId?: string;
@@ -200,11 +202,11 @@ interface ReviewerModel {
   writing?: string;
   technicalTerms?: string;
   advantage?: string;
-  defect?: string;
+  limitation?: string;
   conclude?: string;
-  suggestion?: string;
-  criticalAssessmentQuestions?: string[];
-  critialAssessmentScores?: ReviewerScoreModel[];
+  suggestion?: number;
+  questions?: string[];
+  reviewerScores?: ReviewerScoreModel[];
   lecturerMaker?: LecturerModel;
   isDeleted?: boolean;
   createdAt?: number;
@@ -253,7 +255,7 @@ interface DefenseRatingScoreModel {
 
 /** THESIS REPORT CALENDAR */
 interface ThesisDefenseCalendar {
-  id?: string;
+  id?: number;
   thesisId?: string;
   timestamp?: number;
   room?: string;

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="web.nl.kltn.mapper.ReviewerCusMapper">
+
+	<resultMap id="BaseResultMap"
+		type="web.nl.kltn.model.generator.Reviewer">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="thesis_id" jdbcType="VARCHAR"
+			property="thesisId" />
+		<result column="marker" jdbcType="VARCHAR" property="marker" />
+		<result column="page_number" jdbcType="INTEGER"
+			property="pageNumber" />
+		<result column="chapter_number" jdbcType="INTEGER"
+			property="chapterNumber" />
+		<result column="table_number" jdbcType="INTEGER"
+			property="tableNumber" />
+		<result column="chart_number" jdbcType="INTEGER"
+			property="chartNumber" />
+		<result column="drawing_board_number" jdbcType="INTEGER"
+			property="drawingBoardNumber" />
+		<result column="image_number" jdbcType="INTEGER"
+			property="imageNumber" />
+		<result column="document_number" jdbcType="INTEGER"
+			property="documentNumber" />
+		<result column="calculation_software_number" jdbcType="INTEGER"
+			property="calculationSoftwareNumber" />
+		<result column="layout" jdbcType="VARCHAR" property="layout" />
+		<result column="writing" jdbcType="VARCHAR" property="writing" />
+		<result column="technical_terms" jdbcType="VARCHAR"
+			property="technicalTerms" />
+		<result column="advantage" jdbcType="VARCHAR"
+			property="advantage" />
+		<result column="limitation" jdbcType="VARCHAR"
+			property="limitation" />
+		<result column="conclude" jdbcType="VARCHAR"
+			property="conclude" />
+		<result column="suggestion" jdbcType="INTEGER"
+			property="suggestion" />
+		<result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+		<result column="created_at" jdbcType="BIGINT"
+			property="createdAt" />
+		<result column="updated_at" jdbcType="BIGINT"
+			property="updatedAt" />
+	</resultMap>
+
+	<select id="findReviewerByThesisId" resultMap="BaseResultMap">
+		SELECT
+			id,
+			thesis_id,
+			marker,
+			page_number,
+			chapter_number,
+			table_number,
+			chart_number,
+			drawing_board_number,
+			image_number,
+			document_number,
+			calculation_software_number,
+			layout,
+			writing,
+			technical_terms,
+			advantage,
+			limitation,
+			conclude,
+			suggestion,
+			is_deleted,
+			created_at,
+			updated_at
+		FROM
+			reviewer
+		WHERE thesis_id = #{thesisId}
+	</select>
+
+</mapper>

@@ -4,10 +4,10 @@ import ThesisDetailView from "~/components/ThesisDetailView";
 import ProtectionDetailView from "~/components/protectionDetailView";
 import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 import AddCommentMinistryModal from "./AddCommentMinistryModal";
-import AddCouncilModal from "./AddCouncilModal";
+import AddCouncilModal from "./AddReviewerForOutline";
 import AddEditThesisModal from "./AddEditThesisModal";
 import ButtonsComponent from "./ButtonsComponent";
-import CriticalAssessmentModal from "./CriticalAssessmentModal";
+import ReviewerModal from "./ReviewerModal";
 import HeaderMessage from "./HeaderMessage";
 import OpenThesisRegisterModal from "./OpenThesisRegisterModal";
 import ProtectionModal from "./ProtectionModal";
@@ -33,10 +33,14 @@ const ThesisPage = (): JSX.Element => {
       <ThesisTableResult />
       <AddCommentMinistryModal />
       <OpenThesisRegisterModal />
+
       <RegisterThesisPreviewCalendarModal />
       <RegisterThesisDefenseCalendarModal />
+
       <AddEditThesisModal />
-      <CriticalAssessmentModal />
+
+      <ReviewerModal />
+
       <ProtectionModal />
       <AddCouncilModal />
       {thesis != null && (

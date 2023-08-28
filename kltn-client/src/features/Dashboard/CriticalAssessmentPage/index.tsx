@@ -24,8 +24,7 @@ const CriticalAssessmentPage = (): JSX.Element => {
     ["search-thesis-ca-by-user-id"],
     async () => {
       if (user?.userId) {
-        return [];
-        // await ThesisService.searchThesisCAByUserId(user?.userId);
+        return await ThesisService.findThesisByReviewerUser(user.userId);
       }
     }
   );

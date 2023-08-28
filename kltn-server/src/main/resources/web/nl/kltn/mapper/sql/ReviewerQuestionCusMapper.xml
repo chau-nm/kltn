@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="web.nl.kltn.mapper.ReviewerQuestionCusMapper">
+
+	<resultMap id="BaseResultMap"
+		type="web.nl.kltn.model.generator.ReviewerQuestion">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="reviewer_id" jdbcType="VARCHAR"
+			property="reviewerId" />
+		<result column="question" jdbcType="VARCHAR"
+			property="question" />
+		<result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+		<result column="created_at" jdbcType="BIGINT"
+			property="createdAt" />
+		<result column="updated_at" jdbcType="BIGINT"
+			property="updatedAt" />
+	</resultMap>
+
+	<delete id="deleteAllByReviewerId">
+		DELETE FROM reviewer_question WHERE reviewer_id =
+		#{reviewerId}
+	</delete>
+
+	<select id="findReviewerQuestionByReviewerId" resultMap="BaseResultMap">
+		SELECT
+			id,
+			reviewer_id,
+			question,
+			is_deleted,
+			created_at,
+			updated_at
+		FROM
+			reviewer_question
+		WHERE
+			reviewer_id = #{reviewerId}
+	</select>
+</mapper>

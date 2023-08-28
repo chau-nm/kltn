@@ -87,17 +87,66 @@
 		t.is_deleted,
 		t.created_at,
 		t.updated_at
-		FROM thesis_student ts
+		FROM thesis_student
+		ts
 		LEFT JOIN thesis t
 		ON ts.thesis_id = t.id
 		<where>
 			ts.student_id = #{userId}
 			AND ts.is_active = 0
-			AND t.is_deleted = 0
+			AND t.is_deleted =
+			0
 		</where>
 	</select>
 
 	<select id="findThesislecturerInvided" resultMap="Thesis">
+		SELECT
+		t.id,
+		t.topic,
+		t.description,
+		t.school_year,
+		t.semester,
+		t.status,
+		t.created_by,
+		t.is_deleted,
+		t.created_at,
+		t.updated_at
+		FROM
+		thesis_lecturer tl
+		LEFT JOIN thesis t
+		ON tl.thesis_id = t.id
+		<where>
+			tl.lecturer_id = #{userId}
+			AND tl.is_active = 0
+			AND t.is_deleted
+			= 0
+		</where>
+	</select>
+
+	<select id="findStudentThesis" resultMap="Thesis">
+		SELECT
+		t.id,
+		t.topic,
+		t.description,
+		t.school_year,
+		t.semester,
+		t.status,
+		t.created_by,
+		t.is_deleted,
+		t.created_at,
+		t.updated_at
+		FROM thesis_student ts
+		LEFT JOIN thesis t
+		ON ts.thesis_id = t.id
+		<where>
+			ts.student_id = #{userId}
+			AND ts.is_active = 1
+			AND t.status >= 2
+			AND t.is_deleted = 0
+		</where>
+	</select>
+
+	<select id="findlecturerThesis" resultMap="Thesis">
 		SELECT
 		t.id,
 		t.topic,
@@ -114,59 +163,13 @@
 		ON tl.thesis_id = t.id
 		<where>
 			tl.lecturer_id = #{userId}
-			AND tl.is_active = 0
-			AND t.is_deleted = 0
-		</where>
-	</select>
-
-	<select id="findStudentThesis" resultMap="Thesis">
-		SELECT
-			t.id,
-			t.topic,
-			t.description,
-			t.school_year,
-			t.semester,
-			t.status,
-			t.created_by,
-			t.is_deleted,
-			t.created_at,
-			t.updated_at
-		FROM thesis_student ts
-		LEFT JOIN thesis t
-		ON ts.thesis_id = t.id
-		<where>
-			ts.student_id = #{userId}
-			AND ts.is_active = 1
-			AND t.status >= 2
-			AND t.is_deleted = 0
-		</where>
-	</select>
-	
-	<select id="findlecturerThesis" resultMap="Thesis">
-		SELECT
-			t.id,
-			t.topic,
-			t.description,
-			t.school_year,
-			t.semester,
-			t.status,
-			t.created_by,
-			t.is_deleted,
-			t.created_at,
-			t.updated_at
-		FROM thesis_lecturer tl
-		LEFT JOIN thesis t
-		ON tl.thesis_id = t.id
-		<where>
-			tl.lecturer_id = #{userId}
 			AND ts.is_active = 1
 			AND t.status >= 2
 			AND t.is_deleted = 0
 		</where>
 	</select>
 
-	<select id="findByCouncilId" resultMap="ThesisDTO">
-		<bind name="offset" value="(page - 1) * pageSize" />
+	<select id="findByCouncilPreviewerCommentId" resultMap="Thesis">
 		SELECT
 		t.id,
 		t.topic,
@@ -174,21 +177,36 @@
 		t.school_year,
 		t.semester,
 		t.status,
+		t.created_by,
 		t.is_deleted,
 		t.created_at,
 		t.updated_at
 		FROM
 		thesis t
 		LEFT JOIN
-		thesis_outline_comment toc ON t.id = toc.thesis_id
-		<where>
-			<if
-				test="searchCondition != null and searchCondition.councilId != null">
-				AND toc.user_id = #{searchCondition.councilId}
-			</if>
-			AND toc.is_deleted = 0
-		</where>
-		LIMIT #{pageSize} OFFSET #{offset}
+		thesis_reviewer_comment trc ON t.id = trc.thesis_id
+		WHERE
+		trc.user_id = #{userId}
+	</select>
+
+	<select id="findThesisByReviewerMarker" resultMap="Thesis">
+		SELECT
+		t.id,
+		t.topic,
+		t.description,
+		t.school_year,
+		t.semester,
+		t.status,
+		t.created_by,
+		t.is_deleted,
+		t.created_at,
+		t.updated_at
+		FROM
+		thesis t
+		LEFT JOIN
+		reviewer r ON t.id = r.thesis_id
+		WHERE
+		r.marker = #{userId}
 	</select>
 
 	<select id="getTotal" resultType="int">

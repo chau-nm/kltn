@@ -10,8 +10,6 @@ const ButtonsComponent = (): JSX.Element => {
     setIsOpenRegisterThesisModal,
     thesisRegisterCalendar,
     loadThesisRegisterCalendar,
-    listThesisSelected,
-    setOpenAddCouncilModal,
     setIsEditModal,
     setIsOpenAddEditThesisModal,
     setIsOpenRegisterThesisPreviewCalendarModal,
@@ -38,17 +36,6 @@ const ButtonsComponent = (): JSX.Element => {
 
   return (
     <Row justify={"end"} gutter={20} className="py-10">
-      {listThesisSelected.length > 1 && (
-        <Col>
-          <ButtonCommon
-            color="blue"
-            value="Thêm hội đồng chấm"
-            onClick={() => {
-              setOpenAddCouncilModal(true);
-            }}
-          />
-        </Col>
-      )}
       {thesisRegisterCalendar == null ? (
         <Col>
           <ButtonCommon

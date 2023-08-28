@@ -54,6 +54,8 @@ export class ApiUrlConstants {
   public static readonly FIND_MY_THESIS = "/thesis/my-thesis";
   public static readonly ACCEPT_INVITE_THESIS = "/thesis/accept-invite";
   public static readonly DECLINE_INVITE_THESIS = "/thesis/decline-invite";
+  public static readonly SEARCH_THESIS_BY_COUNCIL_PREVIEWER_COMMENT = "/thesis/find-by-council-review-comment";
+  public static readonly FIND_THESIS_BY_REVIEWER_USER = "/thesis/find-by-reviewer";
 
   /** THESIS REPORT CALENDAR */
   public static readonly INSERT_THESIS_REPORT_CALENDAR =
@@ -75,6 +77,14 @@ export class ApiUrlConstants {
   public static readonly INSERT_COUNCILS =
     "/thesis-outline-comment/insert-councils";
 
+  /** THESIS REVIEW COMMENT */
+  public static readonly INSERT_REVIEWER_COMMENT = "/reviewer-comment/insert-reviewer";
+
+  public static readonly UPDATE_REVIEWER_COMMENT = "/reviewer-comment/update";
+
+  public static readonly INSERT_GENERAL = "/reviewer-comment/insert-general";
+
+
   /** THESIS OUTLINE REVIEW */
   public static readonly SEARCH_OURLINE_REVIEW =
     "/thesis-outline-review/search";
@@ -84,6 +94,17 @@ export class ApiUrlConstants {
     "/thesis-user/find-by-thesis";
 
   public static readonly UPDATE_THESIS_USER = "/thesis-user/update";
+
+  /** THESIS REVIEW CALENDAR */
+  public static readonly INSERT_THESIS_REVIEW_CALENDAR_LIST = "/thesis-review-calendar/insert-list";
+
+  /** THESIS DEFENSE CALENDAR */
+  public static readonly INSERT_THESIS_DEFENSE_CALENDAR_LIST = "/thesis-defense-calendar/insert-list";
+
+  /** THESIS REVIEWER */
+  public static readonly INSERT_USER_REVIEWER = "/reviewer/insert-user-reviewer";
+
+  public static readonly UPDATE_REVIEWER = "/reviewer/update"
 
   /** CRITICAL ASSESSMENT */
   public static readonly INSERT_USER_CRITICAL_ASSESSMENT =

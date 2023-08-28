@@ -118,17 +118,10 @@ public class ThesisController {
 		return responseModel;
 	}
 
-	@PostMapping("/find-by-council/{page}")
-	public ResponseModel<SearchResponse<List<ThesisDTO>>> findByCouncil(@PathVariable int page,
-			@RequestParam(defaultValue = "1") int pageSize,
-			@RequestBody(required = false) RequestModel<ThesisSearchCondition> searchConditionRequest) {
-		ResponseModel<SearchResponse<List<ThesisDTO>>> responseModel = new ResponseModel<>();
-		ThesisSearchCondition searchCondition = searchConditionRequest.getData();
-		SearchResponse<List<ThesisDTO>> searchResponse = new SearchResponse<>();
-		searchResponse.setData(thesisService.findByCouncil(page, pageSize, searchCondition));
-		searchResponse.setTotal(thesisService.getTotalByCouncilId(searchCondition));
-
-		responseModel.setData(searchResponse);
+	@GetMapping("/find-by-council-review-comment")
+	public ResponseModel<List<ThesisDTO>> findByCouncilReviewerComment(@RequestParam String userId) {
+		ResponseModel<List<ThesisDTO>> responseModel = new ResponseModel<>();
+		responseModel.setData(thesisService.findByCouncilReviewerComment(userId));
 		return responseModel;
 	}
 	
@@ -163,6 +156,13 @@ public class ThesisController {
 	public ResponseModel<List<ThesisDTO>> searchThesisCriticalAssessmentByUserId(@RequestParam String userId) {
 		ResponseModel<List<ThesisDTO>> responseModel = new ResponseModel<>();
 		responseModel.setData(thesisService.searchThesisCAByUserId(userId));
+		return responseModel;
+	}
+	
+	@GetMapping("/find-by-reviewer")
+	public ResponseModel<List<ThesisDTO>> findByReviewerId(@RequestParam String userId) {
+		ResponseModel<List<ThesisDTO>> responseModel = new ResponseModel<>();
+		responseModel.setData(thesisService.findByReviewerId(userId));
 		return responseModel;
 	}
 }

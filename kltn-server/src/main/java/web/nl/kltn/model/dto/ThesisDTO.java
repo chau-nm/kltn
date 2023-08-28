@@ -3,10 +3,14 @@ package web.nl.kltn.model.dto;
 import java.util.List;
 
 import web.nl.kltn.mapper.LecturerCusMapper;
+import web.nl.kltn.mapper.ReviewerCusMapper;
+import web.nl.kltn.mapper.ReviewerQuestionCusMapper;
+import web.nl.kltn.mapper.ReviewerScoreCusMapper;
 import web.nl.kltn.mapper.StudentCusMapper;
-import web.nl.kltn.mapper.ThesisDocumentCusMapper;
 import web.nl.kltn.mapper.ThesisLecturerCusMapper;
+import web.nl.kltn.mapper.ThesisReviewerCommentCusMapper;
 import web.nl.kltn.mapper.ThesisStudentCusMapper;
+import web.nl.kltn.mapper.UserCusMapper;
 import web.nl.kltn.mapper.generator.UserMapper;
 import web.nl.kltn.model.generator.Thesis;
 import web.nl.kltn.model.generator.ThesisDefenseCalendar;
@@ -20,7 +24,7 @@ public class ThesisDTO extends Thesis {
 	private List<LecturerDTO> teachers;
 	private List<ThesisDocument> fileAttachments;
 	private List<ThesisReviewCommentDTO> thesisReviewerComments;
-	private List<ReviewerDTO> reviewerDTO;
+	private List<ReviewerDTO> reviewers;
 	private List<DefenseRatingDTO> defenseRatings;
 	private ThesisReviewCalendar reviewCalendar;
 	private ThesisDefenseCalendar defenseCalendar;
@@ -65,12 +69,12 @@ public class ThesisDTO extends Thesis {
 		this.thesisReviewerComments = thesisReviewerComments;
 	}
 
-	public List<ReviewerDTO> getReviewerDTO() {
-		return reviewerDTO;
+	public List<ReviewerDTO> getReviewers() {
+		return reviewers;
 	}
 
-	public void setReviewerDTO(List<ReviewerDTO> reviewerDTO) {
-		this.reviewerDTO = reviewerDTO;
+	public void setReviewers(List<ReviewerDTO> reviewers) {
+		this.reviewers = reviewers;
 	}
 
 	public List<DefenseRatingDTO> getDefenseRatings() {
@@ -99,7 +103,9 @@ public class ThesisDTO extends Thesis {
 
 	public void load(Thesis thesis, ThesisStudentCusMapper thesisStudentCusMapper,
 			ThesisLecturerCusMapper thesislecturerCusMapper, StudentCusMapper studentCusMapper,
-			LecturerCusMapper lecturerCusMapper, UserMapper userMapper) {
+			LecturerCusMapper lecturerCusMapper, UserMapper userMapper, UserCusMapper userCusMapper,
+			ThesisReviewerCommentCusMapper thesisReviewerCommentCusMapper, ReviewerCusMapper reviewerCusMapper,
+			ReviewerScoreCusMapper reviewerScoreCusMapper, ReviewerQuestionCusMapper reviewerQuestionCusMapper) {
 		this.setId(thesis.getId());
 		this.setTopic(thesis.getTopic());
 		this.setDescription(thesis.getDescription());
@@ -120,6 +126,14 @@ public class ThesisDTO extends Thesis {
 		if (thesislecturerCusMapper != null) {
 			this.setTeacher(ThesisLecturerDTO.getStudentDTOsByListThesisStudent(
 					thesislecturerCusMapper.getThesisLecturerByThesisId(thesis.getId()), lecturerCusMapper));
+		}
+		if (thesisReviewerCommentCusMapper != null) {
+			this.setThesisReviewerComments(ThesisReviewCommentDTO.getThesisReviewCommentDTOsByEntity(
+					thesisReviewerCommentCusMapper.getThesisCommentByThesisId(thesis.getId()), userCusMapper));
+		}
+		if (reviewerCusMapper != null) {
+			this.setReviewers(ReviewerDTO.getDTOsFromEntities(reviewerCusMapper.findReviewerByThesisId(thesis.getId()),
+					lecturerCusMapper, reviewerScoreCusMapper, studentCusMapper, reviewerQuestionCusMapper));
 		}
 	}
 }

@@ -10,11 +10,9 @@ const OutlineReviewTableResult = (): JSX.Element => {
   const {
     listThesis,
     search,
-    isLoadingList,
-    pagination,
-    handleChange,
-    searchDetail,
     setOpenEditOutlineReviewModal,
+    isLoading,
+    setThesisDetail,
   } = useContext(OutlineReviewContext);
 
   useEffect(() => {
@@ -25,11 +23,6 @@ const OutlineReviewTableResult = (): JSX.Element => {
     {
       title: "STT",
       render: (value, record, index) => {
-        const current = pagination.current;
-        const pageSize = pagination.pageSize;
-        if (current && pageSize) {
-          return pageSize * (current - 1) + index + 1;
-        }
         return index + 1;
       },
       width: 2,
@@ -66,7 +59,7 @@ const OutlineReviewTableResult = (): JSX.Element => {
           <Row justify={"center"}>
             <EditIconCommon
               onClick={() => {
-                record?.id && searchDetail(record?.id);
+                setThesisDetail(record);
                 setOpenEditOutlineReviewModal(true);
               }}
             />
@@ -78,13 +71,8 @@ const OutlineReviewTableResult = (): JSX.Element => {
 
   return (
     <Space direction="vertical" className="w-full mt-10">
-      <Spin spinning={isLoadingList}>
-        <TableCommon
-          columns={columns}
-          dataSource={listThesis}
-          pagination={pagination}
-          handleOnChange={handleChange}
-        />
+      <Spin spinning={isLoading}>
+        <TableCommon columns={columns} dataSource={listThesis} />
       </Spin>
     </Space>
   );

@@ -1,21 +1,25 @@
+import { useEffect, useState, type SetStateAction } from "react";
 import ButtonCommon from "../common/ButtonCommon";
 import ModalCommon from "../common/ModalCommon";
-import { useContext, type SetStateAction, useState } from "react";
 import SearchForm from "./SearchForm";
 
-import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
-import { ColumnType } from "antd/es/table";
 import { Row } from "antd";
-import CommonConstants from "~/constants/commonConstants";
+import { type ColumnType } from "antd/es/table";
 import { dateDisplay } from "~/common/util";
+import CommonConstants from "~/constants/commonConstants";
 
+import { type TableRowSelection } from "antd/es/table/interface";
+import { useMutation } from "react-query";
+import usePagination from "~/hook/usePagination";
+import * as ThesisService from "~/services/thesisService";
 import TableCommon from "../common/TableCommon";
-import { TableRowSelection } from "antd/es/table/interface";
-import ThesisSearchForm from "~/features/Console/ThesisPage/ThesisSearchForm";
 
 type ThesisTargetModalProps = {
   isOpen: boolean;
   setIsOpen: React.Dispatch<SetStateAction<boolean>>;
+  handleFinish: (thesisList: ThesisModel[]) => void;
+  isReview: boolean;
+  isDefense: boolean;
 };
 
 const getColorStatus = (status: number): string => {
@@ -36,16 +40,48 @@ const getColorStatus = (status: number): string => {
 const ThesisTargetModal = ({
   isOpen,
   setIsOpen,
+  handleFinish,
+  isReview,
+  isDefense,
 }: ThesisTargetModalProps): JSX.Element => {
-  const {
-    listThesis,
-    search,
-    pagination,
-    handleChange,
-    listThesisSelectedForPreview,
-    setlistThesisSelectedForPreview,
-  } = useContext(ThesisConsoleContext);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [listThesis, setListThesis] = useState<ThesisModel[]>();
+  const [searchCondition, setSearchCondition] =
+    useState<ThesisSearchConditionModel>({});
+  const searchMutaion = useMutation(ThesisService.search, {
+    onSuccess: (data: SearchResponseModel<ThesisModel[]>) => {
+      if (data) {
+        setListThesis(data.data as ThesisModel[]);
+        setPagination((pagination) => {
+          return {
+            ...pagination,
+            total: data.total,
+          };
+        });
+      }
+    },
+  });
+  const [pagination, setPagination, handleChange] =
+    usePagination<ThesisSearchConditionModel>(
+      searchMutaion.mutate,
+      searchCondition
+    );
+
+  const search = (): void => {
+    const status = isReview ? 4 : isDefense ? 6 : 0;
+    searchMutaion.mutate({
+      page: 1,
+      pageSize: pagination.pageSize,
+      searchCondition: {
+        ...searchCondition,
+        status
+      },
+    });
+  };
+
+  useEffect(() => {
+    search();
+  }, []);
 
   const columns: Array<ColumnType<ThesisModel>> = [
     {
@@ -113,10 +149,6 @@ const ThesisTargetModal = ({
     newSelectedRowKeys: React.Key[]
   ): void => {
     setSelectedRowKeys(newSelectedRowKeys);
-    const temp: ThesisModel[] = listThesis.filter((thesis) =>
-      newSelectedRowKeys.includes(thesis.id!)
-    );
-    setlistThesisSelectedForPreview(temp);
   };
 
   const rowSelection: TableRowSelection<ThesisModel> = {
@@ -134,20 +166,35 @@ const ThesisTargetModal = ({
     <ModalCommon
       title="Chọn luận văn"
       open={isOpen}
-      onCancel={() => setIsOpen(false)}
+      onCancel={() => {
+        setIsOpen(false);
+      }}
       footer={[
-        <ButtonCommon key={1} onClick={() => setIsOpen(false)} value="Đóng" />,
+        <ButtonCommon
+          key={1}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+          value="Đóng"
+        />,
         <ButtonCommon
           key={2}
           onClick={() => {
-            setSelectedRowKeys([]);
+            const temp: ThesisModel[] | undefined = listThesis?.filter(
+              (thesis) => selectedRowKeys.includes(thesis.id!)
+            );
+            handleFinish(temp ?? []);
             setIsOpen(false);
           }}
           value="Hoàn tất"
         />,
       ]}
     >
-      <ThesisSearchForm />
+      <SearchForm
+        search={search}
+        searchCondition={searchCondition}
+        setSearchCondition={setSearchCondition}
+      />
       <TableCommon
         rowSelection={{ ...rowSelection }}
         columns={columns}

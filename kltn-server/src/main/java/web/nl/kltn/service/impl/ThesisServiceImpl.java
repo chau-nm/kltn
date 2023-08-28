@@ -10,16 +10,25 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import web.nl.kltn.mapper.LecturerCusMapper;
+import web.nl.kltn.mapper.ReviewerCusMapper;
+import web.nl.kltn.mapper.ReviewerQuestionCusMapper;
+import web.nl.kltn.mapper.ReviewerScoreCusMapper;
 import web.nl.kltn.mapper.StudentCusMapper;
 import web.nl.kltn.mapper.ThesisCusMapper;
 import web.nl.kltn.mapper.ThesisDocumentCusMapper;
 import web.nl.kltn.mapper.ThesisLecturerCusMapper;
+import web.nl.kltn.mapper.ThesisReviewerCommentCusMapper;
 import web.nl.kltn.mapper.ThesisStudentCusMapper;
+import web.nl.kltn.mapper.UserCusMapper;
 import web.nl.kltn.mapper.generator.LecturerMapper;
+import web.nl.kltn.mapper.generator.ReviewerMapper;
+import web.nl.kltn.mapper.generator.ReviewerQuestionMapper;
+import web.nl.kltn.mapper.generator.ReviewerScoreMapper;
 import web.nl.kltn.mapper.generator.StudentMapper;
 import web.nl.kltn.mapper.generator.ThesisDocumentMapper;
 import web.nl.kltn.mapper.generator.ThesisLecturerMapper;
 import web.nl.kltn.mapper.generator.ThesisMapper;
+import web.nl.kltn.mapper.generator.ThesisReviewerCommentMapper;
 import web.nl.kltn.mapper.generator.ThesisStudentMapper;
 import web.nl.kltn.mapper.generator.UserMapper;
 import web.nl.kltn.model.ThesisSearchCondition;
@@ -52,6 +61,9 @@ public class ThesisServiceImpl implements ThesisService {
 	@Autowired
 	private UserMapper userMapper;
 
+	@Autowired
+	private UserCusMapper userCusMapper;
+
 	/**
 	 * Student
 	 */
@@ -65,9 +77,9 @@ public class ThesisServiceImpl implements ThesisService {
 	 * Lecturer
 	 */
 	@Autowired
-	private LecturerMapper LecturerMapper;
+	private LecturerMapper lecturerMapper;
 	@Autowired
-	private LecturerCusMapper LecturerCusMapper;
+	private LecturerCusMapper lecturerCusMapper;
 
 	/**
 	 * Thesis Student
@@ -87,6 +99,42 @@ public class ThesisServiceImpl implements ThesisService {
 	@Autowired
 	private ThesisLecturerCusMapper thesisLecturerCusMapper;
 
+	/**
+	 * Thesis Reviewer Comment
+	 */
+	@Autowired
+	private ThesisReviewerCommentMapper thesisReviewerCommentMapper;
+
+	@Autowired
+	private ThesisReviewerCommentCusMapper thesisReviewerCommentCusMapper;
+
+	/**
+	 * Reviewer
+	 */
+	@Autowired
+	private ReviewerCusMapper reviewerCusMapper;
+
+	@Autowired
+	private ReviewerMapper reviewerMapper;
+
+	/**
+	 * Reviewer Score
+	 */
+	@Autowired
+	private ReviewerScoreCusMapper reviewerScoreCusMapper;
+
+	@Autowired
+	private ReviewerScoreMapper reviewerScoreMapper;
+
+	/**
+	 * Reviewer Question
+	 */
+	@Autowired
+	private ReviewerQuestionCusMapper reviewerQuestionCusMapper;
+
+	@Autowired
+	private ReviewerQuestionMapper reviewerQuestionMapper;
+
 	@Autowired
 	private ThesisDocumentMapper thesisDocumentMapper;
 
@@ -101,7 +149,8 @@ public class ThesisServiceImpl implements ThesisService {
 		ThesisDTO thesisDTO = new ThesisDTO();
 		Thesis thesisEntity = thesisMapper.selectByPrimaryKey(id);
 		thesisDTO.load(thesisEntity, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper,
-				LecturerCusMapper, userMapper);
+				lecturerCusMapper, userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
+				reviewerScoreCusMapper, reviewerQuestionCusMapper);
 		return thesisDTO;
 	}
 
@@ -110,7 +159,8 @@ public class ThesisServiceImpl implements ThesisService {
 		ThesisDTO thesisDTO = new ThesisDTO();
 		Thesis thesisEntity = thesisMapper.selectByPrimaryKey(id);
 		thesisDTO.load(thesisEntity, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper,
-				LecturerCusMapper, userMapper);
+				lecturerCusMapper, userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
+				reviewerScoreCusMapper, reviewerQuestionCusMapper);
 		return thesisDTO;
 	}
 
@@ -119,8 +169,9 @@ public class ThesisServiceImpl implements ThesisService {
 		List<Thesis> thesisList = thesisCusMapper.findByUser(userId);
 		List<ThesisDTO> thesisDTOList = thesisList.stream().map(thesis -> {
 			ThesisDTO thesisDTO = new ThesisDTO();
-			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, LecturerCusMapper,
-					userMapper);
+			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
+					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
+					reviewerScoreCusMapper, reviewerQuestionCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOList;
@@ -243,8 +294,9 @@ public class ThesisServiceImpl implements ThesisService {
 		List<Thesis> thesisList = thesisCusMapper.search(page, pageSize, thesisSearchCondition);
 		List<ThesisDTO> thesisDTOs = thesisList.stream().map(thesis -> {
 			ThesisDTO thesisDTO = new ThesisDTO();
-			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, LecturerCusMapper,
-					userMapper);
+			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
+					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
+					reviewerScoreCusMapper, reviewerQuestionCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOs;
@@ -256,25 +308,15 @@ public class ThesisServiceImpl implements ThesisService {
 	}
 
 	@Override
-	public List<ThesisDTO> findByCouncil(int page, int pageSize, ThesisSearchCondition thesisSearchCondition) {
-		List<ThesisDTO> thesisDTOs = thesisCusMapper.findByCouncilId(page, pageSize, thesisSearchCondition);
-		thesisDTOs.forEach((thesisDTO -> {
-//            thesisDTO.load(thesisDTO, thesisUserCusMapper, userMapper, thesisDocumentCusMapper);
-//			List<ThesisUser> thesisUsers = thesisUserCusMapper.search(thesisDTO.getId(), 1);
-//			thesisDTO.setStudents(thesisUsers.stream().map(tu -> {
-//				ThesisUserDTO thesisUserDTO = new ThesisUserDTO();
-//				thesisUserDTO.load(tu);
-//				thesisUserDTO.setUser(userMapper.selectByPrimaryKey(tu.getUserId()));
-//				return thesisUserDTO;
-//			}).toList());
-//			ThesisUser teacher = thesisUserCusMapper.search(thesisDTO.getId(), 2).get(0);
-//			if (teacher != null) {
-//				ThesisUserDTO teacherDTO = new ThesisUserDTO();
-//				teacherDTO.load(teacher);
-//				teacherDTO.setUser(userMapper.selectByPrimaryKey(teacher.getUserId()));
-//				thesisDTO.setTeacher(teacherDTO);
-//			}
-		}));
+	public List<ThesisDTO> findByCouncilReviewerComment(String userId) {
+		List<Thesis> thesisList = thesisCusMapper.findByCouncilPreviewerCommentId(userId);
+		List<ThesisDTO> thesisDTOs = thesisList.stream().map(thesis -> {
+			ThesisDTO thesisDTO = new ThesisDTO();
+			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
+					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
+					reviewerScoreCusMapper, reviewerQuestionCusMapper);
+			return thesisDTO;
+		}).toList();
 		return thesisDTOs;
 	}
 
@@ -314,8 +356,9 @@ public class ThesisServiceImpl implements ThesisService {
 		}
 		List<ThesisDTO> thesisDTOs = thesisList.stream().map(thesis -> {
 			ThesisDTO thesisDTO = new ThesisDTO();
-			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, LecturerCusMapper,
-					userMapper);
+			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
+					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
+					reviewerScoreCusMapper, reviewerQuestionCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOs;
@@ -334,8 +377,9 @@ public class ThesisServiceImpl implements ThesisService {
 		}
 		List<ThesisDTO> thesisDTOs = thesisList.stream().map(thesis -> {
 			ThesisDTO thesisDTO = new ThesisDTO();
-			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, LecturerCusMapper,
-					userMapper);
+			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
+					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
+					reviewerScoreCusMapper, reviewerQuestionCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOs;
@@ -367,7 +411,7 @@ public class ThesisServiceImpl implements ThesisService {
 					checkChangeStatus = false;
 				}
 			}
-			
+
 			if (checkChangeStatus) {
 				Thesis thesis = thesisMapper.selectByPrimaryKey(thesisId);
 				thesis.setStatus(2);
@@ -402,5 +446,18 @@ public class ThesisServiceImpl implements ThesisService {
 			TransactionAspectSupport.currentTransactionStatus().isRollbackOnly();
 			throw e;
 		}
+	}
+	
+	@Override
+	public List<ThesisDTO> findByReviewerId(String userId) {
+		List<Thesis> thesisList = thesisCusMapper.findThesisByReviewerMarker(userId);
+		List<ThesisDTO> thesisDTOs = thesisList.stream().map(thesis -> {
+			ThesisDTO thesisDTO = new ThesisDTO();
+			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
+					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
+					reviewerScoreCusMapper, reviewerQuestionCusMapper);
+			return thesisDTO;
+		}).toList();
+		return thesisDTOs;
 	}
 }

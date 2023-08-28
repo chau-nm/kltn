@@ -1,12 +1,12 @@
-import { Col, Form, Input, Radio, Row, Typography } from "antd";
+import { Col, Form, Input, Radio, Row, Typography, message } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useMutation } from "react-query";
+import { v4 } from "uuid";
 import ButtonCommon from "~/components/common/ButtonCommon";
 import ModalCommon from "~/components/common/ModalCommon";
-import { AuthContext } from "~/contexts/AuthContext";
 import { CriticalAssessmentDashboardContext } from "~/contexts/CriticalAssessmentDashboardContext";
-import * as CriticalAssessmentService from "~/services/criticalAssessmentService";
+import * as ReviewerService from "~/services/thesisReviewerService";
 
 const CriticalAssessmentFormModal = (): JSX.Element => {
   const {
@@ -16,39 +16,56 @@ const CriticalAssessmentFormModal = (): JSX.Element => {
     thesis,
   } = useContext(CriticalAssessmentDashboardContext);
 
-  const { user } = useContext(AuthContext);
-
   const [form] = useForm();
 
-  const updateCriticalAssessmentMutation = useMutation(
-    CriticalAssessmentService.update
-  );
+  // const updateCriticalAssessmentMutation = useMutation(
+  //   CriticalAssessmentService.update
+  // );
 
   const handleClose = (): void => {
     setIsOpenCriticalAssessmentFormModal(false);
   };
 
-  const { data: ca, mutate: searchByThesisIdAndMarkerMutate } = useMutation(
-    CriticalAssessmentService.searchByThesisIdAndMarker
-  );
-
-  useEffect(() => {
-    if (thesis?.id && user?.userId)
-      searchByThesisIdAndMarkerMutate({
-        thesisId: thesis?.id,
-        userId: user?.userId,
-      });
-  }, [isOpenCriticalAssessmentFormModal, thesis, user]);
+  // const { data: ca, mutate: searchByThesisIdAndMarkerMutate } = useMutation(
+  //   CriticalAssessmentService.searchByThesisIdAndMarker
+  // );
 
   const handleSave = (): void => {
     void form.validateFields().then(() => {
-      const criticalAssessment: CriticalAssessmentModel = {
-        ...ca,
+      const reviewerScores: ReviewerScoreModel[] =
+        thesis?.students?.map((std) => {
+          return {
+            id: v4(),
+            reviewerId: thesis?.reviewers![0].id,
+            studentId: std.userId,
+            score: form.getFieldValue(`score${std.username ?? ""}`),
+            isDeleted: false,
+            createdAt: new Date().getTime(),
+            updatedAt: new Date().getTime(),
+          };
+        }) ?? [];
+
+      const reviewer: ReviewerModel = {
+        ...thesis?.reviewers![0],
         ...form.getFieldsValue(),
+        questions: [
+          form.getFieldValue("question1"),
+          form.getFieldValue("question2"),
+        ],
+        reviewerScores: [...reviewerScores],
       };
-      updateCriticalAssessmentMutation.mutate(criticalAssessment);
+      updateReviewerMutation.mutate(reviewer);
     });
   };
+
+  const updateReviewerMutation = useMutation(ReviewerService.updateReviewer, {
+    onSuccess: (data: ReviewerModel) => {
+      if (data) {
+        void message.success("Cập nhật đánh giá phản biện thành công");
+        handleClose();
+      }
+    },
+  });
 
   return (
     <ModalCommon
@@ -199,7 +216,7 @@ const CriticalAssessmentFormModal = (): JSX.Element => {
             <Col span={24}>
               <Form.Item
                 label="Kết quả, kết luận đề tài và triển vọng đề tài"
-                name="defect"
+                name="limitation"
                 rules={[{ required: true }]}
               >
                 <Input.TextArea placeholder="Nhập kết quả, kết luận đề tài và triển vọng đề tài" />
@@ -209,10 +226,10 @@ const CriticalAssessmentFormModal = (): JSX.Element => {
         </div>
         <div className="mt-4">
           <Typography.Text className="text-base font-bold">
-            Những ưu điểm của luận văn
+            Những điểm thiếu sót của luận văn:
           </Typography.Text>
           <Form.Item name="conclude" rules={[{ required: true }]}>
-            <Input.TextArea placeholder="Nhập những ưu điểm của luận văn" />
+            <Input.TextArea placeholder="Nhập những điểm thiếu sót của luận văn" />
           </Form.Item>
         </div>
         <div className="mt-4">
@@ -245,12 +262,12 @@ const CriticalAssessmentFormModal = (): JSX.Element => {
           </Typography.Text>
           {thesis?.students?.map((std) => {
             return (
-              <Row key={std.id} gutter={30}>
+              <Row key={std.userId} gutter={30}>
                 <Col span={5}>
-                  <span>Mã số sinh viên: {std.user?.username}</span>
+                  <span>Mã số sinh viên: {std.username}</span>
                 </Col>
                 <Col span={5}>
-                  <span>Họ và tên: {std.user?.fname}</span>
+                  <span>Họ và tên: {std.fname}</span>
                 </Col>
                 <Col>
                   <Row gutter={30}>
@@ -258,7 +275,7 @@ const CriticalAssessmentFormModal = (): JSX.Element => {
                       <span>Điểm số</span>
                     </Col>
                     <Col>
-                      <Form.Item name={`score${std.user?.username ?? ""}`}>
+                      <Form.Item name={`score${std.username ?? ""}`}>
                         <Input
                           type="number"
                           placeholder="Điểm số sinh viên 1"
