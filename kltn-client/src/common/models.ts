@@ -109,6 +109,7 @@ interface ThesisModel {
   fileAttachments?: ThesisDocumentModel[];
   thesisReviewerComments?: ThesisReviewerComment[];
   reviewCalendar?: ThesisReviewerCalendar;
+  defenseCalendar?: ThesisDefenseCalendar;
   reviewers?: ReviewerModel[];
   status?: number;
   isDeleted?: boolean;

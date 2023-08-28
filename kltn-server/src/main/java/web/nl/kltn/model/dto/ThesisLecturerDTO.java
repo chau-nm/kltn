@@ -37,7 +37,6 @@ public class ThesisLecturerDTO extends ThesisLecturer {
 		this.setCreatedAt(thesislecturer.getCreatedAt());
 		this.setUpdatedAt(thesislecturer.getUpdatedAt());
 		if (lecturerCusMapper != null) {
-			System.out.println(lecturerCusMapper.getLecturerByUserId(thesislecturer.getLecturerId()).getUserId());
 			this.setLecturer(lecturerCusMapper.getLecturerByUserId(thesislecturer.getLecturerId()));
 		}
  	}
