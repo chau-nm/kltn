@@ -33,29 +33,14 @@ const ThesisSearchForm = (): JSX.Element => {
       >
         <Input />
       </Form.Item>
-      <Row gutter={30}>
+      <Row>
         <Col span={12}>
-          <Form.Item
-            label="Trạng thái"
-            name="status"
-            labelCol={{ span: 4 }}
-            labelAlign="left"
-            wrapperCol={{ span: 24 }}
-          >
-            <Select>
-              {CommonConstants.THESIS_STATUS.map((ts) => {
-                return <Select.Option key={ts.value}>{ts.text}</Select.Option>;
-              })}
-            </Select>
-          </Form.Item>
-        </Col>
-        <Col span={6}>
           <Form.Item
             label="Năm"
             name="year"
             labelCol={{ span: 4 }}
             labelAlign="left"
-            wrapperCol={{ span: 24 }}
+            wrapperCol={{ span: 10 }}
           >
             <DatePicker picker="year" className="w-full" />
           </Form.Item>
