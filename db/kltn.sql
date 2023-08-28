@@ -11,7 +11,7 @@
  Target Server Version : 100424
  File Encoding         : 65001
 
- Date: 27/08/2023 13:33:08
+ Date: 28/08/2023 09:11:31
 */
 
 SET NAMES utf8mb4;
@@ -144,6 +144,7 @@ CREATE TABLE `refresh_token`  (
 -- ----------------------------
 -- Records of refresh_token
 -- ----------------------------
+INSERT INTO `refresh_token` VALUES ('22b91b82-e714-4ef6-af38-5502b02501b8', '4d86b324-58a4-4267-87de-6d48edaf0b5b', '2023-09-11 00:00:00', 1693129635371, 1693129635371);
 INSERT INTO `refresh_token` VALUES ('2d779964-fe7d-498d-b4ed-ee7565870560', '12345', '2023-09-11 00:00:00', 1693085958247, 1693085958247);
 INSERT INTO `refresh_token` VALUES ('48faac79-b1a1-4818-9ea7-a90eeded5de5', 'cb6307b7-a15a-4e20-9ae9-9a8c4ab34ad6', '2023-09-11 00:00:00', 1693097518146, 1693097518146);
 INSERT INTO `refresh_token` VALUES ('699e466d-56c1-462b-8185-bda019e6e690', 'c26ad756-8a75-42e7-9b75-f987d621313e', '2023-09-11 00:00:00', 1693091998395, 1693091998395);
@@ -184,6 +185,7 @@ CREATE TABLE `reviewer`  (
 -- ----------------------------
 -- Records of reviewer
 -- ----------------------------
+INSERT INTO `reviewer` VALUES ('f38b233b-deae-4c0a-a8de-87a4ba4a0ede', '26c76325-d289-40a2-b96b-205c707c7ca1', 'cb6307b7-a15a-4e20-9ae9-9a8c4ab34ad6', 1, 1, 1, 1, 1, 1, 1, 1, '1', '1', '1', '1', '1', '1', 1, b'0', 1693181103004, 1693181103004);
 
 -- ----------------------------
 -- Table structure for reviewer_question
@@ -202,6 +204,8 @@ CREATE TABLE `reviewer_question`  (
 -- ----------------------------
 -- Records of reviewer_question
 -- ----------------------------
+INSERT INTO `reviewer_question` VALUES ('4cf61dba-3a22-4fc3-91c3-035a508f691f', 'f38b233b-deae-4c0a-a8de-87a4ba4a0ede', '1', b'0', 1693183272640, 1693183272640);
+INSERT INTO `reviewer_question` VALUES ('5a62fbe9-c562-4157-b8aa-564029f4138c', 'f38b233b-deae-4c0a-a8de-87a4ba4a0ede', '1', b'0', 1693183272637, 1693183272637);
 
 -- ----------------------------
 -- Table structure for reviewer_score
@@ -221,6 +225,8 @@ CREATE TABLE `reviewer_score`  (
 -- ----------------------------
 -- Records of reviewer_score
 -- ----------------------------
+INSERT INTO `reviewer_score` VALUES ('4f1b7846-1ad8-4e97-afc8-68e9cc1be519', 'f38b233b-deae-4c0a-a8de-87a4ba4a0ede', 'c26ad756-8a75-42e7-9b75-f987d621313e', 1, b'0', 1693183272468, 1693183272468);
+INSERT INTO `reviewer_score` VALUES ('6136617b-b398-4c36-a8e1-0df76b50cbe2', 'f38b233b-deae-4c0a-a8de-87a4ba4a0ede', '4d86b324-58a4-4267-87de-6d48edaf0b5b', 1, b'0', 1693183272468, 1693183272468);
 
 -- ----------------------------
 -- Table structure for role
@@ -268,6 +274,7 @@ INSERT INTO `role_user` VALUES ('07dd9d13-464a-4b1d-b3ac-f892c473f2b7', 'c26ad75
 INSERT INTO `role_user` VALUES ('1', '12345', 1, b'0', 0, 0);
 INSERT INTO `role_user` VALUES ('5af35c38-e318-45e1-9aae-8200afee3829', '4d86b324-58a4-4267-87de-6d48edaf0b5b', 4, b'0', 1693089211627, 1693089211627);
 INSERT INTO `role_user` VALUES ('6a782992-62c5-42fa-854d-b51e72e1b35c', 'cb6307b7-a15a-4e20-9ae9-9a8c4ab34ad6', 5, b'0', 1693097507405, 1693097507405);
+INSERT INTO `role_user` VALUES ('92b7e6ca-33eb-4131-af55-148f23cb6466', '74796477-c523-46b2-ad78-96e7659f0468', 4, b'0', 1693123277808, 1693123277808);
 
 -- ----------------------------
 -- Table structure for student
@@ -283,9 +290,10 @@ CREATE TABLE `student`  (
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES ('394bfceb-2ff8-4117-a7a8-3549a2bee33e', '5ca95e1d-a06a-4734-9a8a-428e859d3c9a', 'A');
+INSERT INTO `student` VALUES ('394bfceb-2ff8-4117-a7a8-3549a2bee33e', '4d86b324-58a4-4267-87de-6d48edaf0b5b', 'A');
 INSERT INTO `student` VALUES ('9b186efa-fedd-462a-8934-a97b345a24fd', 'cb6307b7-a15a-4e20-9ae9-9a8c4ab34ad6', 'A');
-INSERT INTO `student` VALUES ('b671232f-12bf-4c52-b83b-5f3fb3635304', 'e022f125-d5cc-4e3c-be94-0f1eb63d2b6b', 'A');
+INSERT INTO `student` VALUES ('b671232f-12bf-4c52-b83b-5f3fb3635304', 'c26ad756-8a75-42e7-9b75-f987d621313e', 'A');
+INSERT INTO `student` VALUES ('cc33224c-1550-49d7-84a5-45dead6175b0', '74796477-c523-46b2-ad78-96e7659f0468', 'A');
 
 -- ----------------------------
 -- Table structure for thesis
@@ -308,14 +316,14 @@ CREATE TABLE `thesis`  (
 -- ----------------------------
 -- Records of thesis
 -- ----------------------------
-INSERT INTO `thesis` VALUES ('26c76325-d289-40a2-b96b-205c707c7ca1', 'asdsa', '<p>asdasd</p>', 2023, 1, 1, 'c26ad756-8a75-42e7-9b75-f987d621313e', b'0', 1693098585247, 1693098585247);
+INSERT INTO `thesis` VALUES ('26c76325-d289-40a2-b96b-205c707c7ca1', 'asdsa', '<p>asdasd</p>', 2023, 1, 6, 'c26ad756-8a75-42e7-9b75-f987d621313e', b'0', 1693098585247, 1693098585247);
 
 -- ----------------------------
 -- Table structure for thesis_defense_calendar
 -- ----------------------------
 DROP TABLE IF EXISTS `thesis_defense_calendar`;
 CREATE TABLE `thesis_defense_calendar`  (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `thesis_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `timestamp` bigint NOT NULL,
   `room` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
@@ -323,11 +331,12 @@ CREATE TABLE `thesis_defense_calendar`  (
   `created_at` bigint NOT NULL,
   `updated_at` bigint NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of thesis_defense_calendar
 -- ----------------------------
+INSERT INTO `thesis_defense_calendar` VALUES (1, '26c76325-d289-40a2-b96b-205c707c7ca1', 1693188205504, '123', b'0', 1693188208199, 1693188208199);
 
 -- ----------------------------
 -- Table structure for thesis_document
@@ -356,7 +365,7 @@ DROP TABLE IF EXISTS `thesis_lecturer`;
 CREATE TABLE `thesis_lecturer`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `thesis_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `lecturer` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `lecturer_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `is_active` bit(1) NOT NULL,
   `is_deleted` bit(1) NOT NULL,
   `created_at` bigint NOT NULL,
@@ -367,7 +376,7 @@ CREATE TABLE `thesis_lecturer`  (
 -- ----------------------------
 -- Records of thesis_lecturer
 -- ----------------------------
-INSERT INTO `thesis_lecturer` VALUES (1, '26c76325-d289-40a2-b96b-205c707c7ca1', 'cb6307b7-a15a-4e20-9ae9-9a8c4ab34ad6', b'0', b'0', 1693098586911, 1693098586911);
+INSERT INTO `thesis_lecturer` VALUES (1, '26c76325-d289-40a2-b96b-205c707c7ca1', 'cb6307b7-a15a-4e20-9ae9-9a8c4ab34ad6', b'1', b'0', 1693098586911, 1693098586911);
 
 -- ----------------------------
 -- Table structure for thesis_register_calendar
@@ -402,11 +411,12 @@ CREATE TABLE `thesis_review_calendar`  (
   `created_at` bigint NOT NULL,
   `updated_at` bigint NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of thesis_review_calendar
 -- ----------------------------
+INSERT INTO `thesis_review_calendar` VALUES (1, '26c76325-d289-40a2-b96b-205c707c7ca1', 1692556377873, 1695234777873, b'0', 1693161221817, 1693161221817);
 
 -- ----------------------------
 -- Table structure for thesis_reviewer_comment
@@ -432,6 +442,7 @@ CREATE TABLE `thesis_reviewer_comment`  (
 -- ----------------------------
 -- Records of thesis_reviewer_comment
 -- ----------------------------
+INSERT INTO `thesis_reviewer_comment` VALUES ('e5b28ee0-d780-4f44-be25-191796595561', '26c76325-d289-40a2-b96b-205c707c7ca1', 'cb6307b7-a15a-4e20-9ae9-9a8c4ab34ad6', 'Tốt', 1, NULL, b'0', 1693150929286, 1693150929286);
 
 -- ----------------------------
 -- Table structure for thesis_student
@@ -452,7 +463,7 @@ CREATE TABLE `thesis_student`  (
 -- Records of thesis_student
 -- ----------------------------
 INSERT INTO `thesis_student` VALUES (1, '26c76325-d289-40a2-b96b-205c707c7ca1', 'c26ad756-8a75-42e7-9b75-f987d621313e', b'1', b'0', 1693098586902, 1693098586902);
-INSERT INTO `thesis_student` VALUES (2, '26c76325-d289-40a2-b96b-205c707c7ca1', '4d86b324-58a4-4267-87de-6d48edaf0b5b', b'0', b'0', 1693098586908, 1693098586908);
+INSERT INTO `thesis_student` VALUES (2, '26c76325-d289-40a2-b96b-205c707c7ca1', '4d86b324-58a4-4267-87de-6d48edaf0b5b', b'1', b'0', 1693098586908, 1693098586908);
 
 -- ----------------------------
 -- Table structure for user
@@ -482,7 +493,8 @@ CREATE TABLE `user`  (
 -- ----------------------------
 INSERT INTO `user` VALUES ('12345', '19130001', '$2a$10$U1IUwgSfyFYecbZ0H7VxwuyZGXJFVjhPchnyUy2UYKx8GBgSSQJpy', '', '', '', '2005-05-05', NULL, b'0', b'0', b'0', 0, 0);
 INSERT INTO `user` VALUES ('4d86b324-58a4-4267-87de-6d48edaf0b5b', '19130003', '$2a$10$NtXbAxQ/cZr0vB2ErNL63.tf1chIP.XH1SZMzLQfg/73KslyMuPS6', 'male', 'A', 'A', '2023-08-28', 'A', b'1', b'0', b'0', 1693089211610, 1693089211610);
+INSERT INTO `user` VALUES ('74796477-c523-46b2-ad78-96e7659f0468', '123', '$2a$10$eKoUhs2TbAGT.XGFvBtjCOGVEN2ce/DTgq5bnnUhd0Sv6XcahPgYy', 'male', 'A', 'a', '2023-08-28', 'A', b'1', b'0', b'0', 1693123277779, 1693123277779);
 INSERT INTO `user` VALUES ('c26ad756-8a75-42e7-9b75-f987d621313e', '19130002', '$2a$10$4wF.Gn6CgmGWirjHN1VZs.ok8ios.sOWdJ7J5u2zViSC23zyDnM1K', 'male', 'A', 'T', '2023-08-20', 'CNTT', b'1', b'0', b'0', 1693089076474, 1693089076474);
-INSERT INTO `user` VALUES ('cb6307b7-a15a-4e20-9ae9-9a8c4ab34ad6', 'lecturer1', '$2a$10$xxjAXsbvMy2uqNiWuWECAuV37BUMqydRTpd/YyJwYELufgtsnQHSC', 'male', 'A', 'A', '2023-08-28', 'A', b'1', b'0', b'0', 1693097507392, 1693097507392);
+INSERT INTO `user` VALUES ('cb6307b7-a15a-4e20-9ae9-9a8c4ab34ad6', 'leturer1', '$2a$10$xxjAXsbvMy2uqNiWuWECAuV37BUMqydRTpd/YyJwYELufgtsnQHSC', 'male', 'A', 'A', '2023-08-28', 'A', b'1', b'0', b'0', 1693097507392, 1693097507392);
 
 SET FOREIGN_KEY_CHECKS = 1;
