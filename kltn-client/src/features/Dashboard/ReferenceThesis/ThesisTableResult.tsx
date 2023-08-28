@@ -1,8 +1,8 @@
 import { Row, Spin, Tooltip } from "antd";
 import { type ColumnType } from "antd/es/table";
-import { type TableRowSelection } from "antd/es/table/interface";
+
 import { useContext, useEffect, useState } from "react";
-import { dateDisplay } from "~/common/util";
+
 import {
   CommentIconCommon,
   CriticalAssessmentIconCommon,
@@ -19,17 +19,24 @@ const ThesisTableResult = (): JSX.Element => {
   const {
     listThesis,
     search,
-    setlistThesisSelected,
     isLoadingTableResults,
     pagination,
     handleChange,
-    // searchDetail,
+    searchDetail,
     setIsOpenThesisDetailModal,
   } = useContext(ThesisConsoleContext);
 
+  const [thesisData, setThesisData] = useState<ThesisModel[]>([]);
   useEffect(() => {
     search();
   }, []);
+
+  useEffect(() => {
+    const temp = listThesis.filter(
+      (thesis) => thesis.status == CommonConstants.THESIS_STATUS[9].value
+    );
+    setThesisData(temp);
+  }, [listThesis]);
 
   const columns: Array<ColumnType<ThesisModel>> = [
     {
@@ -78,7 +85,7 @@ const ThesisTableResult = (): JSX.Element => {
             <Tooltip title="Chi tiết luận văn" placement="top">
               <SeeIconCommon
                 onClick={() => {
-                  // searchDetail(record.id!);
+                  searchDetail(record.id!);
                   setIsOpenThesisDetailModal(true);
                 }}
               />
@@ -93,7 +100,7 @@ const ThesisTableResult = (): JSX.Element => {
     <Spin spinning={isLoadingTableResults}>
       <TableCommon
         columns={columns}
-        dataSource={listThesis}
+        dataSource={thesisData}
         pagination={pagination}
         handleOnChange={handleChange}
         rowKey={(record) => record.id!}
