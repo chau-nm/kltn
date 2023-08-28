@@ -206,6 +206,7 @@ public class ThesisServiceImpl implements ThesisService {
 			}
 			List<LecturerDTO> Lecturers = thesisDTO.getTeachers();
 			for (LecturerDTO LecturerDTO : Lecturers) {
+				
 				ThesisLecturer thesisLecturer = new ThesisLecturer();
 				thesisLecturer.setIsActive(false);
 				thesisLecturer.setThesisId(thesisDTO.getId());
@@ -228,7 +229,6 @@ public class ThesisServiceImpl implements ThesisService {
 //            }
 
 			List<ThesisDocument> thesisDocuments = thesisDTO.getFileAttachments();
-
 			for (ThesisDocument thesisDocument : thesisDocuments) {
 				if (thesisDocumentMapper.insert(thesisDocument) <= 0) {
 					throw new Exception("Thêm thất bại");

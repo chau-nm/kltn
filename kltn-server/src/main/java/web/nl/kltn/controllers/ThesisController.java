@@ -69,7 +69,7 @@ public class ThesisController {
 			return responseModel;
 		} catch (Exception e) {
 			responseModel.setStatus(500);
-			responseModel.setMessage(e.getCause().getMessage());
+			responseModel.setMessage(e.getMessage());
 			return responseModel;
 		}
 	}

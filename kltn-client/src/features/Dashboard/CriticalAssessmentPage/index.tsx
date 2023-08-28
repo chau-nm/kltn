@@ -1,4 +1,3 @@
-import { Table } from "antd";
 import { type ColumnType } from "antd/es/table";
 import { useContext, useEffect } from "react";
 import { useQuery } from "react-query";
@@ -9,6 +8,7 @@ import * as ThesisService from "~/services/thesisService";
 import CriticalAssessmentFormModal from "./CriticalAssessmentFormModal";
 import { CriticalAssessmentDashboardContext } from "~/contexts/CriticalAssessmentDashboardContext";
 import ThesisDetailView from "~/components/ThesisDetailView";
+import TableCommon from "~/components/common/TableCommon";
 
 const CriticalAssessmentPage = (): JSX.Element => {
   const { user } = useContext(AuthContext);
@@ -72,7 +72,7 @@ const CriticalAssessmentPage = (): JSX.Element => {
 
   return (
     <PageLayout pageTitle="Phản biện">
-      <Table columns={columns} dataSource={thesisList} />
+      <TableCommon columns={columns} dataSource={thesisList} />
       <CriticalAssessmentFormModal />
       {thesis != null && (
         <ThesisDetailView

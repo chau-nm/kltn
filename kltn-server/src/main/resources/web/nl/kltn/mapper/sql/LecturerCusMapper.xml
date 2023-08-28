@@ -35,7 +35,7 @@
 		LEFT JOIN
 			user u
 		ON l.user_id = u.user_id
-		WHERE l.user_id = #{userId}
+		WHERE u.user_id = #{userId}
 	</select>
 
 </mapper>

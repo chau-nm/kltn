@@ -91,28 +91,31 @@ const AddEditThesisModal = (): JSX.Element => {
 
   useEffect(() => {
     if (isEditModal) {
+      const documentUrl = thesis?.fileAttachments?.filter(
+        (file) => file.type === 2
+      )[0].fileUrl;
       form.setFieldsValue({
-        student1: thesis?.students?.[0]?.user?.userId,
-        student2: thesis?.students?.[1]?.user?.userId,
-        teacher: thesis?.teacher?.user?.userId,
+        student1: thesis?.students?.[0]?.userId,
+        student2: thesis?.students?.[1]?.userId,
+        teacher: thesis?.teachers?.[0]?.userId,
         topic: thesis?.topic,
         desciption: thesis?.description,
-        year: moment(thesis?.year, "YYYY"),
+        year: moment(thesis?.schoolYear, "YYYY"),
         semester: thesis?.semester,
-        documentUrl: thesis?.documentUrl,
+        documentUrl,
       });
       setDesciption(thesis?.description);
-      setDocumentUrl(thesis?.documentUrl);
-      thesis?.documentUrl &&
+      setDocumentUrl(documentUrl);
+      documentUrl &&
         setFile({
           uid: v4(),
-          name: thesis?.documentUrl.substring(
-            thesis?.documentUrl.lastIndexOf("/") + 1,
-            thesis?.documentUrl.indexOf("?")
+          name: documentUrl.substring(
+            documentUrl.lastIndexOf("/") + 1,
+            documentUrl.indexOf("?")
           ),
           status: "done",
-          url: thesis?.documentUrl,
-          response: thesis?.documentUrl,
+          url: documentUrl,
+          response: documentUrl,
         });
     }
   }, [thesis]);
@@ -146,46 +149,41 @@ const AddEditThesisModal = (): JSX.Element => {
     });
     const student1Id = form.getFieldValue("student1");
     const student2Id = form.getFieldValue("student2");
-    const studentIds: string[] = [];
-    student1Id && studentIds.push(student1Id);
-    student2Id && studentIds.push(student2Id);
+    const students = studentSelectOptions.filter(
+      (std) => std.userId === student1Id || std.userId === student2Id
+    );
 
     const teacherId = form.getFieldValue("teacher");
+    const teachers = teacherSelectOptions.filter(
+      (teacher) => teacher.userId === teacherId
+    );
 
     void form.validateFields().then(() => {
       const thesisId = isEditModal ? thesis?.id : v4();
       const thesisReq: ThesisModel = {
         id: thesisId,
         ...form.getFieldsValue(),
-        year: form.getFieldValue("year").year(),
-        students: studentIds.map((stdId) => {
-          return {
+        schoolYear: form.getFieldValue("year").year(),
+        fileAttachments: [
+          {
             id: v4(),
+            fileUrl: documentUrl,
+            type: 2,
             thesisId,
-            userId: stdId,
-            type: 1,
-            status: 1,
-            isDeleted: false,
             createdAt: new Date().getTime(),
+            isDeleted: false,
             updatedAt: new Date().getTime(),
-          } satisfies ThesisUserModel;
-        }),
-        teacher: {
-          id: v4(),
-          thesisId,
-          userId: teacherId,
-          type: 2,
-          status: 1,
-          isDeleted: false,
-          createdAt: new Date().getTime(),
-          updatedAt: new Date().getTime(),
-        } satisfies ThesisUserModel,
-        status: 8,
+          },
+        ],
+        students,
+        teachers,
+        status: 9,
         createdAt: new Date().getTime(),
         updatedAt: new Date().getTime(),
         userCreated: user,
         createdBy: user?.userId,
         isDeleted: false,
+        teacher: undefined,
       };
       if (isEditModal) {
         updateThesisMutation.mutate(thesisReq);

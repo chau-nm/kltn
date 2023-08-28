@@ -151,7 +151,7 @@ const ThesisTableResult = (): JSX.Element => {
             </Tooltip>
             <EditIconCommon
               onClick={() => {
-                // searchDetail(record.id!);
+                searchDetail(record.id!);
                 setIsEditModal(() => true);
                 setIsOpenAddEditThesisModal(true);
               }}

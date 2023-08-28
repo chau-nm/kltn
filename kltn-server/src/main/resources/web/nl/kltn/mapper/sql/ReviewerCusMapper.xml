@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="web.nl.kltn.mapper.ReviewerCusMapper">
 
-	<resultMap id="BaseResultMap"
+	<resultMap id="Reviewer"
 		type="web.nl.kltn.model.generator.Reviewer">
 		<id column="id" jdbcType="VARCHAR" property="id" />
 		<result column="thesis_id" jdbcType="VARCHAR"
@@ -43,7 +43,7 @@
 			property="updatedAt" />
 	</resultMap>
 
-	<select id="findReviewerByThesisId" resultMap="BaseResultMap">
+	<select id="findReviewerByThesisId" resultMap="Reviewer">
 		SELECT
 			id,
 			thesis_id,
