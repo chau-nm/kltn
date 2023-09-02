@@ -307,19 +307,16 @@ export const PDFDefensePreview: React.FC = () => {
                     <View style={styles.tableCell}>
                       <Text style={styles.value}>{student.fullName}</Text>
                     </View>
-                    <View style={styles.tableCell}>
+                    <View style={styles.tableCellMark}>
                       <Text style={styles.value}>{student.mark}</Text>
                     </View>
-                    <View style={styles.tableCell}>
+                    <View style={styles.tableCellMark}>
                       <Text style={styles.value}>{student.mark}</Text>
                     </View>
-                    <View style={styles.tableCell}>
+                    <View style={styles.tableCellMark}>
                       <Text style={styles.value}>{student.mark}</Text>
                     </View>
-                    <View style={styles.tableCell}>
-                      <Text style={styles.value}>{student.mark}</Text>
-                    </View>
-                    <View style={styles.tableCell}>
+                    <View style={styles.tableCellMark}>
                       <Text style={styles.value}>{student.mark}</Text>
                     </View>
                   </View>
