@@ -323,3 +323,33 @@ interface StudentPDFReview {
   fullName: string | undefined;
   mark: number | undefined;
 }
+
+interface PDFDefenseProps {
+  projectName: string | undefined;
+  supervisor: string | undefined;
+  numberOfPages: number | undefined;
+  numberOfChapters: number | undefined;
+  numberOfTables: number | undefined;
+  numberOfCharts: number | undefined;
+  numberOfIllustrations: number | undefined;
+  numberOfImages: number | undefined;
+  numberOfReferences: number | undefined;
+  numberOfSoftware: number | undefined;
+  layout: string | undefined;
+  writingStyle: string | undefined;
+  technicalTerms: string | undefined;
+  advantages: string | undefined;
+  resultsAndConclusion: string | undefined;
+  prospects: string | undefined;
+  shortcomings: string | undefined;
+  protection: number | undefined;
+  questions: string[] | undefined;
+  studentsData: StudentPDFDefense[] | undefined;
+}
+
+interface StudentPDFDefense {
+  STT: string;
+  MSSV: string | undefined;
+  fullName: string | undefined;
+  mark: number | undefined;
+}

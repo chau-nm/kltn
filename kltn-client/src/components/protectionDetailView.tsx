@@ -2,6 +2,8 @@ import { Col, Row, Table, Typography } from "antd";
 import { type SetStateAction } from "react";
 import ButtonCommon from "./common/ButtonCommon";
 import ModalCommon from "./common/ModalCommon";
+import { useContext } from "react";
+import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 
 type ProtectionDetailViewProps = {
   protectionRating?: DefenseRatingModel;
@@ -14,11 +16,7 @@ const ProtectionDetailView = ({
   isOpen,
   setIsOpen,
 }: ProtectionDetailViewProps): JSX.Element => {
-  // const colLayout = {
-  //   span: 5,
-  //   offset: 1,
-  // };
-
+  const { setOpenPreviewDefensePDF } = useContext(ThesisConsoleContext);
   const handleClose = (): void => {
     setIsOpen(false);
   };
@@ -50,7 +48,14 @@ const ProtectionDetailView = ({
   return (
     <ModalCommon
       title={"Chi tiết đánh giá bảo vệ"}
-      footer={[<ButtonCommon key={1} value="Đóng" onClick={handleClose} />]}
+      footer={[
+        <ButtonCommon
+          key={1}
+          value="Preview PDF"
+          onClick={() => setOpenPreviewDefensePDF(true)}
+        />,
+        <ButtonCommon key={1} value="Đóng" onClick={handleClose} />,
+      ]}
       onCancel={handleClose}
       open={isOpen}
     >
