@@ -15,6 +15,7 @@ import ThesisSearchForm from "./ThesisSearchForm";
 import ThesisTableResult from "./ThesisTableResult";
 import RegisterThesisPreviewCalendarModal from "./RegisterThesisPreviewCalendarModal";
 import RegisterThesisDefenseCalendarModal from "./RegisterThesisDefenseCalendarModal";
+import { PDFReviewPreview } from "~/components/common/ReviewPDF";
 
 const ThesisPage = (): JSX.Element => {
   const {
@@ -55,6 +56,7 @@ const ThesisPage = (): JSX.Element => {
         isOpen={isOpenProtectionDetailModal}
         setIsOpen={setIsOpenProtectionDetailModal}
       />
+      <PDFReviewPreview></PDFReviewPreview>
     </Space>
   );
 };

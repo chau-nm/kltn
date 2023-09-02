@@ -20,6 +20,7 @@ const CriticalAssessmentModal = (): JSX.Element => {
     setIsOpenCriticalAssessmentModal,
     thesis,
     setIsOpenThesisDetailModal,
+    setOpenPreviewReviewPDF,
   } = useContext(ThesisConsoleContext);
 
   const handleClose = (): void => {
@@ -105,7 +106,14 @@ const CriticalAssessmentModal = (): JSX.Element => {
       onCancel={handleClose}
       footer={[
         <ButtonCommon key={1} value="Đóng" />,
-        <ButtonCommon key={2} value="Thêm phản biện" />,
+        <ButtonCommon
+          key={2}
+          value="Preview PDF"
+          onClick={() => {
+            setOpenPreviewReviewPDF(true);
+          }}
+        />,
+        <ButtonCommon key={3} value="Thêm phản biện" />,
       ]}
     >
       <div className="min-w-[1000px]">
