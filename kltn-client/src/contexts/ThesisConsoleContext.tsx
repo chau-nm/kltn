@@ -70,6 +70,9 @@ interface ThesisConsoleContextInterface {
   isOpenPreviewReviewPDF: boolean;
   setOpenPreviewReviewPDF: React.Dispatch<SetStateAction<boolean>>;
 
+  isOpenPreviewDefensePDF: boolean;
+  setOpenPreviewDefensePDF: React.Dispatch<SetStateAction<boolean>>;
+
   thesisRegisterCalendar: ThesisRegisterCalendarModel | undefined;
   loadThesisRegisterCalendar: () => void;
 
@@ -140,6 +143,9 @@ const initThesisConsoleContextInerface: ThesisConsoleContextInterface = {
 
   isOpenPreviewReviewPDF: false,
   setOpenPreviewReviewPDF: () => null,
+
+  isOpenPreviewDefensePDF: false,
+  setOpenPreviewDefensePDF: () => null,
 
   thesisRegisterCalendar: undefined,
   loadThesisRegisterCalendar: () => {},
@@ -219,6 +225,9 @@ export const ThesisConsoleProvider = ({
   const [isEditModal, setIsEditModal] = useState<boolean>(false);
 
   const [isOpenPreviewReviewPDF, setOpenPreviewReviewPDF] =
+    useState<boolean>(false);
+
+  const [isOpenPreviewDefensePDF, setOpenPreviewDefensePDF] =
     useState<boolean>(false);
 
   const viewThesisRegisterCalendarMutation = useMutation(
@@ -346,6 +355,9 @@ export const ThesisConsoleProvider = ({
 
         isOpenPreviewReviewPDF,
         setOpenPreviewReviewPDF,
+
+        isOpenPreviewDefensePDF,
+        setOpenPreviewDefensePDF,
 
         search,
         searchCondition,
