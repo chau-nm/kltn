@@ -186,7 +186,7 @@ const ThesisTableResult = (): JSX.Element => {
             />
             <ProtectedIconCommon
               onClick={() => {
-                // searchDetail(record.id!);
+                searchDetail(record.id!);
                 setIsOpenProtectionModal(true);
               }}
             />

@@ -29,4 +29,7 @@ public interface ThesisCusMapper {
 	public List<Thesis> findLecturerThesis(String userId);
 	
 	public List<Thesis> findThesisByReviewerMarker(String userId);
+	
+	public List<Thesis> findThesisByDefenseMarker(String userId);
+	
 }

@@ -2,13 +2,17 @@ package web.nl.kltn.model.dto;
 
 import java.util.List;
 
+import web.nl.kltn.mapper.DefenseRatingCusMapper;
+import web.nl.kltn.mapper.DefenseRatingScoreCusMapper;
 import web.nl.kltn.mapper.LecturerCusMapper;
 import web.nl.kltn.mapper.ReviewerCusMapper;
 import web.nl.kltn.mapper.ReviewerQuestionCusMapper;
 import web.nl.kltn.mapper.ReviewerScoreCusMapper;
 import web.nl.kltn.mapper.StudentCusMapper;
+import web.nl.kltn.mapper.ThesisDefenseCalendarCusMapper;
 import web.nl.kltn.mapper.ThesisDocumentCusMapper;
 import web.nl.kltn.mapper.ThesisLecturerCusMapper;
+import web.nl.kltn.mapper.ThesisReviewCalendarCusMapper;
 import web.nl.kltn.mapper.ThesisReviewerCommentCusMapper;
 import web.nl.kltn.mapper.ThesisStudentCusMapper;
 import web.nl.kltn.mapper.UserCusMapper;
@@ -107,7 +111,10 @@ public class ThesisDTO extends Thesis {
 			LecturerCusMapper lecturerCusMapper, UserMapper userMapper, UserCusMapper userCusMapper,
 			ThesisReviewerCommentCusMapper thesisReviewerCommentCusMapper, ReviewerCusMapper reviewerCusMapper,
 			ReviewerScoreCusMapper reviewerScoreCusMapper, ReviewerQuestionCusMapper reviewerQuestionCusMapper,
-			ThesisDocumentCusMapper thesisDocumentCusMapper) {
+			ThesisDocumentCusMapper thesisDocumentCusMapper, DefenseRatingCusMapper defenseRatingCusMapper,
+			DefenseRatingScoreCusMapper defenseRatingScoreCusMapper,
+			ThesisReviewCalendarCusMapper thesisReviewCalendarCusMapper,
+			ThesisDefenseCalendarCusMapper thesisDefenseCalendarCusMapper) {
 		this.setId(thesis.getId());
 		this.setTopic(thesis.getTopic());
 		this.setDescription(thesis.getDescription());
@@ -139,6 +146,17 @@ public class ThesisDTO extends Thesis {
 		}
 		if (thesisDocumentCusMapper != null) {
 			this.setFileAttachments(thesisDocumentCusMapper.getFileAttachmentsByThesisId(thesis.getId()));
+		}
+		if (defenseRatingCusMapper != null) {
+			this.setDefenseRatings(
+					DefenseRatingDTO.getDTOsFromEntities(defenseRatingCusMapper.findByThesisId(thesis.getId()),
+							lecturerCusMapper, defenseRatingScoreCusMapper, studentCusMapper));
+		}
+		if (thesisReviewCalendarCusMapper != null) {
+			this.setReviewCalendar(thesisReviewCalendarCusMapper.getByThesisId(thesis.getId()));
+		}
+		if (thesisDefenseCalendarCusMapper != null) {
+			this.setDefenseCalendar(thesisDefenseCalendarCusMapper.getByThesisId(thesis.getId()));
 		}
 	}
 }

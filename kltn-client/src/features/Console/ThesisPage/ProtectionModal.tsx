@@ -1,15 +1,6 @@
-import {
-  Avatar,
-  Col,
-  DatePicker,
-  Input,
-  Row,
-  Select,
-  Table,
-  Typography,
-} from "antd";
+import { Avatar, Col, Row, Select, Typography, message } from "antd";
 import { useContext, useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { dateTimeDisplay } from "~/common/util";
 import ButtonCommon from "~/components/common/ButtonCommon";
 import ModalCommon from "~/components/common/ModalCommon";
@@ -18,6 +9,8 @@ import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
 import * as UserService from "~/services/userServices";
 // import * as CriticalAssessmentService from "~/services/criticalAssessmentService";
 import { UserOutlined } from "@ant-design/icons";
+import TeacherTargetModal from "~/components/TeacherTargetModal";
+import * as ThesisDefenseRatingService from "~/services/thesisDefenseRatingService";
 
 interface protectionDisplayModal {
   id?: string;
@@ -27,9 +20,8 @@ interface protectionDisplayModal {
 
 const ProtectionModal = (): JSX.Element => {
   const [isEditCAPersonMode, setIsEditCAPersonMode] = useState(false);
-  const [isEditCACalendarMode, setIsEditCACalendarMode] = useState(false);
   const [caPerson, setCaPerson] = useState<protectionDisplayModal[]>([]);
-  const [caCalendar, setCACalendar] = useState<number>();
+  const [openTargetTeacher, setOpenTargetTeacher] = useState<boolean>(false);
 
   const {
     isOpenProtectionModal,
@@ -38,9 +30,6 @@ const ProtectionModal = (): JSX.Element => {
     setIsOpenThesisDetailModal,
     setIsOpenProtectionDetailModal,
   } = useContext(ThesisConsoleContext);
-
-  const defenseCalendar = thesis?.defenseCalendar?.timestamp;
-  const defenseRoom = thesis?.defenseCalendar?.room;
 
   const handleClose = (): void => {
     setIsOpenProtectionModal(false);
@@ -51,19 +40,6 @@ const ProtectionModal = (): JSX.Element => {
     async () =>
       await UserService.getUserByRole(AuthConstants.AUTH_ROLES.TEACHER)
   );
-
-  // const insertUserCriticalAssessment = useMutation(
-  //   CriticalAssessmentService.insertUser,
-  //   {
-  //     onSuccess: (data: ThesisReportCalendarModel) => {
-  //       if (data) {
-  //         message.success("Cập nhật người phản biện thành công");
-  //       } else {
-  //         message.error("Cập nhật người phản biện thất bại");
-  //       }
-  //     },
-  //   }
-  // );
 
   const columns = [
     {
@@ -79,10 +55,6 @@ const ProtectionModal = (): JSX.Element => {
       title: "Thang điểm",
     },
   ];
-
-  const handleOnChangeCalendar = (value: any): void => {
-    setCACalendar(value.toDate().getTime());
-  };
 
   const handleSaveCriticalAssessmentPerson = (): void => {
     if (!thesis?.id || !caPerson) {
@@ -101,6 +73,24 @@ const ProtectionModal = (): JSX.Element => {
     );
   };
 
+  const insertDefenseRatersMutation = useMutation(
+    ThesisDefenseRatingService.insertRaters,
+    {
+      onSuccess: (data) => {
+        if (data) {
+          void message.success("Thêm thành công");
+        }
+      },
+    }
+  );
+
+  const handleAddCouncil = (lecturers: LecturerModel[]): void => {
+    insertDefenseRatersMutation.mutate({
+      thesisId: thesis?.id ?? "",
+      userIds: lecturers.map((l) => l.userId ?? ""),
+    });
+  };
+
   return (
     <ModalCommon
       title={"Nội dung bảo vệ"}
@@ -108,7 +98,13 @@ const ProtectionModal = (): JSX.Element => {
       onCancel={handleClose}
       footer={[
         <ButtonCommon key={1} value="Đóng" />,
-        <ButtonCommon key={2} value="Thêm bảo vệ" />,
+        <ButtonCommon
+          key={2}
+          value="Thêm bảo vệ"
+          onClick={() => {
+            setOpenTargetTeacher(true);
+          }}
+        />,
       ]}
     >
       <div className="min-w-[1000px]">
@@ -130,27 +126,11 @@ const ProtectionModal = (): JSX.Element => {
         <Row gutter={30} className="mt-4" justify={"space-between"}>
           <Col className="text-base">
             <strong> Lịch bảo vệ: </strong>
-            {isEditCACalendarMode ? (
-              <>
-                <DatePicker
-                  showTime
-                  style={{ width: 300 }}
-                  onChange={handleOnChangeCalendar}
-                />
-                <Input
-                  className="ml-2"
-                  placeholder="Nhập phòng"
-                  style={{ width: 300 }}
-                ></Input>
-              </>
-            ) : defenseCalendar && defenseRoom ? (
-              <Row gutter={30}>
-                <Col> {dateTimeDisplay(new Date(defenseCalendar))}</Col>
-                <Col>{defenseRoom}</Col>
-              </Row>
-            ) : (
-              "Chưa có lịch bảo vệ "
-            )}
+            {thesis?.defenseCalendar
+              ? `Ngày: ${dateTimeDisplay(
+                  new Date(thesis.defenseCalendar.timestamp ?? "")
+                )} - Phòng: ${thesis.defenseCalendar.room ?? ""}`
+              : "Chưa có lịch bảo vệ "}
           </Col>
         </Row>
         <Row gutter={30} className="mt-4 mb-4" justify={"space-between"}>
@@ -259,10 +239,15 @@ const ProtectionModal = (): JSX.Element => {
             </Row>
           );
         })}
-        <div className="mt-5">
+        {/* <div className="mt-5">
           <Table columns={columns} />
-        </div>
+        </div> */}
       </div>
+      <TeacherTargetModal
+        isOpen={openTargetTeacher}
+        setIsOpen={setOpenTargetTeacher}
+        handleFinish={handleAddCouncil}
+      />
     </ModalCommon>
   );
 };

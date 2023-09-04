@@ -170,4 +170,11 @@ public class ThesisController {
 		responseModel.setData(thesisService.findByReviewerId(userId));
 		return responseModel;
 	}
+	
+	@GetMapping("/find-by-rater")
+	public ResponseModel<List<ThesisDTO>> findByDefenseRater(@RequestParam String userId) {
+		ResponseModel<List<ThesisDTO>> responseModel = new ResponseModel<>();
+		responseModel.setData(thesisService.findByDefenseRater(userId));
+		return responseModel;
+	}
 }

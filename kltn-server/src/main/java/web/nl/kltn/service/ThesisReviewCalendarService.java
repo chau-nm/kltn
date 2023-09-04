@@ -10,4 +10,6 @@ public interface ThesisReviewCalendarService {
 
 	ThesisReviewCalendar insert(ThesisReviewCalendar thesisReviewCalendar) throws Exception;
 
+	ThesisReviewCalendar findByThesisId(String thesisId);
+
 }

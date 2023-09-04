@@ -7,23 +7,24 @@ import TableCommon from "~/components/common/TableCommon";
 import CommonConstants from "~/constants/commonConstants";
 import { AuthContext } from "~/contexts/AuthContext";
 import { DefenseDashboardContext } from "~/contexts/DefenseDashboardContext";
+import DefenseRatingFormModal from "./DefenseRatingFormModal";
+import * as ThesisService from "~/services/thesisService";
 
 const ProtectionPage = (): JSX.Element => {
   const { user } = useContext(AuthContext);
   const {
-    setIs,
-    setThesis,
     thesis,
+    setThesis,
     setIsOpenThesisDetail,
     isOpenThesisDetail,
+    setIsOpenDefenseForm,
   } = useContext(DefenseDashboardContext);
 
   const { data: thesisList } = useQuery(
     ["search-thesis-ca-by-user-id"],
     async () => {
       if (user?.userId) {
-        // return await ThesisService.findThesisByReviewerUser(user.userId);
-        return [];
+        return await ThesisService.findThesisByDefenseRater(user.userId);
       }
     }
   );
@@ -53,7 +54,10 @@ const ProtectionPage = (): JSX.Element => {
         return (
           <span
             className="text-blue-400 cursor-pointer select-none hover:text-blue-500 duration-300"
-            onClick={() => {}}
+            onClick={() => {
+              setThesis(record);
+              setIsOpenDefenseForm(true);
+            }}
           >
             Đánh giá
           </span>
@@ -65,6 +69,7 @@ const ProtectionPage = (): JSX.Element => {
   return (
     <PageLayout pageTitle="Bảo vệ luận văn">
       <TableCommon columns={columns} dataSource={thesisList} />
+      <DefenseRatingFormModal />
       {thesis != null && (
         <ThesisDetailView
           thesis={thesis}

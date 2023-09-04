@@ -76,7 +76,7 @@ public class ReviewerDTO extends Reviewer {
 		this.setThesisId(reviewer.getThesisId());
 		this.setUpdatedAt(reviewer.getUpdatedAt());
 		this.setWriting(reviewer.getWriting());
-		if (lecturerMaker != null) {
+		if (lecturerCusMapper != null) {
 			this.setlecturerMaker(lecturerCusMapper.getLecturerByUserId(reviewer.getMarker()));
 		}
 		if (reviewerScoreCusMapper != null) {

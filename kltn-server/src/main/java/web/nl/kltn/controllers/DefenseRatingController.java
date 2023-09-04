@@ -15,45 +15,42 @@ import org.springframework.web.bind.annotation.RestController;
 
 import web.nl.kltn.common.RequestModel;
 import web.nl.kltn.common.ResponseModel;
+import web.nl.kltn.model.dto.DefenseRatingDTO;
+import web.nl.kltn.model.dto.ReviewerDTO;
+import web.nl.kltn.model.generator.DefenseRating;
 import web.nl.kltn.service.ProtectionRatingService;
+import web.nl.kltn.service.ThesisDefenseService;
 
 @RestController
-@RequestMapping("/api/protection-rating")
+@RequestMapping("/api/defense-rating")
 public class DefenseRatingController {
-
+	
 	@Autowired
-	private ProtectionRatingService protectionRatingService;
-
-//	@GetMapping("/search-by-thesis-id")
-//	public ResponseModel<List<ProtectionRatingDTO>> searchByThesisId(@RequestParam String thesisId) {
-//		ResponseModel<List<ProtectionRatingDTO>> responseModel = new ResponseModel<>();
-//		responseModel.setData(protectionRatingService.searchByThesisId(thesisId));
-//		return responseModel;
-//	}
-//
-//	@PostMapping("/insert")
-//	public ResponseModel<ProtectionRatingDTO> insert(
-//			@RequestBody RequestModel<ProtectionRatingDTO> protectionRatingRequest) {
-//		ResponseModel<ProtectionRatingDTO> responseModel = new ResponseModel<>();
-//		ProtectionRatingDTO protectionRatingDTO = protectionRatingRequest.getData();
-//		responseModel.setData(protectionRatingService.insert(protectionRatingDTO));
-//		return responseModel;
-//	}
-//
-//	@PutMapping("/update")
-//	public ResponseModel<Boolean> update(@RequestBody RequestModel<ProtectionRatingDTO> protectionRatingRequest) {
-//		ResponseModel<Boolean> responseModel = new ResponseModel<>();
-//		ProtectionRatingDTO protectionRatingDTO = protectionRatingRequest.getData();
-//		protectionRatingService.update(protectionRatingDTO);
-//		responseModel.setData(true);
-//		return responseModel;
-//	}
-//
-//	@Delete("/delete/{id}")
-//	public ResponseModel<Boolean> delete(@PathVariable String id) {
-//		ResponseModel<Boolean> responseModel = new ResponseModel<>();
-//		protectionRatingService.delete(id);
-//		responseModel.setData(true);
-//		return responseModel;
-//	}
+	private ThesisDefenseService defenseService;
+	
+	@PostMapping("/insert-raters")
+	public ResponseModel<List<DefenseRating>> insertDefenseRaters(@RequestParam String thesisId, @RequestBody RequestModel<List<String>> userIdsRequest) {
+		ResponseModel<List<DefenseRating>> responseModel = new ResponseModel<>();
+		List<String> userIds = userIdsRequest.getData();
+		try {
+			responseModel.setData(defenseService.insertDefenseRaters(thesisId, userIds));
+		} catch (Exception e) {
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
+		}
+		return responseModel;
+	}
+	
+	@PutMapping("/update")
+	public ResponseModel<DefenseRatingDTO> update(@RequestBody RequestModel<DefenseRatingDTO> requestModel) {
+		DefenseRatingDTO defenseRatingDTO = requestModel.getData();
+		ResponseModel<DefenseRatingDTO> responseModel = new ResponseModel<>();
+		try {
+			responseModel.setData(defenseService.update(defenseRatingDTO));
+		} catch (Exception e) {
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
+		}
+		return responseModel;
+	}
 }

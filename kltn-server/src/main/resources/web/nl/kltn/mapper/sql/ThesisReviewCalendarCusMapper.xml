@@ -1,0 +1,34 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="web.nl.kltn.mapper.ThesisReviewCalendarCusMapper">
+	<resultMap id="ThesisReviewCalendar"
+		type="web.nl.kltn.model.generator.ThesisReviewCalendar">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="thesis_id" jdbcType="VARCHAR"
+			property="thesisId" />
+		<result column="start_at" jdbcType="BIGINT" property="startAt" />
+		<result column="end_at" jdbcType="BIGINT" property="endAt" />
+		<result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+		<result column="created_at" jdbcType="BIGINT"
+			property="createdAt" />
+		<result column="updated_at" jdbcType="BIGINT"
+			property="updatedAt" />
+	</resultMap>
+	
+	<select id="getByThesisId" resultMap="ThesisReviewCalendar">
+		SELECT
+			id,
+			thesis_id,
+			start_at,
+			end_at,
+			is_deleted,
+			created_at,
+			updated_at
+		FROM
+			thesis_review_calendar
+		WHERE
+			thesis_id = #{thesisId}
+	</select>
+</mapper>

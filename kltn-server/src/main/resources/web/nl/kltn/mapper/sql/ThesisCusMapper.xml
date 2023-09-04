@@ -204,6 +204,26 @@
 		WHERE
 		r.marker = #{userId}
 	</select>
+	
+	<select id="findThesisByDefenseMarker" resultMap="Thesis">
+		SELECT
+		t.id,
+		t.topic,
+		t.description,
+		t.school_year,
+		t.semester,
+		t.status,
+		t.created_by,
+		t.is_deleted,
+		t.created_at,
+		t.updated_at
+		FROM
+		thesis t
+		LEFT JOIN
+		defense_rating dr ON t.id = dr.thesis_id
+		WHERE
+		dr.marker = #{userId}
+	</select>
 
 	<select id="getTotal" resultType="int">
 		SELECT COUNT(id)

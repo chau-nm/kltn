@@ -12,6 +12,7 @@ import { hasCommonValue } from "~/common/util";
 import PageNotFounded from "~/features/PageNotFounded";
 import ThesisConsoleProvider from "~/contexts/ThesisConsoleContext";
 import { CriticalAssessmentDashboardProvider } from "~/contexts/CriticalAssessmentDashboardContext";
+import { DefenseDashboardProvider } from "~/contexts/DefenseDashboardContext";
 
 /** IMPORT PAGE START */
 const LoginPage = lazy(async () => await import("~/features/LoginPage"));
@@ -243,7 +244,9 @@ const useRouteElements = (): React.ReactElement | null => {
           path: path.PROTECTION,
           element: (
             <DashboardLayout>
-              <ProtectionPage />
+              <DefenseDashboardProvider>
+                <ProtectionPage />
+              </DefenseDashboardProvider>
             </DashboardLayout>
           ),
         },

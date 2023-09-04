@@ -10,12 +10,13 @@ import { dateTimeDisplay } from "~/common/util";
 import { type ColumnType } from "antd/es/table";
 import { type TableRowSelection } from "antd/es/table/interface";
 import AuthConstants from "~/constants/authConstants";
+import ButtonCommon from "../common/ButtonCommon";
 
 type TeacherTargetModalProps = {
   isSingle?: boolean;
   isOpen: boolean;
   setIsOpen: React.Dispatch<SetStateAction<boolean>>;
-  handleFinish?: (lecturers: LecturerModel[]) => void;
+  handleFinish: (lecturers: LecturerModel[]) => void;
 };
 
 const TeacherTargetModal = ({
@@ -136,6 +137,20 @@ const TeacherTargetModal = ({
       title={"Chọn giảng viên"}
       open={isOpen}
       onCancel={handleCancel}
+      footer={[
+        <ButtonCommon key={1} value="Đóng" onClick={handleCancel} />,
+        <ButtonCommon
+          key={2}
+          value="Hoàn tất"
+          onClick={() => {
+            const temp: LecturerModel[] | undefined = lecturers?.filter(
+              (lecturer) => selectedRowKeys.includes(lecturer.userId!)
+            );
+            handleFinish(temp ?? []);
+            setIsOpen(false);
+          }}
+        />,
+      ]}
     >
       <SearchForm
         search={search}

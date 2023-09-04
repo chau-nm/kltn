@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import web.nl.kltn.mapper.ThesisReviewCalendarCusMapper;
 import web.nl.kltn.mapper.generator.ThesisMapper;
 import web.nl.kltn.mapper.generator.ThesisReviewCalendarMapper;
 import web.nl.kltn.model.generator.Thesis;
@@ -19,6 +20,9 @@ public class ThesisReviewCalendarServiceImpl implements ThesisReviewCalendarServ
 
 	@Autowired
 	private ThesisReviewCalendarMapper thesisReviewCalendarMapper;
+	
+	@Autowired
+	private ThesisReviewCalendarCusMapper thesisReviewCalendarCusMapper;
 	
 	@Autowired
 	private ThesisMapper thesisMapper;
@@ -50,5 +54,10 @@ public class ThesisReviewCalendarServiceImpl implements ThesisReviewCalendarServ
 			TransactionAspectSupport.currentTransactionStatus().isRollbackOnly();
 			throw e;
 		}
+	}
+	
+	@Override
+	public ThesisReviewCalendar findByThesisId(String thesisId) {
+		return thesisReviewCalendarCusMapper.getByThesisId(thesisId);
 	}
 }

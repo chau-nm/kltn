@@ -111,6 +111,11 @@ export const findThesisByReviewerUser = async (userId: string): Promise<ThesisMo
   return responseModel.data;
 }
 
+export const findThesisByDefenseRater = async (userId: string): Promise<ThesisModel[]> => {
+  const responseModel: ResponseModel<ThesisModel[]> = await http.get(`${ApiUrlConstants.FIND_THESIS_BY_DEFENSE_RATER}?userId=${userId}`);
+  return responseModel.data;
+}
+
 // export const searchByUser = async (userId: string): Promise<ThesisModel[]> => {
 //   const thesisLiseResponse: ResponseModel<ThesisModel[]> = await http.get(
 //     `${ApiUrlConstants.SEARCH_THESIS_BY_USER}?userId=${userId}`,

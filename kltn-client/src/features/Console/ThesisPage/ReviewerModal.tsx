@@ -1,24 +1,23 @@
-import { Col, Row, Select, Table, Typography, message } from "antd";
-import { useContext, useEffect, useState } from "react";
-import { useMutation, useQuery } from "react-query";
+import { Col, Row, Table, Typography, message } from "antd";
+import { type ColumnType } from "antd/es/table";
+import { useContext, useState } from "react";
+import { useMutation } from "react-query";
 import { dateTimeDisplay } from "~/common/util";
+import TeacherTargetModal from "~/components/TeacherTargetModal";
 import ButtonCommon from "~/components/common/ButtonCommon";
 import ModalCommon from "~/components/common/ModalCommon";
-import AuthConstants from "~/constants/authConstants";
-import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
-import * as UserService from "~/services/userServices";
-import * as ReviewerService from "~/services/thesisReviewerService";
 import CommonConstants from "~/constants/commonConstants";
-import { type ColumnType } from "antd/es/table";
+import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
+import * as ReviewerService from "~/services/thesisReviewerService";
 
 const CriticalAssessmentModal = (): JSX.Element => {
-  const [isEditCAPersonMode, setIsEditCAPersonMode] = useState(false);
-  const [caPerson, setCaPerson] = useState<string>();
+  const [openAddCouncilModal, setOpenAddCouncilModal] = useState(false);
 
   const {
     isOpenCriticalAssessmentModal,
     setIsOpenCriticalAssessmentModal,
     thesis,
+    searchDetail,
     setIsOpenThesisDetailModal,
     setOpenPreviewReviewPDF,
   } = useContext(ThesisConsoleContext);
@@ -26,12 +25,6 @@ const CriticalAssessmentModal = (): JSX.Element => {
   const handleClose = (): void => {
     setIsOpenCriticalAssessmentModal(false);
   };
-
-  const { data: teachers } = useQuery(
-    ["load-teacher-select"],
-    async () =>
-      await UserService.getUserByRole(AuthConstants.AUTH_ROLES.TEACHER)
-  );
 
   const columns: Array<ColumnType<ReviewerScoreModel>> = [
     {
@@ -60,44 +53,29 @@ const CriticalAssessmentModal = (): JSX.Element => {
     },
   ];
 
-  useEffect(() => {
-    setCaPerson(thesis?.reviewers![0].marker ?? "");
-  }, []);
-
-  const handleSaveCriticalAssessmentPerson = (): void => {
-    if (!thesis?.id || !caPerson) {
-      console.log(thesis?.id);
-      return;
-    }
-    insertUserReviewerMutation.mutate({
-      thesisId: thesis?.id,
-      userId: caPerson,
-    });
-    setIsEditCAPersonMode(false);
-  };
-
   const insertUserReviewerMutation = useMutation(
     ReviewerService.insertUserReviewer,
     {
       onSuccess: (data: ReviewerModel) => {
         if (data) {
           void message.success("Thêm người phản biện thành công");
+          searchDetail(data.thesisId ?? "");
         }
       },
     }
   );
 
-  const filterOptions = (input: string, option: any): boolean => {
-    return (option?.label?.toString().toLowerCase() ?? "").includes(
-      input.toLowerCase()
-    );
+  const handleAddCouncil = (lecturers: LecturerModel[]): void => {
+    insertUserReviewerMutation.mutate({
+      thesisId: thesis?.id ?? "",
+      userId: lecturers[0].userId ?? "",
+    });
   };
 
   const reviewerCalendarStartTime = thesis?.reviewCalendar?.startAt;
   const reviewerCalendarEndTime = thesis?.reviewCalendar?.endAt;
 
-  const reviewers =
-    teachers?.filter((teacher) => teacher.userId === caPerson) ?? [];
+  const reviewers = thesis?.reviewers;
 
   return (
     <ModalCommon
@@ -105,7 +83,7 @@ const CriticalAssessmentModal = (): JSX.Element => {
       open={isOpenCriticalAssessmentModal}
       onCancel={handleClose}
       footer={[
-        <ButtonCommon key={1} value="Đóng" />,
+        <ButtonCommon key={1} value="Đóng" onClick={handleClose} />,
         <ButtonCommon
           key={2}
           value="Preview PDF"
@@ -113,7 +91,13 @@ const CriticalAssessmentModal = (): JSX.Element => {
             setOpenPreviewReviewPDF(true);
           }}
         />,
-        <ButtonCommon key={3} value="Thêm phản biện" />,
+        <ButtonCommon
+          key={3}
+          value="Thêm phản biện"
+          onClick={() => {
+            setOpenAddCouncilModal(true);
+          }}
+        />,
       ]}
     >
       <div className="min-w-[1000px]">
@@ -145,60 +129,9 @@ const CriticalAssessmentModal = (): JSX.Element => {
         <Row gutter={30} className="mt-4" justify={"space-between"}>
           <Col className="text-base">
             <strong> Người phản biện: </strong>
-            {isEditCAPersonMode ? (
-              <Select
-                style={{ width: 300 }}
-                showSearch
-                onChange={(value) => {
-                  setCaPerson(value);
-                }}
-                placeholder="Nhập mã số giảng viên"
-                filterOption={filterOptions}
-                options={[
-                  ...(teachers?.map((teacher) => {
-                    return {
-                      value: teacher.userId,
-                      label: `${teacher.fname ?? ""} - ${
-                        teacher.username ?? ""
-                      }`,
-                    };
-                  }) ?? []),
-                ]}
-              />
-            ) : reviewers?.length > 0 ? (
-              reviewers[0].fname
-            ) : (
-              "Chưa thêm phản biện"
-            )}
-          </Col>
-          <Col>
-            {isEditCAPersonMode ? (
-              <>
-                <span
-                  className="text-red-400 select-none cursor-pointer hover:text-red-500 duration-300 mx-3"
-                  onClick={() => {
-                    setIsEditCAPersonMode(false);
-                  }}
-                >
-                  Hủy
-                </span>
-                <span
-                  className="text-green-700 select-none cursor-pointer hover:text-green-500 duration-300 mx-3"
-                  onClick={handleSaveCriticalAssessmentPerson}
-                >
-                  Lưu
-                </span>
-              </>
-            ) : (
-              <span
-                className="text-blue-400 select-none cursor-pointer hover:text-blue-500 duration-300"
-                onClick={() => {
-                  setIsEditCAPersonMode(true);
-                }}
-              >
-                Chỉnh sửa
-              </span>
-            )}
+            {(reviewers?.length ?? 0) > 0
+              ? reviewers![0].lecturerMaker?.fname ?? ""
+              : "Chưa thêm phản biện"}
           </Col>
         </Row>
         {thesis?.reviewers![0] ? (
@@ -288,6 +221,12 @@ const CriticalAssessmentModal = (): JSX.Element => {
           "Chưa đánh giá"
         )}
       </div>
+      <TeacherTargetModal
+        isSingle={true}
+        isOpen={openAddCouncilModal}
+        setIsOpen={setOpenAddCouncilModal}
+        handleFinish={handleAddCouncil}
+      />
     </ModalCommon>
   );
 };

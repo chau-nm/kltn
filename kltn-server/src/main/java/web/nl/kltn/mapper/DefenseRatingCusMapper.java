@@ -1,5 +1,9 @@
 package web.nl.kltn.mapper;
 
-public interface DefenseRatingCusMapper {
+import java.util.List;
 
+import web.nl.kltn.model.generator.DefenseRating;
+
+public interface DefenseRatingCusMapper {
+	public List<DefenseRating> findByThesisId(String thesisId);
 }

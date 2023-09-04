@@ -40,4 +40,6 @@ public interface ThesisService {
 	void acceptInvite(String thesisId, String userId) throws Exception;
 
 	List<ThesisDTO> findByReviewerId(String userId);
+
+	List<ThesisDTO> findByDefenseRater(String userId);
 }

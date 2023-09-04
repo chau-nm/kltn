@@ -60,6 +60,7 @@ export class ApiUrlConstants {
   public static readonly DECLINE_INVITE_THESIS = "/thesis/decline-invite";
   public static readonly SEARCH_THESIS_BY_COUNCIL_PREVIEWER_COMMENT = "/thesis/find-by-council-review-comment";
   public static readonly FIND_THESIS_BY_REVIEWER_USER = "/thesis/find-by-reviewer";
+  public static readonly FIND_THESIS_BY_DEFENSE_RATER = "/thesis/find-by-rater";
 
   /** THESIS REPORT CALENDAR */
   public static readonly INSERT_THESIS_REPORT_CALENDAR =
@@ -109,6 +110,11 @@ export class ApiUrlConstants {
   public static readonly INSERT_USER_REVIEWER = "/reviewer/insert-user-reviewer";
 
   public static readonly UPDATE_REVIEWER = "/reviewer/update"
+
+  /** THESIS DEFENSE */
+  public static readonly INSERT_DEFENSE_RATERS = "/defense-rating/insert-raters";
+
+  public static readonly UPDATE_DEFENSE_RATING = "/defense-rating/update"
 
   /** CRITICAL ASSESSMENT */
   public static readonly INSERT_USER_CRITICAL_ASSESSMENT =

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="web.nl.kltn.mapper.DefenseRatingScoreCusMapper">
+
+	<resultMap id="DefenseRatingScore"
+		type="web.nl.kltn.model.generator.DefenseRatingScore">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="dr_id" jdbcType="VARCHAR" property="drId" />
+		<result column="student_id" jdbcType="VARCHAR"
+			property="studentId" />
+		<result column="score_1" jdbcType="DOUBLE" property="score1" />
+		<result column="score_2" jdbcType="DOUBLE" property="score2" />
+		<result column="score_3" jdbcType="DOUBLE" property="score3" />
+		<result column="total_score" jdbcType="DOUBLE"
+			property="totalScore" />
+		<result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+		<result column="created_at" jdbcType="BIGINT"
+			property="createdAt" />
+		<result column="updated_at" jdbcType="BIGINT"
+			property="updatedAt" />
+	</resultMap>
+
+	<select id="findByDefenseRatingId"
+		resultMap="DefenseRatingScore">
+		SELECT
+			id,
+			dr_id,
+			student_id,
+			score_1,
+			score_2,
+			score_3,
+			total_score,
+			is_deleted,
+			created_at,
+			updated_at
+		FROM 
+			defense_rating_score
+		WHERE
+			dr_id = #{drId}
+	</select>
+
+	<delete id="deleteByDrId">
+		DELETE FROM defense_rating_score WHERE dr_id = #{drId}
+	</delete>
+</mapper>

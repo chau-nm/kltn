@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="web.nl.kltn.mapper.ReviewerCusMapper">
+<mapper namespace="web.nl.kltn.mapper.DefenseRatingCusMapper">
 
-	<resultMap id="BaseResultMap"
+	<resultMap id="DefenseRating"
 		type="web.nl.kltn.model.generator.DefenseRating">
 		<id column="id" jdbcType="VARCHAR" property="id" />
 		<result column="thesis_id" jdbcType="VARCHAR"
@@ -25,7 +25,23 @@
 			property="updatedAt" />
 	</resultMap>
 
-	<select id="">
+	<select id="findByThesisId" resultMap="DefenseRating">
+		SELECT
+			id,
+			thesis_id,
+			marker,
+			content_score,
+			analysis_result_score,
+			feedback_lecturer_question_score,
+			council_question_score,
+			behavior_score,
+			is_deleted,
+			created_at,
+			updated_at
+		FROM
+			defense_rating
+		WHERE
+			thesis_id = #{thesisId}
 	</select>
 
 </mapper>

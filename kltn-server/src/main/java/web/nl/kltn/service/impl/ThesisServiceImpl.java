@@ -9,17 +9,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import web.nl.kltn.mapper.DefenseRatingCusMapper;
+import web.nl.kltn.mapper.DefenseRatingScoreCusMapper;
 import web.nl.kltn.mapper.LecturerCusMapper;
 import web.nl.kltn.mapper.ReviewerCusMapper;
 import web.nl.kltn.mapper.ReviewerQuestionCusMapper;
 import web.nl.kltn.mapper.ReviewerScoreCusMapper;
 import web.nl.kltn.mapper.StudentCusMapper;
 import web.nl.kltn.mapper.ThesisCusMapper;
+import web.nl.kltn.mapper.ThesisDefenseCalendarCusMapper;
 import web.nl.kltn.mapper.ThesisDocumentCusMapper;
 import web.nl.kltn.mapper.ThesisLecturerCusMapper;
+import web.nl.kltn.mapper.ThesisReviewCalendarCusMapper;
 import web.nl.kltn.mapper.ThesisReviewerCommentCusMapper;
 import web.nl.kltn.mapper.ThesisStudentCusMapper;
 import web.nl.kltn.mapper.UserCusMapper;
+import web.nl.kltn.mapper.generator.DefenseRatingMapper;
+import web.nl.kltn.mapper.generator.DefenseRatingScoreMapper;
 import web.nl.kltn.mapper.generator.LecturerMapper;
 import web.nl.kltn.mapper.generator.ReviewerMapper;
 import web.nl.kltn.mapper.generator.ReviewerQuestionMapper;
@@ -136,6 +142,36 @@ public class ThesisServiceImpl implements ThesisService {
 	@Autowired
 	private ReviewerQuestionMapper reviewerQuestionMapper;
 
+	/**
+	 * Defense rating
+	 */
+	@Autowired
+	private DefenseRatingMapper defenseRatingMapper;
+
+	@Autowired
+	private DefenseRatingCusMapper defenseRatingCusMapper;
+
+	/**
+	 * Defense rating score
+	 */
+	@Autowired
+	private DefenseRatingScoreMapper defenseRatingScoreMapper;
+
+	@Autowired
+	private DefenseRatingScoreCusMapper defenseRatingScoreCusMapper;
+	
+	/**
+	 * Thesis Review Calendar
+	 */
+	@Autowired
+	private ThesisReviewCalendarCusMapper thesisReviewCalendarCusMapper;
+	
+	/**
+	 * Thesis Defense Calendar
+	 */
+	@Autowired
+	private ThesisDefenseCalendarCusMapper thesisDefenseCalendarCusMapper;
+
 	@Autowired
 	private ThesisDocumentMapper thesisDocumentMapper;
 
@@ -151,7 +187,8 @@ public class ThesisServiceImpl implements ThesisService {
 		Thesis thesisEntity = thesisMapper.selectByPrimaryKey(id);
 		thesisDTO.load(thesisEntity, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper,
 				lecturerCusMapper, userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
-				reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper);
+				reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper, defenseRatingCusMapper,
+				defenseRatingScoreCusMapper, thesisReviewCalendarCusMapper, thesisDefenseCalendarCusMapper);
 		return thesisDTO;
 	}
 
@@ -161,7 +198,8 @@ public class ThesisServiceImpl implements ThesisService {
 		Thesis thesisEntity = thesisMapper.selectByPrimaryKey(id);
 		thesisDTO.load(thesisEntity, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper,
 				lecturerCusMapper, userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
-				reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper);
+				reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper, defenseRatingCusMapper,
+				defenseRatingScoreCusMapper, thesisReviewCalendarCusMapper, thesisDefenseCalendarCusMapper);
 		return thesisDTO;
 	}
 
@@ -172,7 +210,8 @@ public class ThesisServiceImpl implements ThesisService {
 			ThesisDTO thesisDTO = new ThesisDTO();
 			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
 					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
-					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper);
+					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper, defenseRatingCusMapper,
+					defenseRatingScoreCusMapper, thesisReviewCalendarCusMapper, thesisDefenseCalendarCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOList;
@@ -291,7 +330,7 @@ public class ThesisServiceImpl implements ThesisService {
 		try {
 			Thesis thesis = thesisMapper.selectByPrimaryKey(id);
 			thesis.setIsDeleted(true);
-			if (thesisMapper.updateByPrimaryKey(thesis) <=0) {
+			if (thesisMapper.updateByPrimaryKey(thesis) <= 0) {
 				throw new Exception("Không tìm thấy thesis");
 			}
 		} catch (Exception e) {
@@ -307,7 +346,8 @@ public class ThesisServiceImpl implements ThesisService {
 			ThesisDTO thesisDTO = new ThesisDTO();
 			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
 					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
-					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper);
+					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper, defenseRatingCusMapper,
+					defenseRatingScoreCusMapper, thesisReviewCalendarCusMapper, thesisDefenseCalendarCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOs;
@@ -325,7 +365,8 @@ public class ThesisServiceImpl implements ThesisService {
 			ThesisDTO thesisDTO = new ThesisDTO();
 			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
 					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
-					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper);
+					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper, defenseRatingCusMapper,
+					defenseRatingScoreCusMapper, thesisReviewCalendarCusMapper, thesisDefenseCalendarCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOs;
@@ -369,7 +410,8 @@ public class ThesisServiceImpl implements ThesisService {
 			ThesisDTO thesisDTO = new ThesisDTO();
 			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
 					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
-					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper);
+					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper, defenseRatingCusMapper,
+					defenseRatingScoreCusMapper, thesisReviewCalendarCusMapper, thesisDefenseCalendarCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOs;
@@ -390,7 +432,8 @@ public class ThesisServiceImpl implements ThesisService {
 			ThesisDTO thesisDTO = new ThesisDTO();
 			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
 					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
-					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper);
+					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper, defenseRatingCusMapper,
+					defenseRatingScoreCusMapper, thesisReviewCalendarCusMapper, thesisDefenseCalendarCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOs;
@@ -466,7 +509,22 @@ public class ThesisServiceImpl implements ThesisService {
 			ThesisDTO thesisDTO = new ThesisDTO();
 			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
 					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
-					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper);
+					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper, defenseRatingCusMapper,
+					defenseRatingScoreCusMapper, thesisReviewCalendarCusMapper, thesisDefenseCalendarCusMapper);
+			return thesisDTO;
+		}).toList();
+		return thesisDTOs;
+	}
+	
+	@Override
+	public List<ThesisDTO> findByDefenseRater(String userId) {
+		List<Thesis> thesisList = thesisCusMapper.findThesisByDefenseMarker(userId);
+		List<ThesisDTO> thesisDTOs = thesisList.stream().map(thesis -> {
+			ThesisDTO thesisDTO = new ThesisDTO();
+			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
+					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
+					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper, defenseRatingCusMapper,
+					defenseRatingScoreCusMapper, thesisReviewCalendarCusMapper, thesisDefenseCalendarCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOs;

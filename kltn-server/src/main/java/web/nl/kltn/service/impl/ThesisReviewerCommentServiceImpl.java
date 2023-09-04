@@ -43,6 +43,7 @@ public class ThesisReviewerCommentServiceImpl implements ThesisReviewerCommentSe
 				if (reviewerCommentMapper.insert(thesisReviewerComment) <= 0) {
 					throw new Exception("Thêm thất bại");
 				}
+				thesisReviewerComments.add(thesisReviewerComment);
 			}
 			Thesis thesis = thesisMapper.selectByPrimaryKey(thesisId);
 			thesis.setStatus(3);

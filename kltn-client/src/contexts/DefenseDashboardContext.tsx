@@ -26,7 +26,7 @@ export const DefenseDashboardContext = createContext(
   initDefenseDashboarContext
 );
 
-export const CriticalAssessmentDashboardProvider = ({
+export const DefenseDashboardProvider = ({
   children,
 }: React.PropsWithChildren): JSX.Element => {
   const [isOpenDefenseForm, setIsOpenDefenseForm] = useState(false);

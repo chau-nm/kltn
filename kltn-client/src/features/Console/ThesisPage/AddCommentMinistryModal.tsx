@@ -26,7 +26,6 @@ const AddCommentMinistryModal = (): JSX.Element => {
     setOpenAddCommentMinistryModal,
     setIsOpenThesisDetailModal,
     thesis,
-    // setOpenAddCouncilModal,
   } = useContext(ThesisConsoleContext);
   const { user } = useContext(AuthContext);
   const [editorHtml, setEditorHtml] = useState<string>("");
@@ -79,13 +78,31 @@ const AddCommentMinistryModal = (): JSX.Element => {
         <ButtonCommon
           value="Thêm hội đồng đánh giá"
           onClick={() => {
-            // setOpenAddCouncilModal(true);
             setOpenTargetTeacher(true);
           }}
         />
         <ButtonCommon color="blue" value={"Lưu"} onClick={handleSave} />
       </Row>
     );
+  };
+
+  const insertReviewerMutation = useMutation(
+    ThesisReviewerCommentService.insertReviewer,
+    {
+      onSuccess: (data: ThesisReviewerComment[]) => {
+        if (data) {
+          void message.success("Thêm hội đồng đánh giá đề cương thành công");
+        }
+      },
+    }
+  );
+
+  const handleAddCouncil = (lecturers: LecturerModel[]): void => {
+    const insertThesisUsersPayload = {
+      thesisId: thesis?.id ?? "",
+      userIds: lecturers.map((lec) => lec.userId ?? ""),
+    };
+    insertReviewerMutation.mutate(insertThesisUsersPayload);
   };
 
   return (
@@ -143,9 +160,15 @@ const AddCommentMinistryModal = (): JSX.Element => {
                     <Row>
                       {dateTimeDisplay(new Date(comment?.updatedAt as number))}
                     </Row>
-                    <ReactQuillPreviewCommon
-                      content={comment?.comment as string}
-                    ></ReactQuillPreviewCommon>
+                    {comment?.comment ? (
+                      <ReactQuillPreviewCommon
+                        content={comment?.comment ?? ""}
+                      ></ReactQuillPreviewCommon>
+                    ) : (
+                      <Typography.Text type="danger">
+                        Chưa có bình luận
+                      </Typography.Text>
+                    )}
                   </Typography.Text>
                 </Col>
               </Row>
@@ -195,6 +218,7 @@ const AddCommentMinistryModal = (): JSX.Element => {
         isOpen={openTargetTeacher}
         setIsOpen={setOpenTargetTeacher}
         isSingle={true}
+        handleFinish={handleAddCouncil}
       />
     </ModalCommon>
   );
