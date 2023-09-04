@@ -6,6 +6,7 @@
 	<resultMap type="web.nl.kltn.model.dto.LecturerDTO" id="LecturerDTO">
 		<id column="user_id" property="userId" jdbcType="VARCHAR"/>
 		<result column="username" property="username" jdbcType="VARCHAR"/>
+		<result column="password" property="password" jdbcType="VARCHAR"/>
 		<result column="gender" property="gender" jdbcType="VARCHAR"/>
 		<result column="email" property="email" jdbcType="VARCHAR"/>
 		<result column="fname" property="fname" jdbcType="VARCHAR"/>
@@ -15,12 +16,18 @@
 		<result column="is_teacher" property="isTeacher" jdbcType="BIT"/> 
 		<result column="degree" property="degree" jdbcType="VARCHAR"/> 
 		<result column="title" property="title" jdbcType="VARCHAR"/> 
+		<result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+		<result column="created_at" jdbcType="BIGINT"
+			property="createdAt" />
+		<result column="updated_at" jdbcType="BIGINT"
+			property="updatedAt" />
 	</resultMap>
 	
 	<select id="getLecturerByUserId" resultMap="LecturerDTO">
 		SELECT
 			u.user_id,
 			u.username,
+			u.password,
 			u.gender,
 			u.email,
 			u.fname,
@@ -29,13 +36,19 @@
 			u.is_student,
 			u.is_teacher,
 			l.degree,
+			u.is_deleted,
+			u.created_at,
+			u.updated_at,
 			l.title			
 		FROM
 			lecturer l
 		LEFT JOIN
 			user u
 		ON l.user_id = u.user_id
-		WHERE u.user_id = #{userId}
+		WHERE u.user_id = #{userId} AND u.is_deleted = 0
 	</select>
 
+	<delete id="deleteLecturerByUserId">
+		DELETE FROM lecturer WHERE user_id = #{userId}
+	</delete>
 </mapper>

@@ -62,6 +62,11 @@ export const update = async (thesis: ThesisModel): Promise<boolean> => {
   return thesisResponse.data;
 };
 
+export const deleteThesis = async (id: string): Promise<boolean> => {
+  const responseModel: ResponseModel<boolean> = await http.delete(`${ApiUrlConstants.DELETE_THESIS}/${id}`);
+  return responseModel.data;
+}
+
 export const updateStatus = async (
   id: string,
   status: number,

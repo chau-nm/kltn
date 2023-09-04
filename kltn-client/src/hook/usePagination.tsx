@@ -10,7 +10,7 @@ const usePagination = <T extends object>(
   (paginationP: TablePaginationConfig) => void,
 ] => {
   const [pagination, setPagination] = useState<TablePaginationConfig>({
-    pageSize: 2,
+    pageSize: 10,
     current: 1,
   });
 

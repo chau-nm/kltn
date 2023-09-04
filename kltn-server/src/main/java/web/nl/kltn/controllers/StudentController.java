@@ -2,6 +2,7 @@ package web.nl.kltn.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,4 +33,17 @@ public class StudentController {
 		return responseModel;
 	}
 	
+	@PutMapping("/update")
+	public ResponseModel<StudentDTO> update(@RequestBody RequestModel<StudentDTO> requestModel) {
+		StudentDTO studentDTO = requestModel.getData();
+		ResponseModel<StudentDTO> responseModel = new ResponseModel<>();
+		
+		try {
+			responseModel.setData(studentService.update(studentDTO));
+		} catch (Exception e) {
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
+		}
+		return responseModel;
+	}
 }

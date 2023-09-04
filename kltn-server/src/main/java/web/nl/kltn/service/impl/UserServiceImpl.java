@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDTO updateUser(UserDTO newUser) throws Exception {
 		try {
-			User user = null;
+			User user = userMapper.selectByPrimaryKey(newUser.getUserId());
 			user.setEmail(newUser.getEmail());
 			user.setFname(newUser.getFname());
 			user.setBirthday(newUser.getBirthday());
@@ -181,7 +181,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User changpassword(ChangpasswordPayload changpasswordPayload) throws Exception {
-		User user = null;
+		User user = userCusMapper.findByUserId(changpasswordPayload.getUserId());
+		System.out.println(user.getIsStudent());
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		if (passwordEncoder.matches(changpasswordPayload.getOldPassword(), user.getPassword())) {
 			user.setPassword(passwordEncoder.encode(changpasswordPayload.getNewPassword()));
@@ -189,6 +190,21 @@ public class UserServiceImpl implements UserService {
 			return user;
 		} else {
 			throw new Exception("Mật khẩu cũ không đúng");
+		}
+	}
+
+	@Override
+	public boolean delete(String userId) throws Exception {
+		try {
+			User user = userMapper.selectByPrimaryKey(userId);
+			user.setIsDeleted(true);
+			if (userMapper.updateByPrimaryKey(user) <= 0) {
+				throw new Exception("Không tìm thấy user");
+			}
+			return true;
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			throw e;
 		}
 	}
 

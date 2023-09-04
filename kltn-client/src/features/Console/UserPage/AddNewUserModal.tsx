@@ -9,7 +9,7 @@ import {
   message,
 } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { v4 } from "uuid";
 import AuthConstants from "~/constants/authConstants";
@@ -18,6 +18,7 @@ import * as lecturerService from "~/services/lecturerService";
 import * as StudentService from "~/services/studentService";
 import ButtonCommon from "../../../components/common/ButtonCommon";
 import ModalCommon from "../../../components/common/ModalCommon";
+import moment from "moment";
 
 const STUDENT_MODE = 1;
 const TEACHER_MODE = 2;
@@ -28,6 +29,8 @@ const AddNewUserModal = (): JSX.Element => {
     setOpenAddNewUserModal,
     setSearchCondition,
     search,
+    userDetail,
+    isEdit,
   } = useContext(UserConsoleContext);
 
   const [accountMode, setAccountMode] = useState(1);
@@ -39,6 +42,17 @@ const AddNewUserModal = (): JSX.Element => {
       if (data) {
         void message.success("Thêm tài khoản sinh viên thành công");
         clearData();
+        handleClose();
+      }
+    },
+  });
+
+  const editStudentMutation = useMutation(StudentService.update, {
+    onSuccess: (data: StudentModel) => {
+      if (data) {
+        void message.success("Cập nhật thành công");
+        clearData();
+        handleClose();
       }
     },
   });
@@ -48,9 +62,43 @@ const AddNewUserModal = (): JSX.Element => {
       if (data) {
         void message.success("Thêm tài khoản giảng viên thành công");
         clearData();
+        handleClose();
       }
     },
   });
+
+  const editlecturerMutation = useMutation(lecturerService.update, {
+    onSuccess: (data: LecturerModel) => {
+      if (data) {
+        void message.success("Cập nhật thành công");
+        clearData();
+        handleClose();
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (isEdit) {
+      if (userDetail?.isStudent) {
+        setAccountMode(STUDENT_MODE);
+      }
+      if (userDetail?.isTeacher) {
+        setAccountMode(TEACHER_MODE);
+      }
+      form.setFieldsValue({
+        username: userDetail?.username,
+        fname: userDetail?.fname,
+        email: userDetail?.email,
+        gender: userDetail?.gender,
+        birthday: moment(userDetail?.birthday),
+        faculty: userDetail?.faculty,
+        studentClass: (userDetail as StudentModel).studentClass,
+        degree: (userDetail as LecturerModel).degree,
+        title: (userDetail as LecturerModel).title,
+        roles: userDetail?.roles,
+      });
+    }
+  }, [userDetail]);
 
   const clearData = (): void => {
     form.resetFields();
@@ -61,9 +109,11 @@ const AddNewUserModal = (): JSX.Element => {
   const handleSave = (): void => {
     void form.validateFields().then(async () => {
       const user: UserModel = {
-        userId: v4(),
+        userId: isEdit ? userDetail?.userId : v4(),
         username: form.getFieldValue("username"),
-        password: form.getFieldValue("password"),
+        password: isEdit
+          ? userDetail?.password
+          : form.getFieldValue("password"),
         email: form.getFieldValue("email"),
         fname: form.getFieldValue("fname"),
         gender: form.getFieldValue("gender"),
@@ -72,6 +122,9 @@ const AddNewUserModal = (): JSX.Element => {
         faculty: form.getFieldValue("faculty"),
         isStudent: false,
         isTeacher: false,
+        isDeleted: isEdit ? userDetail?.isDeleted : false,
+        createdAt: isEdit ? userDetail?.createdAt : new Date().getTime(),
+        updatedAt: new Date().getTime(),
       };
 
       if (accountMode === STUDENT_MODE) {
@@ -80,7 +133,11 @@ const AddNewUserModal = (): JSX.Element => {
           isStudent: true,
           studentClass: form.getFieldValue("studentClass"),
         };
-        insertStudentMutation.mutate(student);
+        if (isEdit) {
+          editStudentMutation.mutate(student);
+        } else {
+          insertStudentMutation.mutate(student);
+        }
       }
 
       if (accountMode === TEACHER_MODE) {
@@ -90,13 +147,17 @@ const AddNewUserModal = (): JSX.Element => {
           degree: form.getFieldValue("degree"),
           title: form.getFieldValue("title"),
         };
-        insertlecturerMutation.mutate(lecturer);
+        if (isEdit) {
+          editlecturerMutation.mutate(lecturer);
+        } else {
+          insertlecturerMutation.mutate(lecturer);
+        }
       }
     });
   };
 
   const handleClose = (): void => {
-    // clearData();
+    clearData();
     setOpenAddNewUserModal(false);
   };
 
@@ -138,44 +199,50 @@ const AddNewUserModal = (): JSX.Element => {
           >
             <Input type="text" placeholder="Tên đăng nhập" />
           </Form.Item>
-          <Form.Item
-            {...layoutConfig}
-            labelAlign="left"
-            label="Mật khẩu"
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập mật khẩu",
-              },
-            ]}
-          >
-            <Input.Password placeholder="Mật khẩu" />
-          </Form.Item>
-          <Form.Item
-            {...layoutConfig}
-            labelAlign="left"
-            label="Nhập lại mật khẩu"
-            name="confirmPassword"
-            dependencies={["password"]}
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập lại mật khẩu",
-              },
-              ({ getFieldValue }) => ({
-                async validator(_, value) {
-                  if (!value || getFieldValue("password") === value) {
-                    await Promise.resolve();
-                    return;
-                  }
-                  return await Promise.reject(new Error("Mật khẩu không khớp"));
-                },
-              }),
-            ]}
-          >
-            <Input.Password placeholder="Nhập lại mật khẩu" />
-          </Form.Item>
+          {!isEdit && (
+            <>
+              <Form.Item
+                {...layoutConfig}
+                labelAlign="left"
+                label="Mật khẩu"
+                name="password"
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập mật khẩu",
+                  },
+                ]}
+              >
+                <Input.Password placeholder="Mật khẩu" />
+              </Form.Item>
+              <Form.Item
+                {...layoutConfig}
+                labelAlign="left"
+                label="Nhập lại mật khẩu"
+                name="confirmPassword"
+                dependencies={["password"]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập lại mật khẩu",
+                  },
+                  ({ getFieldValue }) => ({
+                    async validator(_, value) {
+                      if (!value || getFieldValue("password") === value) {
+                        await Promise.resolve();
+                        return;
+                      }
+                      return await Promise.reject(
+                        new Error("Mật khẩu không khớp")
+                      );
+                    },
+                  }),
+                ]}
+              >
+                <Input.Password placeholder="Nhập lại mật khẩu" />
+              </Form.Item>
+            </>
+          )}
           <Form.Item
             {...layoutConfig}
             labelAlign="left"
@@ -253,7 +320,8 @@ const AddNewUserModal = (): JSX.Element => {
               onChange={(value) => {
                 setAccountMode(value.target.value);
               }}
-              defaultValue={STUDENT_MODE}
+              value={accountMode}
+              disabled={isEdit}
             >
               <Radio value={STUDENT_MODE}>Sinh viên</Radio>
               <Radio value={TEACHER_MODE}>Giảng viên</Radio>

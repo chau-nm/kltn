@@ -1,7 +1,8 @@
-import { Row, Spin, Tooltip } from "antd";
+import { Row, Spin, Tooltip, message } from "antd";
 import { type ColumnType } from "antd/es/table";
 import { type TableRowSelection } from "antd/es/table/interface";
 import { useContext, useEffect, useState } from "react";
+import { useMutation } from "react-query";
 import { dateDisplay } from "~/common/util";
 import {
   CommentIconCommon,
@@ -14,7 +15,7 @@ import {
 import TableCommon from "~/components/common/TableCommon";
 import CommonConstants from "~/constants/commonConstants";
 import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
-
+import * as ThesisService from "~/services/thesisService";
 const ThesisTableResult = (): JSX.Element => {
   const {
     listThesis,
@@ -54,6 +55,15 @@ const ThesisTableResult = (): JSX.Element => {
       name: record.id,
     }),
   };
+
+  const deleteThesisMutation = useMutation(ThesisService.deleteThesis, {
+    onSuccess: (data) => {
+      if (data) {
+        void message.success("Đã xóa khóa luận");
+        search();
+      }
+    },
+  });
 
   useEffect(() => {
     search();
@@ -118,7 +128,7 @@ const ThesisTableResult = (): JSX.Element => {
     },
     {
       title: "Năm",
-      dataIndex: "year",
+      dataIndex: "schoolYear",
       width: 5,
     },
     {
@@ -182,8 +192,9 @@ const ThesisTableResult = (): JSX.Element => {
             />
             <DeleteIconCommon
               onClick={() => {
-                // searchDetail(record.id!);
-                // setOpenEditOutlineReviewModal(true);
+                if (confirm("Bạn chắc chắn xóa khóa luận này?")) {
+                  deleteThesisMutation.mutate(record.id ?? "");
+                }
               }}
             />
           </Row>

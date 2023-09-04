@@ -1,153 +1,118 @@
-import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Col, Row, Typography } from "antd";
-import { useEffect, useState } from "react";
-import { useMutation } from "react-query";
-import ButtonCommon from "~/components/common/ButtonCommon";
+import { SendOutlined } from "@ant-design/icons";
+import { Col, Row, Typography } from "antd";
 import ReactQuillPreviewCommon from "~/components/common/ReactQuillPreviewCommon";
-import * as OutlineReviewServices from "~/services/thesisOutlineCommentService";
+import CommonConstants from "~/constants/commonConstants";
 
 type ThesisDetailProps = {
   thesis: ThesisModel;
 };
 
 const ThesisDetail = ({ thesis }: ThesisDetailProps): JSX.Element => {
-  const colLayout = {
-    span: 3,
-    offset: 1,
-  };
-  const [listCommentOfCouncil, setListCommentOfCouncil] = useState<
-    OutlineCommentModel[]
-  >([]);
-  const searchCommentMutaion = useMutation(
-    OutlineReviewServices.getCommentByThesisId,
-    {
-      onSuccess: (data: OutlineCommentModel[] | []) => {
-        if (data) {
-          setListCommentOfCouncil(data as OutlineCommentModel[]);
-        }
-      },
-    }
-  );
-
-  const searchListComment = (idThesis: string): void => {
-    searchCommentMutaion.mutate(idThesis);
-  };
-
-  useEffect(() => {
-    thesis?.id && searchListComment(thesis?.id);
-  }, [thesis]);
-
-  const thesisStudents = thesis.students;
-  const thesisTeacher = thesis.teacher;
-
+  // const colLayout = {
+  //   span: 3,
+  //   offset: 1,
+  // };
   return (
-    <div>
-      {thesisStudents?.map((tu, index) => {
-        const student = tu.user;
-        return (
-          // eslint-disable-next-line react/jsx-key
-          <div>
-            <Typography.Text className="block font-bold">
-              Thông tin sinh viên {index + 1}
-            </Typography.Text>
-            <Row>
-              <Col {...colLayout}>Họ và tên:</Col>
-              <Col>{student?.fname}</Col>
-            </Row>
-            <Row>
-              <Col {...colLayout}>Mã số sinh viên:</Col>
-              <Col>{student?.username}</Col>
-            </Row>
-            <Row>
-              <Col {...colLayout}>Lớp:</Col>
-              <Col>{student?.studentClass}</Col>
-            </Row>
-          </div>
-        );
-      })}
-      <div>
-        <Typography.Text className="block font-bold">
-          Thông tin giảng viên hướng dẫn
-        </Typography.Text>
-        <Row>
-          <Col {...colLayout}>Họ và tên:</Col>
-          <Col>{thesisTeacher?.user?.fname}</Col>
-        </Row>
-        <Row>
-          <Col {...colLayout}>Mã số giảng viên:</Col>
-          <Col>{thesisTeacher?.user?.username}</Col>
-        </Row>
-      </div>
-      <div>
-        <Typography.Text className="block font-bold">
-          Thông tin đề tài:
-        </Typography.Text>
-        <Row>
-          <Col {...colLayout}>Tên đề tài:</Col>
-          <Col>{thesis.topic}</Col>
-        </Row>
-        <div className="ml-[41.125px]">
-          <Typography.Text>Mô tả:</Typography.Text>
-          <ReactQuillPreviewCommon content={thesis.description ?? ""} />
+    <>
+      <div className="my-2">
+        <div className="flex items-center mb-2">
+          <SendOutlined />
+          <span className="ml-2 text-lg font-bold">Thông tin đề tài</span>
         </div>
+        <Row gutter={30} className="px-4">
+          <Col span={8} className="border p-3">
+            {"-"} Tên đề tài
+          </Col>
+          <Col span={16} className="border p-3">
+            {thesis.topic}
+          </Col>
+        </Row>
+        <Row gutter={30} className="px-4">
+          <Col span={8} className="border p-3">
+            {"-"} Thực hiện vào
+          </Col>
+          <Col span={16} className="border p-3">
+            Học kì {thesis.semester} năm học {thesis.schoolYear}
+          </Col>
+        </Row>
+        <Row gutter={30} className="px-4">
+          <Col span={8} className="border p-3">
+            {"-"} Trạng thái
+          </Col>
+          <Col span={16} className="border p-3">
+            <Typography.Text type="secondary" italic>
+              {CommonConstants.THESIS_STATUS[thesis.status ?? 0].text}
+            </Typography.Text>
+          </Col>
+        </Row>
+        <Row gutter={30} className="px-4">
+          <Col span={8} className="border p-3">
+            {"-"} Mô tả
+          </Col>
+          <Col span={16} className="border p-3 max-h-[200px] overflow-y-scroll">
+            <ReactQuillPreviewCommon content={thesis.description ?? ""} />
+          </Col>
+        </Row>
       </div>
-      <div>
-        <Typography.Text className="font-bold">
-          Đề cương:
-          <a href={thesis.outlineUrl}>click here</a>
-        </Typography.Text>
-      </div>
-      <div>
-        <Typography.Text className="font-bold">
-          Đánh giá đề cương
-        </Typography.Text>
-        {listCommentOfCouncil.map((comment, index) => {
+
+      <div className="my-2">
+        <div className="flex items-center mb-2">
+          <SendOutlined />
+          <span className="ml-2 text-lg font-bold">Sinh viên tham gia</span>
+        </div>
+        {thesis.students?.map((std, index) => {
           return (
-            comment?.user?.roles &&
-            comment?.user?.roles.includes("MINISTRY") && (
-              <Row
-                className="p-3 border rounded-lg max-w-[1000px] mb-3"
-                key={index}
-              >
-                <>
-                  <Col span={2} className="comment-avatar">
-                    <Avatar
-                      icon={<UserOutlined />}
-                      size={50}
-                      className="flex items-center justify-center"
-                    />
-                  </Col>
-                  <Col span={18} className="comment-content">
-                    <Typography.Text>
-                      <strong className="commenter-name">
-                        {comment?.user?.fname}
-                      </strong>
-                      <ReactQuillPreviewCommon
-                        content={comment?.comment as string}
-                      ></ReactQuillPreviewCommon>
-                    </Typography.Text>
-                  </Col>
-                </>
+            <div key={index} className="my-4 border">
+              <Row gutter={30} className="px-4">
+                <Col span={12} className=" p-3">
+                  - Họ và tên: {std.fname}
+                </Col>
+                <Col span={12} className=" p-3">
+                  - Mã số sinh viên: {std.username}
+                </Col>
               </Row>
-            )
+              <Row gutter={30} className="px-4">
+                <Col span={12} className=" p-3">
+                  - Lớp: {std.studentClass}
+                </Col>
+                <Col span={12} className=" p-3">
+                  - Khoa: {std.faculty}
+                </Col>
+              </Row>
+            </div>
           );
         })}
       </div>
-      <div>
-        <Typography.Text className="font-bold">
-          Tài liệu bảo vệ:
-        </Typography.Text>
-        {/** Têm preview tại đây */}
+
+      <div className="my-2">
+        <div className="flex items-center mb-2">
+          <SendOutlined />
+          <span className="ml-2 text-lg font-bold">Giảng viên hướng dẫn</span>
+        </div>
+        {thesis.teachers?.map((teacher, index) => {
+          return (
+            <div key={index} className="my-4 border">
+              <Row gutter={30} className="px-4">
+                <Col span={12} className=" p-3">
+                  - Họ và tên: {teacher.fname}
+                </Col>
+                <Col span={12} className=" p-3">
+                  - Mã số giảng viên: {teacher.username}
+                </Col>
+              </Row>
+              <Row gutter={30} className="px-4">
+                <Col span={12} className=" p-3">
+                  - Khoa: {teacher.faculty}
+                </Col>
+                <Col span={12} className=" p-3">
+                  - Ngạnh bậc: {teacher.degree}
+                </Col>
+              </Row>
+            </div>
+          );
+        })}
       </div>
-      <div>
-        <Typography.Text className="font-bold">
-          Đánh giá bảo vệ bảo vệ:
-        </Typography.Text>
-      </div>
-      <div className="flex justify-end">
-        <ButtonCommon value="Hủy luận văn" />
-      </div>
-    </div>
+    </>
   );
 };
 

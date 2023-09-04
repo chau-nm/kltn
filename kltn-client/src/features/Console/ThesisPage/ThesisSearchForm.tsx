@@ -31,7 +31,7 @@ const ThesisSearchForm = (): JSX.Element => {
         labelCol={{ span: 2 }}
         labelAlign="left"
       >
-        <Input />
+        <Input placeholder="Nhập chủ đề của khóa luận" />
       </Form.Item>
       <Row gutter={30}>
         <Col span={12}>
@@ -42,7 +42,7 @@ const ThesisSearchForm = (): JSX.Element => {
             labelAlign="left"
             wrapperCol={{ span: 24 }}
           >
-            <Select>
+            <Select placeholder="Chọn trạng thái khóa luận">
               {CommonConstants.THESIS_STATUS.map((ts) => {
                 return <Select.Option key={ts.value}>{ts.text}</Select.Option>;
               })}
@@ -68,7 +68,7 @@ const ThesisSearchForm = (): JSX.Element => {
             labelAlign="left"
             wrapperCol={{ span: 24 }}
           >
-            <Select>
+            <Select placeholder="Chọn học kì">
               <Select.Option key={undefined}> </Select.Option>
               <Select.Option key={1}>Học kì 1</Select.Option>
               <Select.Option key={2}>Học kì 2</Select.Option>

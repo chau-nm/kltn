@@ -18,6 +18,7 @@ import { AuthContext } from "~/contexts/AuthContext";
 import { v4 } from "uuid";
 import { useMutation } from "react-query";
 import * as ThesisReviewerCommentService from "~/services/thesisReviewerCommentService";
+import TeacherTargetModal from "~/components/TeacherTargetModal";
 
 const AddCommentMinistryModal = (): JSX.Element => {
   const {
@@ -25,11 +26,12 @@ const AddCommentMinistryModal = (): JSX.Element => {
     setOpenAddCommentMinistryModal,
     setIsOpenThesisDetailModal,
     thesis,
-    setOpenAddCouncilModal,
+    // setOpenAddCouncilModal,
   } = useContext(ThesisConsoleContext);
   const { user } = useContext(AuthContext);
   const [editorHtml, setEditorHtml] = useState<string>("");
   const [form] = useForm();
+  const [openTargetTeacher, setOpenTargetTeacher] = useState(false);
 
   const clearData = (): void => {
     form.resetFields();
@@ -77,7 +79,8 @@ const AddCommentMinistryModal = (): JSX.Element => {
         <ButtonCommon
           value="Thêm hội đồng đánh giá"
           onClick={() => {
-            setOpenAddCouncilModal(true);
+            // setOpenAddCouncilModal(true);
+            setOpenTargetTeacher(true);
           }}
         />
         <ButtonCommon color="blue" value={"Lưu"} onClick={handleSave} />
@@ -188,6 +191,11 @@ const AddCommentMinistryModal = (): JSX.Element => {
           </Form>
         </Row>
       </Spin>
+      <TeacherTargetModal
+        isOpen={openTargetTeacher}
+        setIsOpen={setOpenTargetTeacher}
+        isSingle={true}
+      />
     </ModalCommon>
   );
 };

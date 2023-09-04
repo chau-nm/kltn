@@ -11,12 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import web.nl.kltn.mapper.RoleUserCusMapper;
+import web.nl.kltn.mapper.StudentCusMapper;
 import web.nl.kltn.mapper.generator.RoleUserMapper;
 import web.nl.kltn.mapper.generator.StudentMapper;
 import web.nl.kltn.mapper.generator.UserMapper;
 import web.nl.kltn.model.dto.StudentDTO;
 import web.nl.kltn.model.generator.RoleUser;
 import web.nl.kltn.model.generator.Student;
+import web.nl.kltn.model.generator.User;
 import web.nl.kltn.service.StudentService;
 
 @Service
@@ -25,6 +27,8 @@ public class StudentServiceImpl implements StudentService {
 
 	@Autowired
 	private StudentMapper studentMapper;
+	@Autowired
+	private StudentCusMapper studentCusMapper;
 	@Autowired
 	private UserMapper userMapper;
 	@Autowired
@@ -75,5 +79,44 @@ public class StudentServiceImpl implements StudentService {
 			throw e;
 		}
 	}
+	
+	@Override
+	public StudentDTO update(StudentDTO studentDTO) throws Exception {
+		try {
+			userMapper.updateByPrimaryKey(studentDTO);
+			roleUserCusMapper.deleteByIdUser(studentDTO.getUserId());
+			RoleUser roleUser;
+			for (int i = 0; i < studentDTO.getRoles().size(); i++) {
+				roleUser = new RoleUser();
+				roleUser.setId(String.valueOf(UUID.randomUUID()));
+				roleUser.setRoleId(roleUserCusMapper.findIdRoleByName(studentDTO.getRoles().get(i)));
+				roleUser.setUserId(studentDTO.getUserId());
+				roleUser.setIsDeleted(false);
+				roleUser.setCreatedAt(new Date().getTime());
+				roleUser.setUpdatedAt(new Date().getTime());
+				;
+				if (roleUserMapper.insert(roleUser) <= 0) {
+					throw new Exception("Cập nhật thất bại");
+				}
+			}
+			studentCusMapper.deleteByUserId(studentDTO.getUserId());
+			Student student = new Student();
+			student.setId(UUID.randomUUID().toString());
+			student.setUserId(studentDTO.getUserId());
+			student.setStudentClass(studentDTO.getStudentClass());
+			
+			if (studentMapper.insert(student) <= 0) {
+				throw new Exception("Thêm user thất bại");
+			}
+			return studentDTO;
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			throw e;
+		}
+	}
 
+	@Override
+	public StudentDTO findByUserId(String userId) {
+		return studentCusMapper.getStudentByUserId(userId);
+	}
 }

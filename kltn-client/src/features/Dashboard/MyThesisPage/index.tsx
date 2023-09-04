@@ -38,7 +38,15 @@ const MyThesisPage = (): JSX.Element => {
     return (
       <PageLayout pageTitle="Luận văn của tôi">
         {myThesis?.map((thesis) => {
-          return <ThesisDetail key={thesis.id} thesis={thesis} />;
+          if ((thesis?.status ?? 0) > 2) {
+            return <ThesisDetail key={thesis.id} thesis={thesis} />;
+          } else {
+            return (
+              <Typography.Text key={thesis.id}>
+                Luận văn {thesis.topic} đang đợi người khác xác nhận
+              </Typography.Text>
+            );
+          }
         })}
       </PageLayout>
     );

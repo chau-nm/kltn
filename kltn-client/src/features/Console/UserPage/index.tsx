@@ -2,7 +2,6 @@ import { Space } from "antd";
 import { UserConsoleProvider } from "~/contexts/UserConsoleContext";
 import UserSearchForm from "./UserSearchForm";
 import UserTableResult from "./UserTableResult";
-import EditUserModal from "./EditUserModal";
 import AddNewUserModal from "./AddNewUserModal";
 
 const UserPage = (): JSX.Element => {
@@ -12,7 +11,6 @@ const UserPage = (): JSX.Element => {
         <UserSearchForm />
         <UserTableResult />
         <AddNewUserModal />
-        <EditUserModal />
       </UserConsoleProvider>
     </Space>
   );

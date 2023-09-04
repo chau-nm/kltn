@@ -99,8 +99,13 @@ public class ThesisController {
 	@DeleteMapping("/delete/{id}")
 	public ResponseModel<Boolean> delete(@PathVariable(required = true) String id) {
 		ResponseModel<Boolean> responseModel = new ResponseModel<>();
-		thesisService.delete(id);
-		responseModel.setData(true);
+		try {
+			thesisService.delete(id);
+			responseModel.setData(true);
+		} catch (Exception e) {
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
+		}
 		return responseModel;
 	}
 	

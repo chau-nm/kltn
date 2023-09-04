@@ -7,6 +7,7 @@ import web.nl.kltn.mapper.ReviewerCusMapper;
 import web.nl.kltn.mapper.ReviewerQuestionCusMapper;
 import web.nl.kltn.mapper.ReviewerScoreCusMapper;
 import web.nl.kltn.mapper.StudentCusMapper;
+import web.nl.kltn.mapper.ThesisDocumentCusMapper;
 import web.nl.kltn.mapper.ThesisLecturerCusMapper;
 import web.nl.kltn.mapper.ThesisReviewerCommentCusMapper;
 import web.nl.kltn.mapper.ThesisStudentCusMapper;
@@ -105,7 +106,8 @@ public class ThesisDTO extends Thesis {
 			ThesisLecturerCusMapper thesislecturerCusMapper, StudentCusMapper studentCusMapper,
 			LecturerCusMapper lecturerCusMapper, UserMapper userMapper, UserCusMapper userCusMapper,
 			ThesisReviewerCommentCusMapper thesisReviewerCommentCusMapper, ReviewerCusMapper reviewerCusMapper,
-			ReviewerScoreCusMapper reviewerScoreCusMapper, ReviewerQuestionCusMapper reviewerQuestionCusMapper) {
+			ReviewerScoreCusMapper reviewerScoreCusMapper, ReviewerQuestionCusMapper reviewerQuestionCusMapper,
+			ThesisDocumentCusMapper thesisDocumentCusMapper) {
 		this.setId(thesis.getId());
 		this.setTopic(thesis.getTopic());
 		this.setDescription(thesis.getDescription());
@@ -134,6 +136,9 @@ public class ThesisDTO extends Thesis {
 		if (reviewerCusMapper != null) {
 			this.setReviewers(ReviewerDTO.getDTOsFromEntities(reviewerCusMapper.findReviewerByThesisId(thesis.getId()),
 					lecturerCusMapper, reviewerScoreCusMapper, studentCusMapper, reviewerQuestionCusMapper));
+		}
+		if (thesisDocumentCusMapper != null) {
+			this.setFileAttachments(thesisDocumentCusMapper.getFileAttachmentsByThesisId(thesis.getId()));
 		}
 	}
 }

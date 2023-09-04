@@ -18,23 +18,24 @@ const RegisterThesisPage = (): JSX.Element => {
     ThesisRegisterCalendarService.view
   );
 
-  // const { data: myThesis, isLoading: isLoadingThesis } = useQuery(
-  //   ["load-my-thesis"],
-  //   async () => await ThesisService.searchByUser(user?.userId ?? ""),
-  // );
-
-  // const thesisCreatedByMe =
-  //   myThesis?.filter((thesis) => thesis.createdBy === user?.userId) ?? [];
+  const { data: myThesis, isLoading: myThesisLoading } = useQuery<
+    ThesisModel[]
+  >(
+    ["find-my-thesis"],
+    async () => await ThesisService.findMyThesis(user?.userId ?? ""),
+    {
+      onSuccess: () => {},
+    }
+  );
 
   return (
     <PageLayout pageTitle="Đăng ký khóa luận tốt nghiệp">
-      <Spin spinning={isLoadingViewThesisRegisterCalendar}>
+      <Spin spinning={isLoadingViewThesisRegisterCalendar || myThesisLoading}>
         {thesisRegisterCalendar == null ? (
           <Typography.Text>Chưa tới thời gian đăng ký</Typography.Text>
+        ) : (myThesis?.length ?? 0) > 0 ? (
+          <Typography.Text>Bạn đã đăng ký luận văn rồi.</Typography.Text>
         ) : (
-          // : thesisCreatedByMe.length > 0 ? (
-          //   <Typography.Text>Bạn đã đăng ký luận văn rồi.</Typography.Text>
-          // )
           <RegisterThesisForm />
         )}
       </Spin>

@@ -2,25 +2,50 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="web.nl.kltn.mapper.ThesisDocumentCusMapper">
+	<resultMap id="ThesisDocument"
+		type="web.nl.kltn.model.generator.ThesisDocument">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="thesis_id" jdbcType="VARCHAR"
+			property="thesisId" />
+		<result column="file_url" jdbcType="VARCHAR" property="fileUrl" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+		<result column="created_at" jdbcType="BIGINT"
+			property="createdAt" />
+		<result column="updated_at" jdbcType="BIGINT"
+			property="updatedAt" />
+	</resultMap>
 
+		<select id="getFilesByThesisId"
+			parameterType="java.lang.String" resultType="java.lang.String">
+			SELECT
+			file_url
+			FROM thesis_document
+			<where>
+				<if test="thesisId != null">
+					thesis_id = #{thesisId}
+				</if>
+				<if test="type != 0">
+					AND type = #{type}
+				</if>
+			</where>
+		</select>
 
-    <select id="getFilesByThesisId"
-            parameterType="java.lang.String" resultType="java.lang.String">
-        SELECT
-        	file_url
-        FROM thesis_document
-        <where>
-        	<if test="thesisId != null">
-        		thesis_id = #{thesisId}
-        	</if>
-        	<if test="type != 0">
-        		AND type = #{type}
-        	</if>
-        </where>
-    </select>
-    
-    <delete id="deteleByThesisId">
-    	DELETE FROM thesis_document WHERE thesis_id = #{thesisId} AND type = #{type} 
-    </delete>
+		<select id="getFileAttachmentsByThesisId"
+			resultMap="ThesisDocument">
+			SELECT
+			*
+			FROM thesis_document
+			<where>
+				<if test="thesisId != null">
+					thesis_id = #{thesisId}
+				</if>
+			</where>
+		</select>
+
+		<delete id="deteleByThesisId">
+			DELETE FROM thesis_document WHERE thesis_id = #{thesisId} AND type =
+			#{type}
+		</delete>
 
 </mapper>

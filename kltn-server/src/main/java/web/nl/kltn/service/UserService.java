@@ -29,4 +29,6 @@ public interface UserService {
 	UserDTO updatePassword(String userId, String newPassword);
 
 	User changpassword(ChangpasswordPayload changpasswordPayload) throws Exception;
+
+	boolean delete(String userId) throws Exception;
 }

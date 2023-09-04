@@ -94,8 +94,7 @@
 		<where>
 			ts.student_id = #{userId}
 			AND ts.is_active = 0
-			AND t.is_deleted =
-			0
+			AND t.is_deleted = 0
 		</where>
 	</select>
 
@@ -118,8 +117,7 @@
 		<where>
 			tl.lecturer_id = #{userId}
 			AND tl.is_active = 0
-			AND t.is_deleted
-			= 0
+			AND t.is_deleted = 0
 		</where>
 	</select>
 
@@ -140,8 +138,7 @@
 		ON ts.thesis_id = t.id
 		<where>
 			ts.student_id = #{userId}
-			AND ts.is_active = 1
-			AND t.status >= 2
+			AND (t.status >= 2 OR ts.is_active = 1)
 			AND t.is_deleted = 0
 		</where>
 	</select>
@@ -163,8 +160,7 @@
 		ON tl.thesis_id = t.id
 		<where>
 			tl.lecturer_id = #{userId}
-			AND ts.is_active = 1
-			AND t.status >= 2
+			AND (t.status >= 2 OR tl.is_active = 1)
 			AND t.is_deleted = 0
 		</where>
 	</select>

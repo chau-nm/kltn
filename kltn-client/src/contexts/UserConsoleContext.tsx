@@ -13,6 +13,9 @@ interface UserConsoleContextInterface {
   isLoadingList: boolean;
   isLoadingDetail: boolean;
 
+  isEdit: boolean;
+  setIsEdit: React.Dispatch<SetStateAction<boolean>>;
+
   users: UserModel[];
   setUsers: React.Dispatch<SetStateAction<UserModel[]>>;
   userDetail: UserModel | null;
@@ -36,6 +39,9 @@ interface UserConsoleContextInterface {
 const initUserConsoleContext: UserConsoleContextInterface = {
   isLoadingList: false,
   isLoadingDetail: false,
+
+  isEdit: false,
+  setIsEdit: () => null,
 
   users: [],
   setUsers: () => null,
@@ -66,6 +72,7 @@ export const UserConsoleProvider = ({
   const [openAddNewUserModal, setOpenAddNewUserModal] =
     useState<boolean>(false);
   const [openEditUserModal, setOpenEditUserModal] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState(false);
 
   /**
    * search list User mutation
@@ -120,6 +127,9 @@ export const UserConsoleProvider = ({
       value={{
         isLoadingList: searchMutaion.isLoading,
         isLoadingDetail: searchDetailMutation.isLoading,
+
+        isEdit,
+        setIsEdit,
 
         users,
         userDetail,

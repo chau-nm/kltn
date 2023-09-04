@@ -9,15 +9,18 @@ export class ApiUrlConstants {
   public static readonly UPDATE_USER = "/user/update";
   public static readonly SEARCH_USER = "/user/search/";
   public static readonly INSERT_USER = "/user/insert";
+  public static readonly DELETE_USER = "/user/delete";
   public static readonly RESET_PASSWORD_USER = "/user/reset";
   public static readonly REFRESH_TOKEN = "/user/refresh-token";
   public static readonly CHANGE_PASSWORD = "/user/change-password";
 
   /** STUDENT */
   public static readonly INSERT_STUDENT = "/student/insert";
+  public static readonly UPDATE_STUDENT = "/student/update";
 
   /** lecturer */
   public static readonly INSERT_LECTURER = "/lecturer/insert";
+  public static readonly UPDATE_LECTURER = "/lecturer/update";
 
   /** NOTIFICATION */
   public static readonly INSERT_NOTIFICATION = "/notification/insert";
@@ -41,6 +44,7 @@ export class ApiUrlConstants {
 
   /** THESIS */
   public static readonly INSERT_THESIS = "/thesis/insert";
+  public static readonly DELETE_THESIS = "/thesis/delete";
   public static readonly SEARCH_THESIS = "/thesis/search/";
   public static readonly SEARCH_DETAIL_THESIS = "/thesis/";
   public static readonly SEARCH_BY_COUNCIL_ID = "/thesis/find-by-council/";

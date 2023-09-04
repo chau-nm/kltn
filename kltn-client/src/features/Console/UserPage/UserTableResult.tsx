@@ -1,6 +1,8 @@
-import { Row, Space, Spin, Typography } from "antd";
+import { Row, Space, Spin, Typography, message } from "antd";
 import { type ColumnType } from "antd/es/table";
 import { useContext, useEffect } from "react";
+import { useMutation } from "react-query";
+import { dateTimeDisplay } from "~/common/util";
 import ButtonCommon from "~/components/common/ButtonCommon";
 import {
   DeleteIconCommon,
@@ -8,6 +10,7 @@ import {
 } from "~/components/common/IconCommon";
 import TableCommon from "~/components/common/TableCommon";
 import { UserConsoleContext } from "~/contexts/UserConsoleContext";
+import * as UserService from "~/services/userServices";
 
 const UserTableResult = (): JSX.Element => {
   const {
@@ -18,19 +21,19 @@ const UserTableResult = (): JSX.Element => {
     pagination,
     handleChange,
     searchDetail,
-    setOpenEditUserModal,
+    setIsEdit,
   } = useContext(UserConsoleContext);
 
-  // const deleteUserMutation = useMutation(UserService.remove, {
-  //   onSuccess: (data: boolean) => {
-  //     if (data) {
-  //       message.destroy("Xóa thành công");
-  //       search();
-  //     } else {
-  //       message.error("Xóa thất bại");
-  //     }
-  //   }
-  // })
+  const deleteUserMutation = useMutation(UserService.deleteUser, {
+    onSuccess: (data: boolean) => {
+      if (data) {
+        void message.success("Xóa thành công");
+        search();
+      } else {
+        void message.error("Xóa thất bại");
+      }
+    },
+  });
 
   useEffect(() => {
     search();
@@ -65,11 +68,6 @@ const UserTableResult = (): JSX.Element => {
       width: 50,
     },
     {
-      title: "Lớp",
-      dataIndex: "studentClass",
-      width: 50,
-    },
-    {
       title: "Chức vụ",
       dataIndex: "roles",
       width: 100,
@@ -77,6 +75,17 @@ const UserTableResult = (): JSX.Element => {
         return (
           <Typography.Text>
             {record?.roles && record?.roles.join(", ")}
+          </Typography.Text>
+        );
+      },
+    },
+    {
+      title: "Cập nhật gần nhất",
+      width: 100,
+      render: (row, record) => {
+        return (
+          <Typography.Text>
+            {dateTimeDisplay(new Date(record.updatedAt ?? ""))}
           </Typography.Text>
         );
       },
@@ -91,12 +100,15 @@ const UserTableResult = (): JSX.Element => {
             <EditIconCommon
               onClick={() => {
                 record?.userId && searchDetail(record?.userId);
-                setOpenEditUserModal(true);
+                setIsEdit(() => true);
+                setOpenAddNewUserModal(true);
               }}
             />
             <DeleteIconCommon
               onClick={() => {
-                // deleteUserMutation.mutate(record.userId);
+                if (confirm("Bạn chắc chắn muốn xóa tài khoản này?")) {
+                  deleteUserMutation.mutate(record.userId ?? "");
+                }
               }}
             />
           </Row>
@@ -112,6 +124,7 @@ const UserTableResult = (): JSX.Element => {
           color="blue"
           value="Thêm người dùng"
           onClick={() => {
+            setIsEdit(() => false);
             setOpenAddNewUserModal(true);
           }}
         />

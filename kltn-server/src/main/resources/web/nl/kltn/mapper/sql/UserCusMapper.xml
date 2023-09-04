@@ -3,183 +3,252 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="web.nl.kltn.mapper.UserCusMapper">
 
-    <resultMap type="web.nl.kltn.model.dto.UserDTO" id="UserDTO">
-        <id column="user_id" property="userId" jdbcType="VARCHAR"/>
-        <result column="username" property="username" jdbcType="VARCHAR"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-        <result column="email" property="email" jdbcType="VARCHAR"/>
-        <result column="gender" property="gender" jdbcType="VARCHAR"/>
-        <result column="fname" property="fname" jdbcType="VARCHAR"/>
-        <result column="birthday" property="birthday" jdbcType="DATE"/>
-        <result column="faculty" property="faculty" jdbcType="VARCHAR"/>
-        <collection property="roles" ofType="string" jdbcType="VARCHAR">
-            <result column="role_name"/>
-        </collection>
-    </resultMap>
+	<resultMap type="web.nl.kltn.model.dto.UserDTO" id="UserDTO">
+		<id column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="username" property="username"
+			jdbcType="VARCHAR" />
+		<result column="password" property="password"
+			jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="gender" property="gender" jdbcType="VARCHAR" />
+		<result column="fname" property="fname" jdbcType="VARCHAR" />
+		<result column="birthday" property="birthday" jdbcType="DATE" />
+		<result column="faculty" property="faculty" jdbcType="VARCHAR" />
+		<result column="is_student" jdbcType="BIT" property="isStudent" />
+		<result column="is_teacher" jdbcType="BIT" property="isTeacher" />
+		<result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+		<result column="created_at" jdbcType="BIGINT"
+			property="createdAt" />
+		<result column="updated_at" jdbcType="BIGINT"
+			property="updatedAt" />
+		<collection property="roles" ofType="string"
+			jdbcType="VARCHAR">
+			<result column="role_name" />
+		</collection>
+	</resultMap>
 
-    <resultMap type="web.nl.kltn.model.generator.User" id="User">
-        <id column="user_id" property="userId" jdbcType="VARCHAR"/>
-        <result column="username" property="username" jdbcType="VARCHAR"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-        <result column="email" property="email" jdbcType="VARCHAR"/>
-        <result column="gender" property="gender" jdbcType="VARCHAR"/>
-        <result column="fname" property="fname" jdbcType="VARCHAR"/>
-        <result column="birthday" property="birthday" jdbcType="DATE"/>
-        <result column="faculty" property="faculty" jdbcType="VARCHAR"/>
-    </resultMap>
+	<resultMap type="web.nl.kltn.model.generator.User" id="User">
+		<id column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="username" property="username"
+			jdbcType="VARCHAR" />
+		<result column="password" property="password"
+			jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="gender" property="gender" jdbcType="VARCHAR" />
+		<result column="fname" property="fname" jdbcType="VARCHAR" />
+		<result column="birthday" property="birthday" jdbcType="DATE" />
+		<result column="faculty" property="faculty" jdbcType="VARCHAR" />
+		<result column="is_student" jdbcType="BIT" property="isStudent" />
+		<result column="is_teacher" jdbcType="BIT" property="isTeacher" />
+		<result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+		<result column="created_at" jdbcType="BIGINT"
+			property="createdAt" />
+		<result column="updated_at" jdbcType="BIGINT"
+			property="updatedAt" />
+	</resultMap>
 
 
-    <select id="login" parameterType="web.nl.kltn.model.LoginCondition" resultMap="UserDTO">
-        SELECT
-        u.user_id,
-        u.username,
-        u.password,
-        u.email,
-        u.fname,
-        u.gender,
-        u.birthday,
-        u.faculty,
-        r.role_name
-        FROM
-        user u
-        LEFT JOIN role_user ru ON u.user_id = ru.user_id
-        LEFT JOIN role r ON ru.role_id = r.role_id
-        WHERE
-        u.username = '${username}'
-        AND u.password = '${password}'
-    </select>
+	<select id="login"
+		parameterType="web.nl.kltn.model.LoginCondition" resultMap="UserDTO">
+		SELECT
+		u.user_id,
+		u.username,
+		u.password,
+		u.email,
+		u.fname,
+		u.gender,
+		u.birthday,
+		u.faculty,
+		u.is_student,
+		u.is_teacher,
+		u.is_deleted,
+		u.created_at,
+		u.updated_at,
+		r.role_name
+		FROM
+		user u
+		LEFT JOIN
+		role_user ru ON u.user_id =
+		ru.user_id
+		LEFT JOIN role r ON ru.role_id =
+		r.role_id
+		WHERE
+		u.username =
+		'${username}'
+		AND u.password = '${password}'
+		AND u.is_deleted = 0
+	</select>
 
-    <select id="search"
-            resultMap="User">
-        <bind name="offset" value="(page - 1) * pageSize"/>
-        SELECT
-        u.user_id,
-        u.username,
-        u.password,
-        u.email,
-        u.fname,
-        u.gender,
-        u.birthday,
-        u.faculty,
-        ru.user_id as id_user
-        FROM
-        user u
-        LEFT JOIN (
-        select ru.user_id from role_user ru
-        left join role r on r.role_id=ru.role_id
-        <where>
-            <if
-                    test="searchConditionModel != null and searchConditionModel.role != null">
-                r.role_name = #{searchConditionModel.role}
-            </if>
-        </where>
-        group by ru.user_id
-        ) ru
-        on u.user_id=ru.user_id
-        <where>
-            ru.user_id is not null
-            <if
-                    test="searchConditionModel != null and searchConditionModel.username != null">
-                AND u.username LIKE CONCAT('%', #{searchConditionModel.username}, '%')
-            </if>
-            <if
-                    test="searchConditionModel != null and searchConditionModel.name != null">
-                AND u.fname LIKE CONCAT('%', #{searchConditionModel.name}, '%')
-            </if>
-            <if
-                    test="searchConditionModel != null and searchConditionModel.studentClass != null">
-                AND u.student_class LIKE CONCAT('%', #{searchConditionModel.studentClass}, '%')
-            </if>
-        </where>
-        LIMIT #{pageSize} OFFSET #{offset}
-    </select>
-    <select id="getTotal" resultType="int">
+	<select id="search" resultMap="User">
+		<bind name="offset" value="(page - 1) * pageSize" />
+		SELECT
+		u.user_id,
+		u.username,
+		u.password,
+		u.email,
+		u.fname,
+		u.gender,
+		u.birthday,
+		u.faculty,
+		u.is_student,
+		u.is_teacher,
+		u.is_deleted,
+		u.created_at,
+		u.updated_at,
+		ru.user_id as id_user
+		FROM
+		user u
+		LEFT JOIN (
+		select
+		ru.user_id from role_user ru
+		left join role
+		r on r.role_id=ru.role_id
+		<where>
+			<if
+				test="searchConditionModel != null and searchConditionModel.role != null">
+				r.role_name = #{searchConditionModel.role}
+			</if>
+		</where>
+		group by ru.user_id
+		) ru
+		on u.user_id=ru.user_id
+		<where>
+			ru.user_id is not null
+			<if
+				test="searchConditionModel != null and searchConditionModel.username != null">
+				AND u.username LIKE CONCAT('%',
+				#{searchConditionModel.username}, '%')
+			</if>
+			<if
+				test="searchConditionModel != null and searchConditionModel.name != null">
+				AND u.fname LIKE CONCAT('%', #{searchConditionModel.name}, '%')
+			</if>
+			<if
+				test="searchConditionModel != null and searchConditionModel.studentClass != null">
+				AND u.student_class LIKE CONCAT('%',
+				#{searchConditionModel.studentClass}, '%')
+			</if>
+			AND u.is_deleted = 0
+		</where>
+		LIMIT #{pageSize} OFFSET #{offset}
+	</select>
+	<select id="getTotal" resultType="int">
 
-         SELECT
-        COUNT(u.user_id)
-        FROM
-        user u
-        LEFT JOIN (
-        select ru.user_id from role_user ru
-        left join role r on r.role_id=ru.role_id
-        <where>
-            <if test="role != null">
-                r.role_name = #{role}
-            </if>
-        </where>
-        group by ru.user_id
-        ) ru
-        on u.user_id=ru.user_id
-        <where>
-            ru.user_id is not null
-            <if test="username != null">
-                AND u.username LIKE CONCAT('%', #{username}, '%')
-            </if>
-            <if test="name != null">
-                AND u.fname LIKE CONCAT('%', #{name}, '%')
-            </if>
-            <if test="studentClass != null">
-                AND u.student_class LIKE CONCAT('%', #{studentClass}, '%')
-            </if>
-        </where>
-    </select>
+		SELECT
+		COUNT(u.user_id)
+		FROM
+		user u
+		LEFT JOIN (
+		select ru.user_id from
+		role_user ru
+		left join role r on r.role_id=ru.role_id
+		<where>
+			<if test="role != null">
+				r.role_name = #{role}
+			</if>
+		</where>
+		group by ru.user_id
+		) ru
+		on u.user_id=ru.user_id
+		<where>
+			ru.user_id is not null
+			<if test="username != null">
+				AND u.username LIKE CONCAT('%', #{username}, '%')
+			</if>
+			<if test="name != null">
+				AND u.fname LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="studentClass != null">
+				AND u.student_class LIKE CONCAT('%', #{studentClass},
+				'%')
+			</if>
+			AND u.is_deleted = 0
+		</where>
+	</select>
 
-    <select id="findByUserId" parameterType="java.lang.String" resultMap="UserDTO">
-        SELECT
-        u.user_id,
-        u.username,
-        u.password,
-        u.email,
-        u.fname,
-        u.gender,
-        u.birthday,
-        u.faculty,
-        r.role_name
-        FROM
-        user u
-        LEFT JOIN role_user ru ON u.user_id = ru.user_id
-        LEFT JOIN role r ON ru.role_id = r.role_id
-        WHERE
-        u.user_id = #{userId}
-    </select>
+	<select id="findByUserId" parameterType="java.lang.String"
+		resultMap="UserDTO">
+		SELECT
+		u.user_id,
+		u.username,
+		u.password,
+		u.email,
+		u.fname,
+		u.gender,
+		u.birthday,
+		u.faculty,
+		u.is_student,
+		u.is_teacher,
+		u.is_deleted,
+		u.created_at,
+		u.updated_at,
+		r.role_name
+		FROM
+		user u
+		LEFT JOIN role_user
+		ru ON u.user_id = ru.user_id
+		LEFT JOIN
+		role r ON ru.role_id = r.role_id
+		WHERE
+		u.user_id = #{userId}
+		AND u.is_deleted = 0
+	</select>
 
-    <select id="findByUsername" parameterType="java.lang.String" resultMap="UserDTO">
-        SELECT
-        u.user_id,
-        u.username,
-        u.password,
-        u.email,
-        u.fname,
-        u.gender,
-        u.birthday,
-        u.faculty,
-        r.role_name
-        FROM
-        user u
-        LEFT JOIN role_user ru ON u.user_id = ru.user_id
-        LEFT JOIN role r ON ru.role_id = r.role_id
-        WHERE
-        u.username = #{username}
-    </select>
+	<select id="findByUsername" parameterType="java.lang.String"
+		resultMap="UserDTO">
+		SELECT
+		u.user_id,
+		u.username,
+		u.password,
+		u.email,
+		u.fname,
+		u.gender,
+		u.birthday,
+		u.faculty,
+		u.is_student,
+		u.is_teacher,
+		u.is_deleted,
+		u.created_at,
+		u.updated_at,
+		r.role_name
+		FROM
+		user u
+		LEFT JOIN role_user
+		ru ON u.user_id = ru.user_id
+		LEFT JOIN
+		role r ON ru.role_id = r.role_id
+		WHERE
+		u.username = #{username}
+		AND u.is_deleted = 0
+	</select>
 
-    <select id="findByRole" parameterType="java.lang.String" resultMap="UserDTO">
-        SELECT
-        u.user_id,
-        u.username,
-        u.password,
-        u.email,
-        u.fname,
-        u.gender,
-        u.birthday,
-        u.faculty,
-        r.role_name
-        FROM
-        user u
-        LEFT JOIN role_user ru ON u.user_id = ru.user_id
-        LEFT JOIN role r ON ru.role_id = r.role_id
-        WHERE
-        r.role_name = #{role}
-    </select>
+	<select id="findByRole" parameterType="java.lang.String"
+		resultMap="UserDTO">
+		SELECT
+		u.user_id,
+		u.username,
+		u.password,
+		u.email,
+		u.fname,
+		u.gender,
+		u.birthday,
+		u.faculty,
+		u.is_student,
+		u.is_teacher,
+		u.is_deleted,
+		u.created_at,
+		u.updated_at,
+		r.role_name
+		FROM
+		user u
+		LEFT JOIN role_user
+		ru ON u.user_id = ru.user_id
+		LEFT JOIN
+		role r ON ru.role_id = r.role_id
+		WHERE
+		r.role_name = #{role}
+		AND u.is_deleted = 0
+	</select>
 
 
 </mapper>

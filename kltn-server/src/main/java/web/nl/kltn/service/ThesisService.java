@@ -9,7 +9,7 @@ public interface ThesisService {
 
 	List<ThesisDTO> search(int page, int pageSize, ThesisSearchCondition thesisSearchCondition);
 
-	void delete(String id);
+	void delete(String id) throws Exception;
 
 	void update(ThesisDTO thesisDTO) throws Exception;
 

@@ -35,6 +35,7 @@ const ChangePasswordComponent = (): JSX.Element => {
   };
 
   const handleClose = (): void => {
+    form.resetFields();
     setIsOpenChangePasswordModal(false);
   };
 
@@ -47,6 +48,7 @@ const ChangePasswordComponent = (): JSX.Element => {
     <ModalCommon
       title="Thay đổi mật khẩu"
       open={isOpenChangePasswordModal}
+      onCancel={handleClose}
       footer={[
         <ButtonCommon key={1} value="Đóng" onClick={handleClose} />,
         <ButtonCommon key={2} value="Lưu" onClick={handleChangePassword} />,

@@ -12,8 +12,11 @@ const OpenThesisRegisterModal = (): JSX.Element => {
   useEffect(() => {}, [open]);
 
   const [form] = useForm();
-  const { isOpenRegisterThesisModal, setIsOpenRegisterThesisModal } =
-    useContext(ThesisConsoleContext);
+  const {
+    isOpenRegisterThesisModal,
+    setIsOpenRegisterThesisModal,
+    loadThesisRegisterCalendar,
+  } = useContext(ThesisConsoleContext);
 
   const insertThesisRegisterCalendarMutation = useMutation(
     ThesisRegisterCalendarService.insert,
@@ -25,6 +28,7 @@ const OpenThesisRegisterModal = (): JSX.Element => {
           void message.success("Thêm thành công");
           form.resetFields();
           setIsOpenRegisterThesisModal(false);
+          loadThesisRegisterCalendar();
         }
       },
     }

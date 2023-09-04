@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,10 +30,14 @@ import web.nl.kltn.model.LoginCondition;
 import web.nl.kltn.model.RefreshTokenRequest;
 import web.nl.kltn.model.SearchResponse;
 import web.nl.kltn.model.UserSearchCondition;
+import web.nl.kltn.model.dto.LecturerDTO;
+import web.nl.kltn.model.dto.StudentDTO;
 import web.nl.kltn.model.dto.UserDTO;
 import web.nl.kltn.model.generator.RefreshToken;
 import web.nl.kltn.model.generator.User;
+import web.nl.kltn.service.LecturerService;
 import web.nl.kltn.service.RefreshTokenService;
+import web.nl.kltn.service.StudentService;
 import web.nl.kltn.service.UserService;
 
 @RestController
@@ -41,6 +46,12 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private StudentService studentService;
+	
+	@Autowired
+	private LecturerService lecturerService;
 
 	@Autowired
 	private JWTTokenUtil jwtTokenUtil;
@@ -130,7 +141,18 @@ public class UserController {
 	@GetMapping("/{id}")
 	public ResponseModel<UserDTO> findUserById(@PathVariable String id) {
 		ResponseModel<UserDTO> responseModel = new ResponseModel<>();
-		responseModel.setData(userService.findByUserId(id));
+		UserDTO userDTO = userService.findByUserId(id);
+		if (userDTO.getIsStudent()) {
+			StudentDTO studentDTO = studentService.findByUserId(id);
+			studentDTO.setRoles(userDTO.getRoles());
+			responseModel.setData(studentDTO);
+		} else if (userDTO.getIsTeacher()) {
+			LecturerDTO lecturerDTO = lecturerService.findByUserId(id);
+			lecturerDTO.setRoles(userDTO.getRoles());
+			responseModel.setData(lecturerDTO);
+		}else {
+			responseModel.setData(userDTO);
+		}
 		return responseModel;
 	}
 
@@ -197,6 +219,18 @@ public class UserController {
 		try {
 			User user = userService.changpassword(payload);
 			responseModel.setData(user);
+		} catch (Exception e) {
+			responseModel.setMessage(e.getMessage());
+			responseModel.setStatus(1);
+		}
+		return responseModel;
+	}
+	
+	@DeleteMapping("/delete/{id}")
+	public ResponseModel<Boolean> detete(@PathVariable String id) {
+		ResponseModel<Boolean> responseModel = new ResponseModel<>();
+		try {
+			responseModel.setData(userService.delete(id));
 		} catch (Exception e) {
 			responseModel.setMessage(e.getMessage());
 			responseModel.setStatus(1);

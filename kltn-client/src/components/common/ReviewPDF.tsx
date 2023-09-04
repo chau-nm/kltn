@@ -107,8 +107,8 @@ export const PDFReviewPreview: React.FC = () => {
     useContext(ThesisConsoleContext);
 
   const values: PDFReviewProps = {
-    projectName: (thesis && thesis?.topic) || "",
-    supervisor: (thesis?.teachers && thesis?.teachers[0]?.fname) || "",
+    projectName: thesis?.topic ?? "",
+    supervisor: (thesis?.teachers && thesis?.teachers[0]?.fname) ?? "",
     numberOfPages: thesis?.reviewers && thesis?.reviewers[0]?.pageNumber,
     numberOfChapters: thesis?.reviewers && thesis?.reviewers[0]?.chapterNumber,
     numberOfTables: thesis?.reviewers && thesis?.reviewers[0]?.tableNumber,
@@ -147,13 +147,13 @@ export const PDFReviewPreview: React.FC = () => {
       })) ??
     []; // Provide a default empty array
 
-  const result: PDFReviewProps = { ...values, studentsData, questions };
+  // const result: PDFReviewProps = { ...values, studentsData, questions };
 
   return (
     <ModalCommon
       title={"Preview PDF"}
       open={isOpenPreviewReviewPDF}
-      onCancel={() => setOpenPreviewReviewPDF(false)}
+      // onCancel={() => setOpenPreviewReviewPDF(false)}
       footer={[
         <ButtonCommon
           key={2}
@@ -331,7 +331,7 @@ export const PDFReviewPreview: React.FC = () => {
                 biện ra ít nhất 02 câu):
               </Text>
 
-              {questions!?.map((values, index) => (
+              {questions?.map((values, index) => (
                 <>
                   <Text
                     style={{ ...styles.subLabel, marginLeft: 30, marginTop: 5 }}
@@ -360,7 +360,7 @@ export const PDFReviewPreview: React.FC = () => {
                     <Text style={styles.label}>Điểm</Text>
                   </View>
                 </View>
-                {studentsData!?.map((student) => (
+                {studentsData?.map((student) => (
                   <View key={student.MSSV} style={styles.tableRow}>
                     <View style={styles.tableCell}>
                       <Text style={styles.value}>{student.STT}</Text>

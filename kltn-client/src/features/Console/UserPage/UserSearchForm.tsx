@@ -1,5 +1,6 @@
-import { Button, Form, Input, Row } from "antd";
+import { Button, Form, Input, Row, Select } from "antd";
 import { useContext } from "react";
+import AuthConstants from "~/constants/authConstants";
 import { UserConsoleContext } from "~/contexts/UserConsoleContext";
 
 const UserSearchForm = (): JSX.Element => {
@@ -37,7 +38,7 @@ const UserSearchForm = (): JSX.Element => {
         {...formItemLayout}
         labelAlign="left"
       >
-        <Input />
+        <Input placeholder="Nhập tên tài khoản" />
       </Form.Item>
       <Form.Item
         label="Họ và tên"
@@ -45,7 +46,7 @@ const UserSearchForm = (): JSX.Element => {
         {...formItemLayout}
         labelAlign="left"
       >
-        <Input />
+        <Input placeholder="Nhập họ và tên" />
       </Form.Item>
       <Form.Item
         label="Chức vụ"
@@ -53,7 +54,13 @@ const UserSearchForm = (): JSX.Element => {
         {...formItemLayout}
         labelAlign="left"
       >
-        <Input />
+        <Select
+          placeholder="Chọn quyền truy cập"
+          options={Object.values(AuthConstants.AUTH_ROLES).map((role) => ({
+            value: role,
+            label: role,
+          }))}
+        />
       </Form.Item>
       <Form.Item
         label="Lớp"
@@ -61,7 +68,7 @@ const UserSearchForm = (): JSX.Element => {
         {...formItemLayout}
         labelAlign="left"
       >
-        <Input />
+        <Input placeholder="Nhập lớp" />
       </Form.Item>
 
       {/* <Form.Item label="mã số công tác" name="id">

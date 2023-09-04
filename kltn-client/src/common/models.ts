@@ -54,6 +54,9 @@ interface UserModel {
   roles?: string[];
   accessToken?: string;
   refreshToken?: string;
+  isDeleted?: boolean;
+  createdAt?: number;
+  updatedAt?: number;
 }
 
 interface StudentModel extends UserModel {
@@ -293,7 +296,7 @@ interface RefreshTokenModel {
   refreshToken?: string;
 }
 
-//PDF FORM
+// PDF FORM
 interface PDFReviewProps {
   projectName: string | undefined;
   supervisor: string | undefined;

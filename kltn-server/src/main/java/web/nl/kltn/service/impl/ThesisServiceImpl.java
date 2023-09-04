@@ -31,6 +31,7 @@ import web.nl.kltn.mapper.generator.ThesisMapper;
 import web.nl.kltn.mapper.generator.ThesisReviewerCommentMapper;
 import web.nl.kltn.mapper.generator.ThesisStudentMapper;
 import web.nl.kltn.mapper.generator.UserMapper;
+import web.nl.kltn.model.DocumentData;
 import web.nl.kltn.model.ThesisSearchCondition;
 import web.nl.kltn.model.dto.LecturerDTO;
 import web.nl.kltn.model.dto.StudentDTO;
@@ -150,7 +151,7 @@ public class ThesisServiceImpl implements ThesisService {
 		Thesis thesisEntity = thesisMapper.selectByPrimaryKey(id);
 		thesisDTO.load(thesisEntity, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper,
 				lecturerCusMapper, userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
-				reviewerScoreCusMapper, reviewerQuestionCusMapper);
+				reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper);
 		return thesisDTO;
 	}
 
@@ -160,7 +161,7 @@ public class ThesisServiceImpl implements ThesisService {
 		Thesis thesisEntity = thesisMapper.selectByPrimaryKey(id);
 		thesisDTO.load(thesisEntity, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper,
 				lecturerCusMapper, userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
-				reviewerScoreCusMapper, reviewerQuestionCusMapper);
+				reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper);
 		return thesisDTO;
 	}
 
@@ -171,7 +172,7 @@ public class ThesisServiceImpl implements ThesisService {
 			ThesisDTO thesisDTO = new ThesisDTO();
 			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
 					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
-					reviewerScoreCusMapper, reviewerQuestionCusMapper);
+					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOList;
@@ -183,6 +184,7 @@ public class ThesisServiceImpl implements ThesisService {
 			if (thesisDTO == null) {
 				return null;
 			}
+			System.out.println(thesisDTO.getDescription());
 			if (thesisMapper.insert(thesisDTO) <= 0) {
 				throw new Exception("Thêm thất bại");
 			}
@@ -206,7 +208,7 @@ public class ThesisServiceImpl implements ThesisService {
 			}
 			List<LecturerDTO> Lecturers = thesisDTO.getTeachers();
 			for (LecturerDTO LecturerDTO : Lecturers) {
-				
+
 				ThesisLecturer thesisLecturer = new ThesisLecturer();
 				thesisLecturer.setIsActive(false);
 				thesisLecturer.setThesisId(thesisDTO.getId());
@@ -220,13 +222,13 @@ public class ThesisServiceImpl implements ThesisService {
 				}
 			}
 
-//            //doc2vec index only when import not when create
-//            if (thesisDTO.getDocumentUrl() != null) {
-//                DocumentData doc;
-//                doc = new DocumentData(thesisDTO.getId(), thesisDTO.getTopic(), thesisDTO.getDocumentUrl());
-//                System.err.println(thesisDTO.getId() + " " + thesisDTO.getTopic() + " " + thesisDTO.getDocumentUrl());
-//                luceneService.indexDocument(doc);
-//            }
+			// doc2vec index only when import not when create
+			if (thesisDTO.getFileAttachments().get(0) != null) {
+				DocumentData doc;
+				doc = new DocumentData(thesisDTO.getId(), thesisDTO.getTopic(),
+						thesisDTO.getFileAttachments().get(0).getFileUrl());
+				luceneService.indexDocument(doc);
+			}
 
 			List<ThesisDocument> thesisDocuments = thesisDTO.getFileAttachments();
 			for (ThesisDocument thesisDocument : thesisDocuments) {
@@ -285,8 +287,17 @@ public class ThesisServiceImpl implements ThesisService {
 	}
 
 	@Override
-	public void delete(String id) {
-		thesisMapper.deleteByPrimaryKey(id);
+	public void delete(String id) throws Exception {
+		try {
+			Thesis thesis = thesisMapper.selectByPrimaryKey(id);
+			thesis.setIsDeleted(true);
+			if (thesisMapper.updateByPrimaryKey(thesis) <=0) {
+				throw new Exception("Không tìm thấy thesis");
+			}
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().isRollbackOnly();
+			throw e;
+		}
 	}
 
 	@Override
@@ -296,7 +307,7 @@ public class ThesisServiceImpl implements ThesisService {
 			ThesisDTO thesisDTO = new ThesisDTO();
 			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
 					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
-					reviewerScoreCusMapper, reviewerQuestionCusMapper);
+					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOs;
@@ -314,7 +325,7 @@ public class ThesisServiceImpl implements ThesisService {
 			ThesisDTO thesisDTO = new ThesisDTO();
 			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
 					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
-					reviewerScoreCusMapper, reviewerQuestionCusMapper);
+					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOs;
@@ -358,7 +369,7 @@ public class ThesisServiceImpl implements ThesisService {
 			ThesisDTO thesisDTO = new ThesisDTO();
 			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
 					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
-					reviewerScoreCusMapper, reviewerQuestionCusMapper);
+					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOs;
@@ -379,7 +390,7 @@ public class ThesisServiceImpl implements ThesisService {
 			ThesisDTO thesisDTO = new ThesisDTO();
 			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
 					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
-					reviewerScoreCusMapper, reviewerQuestionCusMapper);
+					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOs;
@@ -447,7 +458,7 @@ public class ThesisServiceImpl implements ThesisService {
 			throw e;
 		}
 	}
-	
+
 	@Override
 	public List<ThesisDTO> findByReviewerId(String userId) {
 		List<Thesis> thesisList = thesisCusMapper.findThesisByReviewerMarker(userId);
@@ -455,7 +466,7 @@ public class ThesisServiceImpl implements ThesisService {
 			ThesisDTO thesisDTO = new ThesisDTO();
 			thesisDTO.load(thesis, thesisStudentCusMapper, thesisLecturerCusMapper, studentCusMapper, lecturerCusMapper,
 					userMapper, userCusMapper, thesisReviewerCommentCusMapper, reviewerCusMapper,
-					reviewerScoreCusMapper, reviewerQuestionCusMapper);
+					reviewerScoreCusMapper, reviewerQuestionCusMapper, thesisDocumentCusMapper);
 			return thesisDTO;
 		}).toList();
 		return thesisDTOs;

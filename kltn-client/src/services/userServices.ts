@@ -119,3 +119,8 @@ export const changePassword = async (changePasswordPayload: ChangePasswordPayloa
   const responseModel: ResponseModel<UserModel | null> = await http.put(ApiUrlConstants.CHANGE_PASSWORD, requestModel);
   return responseModel.data;
 }
+
+export const deleteUser = async (id: string): Promise<boolean> => {
+  const responseModel: ResponseModel<boolean> = await http.delete(`${ApiUrlConstants.DELETE_USER}/${id}`);
+  return responseModel.data;
+}
