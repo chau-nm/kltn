@@ -1,10 +1,11 @@
-import { Col, Row, Typography } from "antd";
+import { Col, Row, Space, Typography } from "antd";
 import { type SetStateAction } from "react";
 import CommonConstants from "~/constants/commonConstants";
 import ButtonCommon from "./common/ButtonCommon";
 import ModalCommon from "./common/ModalCommon";
 import ReactQuillPreviewCommon from "./common/ReactQuillPreviewCommon";
-import { SendOutlined } from "@ant-design/icons";
+import { PaperClipOutlined, SendOutlined } from "@ant-design/icons";
+import { getFileNameFromUrl } from "~/common/util";
 
 type ThesisDetailViewProps = {
   thesis: ThesisModel;
@@ -20,6 +21,9 @@ const ThesisDetailView = ({
   const handleClose = (): void => {
     setIsOpen(false);
   };
+
+  const outLines = thesis.fileAttachments?.filter((file) => file.type === 1);
+  const documents = thesis.fileAttachments?.filter((file) => file.type === 2);
 
   return (
     <ModalCommon
@@ -126,6 +130,41 @@ const ThesisDetailView = ({
           );
         })}
       </div>
+
+      {(outLines?.length ?? 0) > 0 && (
+        <div className="my-2">
+          <div className="flex items-center mb-2">
+            <SendOutlined />
+            <span className="ml-2 text-lg font-bold">File đề cương:</span>
+          </div>
+          {outLines?.map((file, index) => {
+            return (
+              <Space key={index} className="block">
+                <a href={file.fileUrl}>
+                  <PaperClipOutlined /> {getFileNameFromUrl(file.fileUrl ?? "")}
+                </a>
+              </Space>
+            );
+          })}
+        </div>
+      )}
+      {(documents?.length ?? 0) > 0 && (
+        <div className="my-2">
+          <div className="flex items-center mb-2">
+            <SendOutlined />
+            <span className="ml-2 text-lg font-bold">File tài liệu:</span>
+          </div>
+          {documents?.map((file, index) => {
+            return (
+              <Space key={index} className="block">
+                <a href={file.fileUrl}>
+                  <PaperClipOutlined /> {getFileNameFromUrl(file.fileUrl ?? "")}
+                </a>
+              </Space>
+            );
+          })}
+        </div>
+      )}
     </ModalCommon>
   );
 };

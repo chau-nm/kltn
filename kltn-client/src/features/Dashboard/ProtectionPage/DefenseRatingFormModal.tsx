@@ -1,9 +1,13 @@
-import { Col, Form, Input, Row, Typography } from "antd";
+import { Col, Form, Input, Row, Typography, message } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useContext } from "react";
+import { useMutation } from "react-query";
+import { v4 } from "uuid";
 import ButtonCommon from "~/components/common/ButtonCommon";
 import ModalCommon from "~/components/common/ModalCommon";
+import { AuthContext } from "~/contexts/AuthContext";
 import { DefenseDashboardContext } from "~/contexts/DefenseDashboardContext";
+import * as ThesisDefenseRatingService from "~/services/thesisDefenseRatingService";
 
 const DefenseRatingFormModal = (): JSX.Element => {
   const {
@@ -13,9 +17,53 @@ const DefenseRatingFormModal = (): JSX.Element => {
     setIsOpenThesisDetail,
   } = useContext(DefenseDashboardContext);
 
+  const { user } = useContext(AuthContext);
+
+  const defenseRatingDefault = thesis?.defenseRatings?.filter(
+    (dr) => dr.marker === user?.userId
+  )[0];
+
   const [form] = useForm();
 
-  const handleSave = (): void => {};
+  const updateRatingMutation = useMutation(ThesisDefenseRatingService.update, {
+    onSuccess: (data) => {
+      if (data) {
+        void message.success("Cập nhật đánh giá thành công");
+        handleClose();
+      }
+    },
+  });
+
+  const handleSave = (): void => {
+    const defenseRatingId = defenseRatingDefault?.id;
+    const defenseRatingScores: DefenseRatingScoreModel[] =
+      thesis?.students?.map((std) => {
+        return {
+          id: v4(),
+          drId: defenseRatingId,
+          studentId: std.userId,
+          score1: form.getFieldValue(`score1${std.username ?? ""}`),
+          score2: form.getFieldValue(`score2${std.username ?? ""}`),
+          score3: form.getFieldValue(`score3${std.username ?? ""}`),
+          totalScore: form.getFieldValue(`scoret${std.username ?? ""}`),
+          isDeleted: false,
+          createdAt: new Date().getTime(),
+          updatedAt: new Date().getTime(),
+        };
+      }) ?? [];
+
+    const defenseRating: DefenseRatingModel = {
+      id: defenseRatingId,
+      marker: user?.userId ?? "",
+      thesisId: thesis?.id ?? "",
+      ...form.getFieldsValue(),
+      scores: defenseRatingScores,
+      isDeleted: false,
+      createdAt: new Date().getTime(),
+      updatedAt: new Date().getTime(),
+    };
+    updateRatingMutation.mutate(defenseRating);
+  };
 
   const handleClose = (): void => {
     setIsOpenDefenseForm(false);
@@ -82,7 +130,7 @@ const DefenseRatingFormModal = (): JSX.Element => {
           <Form.Item
             {...formItemLayout}
             label="Của giảng viên phản biện (đủ, đúng/ thiếu, sai):"
-            name="contentScore"
+            name="feedbackLecturerQuestionScore"
             rules={[{ required: true }]}
             labelAlign="left"
           >
@@ -91,7 +139,7 @@ const DefenseRatingFormModal = (): JSX.Element => {
           <Form.Item
             {...formItemLayout}
             label="Của thành viên hội đồng (đủ, đúng/ thiếu sai):"
-            name="analysisResultScore"
+            name="councilQuestionScore"
             rules={[{ required: true }]}
             labelAlign="left"
           >
@@ -105,7 +153,7 @@ const DefenseRatingFormModal = (): JSX.Element => {
           <Form.Item
             {...formItemLayout}
             label="Tự tin trả lời câu hỏi của giảng viên phản biện và thành viên hội đồng"
-            name="contentScore"
+            name="behaviorScore"
             rules={[{ required: true }]}
             labelAlign="left"
           >
@@ -118,7 +166,7 @@ const DefenseRatingFormModal = (): JSX.Element => {
           </Typography.Text>
           {thesis?.students?.map((std) => {
             return (
-              <Row key={std.userId} gutter={20}>
+              <Row key={std.userId} gutter={25}>
                 <Col span={5}>
                   <span>Mã số sinh viên: {std.username}</span>
                 </Col>
@@ -126,12 +174,12 @@ const DefenseRatingFormModal = (): JSX.Element => {
                   <span>Họ và tên: {std.fname}</span>
                 </Col>
                 <Col>
-                  <Row gutter={20}>
+                  <Row gutter={25}>
                     <Col>
                       <span>Điểm phần 3.1</span>
                     </Col>
                     <Col>
-                      <Form.Item name={`score${std.username ?? ""}`}>
+                      <Form.Item name={`score1${std.username ?? ""}`}>
                         <Input
                           type="number"
                           placeholder="Điểm số sinh viên 1"
@@ -141,12 +189,12 @@ const DefenseRatingFormModal = (): JSX.Element => {
                   </Row>
                 </Col>
                 <Col>
-                  <Row gutter={20}>
+                  <Row gutter={25}>
                     <Col>
                       <span>Điểm phần 3.2</span>
                     </Col>
                     <Col>
-                      <Form.Item name={`score${std.username ?? ""}`}>
+                      <Form.Item name={`score2${std.username ?? ""}`}>
                         <Input
                           type="number"
                           placeholder="Điểm số sinh viên 1"
@@ -156,12 +204,12 @@ const DefenseRatingFormModal = (): JSX.Element => {
                   </Row>
                 </Col>
                 <Col>
-                  <Row gutter={20}>
+                  <Row gutter={25}>
                     <Col>
                       <span>Điểm phần 3.3</span>
                     </Col>
                     <Col>
-                      <Form.Item name={`score${std.username ?? ""}`}>
+                      <Form.Item name={`score3${std.username ?? ""}`}>
                         <Input
                           type="number"
                           placeholder="Điểm số sinh viên 1"
@@ -171,12 +219,12 @@ const DefenseRatingFormModal = (): JSX.Element => {
                   </Row>
                 </Col>
                 <Col>
-                  <Row gutter={20}>
+                  <Row gutter={25}>
                     <Col>
                       <span>Điểm tổng</span>
                     </Col>
                     <Col>
-                      <Form.Item name={`score${std.username ?? ""}`}>
+                      <Form.Item name={`scoret${std.username ?? ""}`}>
                         <Input
                           type="number"
                           placeholder="Điểm số sinh viên 1"

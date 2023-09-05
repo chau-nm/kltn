@@ -1,27 +1,22 @@
-import { Avatar, Col, Row, Select, Typography, message } from "antd";
+import { Avatar, Col, Row, Typography, message } from "antd";
 import { useContext, useState } from "react";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import { dateTimeDisplay } from "~/common/util";
 import ButtonCommon from "~/components/common/ButtonCommon";
 import ModalCommon from "~/components/common/ModalCommon";
-import AuthConstants from "~/constants/authConstants";
 import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
-import * as UserService from "~/services/userServices";
 // import * as CriticalAssessmentService from "~/services/criticalAssessmentService";
 import { UserOutlined } from "@ant-design/icons";
 import TeacherTargetModal from "~/components/TeacherTargetModal";
+import ProtectionDetailView from "~/components/ProtectionDetailView";
 import * as ThesisDefenseRatingService from "~/services/thesisDefenseRatingService";
 
-interface protectionDisplayModal {
-  id?: string;
-  fname?: string;
-  username?: string;
-}
-
 const ProtectionModal = (): JSX.Element => {
-  const [isEditCAPersonMode, setIsEditCAPersonMode] = useState(false);
-  const [caPerson, setCaPerson] = useState<protectionDisplayModal[]>([]);
+  // const [isEditCAPersonMode, setIsEditCAPersonMode] = useState(false);
+  // const [caPerson, setCaPerson] = useState<protectionDisplayModal[]>([]);
   const [openTargetTeacher, setOpenTargetTeacher] = useState<boolean>(false);
+  const [defenseRatingDetail, setDefenseRatingDetail] =
+    useState<DefenseRatingModel>();
 
   const {
     isOpenProtectionModal,
@@ -29,48 +24,11 @@ const ProtectionModal = (): JSX.Element => {
     thesis,
     setIsOpenThesisDetailModal,
     setIsOpenProtectionDetailModal,
+    isOpenProtectionDetailModal,
   } = useContext(ThesisConsoleContext);
 
   const handleClose = (): void => {
     setIsOpenProtectionModal(false);
-  };
-
-  const { data: teachers } = useQuery<UserModel[]>(
-    ["load-teacher-select"],
-    async () =>
-      await UserService.getUserByRole(AuthConstants.AUTH_ROLES.TEACHER)
-  );
-
-  const columns = [
-    {
-      title: "STT",
-    },
-    {
-      title: "Mã số sinh viên",
-    },
-    {
-      title: "Họ và tên",
-    },
-    {
-      title: "Thang điểm",
-    },
-  ];
-
-  const handleSaveCriticalAssessmentPerson = (): void => {
-    if (!thesis?.id || !caPerson) {
-      return;
-    }
-    //   insertUserCriticalAssessment.mutate({
-    //     thesisId: thesis?.id,
-    //     userId: caPerson,
-    //   });
-    setIsEditCAPersonMode(false);
-  };
-
-  const filterOptions = (input: string, option: any): boolean => {
-    return (option?.label?.toString().toLowerCase() ?? "").includes(
-      input.toLowerCase()
-    );
   };
 
   const insertDefenseRatersMutation = useMutation(
@@ -97,7 +55,7 @@ const ProtectionModal = (): JSX.Element => {
       open={isOpenProtectionModal}
       onCancel={handleClose}
       footer={[
-        <ButtonCommon key={1} value="Đóng" />,
+        <ButtonCommon key={1} value="Đóng" onClick={handleClose} />,
         <ButtonCommon
           key={2}
           value="Thêm bảo vệ"
@@ -136,75 +94,9 @@ const ProtectionModal = (): JSX.Element => {
         <Row gutter={30} className="mt-4 mb-4" justify={"space-between"}>
           <Col className="text-base">
             <strong> Hội đồng bảo vệ: </strong>
-            {isEditCAPersonMode ? (
-              <Select
-                mode="multiple"
-                style={{ width: 300 }}
-                showSearch
-                value={caPerson.map((person) => person.id ?? "")}
-                onChange={(value: string[]) => {
-                  const caPerson: protectionDisplayModal[] = teachers!
-                    .filter(
-                      (teacher: UserModel) =>
-                        teacher?.userId && value.includes(teacher?.userId)
-                    )
-                    .map((teacher) => ({
-                      id: teacher.userId,
-                      fname: teacher.fname,
-                      username: teacher.username,
-                    }));
-                  setCaPerson(caPerson);
-                }}
-                placeholder="Nhập mã số giảng viên"
-                filterOption={filterOptions}
-                options={[
-                  ...teachers!.map((teacher) => {
-                    return {
-                      value: teacher.userId,
-                      label: `${teacher.fname ?? ""} - ${
-                        teacher.username ?? ""
-                      }`,
-                    };
-                  }),
-                ]}
-              />
-            ) : caPerson ? (
-              caPerson.map((person) => person.fname).join(", ")
-            ) : (
-              "Chưa thêm bảo vệ"
-            )}
-          </Col>
-          <Col>
-            {isEditCAPersonMode ? (
-              <>
-                <span
-                  className="text-red-400 select-none cursor-pointer hover:text-red-500 duration-300 mx-3"
-                  onClick={() => {
-                    setIsEditCAPersonMode(false);
-                  }}
-                >
-                  Hủy
-                </span>
-                <span
-                  className="text-green-700 select-none cursor-pointer hover:text-green-500 duration-300 mx-3"
-                  onClick={handleSaveCriticalAssessmentPerson}
-                >
-                  Lưu
-                </span>
-              </>
-            ) : (
-              <span
-                className="text-blue-400 select-none cursor-pointer hover:text-blue-500 duration-300"
-                onClick={() => {
-                  setIsEditCAPersonMode(true);
-                }}
-              >
-                Chỉnh sửa
-              </span>
-            )}
           </Col>
         </Row>
-        {caPerson.map((person, index) => {
+        {thesis?.defenseRatings?.map((dr, index) => {
           return (
             <Row
               className="p-3 border rounded-lg max-w-[1000px] mb-3"
@@ -220,9 +112,11 @@ const ProtectionModal = (): JSX.Element => {
 
               <Col span={18} className="comment-content">
                 <Typography.Text>
-                  <strong>{person.fname}</strong>
+                  <strong>{dr.userMaker.fname ?? ""}</strong>
                   <Row>
-                    <p>{`Trạng thái: Đang đánh giá`}</p>
+                    <p>{`Trạng thái: ${
+                      dr.scores.length > 0 ? "Đã đánh giá" : "Đang đánh giá"
+                    }`}</p>
                   </Row>
                 </Typography.Text>
               </Col>
@@ -231,6 +125,7 @@ const ProtectionModal = (): JSX.Element => {
                   className="text-blue-400 select-none cursor-pointer hover:text-blue-500 duration-300"
                   onClick={() => {
                     setIsOpenProtectionDetailModal(true);
+                    setDefenseRatingDetail(dr);
                   }}
                 >
                   Xem chi tiết
@@ -247,6 +142,11 @@ const ProtectionModal = (): JSX.Element => {
         isOpen={openTargetTeacher}
         setIsOpen={setOpenTargetTeacher}
         handleFinish={handleAddCouncil}
+      />
+      <ProtectionDetailView
+        protectionRating={defenseRatingDetail}
+        isOpen={isOpenProtectionDetailModal}
+        setIsOpen={setIsOpenProtectionDetailModal}
       />
     </ModalCommon>
   );

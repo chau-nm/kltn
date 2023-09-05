@@ -114,6 +114,7 @@ interface ThesisModel {
   reviewCalendar?: ThesisReviewerCalendar;
   defenseCalendar?: ThesisDefenseCalendar;
   reviewers?: ReviewerModel[];
+  defenseRatings?: DefenseRatingModel[];
   status?: number;
   isDeleted?: boolean;
   createdBy?: string;
@@ -233,11 +234,13 @@ interface DefenseRatingModel {
   id?: string;
   thesisId: string;
   marker: string;
-  content: number;
-  analysisResult: number;
-  feedBackLectureQuestion: number;
-  councilQuestin: number;
-  behavior: number;
+  userMaker: LecturerModel;
+  contentScore: number;
+  analysisResultScore: number;
+  feedbackLecturerQuestionScore: number;
+  councilQuestionScore: number;
+  behaviorScore: number;
+  scores: DefenseRatingScoreModel[];
   isDeleted: boolean;
   createdAt: number;
   updatedAt: number;

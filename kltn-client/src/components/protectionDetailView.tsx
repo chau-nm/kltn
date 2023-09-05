@@ -4,6 +4,7 @@ import ButtonCommon from "./common/ButtonCommon";
 import ModalCommon from "./common/ModalCommon";
 import { useContext } from "react";
 import { ThesisConsoleContext } from "~/contexts/ThesisConsoleContext";
+import { type ColumnType } from "antd/es/table";
 
 type ProtectionDetailViewProps = {
   protectionRating?: DefenseRatingModel;
@@ -21,27 +22,48 @@ const ProtectionDetailView = ({
     setIsOpen(false);
   };
 
-  const columns = [
+  const columns: Array<ColumnType<DefenseRatingScoreModel>> = [
     {
       title: "STT",
+      render: (row, record, index) => {
+        return index + 1;
+      },
     },
     {
       title: "Mã số sinh viên",
+      render: (row, record, index) => {
+        return record.student?.username;
+      },
     },
     {
       title: "Họ và tên",
+      render: (row, record, index) => {
+        return record.student?.fname;
+      },
     },
     {
       title: "Điểm phần 1.1",
+      render: (row, record, index) => {
+        return record.score1;
+      },
     },
     {
       title: "Điểm phần 1.2",
+      render: (row, record, index) => {
+        return record.score2;
+      },
     },
     {
       title: "Điểm phần 1.3",
+      render: (row, record, index) => {
+        return record.score3;
+      },
     },
     {
       title: "Điểm tổng (thang điểm 10)",
+      render: (row, record, index) => {
+        return record.totalScore;
+      },
     },
   ];
 
@@ -52,7 +74,9 @@ const ProtectionDetailView = ({
         <ButtonCommon
           key={1}
           value="Preview PDF"
-          onClick={() => setOpenPreviewDefensePDF(true)}
+          onClick={() => {
+            setOpenPreviewDefensePDF(true);
+          }}
         />,
         <ButtonCommon key={1} value="Đóng" onClick={handleClose} />,
       ]}
@@ -65,7 +89,9 @@ const ProtectionDetailView = ({
             <Typography className="font-bold">Người đánh giá</Typography>
           </Col>
           <Col>
-            <Typography className="font-bold">Nguyễn văn A</Typography>
+            <Typography className="font-bold">
+              {protectionRating?.userMaker.fname}
+            </Typography>
           </Col>
         </Row>
         <Row>
@@ -82,7 +108,7 @@ const ProtectionDetailView = ({
           <Col span={15}>
             <Typography>- Nội dung và phương pháp tiến hành đề tài:</Typography>
           </Col>
-          <Col className="pl-10">20</Col>
+          <Col className="pl-10">{protectionRating?.contentScore}</Col>
         </Row>
         <Row className="pl-16">
           <Col span={15}>
@@ -90,7 +116,7 @@ const ProtectionDetailView = ({
               - Phân tích kết quả & thảo luận những vấn đề liên quan đề tài:
             </Typography>
           </Col>
-          <Col className="pl-10">20</Col>
+          <Col className="pl-10">{protectionRating?.analysisResultScore}</Col>
         </Row>
         <Row className="pl-8">
           <Typography className="font-bold mt-3">
@@ -103,7 +129,9 @@ const ProtectionDetailView = ({
               - Của giảng viên phản biện (đủ, đúng/ thiếu, sai):
             </Typography>
           </Col>
-          <Col className="pl-10">20</Col>
+          <Col className="pl-10">
+            {protectionRating?.feedbackLecturerQuestionScore}
+          </Col>
         </Row>
         <Row className="pl-16">
           <Col span={15}>
@@ -111,7 +139,7 @@ const ProtectionDetailView = ({
               - Của thành viên hội đồng (đủ, đúng/ thiếu sai):
             </Typography>
           </Col>
-          <Col className="pl-10">20</Col>
+          <Col className="pl-10">{protectionRating?.councilQuestionScore}</Col>
         </Row>
         <Row className="pl-8">
           <Typography className="font-bold mt-3">
@@ -125,11 +153,11 @@ const ProtectionDetailView = ({
               đồng
             </Typography>
           </Col>
-          <Col className="pl-10">20</Col>
+          <Col className="pl-10">{protectionRating?.behaviorScore}</Col>
         </Row>
       </div>
       <div className="mt-5">
-        <Table columns={columns} />
+        <Table columns={columns} dataSource={protectionRating?.scores} />
       </div>
     </ModalCommon>
   );

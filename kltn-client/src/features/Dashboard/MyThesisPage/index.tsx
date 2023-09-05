@@ -38,7 +38,7 @@ const MyThesisPage = (): JSX.Element => {
     return (
       <PageLayout pageTitle="Luận văn của tôi">
         {myThesis?.map((thesis) => {
-          if ((thesis?.status ?? 0) > 2) {
+          if ((thesis?.status ?? 0) >= 2) {
             return <ThesisDetail key={thesis.id} thesis={thesis} />;
           } else {
             return (

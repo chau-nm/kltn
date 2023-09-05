@@ -169,7 +169,7 @@ const ThesisTableResult = (): JSX.Element => {
               />
             )}
 
-            {record.status === 3 && (
+            {(record.status === 2 || record.status === 3) && (
               <CommentIconCommon
                 onClick={() => {
                   searchDetail(record.id!);

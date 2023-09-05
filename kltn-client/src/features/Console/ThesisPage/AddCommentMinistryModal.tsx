@@ -217,7 +217,6 @@ const AddCommentMinistryModal = (): JSX.Element => {
       <TeacherTargetModal
         isOpen={openTargetTeacher}
         setIsOpen={setOpenTargetTeacher}
-        isSingle={true}
         handleFinish={handleAddCouncil}
       />
     </ModalCommon>

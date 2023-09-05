@@ -5,6 +5,7 @@ import { OutlineReviewContext } from "~/contexts/OutlineReviewContext";
 
 import { EditIconCommon } from "~/components/common/IconCommon";
 import TableCommon from "~/components/common/TableCommon";
+import { AuthContext } from "~/contexts/AuthContext";
 
 const OutlineReviewTableResult = (): JSX.Element => {
   const {
@@ -14,6 +15,8 @@ const OutlineReviewTableResult = (): JSX.Element => {
     isLoading,
     setThesisDetail,
   } = useContext(OutlineReviewContext);
+
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     search();
@@ -36,7 +39,14 @@ const OutlineReviewTableResult = (): JSX.Element => {
       title: "Trạng thái",
       dataIndex: "status",
       render: (row, record) => {
-        return <Row className="text-green-500">Đang đánh giá</Row>;
+        const myReviewer = record.thesisReviewerComments?.filter(
+          (review) => review.userId === user?.userId
+        )[0];
+        return (
+          <Row className="text-green-500">
+            {myReviewer?.result ? "Đã đánh giá" : "Chưa đánh giá"}
+          </Row>
+        );
       },
       width: 5,
     },

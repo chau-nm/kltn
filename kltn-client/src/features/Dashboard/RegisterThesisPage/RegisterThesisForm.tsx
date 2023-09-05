@@ -241,29 +241,35 @@ const RegisterThesisForm = (): JSX.Element => {
             }}
           />
         </Form.Item>
-        {documentList.length > 0 &&
-          documentList.map((data, index) => {
-            return (
-              <div
-                key={index}
-                className="border-2 border-slate-200 rounded-sm p-1 mb-1"
-              >
-                <ReactQuillPreviewCommon content={data?.title as string} />
-                {data?.url && (
-                  <div className="border-t py-3">
-                    <Typography.Text className="font-bold">
-                      Danh sách file đính kèm
-                    </Typography.Text>
-                    <Space className="block">
-                      <a href={data?.url}>
-                        <PaperClipOutlined /> {getFileNameFromUrl(data?.url)}
-                      </a>
-                    </Space>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+        {documentList.length > 0 && (
+          <>
+            <Typography.Text type="warning">
+              Đề tài của bạn có khả năng trùng với các đề tài sau
+            </Typography.Text>
+            {documentList.map((data, index) => {
+              return (
+                <div
+                  key={index}
+                  className="border-2 border-slate-200 rounded-sm p-1 mb-1"
+                >
+                  <ReactQuillPreviewCommon content={data?.title as string} />
+                  {data?.url && (
+                    <div className="border-t py-3">
+                      <Typography.Text className="font-bold">
+                        Danh sách file đính kèm
+                      </Typography.Text>
+                      <Space className="block overflow-hidden">
+                        <a href={data?.url}>
+                          <PaperClipOutlined /> {getFileNameFromUrl(data?.url)}
+                        </a>
+                      </Space>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </>
+        )}
         <Form.Item
           label="File đề cương"
           name="outline"

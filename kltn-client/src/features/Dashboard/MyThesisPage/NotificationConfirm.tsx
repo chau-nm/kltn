@@ -1,4 +1,4 @@
-import { Alert, Col, Row, Typography } from "antd";
+import { Alert, Col, Row, Typography, message } from "antd";
 import { useContext } from "react";
 import { useMutation } from "react-query";
 import ButtonCommon from "~/components/common/ButtonCommon";
@@ -15,9 +15,23 @@ const NotificationConfirm = ({
   const { user } = useContext(AuthContext);
   const userInvite = thesis.userCreated;
 
-  const acceptInviteMutation = useMutation(ThesisService.acceptInvite);
+  const acceptInviteMutation = useMutation(ThesisService.acceptInvite, {
+    onSuccess: (data) => {
+      if (data) {
+        void message.success("Bạn đã đồng ý tham gia luận văn");
+        location.reload();
+      }
+    },
+  });
 
-  const declineInviteMutation = useMutation(ThesisService.declineInvite);
+  const declineInviteMutation = useMutation(ThesisService.declineInvite, {
+    onSuccess: (data) => {
+      if (data) {
+        void message.success("Bạn đã từ chối tham gia luận văn");
+        location.reload();
+      }
+    },
+  });
 
   const handleAccept = (): void => {
     acceptInviteMutation.mutate({

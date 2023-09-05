@@ -98,7 +98,7 @@
 		</where>
 	</select>
 
-	<select id="findThesislecturerInvided" resultMap="Thesis">
+	<select id="findThesisLecturerInvided" resultMap="Thesis">
 		SELECT
 		t.id,
 		t.topic,
@@ -143,7 +143,7 @@
 		</where>
 	</select>
 
-	<select id="findlecturerThesis" resultMap="Thesis">
+	<select id="findLecturerThesis" resultMap="Thesis">
 		SELECT
 		t.id,
 		t.topic,

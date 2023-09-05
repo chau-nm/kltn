@@ -130,4 +130,6 @@ export class ApiUrlConstants {
   public static readonly EMAIL_PUBLIC_KEY = "zYF2rOMgmyBuMxfwX";
   public static readonly SERVICE_EMAIL_ID = "service_ghvi71k";
   public static readonly TEMPLATE_RESET_PASSWORD_ID = "template_y3hdy8w";
+
+  public static readonly INSERT_THESIS_DOCUMENT_LIST = "/thesis-document/insert-list";
 }

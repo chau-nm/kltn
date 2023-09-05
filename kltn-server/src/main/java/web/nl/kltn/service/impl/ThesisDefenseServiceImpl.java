@@ -83,12 +83,12 @@ public class ThesisDefenseServiceImpl implements ThesisDefenseService {
 	public DefenseRatingDTO update(DefenseRatingDTO defenseRatingDTO) throws Exception {
 		try {
 			if (defenseRatingMapper.updateByPrimaryKey(defenseRatingDTO) <= 0) {
-				throw new Exception("Cập nhật đánh giá bảo vệ thất bại");
+				throw new Exception("Cập nhật đánh giá bảo vệ thất bại 1");
 			}
 			defenseRatingScoreCusMapper.deleteByDrId(defenseRatingDTO.getId());
 			for (DefenseRatingScoreDTO defenseRatingScoreDTO : defenseRatingDTO.getScores()) {
 				if (defenseRatingScoreMapper.insert(defenseRatingScoreDTO) <= 0) {
-					throw new Exception("Cập nhật đánh giá bảo vệ thất bại");
+					throw new Exception("Cập nhật đánh giá bảo vệ thất bại 2");
 				}
 			}
 
@@ -111,7 +111,7 @@ public class ThesisDefenseServiceImpl implements ThesisDefenseService {
 				} else {
 					thesis.setStatus(-1);
 				}
-				thesisMapper.insert(thesis);
+				thesisMapper.updateByPrimaryKey(thesis);
 			}
 
 			return defenseRatingDTO;
