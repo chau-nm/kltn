@@ -7,6 +7,7 @@ import {
   FormOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { Tooltip } from "antd";
 import { type MouseEventHandler } from "react";
 
 type IconCommonType = {
@@ -17,28 +18,34 @@ const iconTextClass = "text-xl mx-2 cursor-pointer duration-300";
 
 export const EditIconCommon = ({ onClick }: IconCommonType): JSX.Element => {
   return (
-    <FormOutlined
-      className={`text-yellow-700 mt-2 hover:text-yellow-500 ${iconTextClass}`}
-      onClick={onClick}
-    />
+    <Tooltip title="Chỉnh sửa">
+      <FormOutlined
+        className={`text-yellow-700 mt-2 hover:text-yellow-500 ${iconTextClass}`}
+        onClick={onClick}
+      />
+    </Tooltip>
   );
 };
 
 export const DeleteIconCommon = ({ onClick }: IconCommonType): JSX.Element => {
   return (
-    <DeleteOutlined
-      className={`text-red-700 mt-2 hover:text-red-500 ${iconTextClass}`}
-      onClick={onClick}
-    />
+    <Tooltip title="Xóa">
+      <DeleteOutlined
+        className={`text-red-700 mt-2 hover:text-red-500 ${iconTextClass}`}
+        onClick={onClick}
+      />
+    </Tooltip>
   );
 };
 
 export const SeeIconCommon = ({ onClick }: IconCommonType): JSX.Element => {
   return (
-    <EyeOutlined
-      className={`text-blue-700 mt-2 hover:text-red-500 ${iconTextClass}`}
-      onClick={onClick}
-    />
+    <Tooltip title="Xem chi tiết">
+      <EyeOutlined
+        className={`text-blue-700 mt-2 hover:text-red-500 ${iconTextClass}`}
+        onClick={onClick}
+      />
+    </Tooltip>
   );
 };
 
@@ -55,10 +62,12 @@ export const CriticalAssessmentIconCommon = ({
   onClick,
 }: IconCommonType): JSX.Element => {
   return (
-    <FileSyncOutlined
-      className={`text-blue-700 mt-2 hover:text-red-500 ${iconTextClass}`}
-      onClick={onClick}
-    />
+    <Tooltip title="Phản biện">
+      <FileSyncOutlined
+        className={`text-blue-700 mt-2 hover:text-red-500 ${iconTextClass}`}
+        onClick={onClick}
+      />
+    </Tooltip>
   );
 };
 
@@ -66,18 +75,22 @@ export const ProtectedIconCommon = ({
   onClick,
 }: IconCommonType): JSX.Element => {
   return (
-    <FileProtectOutlined
-      className={`text-blue-700 mt-2 hover:text-red-500 ${iconTextClass}`}
-      onClick={onClick}
-    />
+    <Tooltip title="Bảo vệ">
+      <FileProtectOutlined
+        className={`text-blue-700 mt-2 hover:text-red-500 ${iconTextClass}`}
+        onClick={onClick}
+      />
+    </Tooltip>
   );
 };
 
 export const CommentIconCommon = ({ onClick }: IconCommonType): JSX.Element => {
   return (
-    <CommentOutlined
-      className={`text-blue-700 hover:text-red-500 ${iconTextClass}`}
-      onClick={onClick}
-    />
+    <Tooltip title="Đề cương">
+      <CommentOutlined
+        className={`text-blue-700 hover:text-red-500 ${iconTextClass}`}
+        onClick={onClick}
+      />
+    </Tooltip>
   );
 };

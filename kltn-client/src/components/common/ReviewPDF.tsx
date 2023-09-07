@@ -136,16 +136,14 @@ export const PDFReviewPreview: React.FC = () => {
   //   questions.push(values[`question${index}`]);
   // }
   const studentsData: StudentPDFReview[] =
-    (thesis?.reviewers &&
-      thesis?.reviewers[0].reviewerScores?.map((std, index) => {
-        return {
-          STT: index.toString(),
-          MSSV: std?.student?.username ?? "", // Provide a default empty string
-          fullName: std?.student?.fname ?? "", // Provide a default empty string
-          mark: std?.score ?? undefined, // Provide a default value or undefined
-        };
-      })) ??
-    []; // Provide a default empty array
+    thesis?.reviewers![0]?.reviewerScores?.map((std, index) => {
+      return {
+        STT: index.toString(),
+        MSSV: std?.student?.username ?? "", // Provide a default empty string
+        fullName: std?.student?.fname ?? "", // Provide a default empty string
+        mark: std?.score ?? undefined, // Provide a default value or undefined
+      };
+    }) ?? []; // Provide a default empty array
 
   // const result: PDFReviewProps = { ...values, studentsData, questions };
 
@@ -153,7 +151,9 @@ export const PDFReviewPreview: React.FC = () => {
     <ModalCommon
       title={"Preview PDF"}
       open={isOpenPreviewReviewPDF}
-      // onCancel={() => setOpenPreviewReviewPDF(false)}
+      onCancel={() => {
+        setOpenPreviewReviewPDF(false);
+      }}
       footer={[
         <ButtonCommon
           key={2}
@@ -360,22 +360,23 @@ export const PDFReviewPreview: React.FC = () => {
                     <Text style={styles.label}>Điểm</Text>
                   </View>
                 </View>
-                {studentsData?.map((student) => (
-                  <View key={student.MSSV} style={styles.tableRow}>
-                    <View style={styles.tableCell}>
-                      <Text style={styles.value}>{student.STT}</Text>
+                {(thesis?.reviewers?.length ?? 0) > 0 &&
+                  studentsData?.map((student) => (
+                    <View key={student.MSSV} style={styles.tableRow}>
+                      <View style={styles.tableCell}>
+                        <Text style={styles.value}>{student.STT}</Text>
+                      </View>
+                      <View style={styles.tableCell}>
+                        <Text style={styles.value}>{student.MSSV}</Text>
+                      </View>
+                      <View style={styles.tableCell}>
+                        <Text style={styles.value}>{student.fullName}</Text>
+                      </View>
+                      <View style={styles.tableCell}>
+                        <Text style={styles.value}>{student.mark}</Text>
+                      </View>
                     </View>
-                    <View style={styles.tableCell}>
-                      <Text style={styles.value}>{student.MSSV}</Text>
-                    </View>
-                    <View style={styles.tableCell}>
-                      <Text style={styles.value}>{student.fullName}</Text>
-                    </View>
-                    <View style={styles.tableCell}>
-                      <Text style={styles.value}>{student.mark}</Text>
-                    </View>
-                  </View>
-                ))}
+                  ))}
               </View>
               <view
                 style={{

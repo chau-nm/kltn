@@ -14,7 +14,9 @@ const AddCouncilModal = (): JSX.Element => {
     openAddCouncilModal,
     setOpenAddCouncilModal,
     thesis,
+
     setIsOpenThesisDetailModal,
+    searchDetail,
   } = useContext(ThesisConsoleContext);
 
   const [teacherSelectOptions, setTeacherSelectOptions] = useState<UserModel[]>(
@@ -39,6 +41,7 @@ const AddCouncilModal = (): JSX.Element => {
       onSuccess: (data: ThesisReviewerComment[]) => {
         if (data) {
           void message.success("Thêm hội đồng đánh giá đề cương thành công");
+          searchDetail(thesis?.id ?? "");
         }
       },
     }

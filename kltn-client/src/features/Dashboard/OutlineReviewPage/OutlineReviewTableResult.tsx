@@ -52,7 +52,7 @@ const OutlineReviewTableResult = (): JSX.Element => {
     },
     {
       title: "năm",
-      dataIndex: "year",
+      dataIndex: "schoolYear",
       width: 5,
     },
     {

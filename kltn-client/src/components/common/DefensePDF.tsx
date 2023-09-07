@@ -124,8 +124,8 @@ export const PDFDefensePreview: React.FC = () => {
     useContext(ThesisConsoleContext);
 
   const values: PDFReviewProps = {
-    projectName: (thesis && thesis?.topic) || "",
-    supervisor: (thesis?.teachers && thesis?.teachers[0]?.fname) || "",
+    projectName: thesis?.topic ?? "",
+    supervisor: (thesis?.teachers && thesis?.teachers[0]?.fname) ?? "",
     numberOfPages: thesis?.reviewers && thesis?.reviewers[0]?.pageNumber,
     numberOfChapters: thesis?.reviewers && thesis?.reviewers[0]?.chapterNumber,
     numberOfTables: thesis?.reviewers && thesis?.reviewers[0]?.tableNumber,
@@ -148,29 +148,29 @@ export const PDFDefensePreview: React.FC = () => {
     questions: [],
     studentsData: [],
   };
-  const questions: string[] = [];
+  // const questions: string[] = [];
   // for (let index = 1; index <= numQuestion; index++) {
   //   questions.push(values[`question${index}`]);
   // }
   const studentsData: StudentPDFReview[] =
-    (thesis?.reviewers &&
-      thesis?.reviewers[0].reviewerScores?.map((std, index) => {
-        return {
-          STT: index.toString(),
-          MSSV: std?.student?.username ?? "", // Provide a default empty string
-          fullName: std?.student?.fname ?? "", // Provide a default empty string
-          mark: std?.score ?? undefined, // Provide a default value or undefined
-        };
-      })) ??
-    []; // Provide a default empty array
+    thesis?.reviewers![0]?.reviewerScores?.map((std, index) => {
+      return {
+        STT: index.toString(),
+        MSSV: std?.student?.username ?? "", // Provide a default empty string
+        fullName: std?.student?.fname ?? "", // Provide a default empty string
+        mark: std?.score ?? undefined, // Provide a default value or undefined
+      };
+    }) ?? []; // Provide a default empty array
 
-  const result: PDFReviewProps = { ...values, studentsData, questions };
+  // const result: PDFReviewProps = { ...values, studentsData, questions };
 
   return (
     <ModalCommon
       title={"Preview PDF"}
       open={isOpenPreviewDefensePDF}
-      onCancel={() => setOpenPreviewDefensePDF(false)}
+      onCancel={() => {
+        setOpenPreviewDefensePDF(false);
+      }}
       footer={[
         <ButtonCommon
           key={2}
@@ -296,7 +296,7 @@ export const PDFDefensePreview: React.FC = () => {
                     </Text>
                   </View>
                 </View>
-                {studentsData!?.map((student) => (
+                {studentsData?.map((student) => (
                   <View key={student.MSSV} style={styles.tableRow}>
                     <View style={styles.tableCell}>
                       <Text style={styles.value}>{student.STT}</Text>

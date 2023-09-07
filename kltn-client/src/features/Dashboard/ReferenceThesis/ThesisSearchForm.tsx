@@ -27,11 +27,7 @@ const ThesisSearchForm = ({
   };
 
   return (
-    <Form
-      className="bg-white p-7 shadow"
-      onFinish={handleFinish}
-      onValuesChange={handleChangeValues}
-    >
+    <Form onFinish={handleFinish} onValuesChange={handleChangeValues}>
       <Form.Item
         label="Chủ đề"
         name="topic"
@@ -52,13 +48,13 @@ const ThesisSearchForm = ({
             <DatePicker picker="year" className="w-full" />
           </Form.Item>
         </Col>
-        <Col span={6}>
+        <Col span={12}>
           <Form.Item
             label="Học kì"
             name="semester"
             labelCol={{ span: 5 }}
             labelAlign="left"
-            wrapperCol={{ span: 24 }}
+            wrapperCol={{ offset: 2, span: 24 }}
           >
             <Select>
               <Select.Option key={undefined}> </Select.Option>

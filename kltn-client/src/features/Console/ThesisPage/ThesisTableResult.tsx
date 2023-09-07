@@ -3,7 +3,7 @@ import { type ColumnType } from "antd/es/table";
 import { type TableRowSelection } from "antd/es/table/interface";
 import { useContext, useEffect, useState } from "react";
 import { useMutation } from "react-query";
-import { dateDisplay } from "~/common/util";
+import { dateTimeDisplay } from "~/common/util";
 import {
   CommentIconCommon,
   CriticalAssessmentIconCommon,
@@ -138,10 +138,9 @@ const ThesisTableResult = (): JSX.Element => {
     },
     {
       title: "Cập nhật gần nhất",
-      dataIndex: "updatedAt",
       width: 5,
-      render: (row) => {
-        return <Row>{dateDisplay(new Date(row as number))}</Row>;
+      render: (row, record) => {
+        return <Row>{dateTimeDisplay(new Date(record.updatedAt ?? 0))}</Row>;
       },
     },
     {

@@ -13,6 +13,21 @@ type ThesisDetailViewProps = {
   setIsOpen: React.Dispatch<SetStateAction<boolean>>;
 };
 
+const getColorStatus = (status: number): string => {
+  switch (status) {
+    case -1:
+      return "text-red-500";
+    case 1:
+      return "text-yellow-500";
+    case 2 || 3 || 4 || 5:
+      return "text-blue-500";
+    case 6:
+      return "text-green-500";
+    default:
+      return "text-blue-500";
+  }
+};
+
 const ThesisDetailView = ({
   thesis,
   isOpen,
@@ -58,7 +73,10 @@ const ThesisDetailView = ({
             {"-"} Trạng thái
           </Col>
           <Col span={16} className="border p-3">
-            <Typography.Text type="secondary" italic>
+            <Typography.Text
+              className={getColorStatus(thesis.status ?? 0)}
+              italic
+            >
               {CommonConstants.THESIS_STATUS[thesis.status ?? 0].text}
             </Typography.Text>
           </Col>

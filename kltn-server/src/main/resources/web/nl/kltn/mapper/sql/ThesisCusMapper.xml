@@ -36,7 +36,7 @@
 		<result column="is_deleted" property="isDeleted" jdbcType="BIT" />
 		<result column="created_at" property="createdAt"
 			jdbcType="BIGINT" />
-		<result column="update_at" property="updatedAt"
+		<result column="updated_at" property="updatedAt"
 			jdbcType="BIGINT" />
 
 	</resultMap>
@@ -116,6 +116,7 @@
 		ON tl.thesis_id = t.id
 		<where>
 			tl.lecturer_id = #{userId}
+			AND t.status &lt;= 2
 			AND tl.is_active = 0
 			AND t.is_deleted = 0
 		</where>

@@ -6,10 +6,12 @@ import path from "~/constants/path";
 import { AuthContext } from "~/contexts/AuthContext";
 import { login } from "~/services/userServices";
 import { useMutation } from "react-query";
+import { useForm } from "antd/es/form/Form";
 
 const LoginPage = (): JSX.Element => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [form] = useForm();
 
   const { isAuthenticated, setAuthenticated, setUser } =
     useContext(AuthContext);
@@ -32,11 +34,13 @@ const LoginPage = (): JSX.Element => {
   }, [isAuthenticated]);
 
   const handleLogin = (): void => {
-    const loginCondition: LoginConditionModel = {
-      username,
-      password,
-    };
-    loginMutation.mutate(loginCondition);
+    void form.validateFields().then(() => {
+      const loginCondition: LoginConditionModel = {
+        username,
+        password,
+      };
+      loginMutation.mutate(loginCondition);
+    });
   };
 
   const handleLoginSuccess = (user: UserModel): void => {
@@ -53,7 +57,7 @@ const LoginPage = (): JSX.Element => {
   return (
     <Spin spinning={loginMutation.isLoading}>
       <Card title={LoginPageConstants.TITLE} className="w-[400px]">
-        <Form layout="vertical">
+        <Form layout="vertical" form={form}>
           <Form.Item
             label="Tên đăng nhập"
             name="username"

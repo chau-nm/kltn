@@ -1,4 +1,4 @@
-import { Alert, Col, Row, Typography, message } from "antd";
+import { Alert, Col, Row, message } from "antd";
 import { useContext } from "react";
 import { useMutation } from "react-query";
 import ButtonCommon from "~/components/common/ButtonCommon";
@@ -62,9 +62,9 @@ const NotificationConfirm = ({
       showIcon
       action={
         <Row align={"middle"}>
-          <Col>
+          {/* <Col>
             <Typography.Link>Xem chi tiết luận văn</Typography.Link>
-          </Col>
+          </Col> */}
           <Col className="ml-5">
             <ButtonCommon
               color="green"

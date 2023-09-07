@@ -243,14 +243,14 @@ const RegisterThesisForm = (): JSX.Element => {
         </Form.Item>
         {documentList.length > 0 && (
           <>
-            <Typography.Text type="warning">
+            <Typography.Text className="text-yellow-700" italic>
               Đề tài của bạn có khả năng trùng với các đề tài sau
             </Typography.Text>
             {documentList.map((data, index) => {
               return (
                 <div
                   key={index}
-                  className="border-2 border-slate-200 rounded-sm p-1 mb-1"
+                  className="border-2 border-yellow-700 rounded-sm p-1 mb-1"
                 >
                   <ReactQuillPreviewCommon content={data?.title as string} />
                   {data?.url && (

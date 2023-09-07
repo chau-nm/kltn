@@ -289,35 +289,6 @@ public class ThesisServiceImpl implements ThesisService {
 			if (thesisDTO == null) {
 				thesisMapper.updateByPrimaryKey(thesisDTO);
 			}
-//            List<ThesisUserDTO> students = thesisDTO.getStudents();
-//            thesisUserCusMapper.deleteByTheisId(thesisDTO.getId());
-//            for (ThesisUser thesisUser : students) {
-//                thesisUser.setIsDeleted(false);
-//                System.err.println(thesisUser.getIsDeleted());
-//                if (thesisUserMapper.insert(thesisUser) <= 0) {
-//                    throw new Exception("Cập nhật thất bại");
-//                }
-//            }
-//            ThesisUserDTO thesisUser = thesisDTO.getTeacher();
-//            thesisUser.setIsDeleted(false);
-//            if (thesisUserMapper.insert(thesisUser) <= 0) {
-//                throw new Exception("Cập nhật thất bại");
-//            }
-//            thesisDocumentCusMapper.deteleByThesisId(thesisDTO.getId(), 2);
-//            String thesisDocumentUrl = thesisDTO.getDocumentUrl();
-//            if (thesisDocumentUrl != null) {
-//                ThesisDocument document = new ThesisDocument();
-//                document.setId(String.valueOf(UUID.randomUUID()));
-//                document.setFileUrl(thesisDocumentUrl);
-//                document.setType(Constant.THESIS_DOCUMENT_TYPE_DOCUMENT);
-//                document.setThesisId(thesisDTO.getId());
-//                document.setIsDeleted(false);
-//                document.setCreatedAt(new Date().getTime());
-//                document.setUpdatedAt(new Date().getTime());
-//                if (thesisDocumentMapper.insert(document) <= 0) {
-//                    throw new Exception("Cập nhật thất bại");
-//                }
-//            }
 		} catch (Exception e) {
 			TransactionAspectSupport.currentTransactionStatus().isRollbackOnly();
 			throw e;

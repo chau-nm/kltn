@@ -1,9 +1,8 @@
-import { Row, Spin, Tooltip } from "antd";
+import { Row, Spin } from "antd";
 import { type ColumnType, type TablePaginationConfig } from "antd/es/table";
 
 import React, { useEffect, useState, type SetStateAction } from "react";
 
-import { SeeIconCommon } from "~/components/common/IconCommon";
 import TableCommon from "~/components/common/TableCommon";
 import CommonConstants from "~/constants/commonConstants";
 
@@ -67,7 +66,7 @@ const ThesisTableResult = ({
     },
     {
       title: "Năm",
-      dataIndex: "year",
+      dataIndex: "schoolYear",
       width: 2,
     },
     {
@@ -78,18 +77,19 @@ const ThesisTableResult = ({
     {
       title: "",
       fixed: "right",
-      width: 0.5,
+      width: 1,
       render: (row, record) => {
         return (
           <Row justify={"center"}>
-            <Tooltip title="Chi tiết luận văn" placement="top">
-              <SeeIconCommon
-                onClick={() => {
-                  setThesis(record);
-                  setIsOpenThesisDetailModal(true);
-                }}
-              />
-            </Tooltip>
+            <span
+              className="cursor-pointer select-none text-blue-400"
+              onClick={() => {
+                setThesis(record);
+                setIsOpenThesisDetailModal(true);
+              }}
+            >
+              Xem chi tiết
+            </span>
           </Row>
         );
       },

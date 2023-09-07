@@ -37,6 +37,7 @@ const MyThesisPage = (): JSX.Element => {
   if (myThesis != null && myThesis.length > 0) {
     return (
       <PageLayout pageTitle="Luận văn của tôi">
+        {user?.isTeacher && <ThesisInvitedList data={thesisInvited} />}
         {myThesis?.map((thesis) => {
           if ((thesis?.status ?? 0) >= 2) {
             return <ThesisDetail key={thesis.id} thesis={thesis} />;

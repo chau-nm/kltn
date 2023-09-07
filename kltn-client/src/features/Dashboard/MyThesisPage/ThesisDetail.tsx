@@ -14,6 +14,21 @@ type ThesisDetailProps = {
   thesis: ThesisModel;
 };
 
+const getColorStatus = (status: number): string => {
+  switch (status) {
+    case -1:
+      return "text-red-500";
+    case 1:
+      return "text-yellow-500";
+    case 2 || 3 || 4 || 5:
+      return "text-blue-500";
+    case 6:
+      return "text-green-500";
+    default:
+      return "text-blue-500";
+  }
+};
+
 const ThesisDetail = ({ thesis }: ThesisDetailProps): JSX.Element => {
   // const colLayout = {
   //   span: 3,
@@ -27,6 +42,7 @@ const ThesisDetail = ({ thesis }: ThesisDetailProps): JSX.Element => {
       onSuccess: (data) => {
         if (data) {
           void message.success("Cập nhật thành công");
+          location.reload();
         }
       },
     }
@@ -93,7 +109,10 @@ const ThesisDetail = ({ thesis }: ThesisDetailProps): JSX.Element => {
             {"-"} Trạng thái
           </Col>
           <Col span={16} className="border p-3">
-            <Typography.Text type="secondary" italic>
+            <Typography.Text
+              className={getColorStatus(thesis.status ?? 0)}
+              italic
+            >
               {CommonConstants.THESIS_STATUS[thesis.status ?? 0].text}
             </Typography.Text>
           </Col>
@@ -183,7 +202,7 @@ const ThesisDetail = ({ thesis }: ThesisDetailProps): JSX.Element => {
         </div>
       )}
       {(documents?.length ?? 0) > 0 && (
-        <div className="my-2">
+        <div className="my-2 overflow-hidden">
           <div className="flex items-center mb-2">
             <SendOutlined />
             <span className="ml-2 text-lg font-bold">File tài liệu:</span>
@@ -215,6 +234,7 @@ const ThesisDetail = ({ thesis }: ThesisDetailProps): JSX.Element => {
           </Row>
         </div>
       )}
+      <div className="w-full h-[1px] bg-black my-2"></div>
     </>
   );
 };

@@ -192,7 +192,7 @@ const EditOutlineReviewModal = (): JSX.Element => {
       </Row>
       <Row className="w-[800px] mt-8">
         <Col flex={1} className="w-[250px]">
-          <Typography.Text className="font-bold ">
+          <Typography.Text className="font-bold text-yellow-700">
             Danh sách luận văn có tiêu đề tương tự:{" "}
           </Typography.Text>
         </Col>
@@ -202,7 +202,7 @@ const EditOutlineReviewModal = (): JSX.Element => {
         documentList?.map((data, index) => {
           return (
             <Row key={index}>
-              <div className="w-full border-2 border-slate-200 rounded-sm p-1 mb-1">
+              <div className="w-full border-2 border-yellow-700 rounded-sm p-1 mb-1">
                 <ReactQuillPreviewCommon content={data?.title as string} />
                 {data?.url && (
                   <div className="border-t py-3">
